@@ -5,7 +5,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.SummonsData;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -19,7 +18,7 @@ public interface ISummonAlliesAbility extends IAbility {
     String getSummonsListId();
 
     default void saveSummonUuid(LivingEntity user, UUID summonUuid) {
-        SummonsData.addSummonUUID((IEntityDataSaver) user, summonUuid, this.getSummonsListId());
+        SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
     }
 
     default boolean canSummonEntity(ServerWorld world, LivingEntity user, String listId) {
@@ -30,7 +29,7 @@ public interface ISummonAlliesAbility extends IAbility {
                 toRemove.add(prevUuid);
             }
         }
-        toRemove.forEach(uuid -> SummonsData.removeSummonUUID((IEntityDataSaver) user, uuid, listId));
+        toRemove.forEach(uuid -> SummonsData.removeSummonUUID(user, uuid, listId));
         return SummonsData.getAliveSummons(user, listId).length < this.getMaxSummons();
     }
 

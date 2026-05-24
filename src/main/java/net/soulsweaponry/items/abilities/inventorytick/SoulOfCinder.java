@@ -19,7 +19,7 @@ public record SoulOfCinder(int duration, int durationPerLvl, int amp, float ampP
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (selected && entity instanceof LivingEntity living && living.age % 20 == 0 && living.isOnFire()) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
-            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.SOUL_OF_CINDER, this.duration + this.durationPerLvl * lvl, (int) (this.amp + this.ampPerLvl * lvl)));
+            living.addStatusEffect(new StatusEffectInstance(EffectRegistry.SOUL_OF_CINDER.get(), this.duration + this.durationPerLvl * lvl, (int) (this.amp + this.ampPerLvl * lvl)));
         }
     }
 

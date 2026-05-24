@@ -18,6 +18,8 @@ public class AttributeRegistry {
     public static RegistryObject<EntityAttribute> BASE_POSTURE_INCREASE = register("base_posture_increase", 0.0, -10000.0, 10000.0);
     public static RegistryObject<EntityAttribute> BLEED_BUILDUP_RESISTANCE = register("bleed_buildup_resistance", 0.0, -10000.0, 10000.0);
     public static RegistryObject<EntityAttribute> BLEED_DAMAGE_RESISTANCE = register("bleed_damage_resistance", 0.0, -10000.0, 10000.0);
+    public static RegistryObject<EntityAttribute> FROST_BUILDUP_RESISTANCE = register("frost_buildup_resistance", 0.0, -10000.0, 10000.0);
+    public static RegistryObject<EntityAttribute> FROST_DAMAGE_RESISTANCE = register("frost_damage_resistance", 0.0, -10000.0, 10000.0);
 
     public static RegistryObject<EntityAttribute> register(String id, double fallback, double min, double max) {
         return register(id, () -> createClampedAttribute(id, fallback, min, max));

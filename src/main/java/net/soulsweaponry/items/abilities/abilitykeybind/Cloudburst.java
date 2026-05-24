@@ -35,7 +35,7 @@ public record Cloudburst(
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             if (!player.isCreative()) {
                 int cooldown = Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl);
-                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, cooldown, 0));
+                player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), cooldown, 0));
             }
             ItemStack arrowStack = player.getProjectileType(stack);
             if (arrowStack.isEmpty()) {

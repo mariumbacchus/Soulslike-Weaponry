@@ -24,13 +24,13 @@ public record PostureResistance(float[] postureBuildupResistances, float[] baseP
         if (this.postureBuildupResistances == null || this.basePostureIncrease == null) {
             return;
         }
-        EntityAttributeModifier postureBuildup = WeaponUtil.makeAttribute(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, equipmentSlot, this.postureBuildupResistances);
-        EntityAttributeModifier basePostureIncrease = WeaponUtil.makeAttribute(AttributeRegistry.BASE_POSTURE_INCREASE, equipmentSlot, this.basePostureIncrease);
+        EntityAttributeModifier postureBuildup = WeaponUtil.makeAttribute(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE.get(), equipmentSlot, this.postureBuildupResistances);
+        EntityAttributeModifier basePostureIncrease = WeaponUtil.makeAttribute(AttributeRegistry.BASE_POSTURE_INCREASE.get(), equipmentSlot, this.basePostureIncrease);
         if (postureBuildup != null) {
-            builder.put(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE, postureBuildup);
+            builder.put(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE.get(), postureBuildup);
         }
         if (basePostureIncrease != null) {
-            builder.put(AttributeRegistry.BASE_POSTURE_INCREASE, basePostureIncrease);
+            builder.put(AttributeRegistry.BASE_POSTURE_INCREASE.get(), basePostureIncrease);
         }
     }
 

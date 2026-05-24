@@ -12,6 +12,7 @@ import net.soulsweaponry.client.hud.BleedHudOverlay;
 import net.soulsweaponry.client.hud.CustomBossBar;
 import net.soulsweaponry.client.hud.PostureHudOverlay;
 import net.soulsweaponry.client.hud.TargetPostureHudOverlay;
+import net.soulsweaponry.client.particles.CyanSweepAttackParticle;
 import net.soulsweaponry.client.particles.factory.EchoSmokeFactory;
 import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
 import net.soulsweaponry.client.registry.*;
@@ -42,6 +43,7 @@ public class ClientModBusEvents {
         event.registerSpriteSet(ParticleRegistry.BLUE_FLAME.get(), FlameParticle.Factory::new);
         event.registerSpriteSet(ParticleRegistry.SOUL_SPARK.get(), SoulSparkFactory::new);
         event.registerSpriteSet(ParticleRegistry.ECHO_SMOKE.get(), EchoSmokeFactory::new);
+        event.registerSpriteSet(ParticleRegistry.ECHO_SWEEP_ATTACK.get(), CyanSweepAttackParticle.Factory::new);
     }
 
     @SubscribeEvent

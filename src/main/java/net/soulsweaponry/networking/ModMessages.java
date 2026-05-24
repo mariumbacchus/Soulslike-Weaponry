@@ -55,6 +55,8 @@ public class ModMessages {
         net.messageBuilder(TargetPostureSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(TargetPostureSyncS2C::new).encoder(TargetPostureSyncS2C::toBytes).consumerMainThread(TargetPostureSyncS2C::handle).add();
         net.messageBuilder(MaxPostureSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(MaxPostureSyncS2C::new).encoder(MaxPostureSyncS2C::toBytes).consumerMainThread(MaxPostureSyncS2C::handle).add();
         net.messageBuilder(BleedSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(BleedSyncS2C::new).encoder(BleedSyncS2C::toBytes).consumerMainThread(BleedSyncS2C::handle).add();
+        net.messageBuilder(EchoSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(EchoSyncS2C::new).encoder(EchoSyncS2C::toBytes).consumerMainThread(EchoSyncS2C::handle).add();
+        net.messageBuilder(FrostSyncS2C.class, id(), NetworkDirection.PLAY_TO_CLIENT).decoder(FrostSyncS2C::new).encoder(FrostSyncS2C::toBytes).consumerMainThread(FrostSyncS2C::handle).add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

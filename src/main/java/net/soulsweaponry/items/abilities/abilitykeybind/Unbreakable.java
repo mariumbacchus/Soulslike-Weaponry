@@ -27,7 +27,7 @@ public record Unbreakable(
             stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, this.effectsDuration, this.absorptionAmp));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, this.effectsDuration, this.resistanceAmp));
-            world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+            world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
         }
     }
 

@@ -181,10 +181,10 @@ public class ShootSilverBullet implements IAbility {
         ItemStack bullet = this.getProjectileType(user, stack);
         if (!bullet.isEmpty() || bl) {
             if (bullet.isEmpty()) {
-                return new ItemStack(ItemRegistry.SILVER_BULLET);
+                return new ItemStack(ItemRegistry.SILVER_BULLET.get());
             }
             int toRemove = bl ? 0 : this.getBulletsNeeded(stack);
-            Item bulletItem = ItemRegistry.SILVER_BULLET;
+            Item bulletItem = ItemRegistry.SILVER_BULLET.get();
             if (infinity) {
                 return bullet;
             }
@@ -203,7 +203,7 @@ public class ShootSilverBullet implements IAbility {
 
     public ItemStack getProjectileType(PlayerEntity player, ItemStack stack) {
         int needed = this.getBulletsNeeded(stack);
-        Item bulletItem = ItemRegistry.SILVER_BULLET;
+        Item bulletItem = ItemRegistry.SILVER_BULLET.get();
         ItemStack held = RangedWeaponItem.getHeldProjectile(player, this.getProjectiles());
         if (!held.isEmpty()) return held;
 
@@ -299,7 +299,7 @@ public class ShootSilverBullet implements IAbility {
 
     @Override
     public Predicate<ItemStack> getProjectiles() {
-        return (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET) && stack.getCount() >= this.getBulletsNeeded(stack);
+        return (stack) -> stack.isOf(ItemRegistry.SILVER_BULLET.get()) && stack.getCount() >= this.getBulletsNeeded(stack);
     }
 
     @Override

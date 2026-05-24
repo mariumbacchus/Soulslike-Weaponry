@@ -24,11 +24,11 @@ public record ShootSmallMoonlight(
     public void onAttackClickServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
         if (!this.isCoolingDown(player, stack)) {
             //Damaging the itemstack messes with Better Combat, therefore postHit damages weapon twice instead
-            boolean hasEffect = player.hasStatusEffect(EffectRegistry.MOON_HERALD);
-            int amp = hasEffect ? player.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() + 1 : 0;
+            boolean hasEffect = player.hasStatusEffect(EffectRegistry.MOON_HERALD.get());
+            int amp = hasEffect ? player.getStatusEffect(EffectRegistry.MOON_HERALD.get()).getAmplifier() + 1 : 0;
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             this.shootMoonlight(world, stack, player, amp, lvl);
-            world.playSound(null, player.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+            world.playSound(null, player.getBlockPos(), SoundRegistry.MOONLIGHT_SMALL_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
             player.swingHand(Hand.MAIN_HAND, true);
             int cooldown = hasEffect ? this.cooldownWithEffect : (int) Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl);
             this.applyItemCooldownNoCheck(stack, player, player.isCreative() ? 5 : cooldown);
@@ -38,7 +38,7 @@ public record ShootSmallMoonlight(
     public void shootMoonlight(ServerWorld world, ItemStack stack, PlayerEntity player, int amp, int lvl) {
         float damage = this.damage + this.bonusDamagePerLvl * lvl;
         damage += this.bonusDamagePerEffectAmp * amp;
-        MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE, world, player, stack);
+        MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.MOONLIGHT_ENTITY_TYPE.get(), world, player, stack);
         projectile.setAgeAndPoints(15, 30, (byte) 1);
         projectile.setVelocity(player, player.getPitch(), player.getYaw(), 0.0f, this.projectileSpeed, 0f);
         projectile.setDamage(damage);

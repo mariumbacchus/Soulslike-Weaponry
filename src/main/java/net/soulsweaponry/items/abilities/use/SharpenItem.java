@@ -33,7 +33,7 @@ public class SharpenItem implements IAbility {
                 if (op.isPresent() && !ISharpened.isEmpowered(swordStack)) {
                     NbtHelper.putInt(swordStack, NbtIds.SHARPENED_STRIKES, op.get().getMaxEmpoweredStrikes(swordStack));
                     stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
-                    world.playSound(user, user.getBlockPos(), SoundRegistry.SHARPEN_EVENT, SoundCategory.PLAYERS, .5f, 1f);
+                    world.playSound(user, user.getBlockPos(), SoundRegistry.SHARPEN_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
                     world.playSound(user, user.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, SoundCategory.PLAYERS, .5f, 1f);
                     return TypedActionResult.success(user.getStackInHand(hand));
                 }

@@ -36,8 +36,8 @@ public record Moonfall(
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int ticksUsed) {
         if (user instanceof PlayerEntity player && world instanceof ServerWorld serverWorld) {
             if (ticksUsed >= 10) {
-                int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD) ?
-                        this.reducedCooldownPerEffectAmp * player.getStatusEffect(EffectRegistry.MOON_HERALD).getAmplifier() : 0;
+                int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) ?
+                        this.reducedCooldownPerEffectAmp * player.getStatusEffect(EffectRegistry.MOON_HERALD.get()).getAmplifier() : 0;
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
                 int ruptures = this.getRuptureAmount(lvl);
                 Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
@@ -53,7 +53,7 @@ public record Moonfall(
                 }
                 WeaponUtil.doConsumerOnLine(world, user.getYaw() + 90, user.getPos(), 4, ruptures, 1.75f,
                         (Vec3d position, Integer warmup, Float yaw) -> {
-                            HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR, world);
+                            HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), world);
                             pillar.setOwner(user);
                             pillar.setParticleAmountMod(1f);
                             pillar.setRadius(this.pillarRadius);
@@ -69,7 +69,7 @@ public record Moonfall(
                             Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl - emp));
                     stack.damage(5, player, WeaponUtil.getActiveHandSlot(player));
                 }
-                world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
                 ParticleHandler.particleOutburstMap(player.getWorld(), 150, vecBlocksAway.getX(), user.getY(), vecBlocksAway.getZ(), ParticleEvents.MOONFALL_MAP, 1f);
             }

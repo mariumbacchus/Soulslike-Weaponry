@@ -33,17 +33,17 @@ public record CorruptGround(
 ) implements IKeybindAbility {
 
     private static final Map<Block, WitheredBlock> TURNABLE_BLOCKS = Map.of(
-            Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK,
-            Blocks.DIRT, BlockRegistry.WITHERED_DIRT
+            Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK.get(),
+            Blocks.DIRT, BlockRegistry.WITHERED_DIRT.get()
     );
     private static final Map<Block, WitheredGrass> TURNABLE_GRASS = Map.of(
-            Blocks.GRASS, BlockRegistry.WITHERED_GRASS,
-            Blocks.FERN, BlockRegistry.WITHERED_FERN,
-            Blocks.SWEET_BERRY_BUSH, BlockRegistry.WITHERED_BERRY_BUSH
+            Blocks.GRASS, BlockRegistry.WITHERED_GRASS.get(),
+            Blocks.FERN, BlockRegistry.WITHERED_FERN.get(),
+            Blocks.SWEET_BERRY_BUSH, BlockRegistry.WITHERED_BERRY_BUSH.get()
     );
     private static final Map<Block, WitheredTallGrass> TURNABLE_TALL_PLANT = Map.of(
-            Blocks.TALL_GRASS, BlockRegistry.WITHERED_TALL_GRASS,
-            Blocks.LARGE_FERN, BlockRegistry.WITHERED_LARGE_FERN
+            Blocks.TALL_GRASS, BlockRegistry.WITHERED_TALL_GRASS.get(),
+            Blocks.LARGE_FERN, BlockRegistry.WITHERED_LARGE_FERN.get()
     );
 
     @Override
@@ -85,7 +85,7 @@ public record CorruptGround(
                         if (!blockPos2.isWithinDistance(entity.getPos(), range)) continue;
                         mutable.set(blockPos2.getX(), blockPos2.getY() + 1, blockPos2.getZ());
                         BlockState blockState2 = world.getBlockState(mutable);
-                        if (blockState2.isIn(BlockTags.SMALL_FLOWERS)) world.setBlockState(mutable, BlockRegistry.HYDRANGEA.getDefaultState().with(WitheredFlower.CANNOT_TURN, false));
+                        if (blockState2.isIn(BlockTags.SMALL_FLOWERS)) world.setBlockState(mutable, BlockRegistry.HYDRANGEA.get().getDefaultState().with(WitheredFlower.CANNOT_TURN, false));
                         for (Block turnGrass : TURNABLE_GRASS.keySet()) if (blockState2.isOf(turnGrass)) world.setBlockState(mutable, TURNABLE_GRASS.get(turnGrass).getDefaultState());
                         for (Block turnTallPlant : TURNABLE_TALL_PLANT.keySet()) if (blockState2.isOf(turnTallPlant)) {
                             world.removeBlock(mutable, false);
@@ -93,7 +93,7 @@ public record CorruptGround(
                         }
                         if (blockState2.isIn(BlockTags.TALL_FLOWERS)) {
                             world.removeBlock(mutable, false);
-                            TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.getDefaultState().with(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
+                            TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.get().getDefaultState().with(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
                         }
                         world.setBlockState(blockPos2, blockState);
                         world.scheduleBlockTick(blockPos2, TURNABLE_BLOCKS.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));

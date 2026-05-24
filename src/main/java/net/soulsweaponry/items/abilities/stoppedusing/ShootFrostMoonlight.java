@@ -32,7 +32,7 @@ public class ShootFrostMoonlight extends ShootMoonlight {
         int duration = (int) (this.permafrostDuration + this.bonusDurationPerLvl * lvl);
         int amp = (int) (this.permafrostAmp + this.bonusAmpPerLvl * lvl);
         MoonlightProjectile entity = super.createMoonlightProjectile(world, user, stack, projectileNr, lvl);
-        entity.setAppliedStatusEffect(EffectRegistry.FREEZING);
+        entity.setAppliedStatusEffect(EffectRegistry.FREEZING.get());
         entity.setEffectAmplifier(amp);
         entity.setAppliedEffectDuration(duration);
         entity.setAreaParticleCount((byte) 8);
@@ -41,6 +41,6 @@ public class ShootFrostMoonlight extends ShootMoonlight {
 
     @Override
     public EntityType<? extends MoonlightProjectile> getMoonlightType() {
-        return EntityRegistry.DARK_MOON_PROJECTILE;
+        return EntityRegistry.DARK_MOON_PROJECTILE.get();
     }
 }

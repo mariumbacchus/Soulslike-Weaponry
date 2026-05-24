@@ -28,9 +28,9 @@ public record BladeDance(float bonusDamagePerAmp, float bonusAttackSpeedPerAmp, 
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        int amp = attacker.hasStatusEffect(EffectRegistry.BLADE_DANCE) ? attacker.getStatusEffect(EffectRegistry.BLADE_DANCE).getAmplifier() + 1 : 0;
+        int amp = attacker.hasStatusEffect(EffectRegistry.BLADE_DANCE.get()) ? attacker.getStatusEffect(EffectRegistry.BLADE_DANCE.get()).getAmplifier() + 1 : 0;
         amp = Math.min(amp, this.maxBladeDanceAmp);
-        attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE, 160, amp));
+        attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE.get(), 160, amp));
         if (!WeaponUtil.isFightModLoaded() && amp == this.maxBladeDanceAmp) {
             int counter = NbtHelper.getInt(stack, NbtIds.BLADE_DANCE_POST_HIT_COUNTER, 0);
             NbtHelper.putInt(stack, NbtIds.BLADE_DANCE_POST_HIT_COUNTER, counter + 1);
@@ -79,7 +79,7 @@ public record BladeDance(float bonusDamagePerAmp, float bonusAttackSpeedPerAmp, 
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (entity instanceof LivingEntity living) {
             int amp = -1;
-            var inst = living.getStatusEffect(EffectRegistry.BLADE_DANCE);
+            var inst = living.getStatusEffect(EffectRegistry.BLADE_DANCE.get());
             if (inst != null) {
                 amp = inst.getAmplifier();
             }

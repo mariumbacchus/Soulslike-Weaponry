@@ -14,7 +14,7 @@ public record FrostMoonNeeded(int itemLevelForRemoval) implements IAbility {
 
     @Override
     public boolean preventUsePredicate(ItemStack stack, PlayerEntity user) {
-        return !user.hasStatusEffect(EffectRegistry.FROST_MOON) && !user.isCreative() && WeaponUtil.getUpgradeLevel(stack) < this.itemLevelForRemoval;
+        return !user.hasStatusEffect(EffectRegistry.FROST_MOON.get()) && !user.isCreative() && WeaponUtil.getUpgradeLevel(stack) < this.itemLevelForRemoval;
     }
 
     @Override

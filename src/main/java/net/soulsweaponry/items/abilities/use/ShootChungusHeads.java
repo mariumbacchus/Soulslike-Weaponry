@@ -19,7 +19,7 @@ public record ShootChungusHeads(double speed, int ticksBeforeExplode, int cooldo
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
-        TntEntity tnt = EntityRegistry.CHUNGUS_HEAD.create(world);
+        TntEntity tnt = EntityRegistry.CHUNGUS_HEAD.get().create(world);
         assert tnt != null;
         tnt.setPos(user.getX(), user.getEyeY() - 0.4f, user.getZ());
         tnt.noClip = true;

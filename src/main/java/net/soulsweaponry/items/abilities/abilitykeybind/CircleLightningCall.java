@@ -54,7 +54,7 @@ public record CircleLightningCall(
                 double z0 = player.getZ();
                 double x = x0 + r * Math.cos(theta * Math.PI / 180);
                 double z = z0 + r * Math.sin(theta * Math.PI / 180);
-                WarmupLightningEntity entity = new WarmupLightningEntity(EntityRegistry.WARMUP_LIGHTNING, world);
+                WarmupLightningEntity entity = new WarmupLightningEntity(EntityRegistry.WARMUP_LIGHTNING.get(), world);
                 entity.setPos(x, player.getY(), z);
                 entity.setWarmup(2 + i * 8);
                 entity.setOwner(player);

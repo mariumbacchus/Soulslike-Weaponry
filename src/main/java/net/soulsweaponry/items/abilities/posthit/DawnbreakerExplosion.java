@@ -77,21 +77,21 @@ public class DawnbreakerExplosion implements IAbility {
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         int addedAmp = (int) (this.baseAmpPostHit + this.bonusAmpPerLvl * WeaponUtil.getUpgradeLevel(stack));
         if (this.shouldAffectEntity(target)) {
-            if (target.hasStatusEffect(EffectRegistry.RETRIBUTION)) {
-                int amplifier = target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier();
+            if (target.hasStatusEffect(EffectRegistry.RETRIBUTION.get())) {
+                int amplifier = target.getStatusEffect(EffectRegistry.RETRIBUTION.get()).getAmplifier();
                 amplifier += addedAmp;
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, amplifier));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION.get(), 80, amplifier));
             } else {
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION, 80, addedAmp));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.RETRIBUTION.get(), 80, addedAmp));
             }
         }
     }
 
     @Override
     public void onTargetDeath(DamageSource damageSource, ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (target.hasStatusEffect(EffectRegistry.RETRIBUTION)) {
+        if (target.hasStatusEffect(EffectRegistry.RETRIBUTION.get())) {
             double chance = this.detonationChanceAddition
-                    + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION).getAmplifier()));
+                    + 1 - (Math.pow(.75, target.getStatusEffect(EffectRegistry.RETRIBUTION.get()).getAmplifier()));
             double random = target.getRandom().nextDouble();
             if (random < chance) {
                 this.dawnbreakerEvent(attacker.getWorld(), target, attacker, stack);
@@ -108,7 +108,7 @@ public class DawnbreakerExplosion implements IAbility {
             ParticleHandler.particleSphere(world, 1000, target.getX(), target.getEyeY() - .25f, target.getZ(), ParticleTypes.FLAME, 1f);
             ParticleHandler.particleOutburstMap(world, 200, target.getX(), target.getY(), target.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
         }
-        world.playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 2f, 1f);
+        world.playSound(null, target.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundCategory.HOSTILE, 2f, 1f);
         Box aoe = target.getBoundingBox().expand(this.explosionRange);
         List<Entity> entities = world.getOtherEntities(target, aoe);
         int lvl = WeaponUtil.getUpgradeLevel(stack);
@@ -119,7 +119,7 @@ public class DawnbreakerExplosion implements IAbility {
                     targetHit.setOnFireFor(fireSeconds);
                     targetHit.damage(world.getDamageSources().explosion(null, attacker),
                             this.explosionDamage + this.bonusDamagePerLvl * lvl);
-                    targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR, this.fearEffectDuration, 0));
+                    targetHit.addStatusEffect(new StatusEffectInstance(EffectRegistry.FEAR.get(), this.fearEffectDuration, 0));
                 }
             }
         }

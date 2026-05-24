@@ -30,7 +30,7 @@ public class ChainLightning {
                             || tameable.getOwner() == null
                             || !tameable.getOwner().equals(user)))) {
                 LivingEntity secondary = (LivingEntity)e;
-                world.playSound(null, secondary.getBlockPos(), SoundRegistry.SHOCK, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, secondary.getBlockPos(), SoundRegistry.SHOCK.get(), SoundCategory.PLAYERS, 1f, 1f);
                 secondary.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.PLAYER_LIGHTNING, user), damage);
                 Vec3d toSecondary = new Vec3d(secondary.getX(), secondary.getBodyY(0.5f), secondary.getZ());
                 ParticleHandler.chainLightning(world, toPrimary, toSecondary);

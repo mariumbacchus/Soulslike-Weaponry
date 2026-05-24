@@ -24,13 +24,13 @@ public record BleedResistance(float[] bleedBuildupResistances, float[] bleedDama
         if (this.bleedBuildupResistances == null || this.bleedDamageResistances == null) {
             return;
         }
-        EntityAttributeModifier bleedBuildup = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, equipmentSlot, this.bleedBuildupResistances);
-        EntityAttributeModifier bleedDamage = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, equipmentSlot, this.bleedDamageResistances);
+        EntityAttributeModifier bleedBuildup = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_BUILDUP_RESISTANCE.get(), equipmentSlot, this.bleedBuildupResistances);
+        EntityAttributeModifier bleedDamage = WeaponUtil.makeAttribute(AttributeRegistry.BLEED_DAMAGE_RESISTANCE.get(), equipmentSlot, this.bleedDamageResistances);
         if (bleedBuildup != null) {
-            builder.put(AttributeRegistry.BLEED_BUILDUP_RESISTANCE, bleedBuildup);
+            builder.put(AttributeRegistry.BLEED_BUILDUP_RESISTANCE.get(), bleedBuildup);
         }
         if (bleedDamage != null) {
-            builder.put(AttributeRegistry.BLEED_DAMAGE_RESISTANCE, bleedDamage);
+            builder.put(AttributeRegistry.BLEED_DAMAGE_RESISTANCE.get(), bleedDamage);
         }
     }
 

@@ -3,8 +3,7 @@ package net.soulsweaponry.api.entitystats;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.EntityTypeTags;
@@ -12,10 +11,10 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.BleedData;
+import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.registry.AttributeRegistry;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
 import net.soulsweaponry.util.ModTags;
 
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class EntityBleed {
     }
 
     public static void triggerBloodLoss(LivingEntity entity) {
-        entity.damage(CustomDamageSource.create(entity.getWorld(), CustomDamageSource.BLEED), getBleedDamage(entity,
+        entity.damage(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.BLEED), getBleedDamage(entity,
                 ConfigConstructor.bleed_base_damage + entity.getMaxHealth() * ConfigConstructor.bleed_percent_health_damage));
         entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.BLOOD_LOSS.get(), entity.getSoundCategory(), 1f, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
         if (entity.getWorld() instanceof ServerWorld serverWorld) {
@@ -44,8 +43,9 @@ public class EntityBleed {
         for (Entity entity1 : entity.getWorld().getOtherEntities(entity, entity.getBoundingBox().expand(20D))) {
             if (entity1 instanceof LivingEntity livingEntity) {
                 for (Hand hand : Hand.values()) {
-                    if (livingEntity.getStackInHand(hand).isOf(WeaponRegistry.BLOODLUST.get())) {
-                        livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 600, (int) ConfigConstructor.bloodlust_bloodloss_in_vicinity_gives_strength_amp));
+                    ItemStack stack = livingEntity.getStackInHand(hand);
+                    if (stack.getItem() instanceof IHasAbilities hasAbilities && !hasAbilities.isDisabled(stack)) {
+                        hasAbilities.getAbilities().forEach(a -> a.onTargetBleedTrigger(stack, entity, livingEntity));
                     }
                 }
             }

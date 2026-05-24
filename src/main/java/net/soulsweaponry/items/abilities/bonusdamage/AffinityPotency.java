@@ -15,8 +15,8 @@ public record AffinityPotency(float damagePerAmp) implements IAbility {
 
     @Override
     public float getBonusAttackDamage(Entity target, float baseAttackDamage, DamageSource damageSource) {
-        if (damageSource.getAttacker() instanceof PlayerEntity player && !player.getWorld().isClient && player.hasStatusEffect(EffectRegistry.POTENCY)) {
-            return this.damagePerAmp * (player.getStatusEffect(EffectRegistry.POTENCY).getAmplifier() + 1);
+        if (damageSource.getAttacker() instanceof PlayerEntity player && !player.getWorld().isClient && player.hasStatusEffect(EffectRegistry.POTENCY.get())) {
+            return this.damagePerAmp * (player.getStatusEffect(EffectRegistry.POTENCY.get()).getAmplifier() + 1);
         }
         return 0;
     }

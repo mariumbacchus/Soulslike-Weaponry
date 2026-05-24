@@ -36,7 +36,7 @@ public record SwordLeap(
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int amp = (int) (this.damage + this.bonusDamagePerLvl * lvl);
             int cooldown = Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl);
-            user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, this.calculatedFallDuration, amp));
+            user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), this.calculatedFallDuration, amp));
             if (ticksUsed >= 10) {
                 cooldown = (int) (cooldown * this.cooldownModFullyCharged);
                 Vec3d rotation = player.getRotationVector().multiply(1f);

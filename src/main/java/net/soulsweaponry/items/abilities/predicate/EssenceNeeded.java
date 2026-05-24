@@ -22,7 +22,7 @@ public record EssenceNeeded(int maxEssence, boolean acceptWithMoonHerald, int it
         return !this.hasMaxEssence(stack)
                 && !user.isCreative()
                 && this.acceptWithMoonHerald
-                && !user.hasStatusEffect(EffectRegistry.MOON_HERALD)
+                && !user.hasStatusEffect(EffectRegistry.MOON_HERALD.get())
                 && WeaponUtil.getUpgradeLevel(stack) < this.itemLevelForRemoval;
     }
 

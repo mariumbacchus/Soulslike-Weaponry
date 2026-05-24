@@ -25,8 +25,8 @@ public record StormveilSurge(float rangePerAmp, float damagePerAmp, int minCoold
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker.hasStatusEffect(EffectRegistry.STORMVEIL)) {
-            StatusEffectInstance instance = attacker.getStatusEffect(EffectRegistry.STORMVEIL);
+        if (attacker.hasStatusEffect(EffectRegistry.STORMVEIL.get())) {
+            StatusEffectInstance instance = attacker.getStatusEffect(EffectRegistry.STORMVEIL.get());
             int amp = instance.getAmplifier();
             float radius = this.rangePerAmp * (amp + 1);
             float damage = this.damagePerAmp * (amp + 1);
@@ -37,9 +37,9 @@ public record StormveilSurge(float rangePerAmp, float damagePerAmp, int minCoold
                 lightningEntity.setPos(target.getX(), target.getY(), target.getZ());
                 attacker.getWorld().spawnEntity(lightningEntity);
                 NbtHelper.putBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, false);
-                attacker.removeStatusEffect(EffectRegistry.STORMVEIL);
+                attacker.removeStatusEffect(EffectRegistry.STORMVEIL.get());
                 // Reduce Stormveil to 20 ticks (originally remove, but want to keep immunity to lightning for a second still)
-                attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL, 20));
+                attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL.get(), 20));
                 if (attacker instanceof PlayerEntity player) {
                     this.applyEffectCooldown(player, Math.max(this.minCooldown, this.cooldown - WeaponUtil.getUpgradeLevel(stack) * this.reducedCooldownPerLvl));
                 }

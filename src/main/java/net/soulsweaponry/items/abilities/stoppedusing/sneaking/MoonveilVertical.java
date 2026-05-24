@@ -23,10 +23,10 @@ public record MoonveilVertical(int maxAge, float baseDamage, float bonusDamagePe
         if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !world.isClient) {
             if (ticksUsed >= 10) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
-                MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL, world, user, this.maxAge);
-                entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
+                MoonveilWave entity = new MoonveilWave(EntityRegistry.MOONVEIL_VERTICAL.get(), world, user, this.maxAge);
+                entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE.get());
                 entity.setAreaParticleCount((byte) 10);
-                entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME);
+                entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME.get());
                 entity.setPos(player.getX(), player.getEyeY() - 1f, player.getZ());
                 entity.setDespawnParticleCount(40);
                 entity.setModelRotationX(90);
@@ -34,7 +34,7 @@ public record MoonveilVertical(int maxAge, float baseDamage, float bonusDamagePe
                 entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1f, 1.0F);
                 entity.setDamage(this.baseDamage + this.bonusDamagePerLvl * lvl);
                 world.spawnEntity(entity);
-                world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_VERTICAL, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_VERTICAL.get(), SoundCategory.PLAYERS, 1f, 1f);
                 stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
                 this.applyItemCooldown(stack.getItem(), player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
             }

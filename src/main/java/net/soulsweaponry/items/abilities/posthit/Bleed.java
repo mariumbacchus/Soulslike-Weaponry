@@ -14,7 +14,7 @@ public record Bleed(int baseBleed, float bonusPerBloodthirstyAmp) implements IAb
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        int amp = attacker.hasStatusEffect(EffectRegistry.BLOODTHIRSTY) ? attacker.getStatusEffect(EffectRegistry.BLOODTHIRSTY).getAmplifier() + 1 : 0;
+        int amp = attacker.hasStatusEffect(EffectRegistry.BLOODTHIRSTY.get()) ? attacker.getStatusEffect(EffectRegistry.BLOODTHIRSTY.get()).getAmplifier() + 1 : 0;
         BleedData.addBleed(target, (int) (this.baseBleed + this.bonusPerBloodthirstyAmp * amp));
     }
 

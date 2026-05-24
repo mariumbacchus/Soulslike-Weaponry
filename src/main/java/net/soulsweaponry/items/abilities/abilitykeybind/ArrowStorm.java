@@ -29,7 +29,7 @@ public record ArrowStorm(
         if (!this.isCoolingDown(player, stack)) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             float damage = this.projectileDamage + this.bonusDamagePerLvl * lvl;
-            ArrowStormEntity entity = new ArrowStormEntity(EntityRegistry.ARROW_STORM_ENTITY, world);
+            ArrowStormEntity entity = new ArrowStormEntity(EntityRegistry.ARROW_STORM_ENTITY.get(), world);
             entity.setPos(player.getX(), player.getY() + 4.5F, player.getZ());
             entity.setVelocity(player, 0, player.getYaw(), 0.0F, 1f, 1.0F);
             entity.setOwner(player);

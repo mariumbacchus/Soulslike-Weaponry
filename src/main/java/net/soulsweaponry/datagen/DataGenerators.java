@@ -12,6 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
+import net.soulsweaponry.datagen.damagetype.DamageSourceProvider;
 import net.soulsweaponry.datagen.loot_tables.BossLootTables;
 import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTables;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
@@ -49,5 +50,6 @@ public class DataGenerators {
         ));
 
         generator.addProvider(event.includeServer(), new ModWorldGenProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new DamageSourceProvider(output, lookupProvider));
     }
 }

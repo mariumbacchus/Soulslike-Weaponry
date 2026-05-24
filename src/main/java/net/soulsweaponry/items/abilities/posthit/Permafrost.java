@@ -30,7 +30,7 @@ public record Permafrost(int frostApplied, int permafrostDuration, int permafros
         int level = WeaponUtil.getUpgradeLevel(stack);
         FrostData.setFrostSource(target, attacker);
         FrostData.addFrost(target, this.frostApplied);
-        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, this.permafrostDuration, (int) (this.permafrostBaseAmp + this.permafrostAmpPerLvl * level)));
+        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), this.permafrostDuration, (int) (this.permafrostBaseAmp + this.permafrostAmpPerLvl * level)));
     }
 
     public static void iceExplosion(World world, BlockPos pos, Entity affectedEntity, float baseAoeDamage, int amplifier) {
@@ -53,7 +53,7 @@ public record Permafrost(int frostApplied, int permafrostDuration, int permafros
                     }
                     float damage = EntityFrost.getFrostTriggerDamage(livingEntity, baseAoeDamage + livingEntity.getMaxHealth() * percentHealthDamage);
                     livingEntity.damage(world.getDamageSources().freeze(), damage);
-                    livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, amplifier));
+                    livingEntity.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 200, amplifier));
                 }
             }
             ParticleHandler.particleSphere(world, 300, pos.getX(), pos.getY() + .5f, pos.getZ(), ParticleEvents.ICE_PARTICLE, 1f);

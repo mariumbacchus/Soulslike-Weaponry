@@ -31,10 +31,10 @@ public record ElectricCherry(float chance, float baseDamage, float damagePerAmp,
             float damage = this.baseDamage + this.damagePerAmp * (amp + 1);
             ChainLightning.trigger(attacker.getWorld(), attacker, user, damage, radius, (target) -> target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, this.stunDuration, 20)));
 
-            user.getWorld().playSound(null, user.getBlockPos(), SoundRegistry.STORMVEIL_THORNS, SoundCategory.PLAYERS, 1f, 1f);
+            user.getWorld().playSound(null, user.getBlockPos(), SoundRegistry.STORMVEIL_THORNS.get(), SoundCategory.PLAYERS, 1f, 1f);
             if (!user.getWorld().isClient) {
                 for (int i = 0; i < 50; i++) {
-                    ParticleHandler.singleParticle(user.getWorld(), ParticleRegistry.SOUL_SPARK, user.getParticleX(1D), user.getBodyY(0.5) + user.getRandom().nextDouble() * 2 - 1D, user.getParticleZ(1D),
+                    ParticleHandler.singleParticle(user.getWorld(), ParticleRegistry.SOUL_SPARK.get(), user.getParticleX(1D), user.getBodyY(0.5) + user.getRandom().nextDouble() * 2 - 1D, user.getParticleZ(1D),
                             user.getRandom().nextGaussian() / 10f, user.getRandom().nextGaussian() / 10f, user.getRandom().nextGaussian() / 10f);
                 }
             }

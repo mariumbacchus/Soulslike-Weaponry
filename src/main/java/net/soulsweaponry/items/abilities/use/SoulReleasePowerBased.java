@@ -65,7 +65,7 @@ public record SoulReleasePowerBased(int maxSummons, String summonListId, Navigab
         int cost = chosen.getKey();
         Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
         ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.CONJURE_ENTITY_MAP, 1f);
-        world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
+        world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 0.8f, 1f);
         Entity e = type.create(world);
         if (e != null) {
             e.setPos(vecBlocksAway.x, player.getY() + .1f, vecBlocksAway.z);

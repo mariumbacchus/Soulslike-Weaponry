@@ -29,7 +29,7 @@ public record Infectious(
 
     @Override
     public boolean onUserDamaged(DamageSource source, float amount, ItemStack stack, LivingEntity player) {
-        if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH)) {
+        if (source.getAttacker() instanceof LivingEntity attacker && player.hasStatusEffect(EffectRegistry.LIFE_LEACH.get())) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int duration = (int) (this.effectsDuration + this.effectsDurationPerLvl * lvl);
             int amp = (int) (this.effectsAmp + this.effectsAmpPerLvl * lvl);
@@ -44,7 +44,7 @@ public record Infectious(
             }
             if (!player.getWorld().isClient) {
                 for (int i = 0; i < 50; i++) {
-                    ParticleHandler.singleParticle(player.getWorld(), ParticleRegistry.BLACK_FLAME,
+                    ParticleHandler.singleParticle(player.getWorld(), ParticleRegistry.BLACK_FLAME.get(),
                             player.getParticleX(1D), player.getBodyY(0.5) + player.getRandom().nextDouble() * 2 - 1D, player.getParticleZ(1D),
                             player.getRandom().nextGaussian() * 0.1f, player.getRandom().nextGaussian() * 0.1f, player.getRandom().nextGaussian() * 0.1f);
                 }

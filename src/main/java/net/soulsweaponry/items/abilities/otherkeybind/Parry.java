@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -23,7 +22,7 @@ public record Parry(int parryFrames, float parryFramesPerLvl, int maxFrames,
         if (!this.isCoolingDown(player, stack)) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int frames = (int) (this.parryFrames + this.parryFramesPerLvl * lvl);
-            ParryData.setParryTicks((IEntityDataSaver) player, 1, frames, this.maxFrames);
+            ParryData.setParryTicks(player, 1, frames, this.maxFrames);
             this.applyItemCooldownNoCheck(stack.getItem(), player, player.isCreative() ? 10
                     : Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
         }

@@ -1,46 +1,173 @@
 package net.soulsweaponry.util;
 
+import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.enchantment.ProtectionEnchantment;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.mixin.ItemAccessor;
+import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class WeaponUtil {
 
-    public static final Enchantment[] DAMAGE_ENCHANTS = {Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS};
+    public static final String DAMAGE_KEY = "CustomDamage";
+    public static final String SPEED_KEY = "CustomSpeed";
+
+    /**
+     * Returns the upgrade level of the item. One can upgrade it by mixing the item with
+     * a Twinkling Titanite in the Smithing Table with a Netherite Upgrade Template.
+     */
+    public static int getUpgradeLevel(ItemStack stack) {
+        return NbtHelper.getInt(stack, NbtIds.ITEM_UPGRADE_LEVEL, 0);
+    }
+
+    public static void setUpgradeLevel(ItemStack stack, int level) {
+        NbtHelper.putInt(stack, NbtIds.ITEM_UPGRADE_LEVEL, level);
+    }
+
+    /**
+     * Copy over default item stack nbt values such as enchants, damage or stack size.
+     * Also copies over item upgrade level and bonus damage/speed
+     * attributes gotten from it.
+     * Mainly used in {@link net.soulsweaponry.api.trickweapon.TrickWeaponUtil} and
+     * {@link net.soulsweaponry.items.abilities.targetdeath.SoulHarvestTransform}.
+     * @param prevStack previous stack to copy from
+     * @param newStack new stack to copy to from the prev stack
+     */
+    public static void copyOverItemComponents(World world, ItemStack prevStack, ItemStack newStack) {
+        int lvl = WeaponUtil.getUpgradeLevel(prevStack);
+        newStack.setCount(prevStack.getCount());
+        if (prevStack.hasNbt()) {
+            newStack.setNbt(prevStack.getNbt().copy());
+        }
+        WeaponUtil.setUpgradeLevel(newStack, lvl);
+
+        // Recalculate upgrade scaling for the new weapon type
+        ItemUpgradeRecipe recipe = UpgradeUtil.findItemUpgradeRecipeForBase(newStack);
+        if (recipe != null) {
+            float primaryPerLevel = recipe.primaryBonus();
+            float secondaryPerLevel = recipe.secondaryBonus();
+            NbtHelper.putFloat(newStack, NbtIds.UPGRADE_PRIMARY, primaryPerLevel);
+            NbtHelper.putFloat(newStack, NbtIds.UPGRADE_SECONDARY, secondaryPerLevel);
+        }
+        // Reset dynamic attributes so they rebuild properly
+        WeaponUtil.modifyStackAttributes(
+                newStack,
+                WeaponUtil.getBaseItemAttackDamage(newStack),
+                WeaponUtil.getBaseItemAttackSpeed(newStack)
+        );
+    }
 
     /**
      * Returns level of the damage enchant, for example {@code 5} for Sharpness V or {@code 4} for Smite IV
      */
     public static int getEnchantDamageBonus(ItemStack stack) {
-        for (Enchantment ench : DAMAGE_ENCHANTS) {
-            if (EnchantmentHelper.getLevel(ench, stack) > 0) {
-                return EnchantmentHelper.getLevel(ench, stack);
+        return getHighestEnchantInTag(stack, ModTags.Enchantments.DAMAGE_ENCHANTMENTS);
+    }
+
+    /**
+     * Get the highest level out of the enchants the stack has that are within the given tag.
+     * For example: searching for enchants within {@code EnchantmentTags.DAMAGE_EXCLUSIVE_SET}
+     * will return the highest level of sharpness, smite or whatever damage enchant the item
+     * has.
+     */
+    public static int getHighestEnchantInTag(ItemStack stack, TagKey<Enchantment> tag) {
+        Map<Enchantment, Integer> enchants = EnchantmentHelper.get(stack);
+        int max = 0;
+        for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+            if (Registries.ENCHANTMENT.getEntry(entry.getKey()).isIn(tag)) {
+                max = Math.max(max, entry.getValue());
+            }
+        }
+        return max;
+    }
+
+    /**
+     * Returns whether the stack has modified damage or attack speed thanks to abilities.
+     */
+    public static boolean hasModifiedAttributes(ItemStack stack) {
+        return stack.hasNbt() && stack.getNbt().contains(DAMAGE_KEY) && stack.getNbt().contains(SPEED_KEY);
+    }
+
+    /**
+     * Gets the attack damage saved on the nbt to the stack, often times from abilities.
+     */
+    public static double getStackAttackDamage(ItemStack stack) {
+        return stack.hasNbt() && stack.getNbt().contains(DAMAGE_KEY) ? stack.getNbt().getDouble(DAMAGE_KEY) : getBaseItemAttackDamage(stack);
+    }
+
+    /**
+     * Gets the attack speed saved on the nbt to the stack, often times from abilities.
+     */
+    public static double getStackAttackSpeed(ItemStack stack) {
+        return stack.hasNbt() && stack.getNbt().contains(SPEED_KEY) ? stack.getNbt().getDouble(SPEED_KEY) : getBaseItemAttackSpeed(stack);
+    }
+
+    public static double getBaseItemAttackDamage(ItemStack stack) {
+        Multimap<EntityAttribute, EntityAttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, stack);
+        for (var mod : map.get(EntityAttributes.GENERIC_ATTACK_DAMAGE)) {
+            if (mod.getId().equals(ItemAccessor.getAttackDamageModifierId())) {
+                return mod.getValue();
             }
         }
         return 0;
+    }
+
+    public static double getBaseItemAttackSpeed(ItemStack stack) {
+        Multimap<EntityAttribute, EntityAttributeModifier> map = stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, stack);
+        for (var mod : map.get(EntityAttributes.GENERIC_ATTACK_SPEED)) {
+            if (mod.getId().equals(ItemAccessor.getAttackSpeedModifierId())) {
+                return mod.getValue();
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Override the damage and attack speed of the item. Call this for consistency between versions.
+     * Saves values to a custom nbt that is applied in a mixin for {@link net.minecraft.item.Item#getAttributeModifiers(EquipmentSlot, ItemStack)}.
+     * @param stack item stack
+     * @param damage damage
+     * @param attackSpeed attack speed, this is not pre-calculated so you need to enter {@code - (4f - 1.6f)}
+     *                    if you want 1.6 in attack speed as a result
+     */
+    public static void modifyStackAttributes(ItemStack stack, double damage, double attackSpeed) {
+        NbtCompound nbt = stack.getOrCreateNbt();
+        nbt.putDouble(DAMAGE_KEY, damage);
+        nbt.putDouble(SPEED_KEY, attackSpeed);
+    }
+
+    public static Consumer<LivingEntity> getActiveHandSlot(LivingEntity user) {
+        return p -> p.sendToolBreakStatus(user.getActiveHand());
     }
 
     // NOTE: May be changed in future versions.
@@ -68,6 +195,21 @@ public class WeaponUtil {
             i = stack.getItem().getMaxUseTime(stack) - remainingUseTicks;
         }
         return i;
+    }
+
+    public static StatusEffect parseStatusEffectId(String statusEffectId) {
+        StatusEffect defaultEntry = StatusEffects.HASTE;
+        if (statusEffectId == null || statusEffectId.isBlank()) {
+            return defaultEntry;
+        }
+        Identifier directId = Identifier.tryParse(statusEffectId.toLowerCase(Locale.ROOT));
+        if (directId != null) {
+            StatusEffect eff = Registries.STATUS_EFFECT.get(directId);
+            if (eff != null) {
+                return eff;
+            }
+        }
+        return defaultEntry;
     }
 
     /**
@@ -230,29 +372,36 @@ public class WeaponUtil {
     }
 
     /**
-     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * Helper method to make attributes with the identifier being a combination of the mod id, attribute id and equipment slot.
      * Add an Operation parameter to replace ADDITION later if you feel like it.
      */
     @Nullable
     public static EntityAttributeModifier makeAttribute(EntityAttribute attr, EquipmentSlot slot, float amount) {
+        return makeAttribute(attr, slot.getName().toLowerCase(), amount);
+    }
+
+    /**
+     * Helper method to make attributes with the identifier being a combination of the mod id, attribute id and custom name.
+     * Add an Operation parameter to replace ADDITION later if you feel like it.
+     */
+    @Nullable
+    public static EntityAttributeModifier makeAttribute(EntityAttribute attr, String name, float amount) {
         // Don't display attributes with 0
         if (amount == 0) {
             return null;
         }
-        // e.g. "soulsweapons:bleed_buildup:HEAD"
-        String seed = String.format("soulsweapons:%s:%s",
-                attr.getTranslationKey(), slot.getName().toUpperCase());
-        UUID uuid = UUID.nameUUIDFromBytes(seed.getBytes(StandardCharsets.UTF_8));
-        return new EntityAttributeModifier(
-                uuid,
-                attr.getTranslationKey() + " " + slot.getName(),
-                amount,
-                EntityAttributeModifier.Operation.ADDITION
-        );
+        Identifier attrId = Registries.ATTRIBUTE.getId(attr);
+        if (attrId == null) {
+            return null;
+        }
+        String id = SoulsWeaponry.ModId + ":" + attrId.getPath() + "." + name.toLowerCase(Locale.ROOT);
+        // 1.20.1 checks for UUID so strings won't work alone
+        UUID uuid = UUID.nameUUIDFromBytes(id.getBytes(StandardCharsets.UTF_8));
+        return new EntityAttributeModifier(uuid, id, amount, EntityAttributeModifier.Operation.ADDITION);
     }
 
     /**
-     * Helper method to make attributes with the uuid being a combination of the mod id, attribute id and equipment slot.
+     * Helper method to make attributes with the identifier being a combination of the mod id, attribute id and equipment slot.
      * This takes in an array of doubles that is used to map the values to the armor equipment slot (head to feet).
      * No values beyond the 4th (3) index will be used.
      * Add an Operation parameter to replace ADDITION later if you feel like it.
@@ -279,8 +428,86 @@ public class WeaponUtil {
     public static List<EntityType<?>> getEntityListOffArray(String[] array) {
         Set<String> stringSet = Set.of(array);
         return stringSet.stream().map((str) -> {
-            Identifier entityId = new Identifier(str.contains(":") ? str : "minecraft:" + str);
-            return ForgeRegistries.ENTITY_TYPES.getValue(entityId);
+            Identifier entityId = Identifier.tryParse(str.contains(":") ? str : "minecraft:" + str);
+            return Registries.ENTITY_TYPE.get(entityId);
         }).collect(Collectors.toList());
+    }
+
+    public static boolean hasAnyEnchantmentsIn(ItemStack stack, TagKey<Enchantment> tag) {
+        Map<Enchantment, Integer> enchants = EnchantmentHelper.get(stack);
+        for (Enchantment ench : enchants.keySet()) {
+            if (Registries.ENCHANTMENT.getEntry(ench).isIn(tag)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Simulate an explosion without breaking blocks or killing item entities. The range, damage and knockback
+     * should match as if it was a legit explosion.
+     * @param world world
+     * @param explosionCauser entity that caused the explosion and will NOT take damage from it
+     * @param power power of the explosion
+     * @param x x
+     * @param y y
+     * @param z z
+     */
+    public static void simulateExplosion(ServerWorld world, Entity explosionCauser, float power, double x, double y, double z) {
+        if (power <= 0.0F) {
+            return;
+        }
+        float radius = power * 2.0F;
+        Vec3d explosionPos = new Vec3d(x, y, z);
+        Box affectedBox = new Box(
+                MathHelper.floor(x - radius - 1.0),
+                MathHelper.floor(y - radius - 1.0),
+                MathHelper.floor(z - radius - 1.0),
+                MathHelper.floor(x + radius + 1.0),
+                MathHelper.floor(y + radius + 1.0),
+                MathHelper.floor(z + radius + 1.0)
+        );
+        DamageSource damageSource = world.getDamageSources().explosion(explosionCauser, explosionCauser);
+        for (Entity target : world.getOtherEntities(explosionCauser, affectedBox)) {
+            if (target instanceof ItemEntity || target.isImmuneToExplosion()) {
+                continue;
+            }
+
+            double distanceRatio = Math.sqrt(target.squaredDistanceTo(explosionPos)) / radius;
+            if (distanceRatio > 1.0D) {
+                continue;
+            }
+
+            double dirX = target.getX() - x;
+            double dirY = (target instanceof TntEntity ? target.getY() : target.getEyeY()) - y;
+            double dirZ = target.getZ() - z;
+
+            double distance = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+            if (distance == 0.0D) {
+                continue;
+            }
+            dirX /= distance;
+            dirY /= distance;
+            dirZ /= distance;
+
+            double exposure = Explosion.getExposure(explosionPos, target);
+            double impact = (1.0D - distanceRatio) * exposure;
+
+            float damage = (float)((int)((impact * impact + impact) / 2.0D * 7.0D * radius + 1.0D));
+            target.damage(damageSource, damage);
+
+            double knockbackStrength;
+            if (target instanceof LivingEntity livingTarget) {
+                knockbackStrength = ProtectionEnchantment.transformExplosionKnockback(livingTarget, impact);
+            } else {
+                knockbackStrength = impact;
+            }
+            Vec3d knockback = new Vec3d(dirX * knockbackStrength, dirY * knockbackStrength, dirZ * knockbackStrength);
+            target.setVelocity(target.getVelocity().add(knockback));
+            target.velocityModified = true;
+        }
+        float pitch = (1.0F + (world.random.nextFloat() - world.random.nextFloat()) * 0.2F) * 0.7F;
+        world.playSound(null, BlockPos.ofFloored(x, y, z), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 4.0F, pitch);
+        world.spawnParticles(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1, 0.0, 0.0, 0.0, 0.0);
     }
 }

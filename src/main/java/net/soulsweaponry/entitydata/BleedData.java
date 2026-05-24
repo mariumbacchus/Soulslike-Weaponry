@@ -11,14 +11,14 @@ public class BleedData {
 
     public static final String BLEED_ID = "bleed";
 
-    public static int addBleed(LivingEntity entity, int amount) {
-        if (EntityBleed.isBleedDisabled(entity)
-                || entity.isDead()
-                || entity.getWorld().isClient) {
-            return 0;
+    public static void addBleed(LivingEntity entity, int amount) {
+        if (!EntityBleed.isBleedDisabled(entity) && !entity.isDead() && !entity.getWorld().isClient) {
+            int newAmount = EntityBleed.getBleedBuildup(entity, amount);
+            addBleed(entity, newAmount, EntityBleed.getMaxBleed(entity));
         }
+    }
 
-        int newAmount = EntityBleed.getBleedBuildup(entity, amount);
+    private static int addBleed(LivingEntity entity, int amount, int max) {
         NbtCompound nbt = entity.getPersistentData();
         if (!nbt.contains(BLEED_ID)) {
             nbt.putInt(BLEED_ID, 0);
@@ -27,7 +27,7 @@ public class BleedData {
         if (value < 0) {
             value = 0;
         } else {
-            value += newAmount;
+            value = Math.min(value + amount, max);
         }
         nbt.putInt(BLEED_ID, value);
         if (entity instanceof ServerPlayerEntity serverPlayer) {
@@ -43,8 +43,8 @@ public class BleedData {
         return target.getPersistentData().getInt(BLEED_ID);
     }
 
-    public static int reduceBleed(LivingEntity entity, int amount) {
-        return addBleed(entity, -amount);
+    public static int reduceBleed(LivingEntity entity, int amount, int max) {
+        return addBleed(entity, -amount, max);
     }
 
     public static int setBleed(LivingEntity entity, int amount) {

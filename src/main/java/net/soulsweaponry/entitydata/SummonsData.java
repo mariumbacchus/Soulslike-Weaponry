@@ -27,6 +27,9 @@ public class SummonsData {
     public static UUID[] removeSummonUUID(LivingEntity entity, UUID uuid, String listId) {
         NbtCompound nbt = entity.getPersistentData();
         NbtHelper.removeUUIDFromArr(nbt, uuid, listId);
+        if (entity instanceof ServerPlayerEntity player) {
+            syncUUIDArr(NbtHelper.getUUIDArr(nbt, listId), listId, player);
+        }
         return NbtHelper.getUUIDArr(nbt, listId);
     }
 

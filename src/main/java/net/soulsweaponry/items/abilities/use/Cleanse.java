@@ -34,7 +34,7 @@ public class Cleanse implements IAbility {
         }
         effects.forEach(user::removeStatusEffect);
         if (shouldDamage) {
-            world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+            world.playSound(user, user.getBlockPos(), SoundRegistry.RESTORE_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
             stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
             return TypedActionResult.success(user.getStackInHand(hand));
         } else {

@@ -29,8 +29,8 @@ public record Stormveil(int stormveilEffectBaseAmp, float bonusAmpPerLevelCeiled
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
-        if (!user.hasStatusEffect(EffectRegistry.COOLDOWN)) {
-            if (user.hasStatusEffect(EffectRegistry.STORMVEIL)) {
+        if (!user.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
+            if (user.hasStatusEffect(EffectRegistry.STORMVEIL.get())) {
                 boolean empowered = NbtHelper.getBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, false);
                 if (!empowered) {
                     NbtHelper.putBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, true);
@@ -42,8 +42,8 @@ public record Stormveil(int stormveilEffectBaseAmp, float bonusAmpPerLevelCeiled
                 NbtHelper.putBoolean(stack, NbtIds.STORMVEIL_SURGE_EMPOWERED, false);
                 stack.damage(1, user, WeaponUtil.getActiveHandSlot(user));
                 int amp = MathHelper.ceil( this.stormveilEffectBaseAmp + WeaponUtil.getUpgradeLevel(stack) * this.bonusAmpPerLevelCeiled);
-                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL, this.stormveilEffectDuration, amp));
-                world.playSound(null, user.getBlockPos(), SoundRegistry.STORMVEIL_TRIGGER, SoundCategory.PLAYERS, 1f, 1f);
+                user.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL.get(), this.stormveilEffectDuration, amp));
+                world.playSound(null, user.getBlockPos(), SoundRegistry.STORMVEIL_TRIGGER.get(), SoundCategory.PLAYERS, 1f, 1f);
                 return TypedActionResult.success(stack);
             }
         }

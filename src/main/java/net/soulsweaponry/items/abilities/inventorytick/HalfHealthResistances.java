@@ -32,7 +32,7 @@ public record HalfHealthResistances(
         int lvl = WeaponUtil.getUpgradeLevel(stack);
         if (entity instanceof PlayerEntity player && player.getHealth() <= player.getMaxHealth() * this.getThreshold(lvl)) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, (int) (this.resistanceAmp + this.resistanceAmpPerLvl * lvl), false, false));
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE, 40, (int) (this.magicResistAmp + this.magicResistAmpPerLvl * lvl), false, false));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE.get(), 40, (int) (this.magicResistAmp + this.magicResistAmpPerLvl * lvl), false, false));
         }
     }
 

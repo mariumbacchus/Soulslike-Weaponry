@@ -15,13 +15,13 @@ public class PostureData {
     public static final String MAX_POSTURE_ID = "max_posture";
 
     public static void addPostureLoss(LivingEntity entity, int amount) {
-        if (EntityPosture.isPostureDisabled(entity)
-                || entity.isDead()
-                || entity.getWorld().isClient) {
-            return;
+        if (!EntityPosture.isPostureDisabled(entity) && !entity.isDead() && !entity.getWorld().isClient) {
+            int newAmount = EntityPosture.getPostureLoss(entity, amount);
+            addPostureLoss(entity, newAmount, EntityPosture.getMaxPostureLoss(entity));
         }
+    }
 
-        int newAmount = EntityPosture.getPostureLoss(entity, amount);
+    private static void addPostureLoss(LivingEntity entity, int amount, int max) {
         NbtCompound nbt = entity.getPersistentData();
         if (!nbt.contains(POSTURE_ID)) {
             nbt.putInt(POSTURE_ID, 0);
@@ -30,11 +30,11 @@ public class PostureData {
         if (posture < 0) {
             posture = 0;
         } else {
-            posture += newAmount;
+            posture = Math.min(posture + amount, max);
         }
         nbt.putInt(POSTURE_ID, posture);
-        if (entity instanceof ServerPlayerEntity serverPlayer) {
-            syncData(posture, serverPlayer);
+        if (entity instanceof ServerPlayerEntity) {
+            syncData(posture, (ServerPlayerEntity) entity);
         }
     }
 
@@ -74,7 +74,7 @@ public class PostureData {
     }
 
     public static void updateMaxPosture(PlayerEntity entity, int amount) {
-        NbtCompound nbt = (entity).getPersistentData();
+        NbtCompound nbt = entity.getPersistentData();
         nbt.putInt(MAX_POSTURE_ID, amount);
         if (entity instanceof ServerPlayerEntity) {
             syncMaxPosture(amount, (ServerPlayerEntity) entity);

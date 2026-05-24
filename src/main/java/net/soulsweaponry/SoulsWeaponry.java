@@ -64,6 +64,8 @@ public class SoulsWeaponry {
         FluidRegistry.register(eventBus);
         FluidTypeRegistry.register(eventBus);
         BlockEntityRegistry.register(eventBus);
+        RecipeSerializerRegistry.register(eventBus);
+        DamageSourceRegistry.init();
 
         eventBus.addListener(this::setup);
 

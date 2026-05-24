@@ -52,7 +52,7 @@ public record Riptide(
                 }
                 if (this.calculatedFallDuration > 0) {
                     //NOTE: Ground Smash method is in parent class DetonateGroundItem
-                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, this.calculatedFallDuration, (int) (this.calculatedFallAmp + this.bonusAmpPerLvl * level)));
+                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), this.calculatedFallDuration, (int) (this.calculatedFallAmp + this.bonusAmpPerLvl * level)));
                 }
                 if (this.shouldApplyCooldown.test(world, user)) {
                     this.applyItemCooldown(stack.getItem(), playerEntity, Math.max(this.minCooldown, this.cooldown - level * this.reducedCooldownPerLvl));

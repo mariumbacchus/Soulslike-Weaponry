@@ -51,14 +51,14 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         if (remainingUseTicks > 0) {
             if (remainingUseTicks == this.getMaxUseTime(stack)) {
-                world.playSound(user, user.getBlockPos(), SoundRegistry.GATLING_GUN_STARTUP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(user, user.getBlockPos(), SoundRegistry.GATLING_GUN_STARTUP_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
             }
             if (remainingUseTicks < this.getMaxUseTime(stack) - 15 && remainingUseTicks % this.updateTick == 0 && user instanceof PlayerEntity playerEntity) {
                 ItemStack itemStack = this.canShoot(playerEntity, stack);
                 if (itemStack != null) {
                     this.shootProjectiles(world, playerEntity, stack);
                     this.spawnShotParticles(world, playerEntity, this.particleAmount + EnchantmentHelper.getLevel(EnchantRegistry.FAST_HANDS, stack), this.particleSpread);
-                    world.playSound(playerEntity, user.getBlockPos(), SoundRegistry.GATLING_GUN_BARRAGE_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                    world.playSound(playerEntity, user.getBlockPos(), SoundRegistry.GATLING_GUN_BARRAGE_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                     playerEntity.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
                 }
             }
@@ -86,7 +86,7 @@ public class GatlingSilverBullets extends ShootSilverBullet implements IChargeUs
     @Override
     public void stop(LivingEntity user, ItemStack stack, int ticksUsed) {
         IChargeUsageTicks.super.stop(user, stack, ticksUsed);
-        user.getWorld().playSound(null, user.getBlockPos(), SoundRegistry.GATLING_GUN_STOP_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+        user.getWorld().playSound(null, user.getBlockPos(), SoundRegistry.GATLING_GUN_STOP_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
     }
 
     @Override

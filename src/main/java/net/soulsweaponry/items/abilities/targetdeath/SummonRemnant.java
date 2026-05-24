@@ -27,12 +27,12 @@ public record SummonRemnant(boolean allowNonUndeadChance, double summonChance, i
             double chance = new Random().nextDouble();
             World world = attacker.getEntityWorld();
             if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < this.summonChance) {
-                Remnant entity = new Remnant(EntityRegistry.REMNANT, world);
+                Remnant entity = new Remnant(EntityRegistry.REMNANT.get(), world);
                 entity.setPos(target.getX(), target.getY() + .1F, target.getZ());
                 entity.setOwner((PlayerEntity) attacker);
                 world.spawnEntity(entity);
                 this.saveSummonUuid(attacker, entity.getUuid());
-                world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 if (!attacker.getWorld().isClient) {
                     ParticleHandler.particleOutburstMap(attacker.getWorld(), 50, target.getX(), target.getY(), target.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
                 }

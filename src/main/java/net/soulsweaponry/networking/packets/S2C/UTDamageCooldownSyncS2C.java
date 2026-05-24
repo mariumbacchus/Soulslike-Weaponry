@@ -14,26 +14,30 @@ public class UTDamageCooldownSyncS2C {
 
     private final float damage;
     private final int cooldown;
-    private final boolean shouldHeal;
+    private final float healMod;
+    private final double maxHealthDamage;
 
-    public UTDamageCooldownSyncS2C(float damage, int cooldown, boolean shouldHeal) {
+    public UTDamageCooldownSyncS2C(float damage, int cooldown, float healMod, double maxHealthDamage) {
         this.damage = damage;
         this.cooldown = cooldown;
-        this.shouldHeal = shouldHeal;
+        this.healMod = healMod;
+        this.maxHealthDamage = maxHealthDamage;
     }
 
     // Same as encode
     public void toBytes(PacketByteBuf buf) {
         buf.writeFloat(this.damage);
         buf.writeInt(this.cooldown);
-        buf.writeBoolean(this.shouldHeal);
+        buf.writeFloat(this.healMod);
+        buf.writeDouble(this.maxHealthDamage);
     }
 
     //Same as decode/fromBytes
     public UTDamageCooldownSyncS2C(PacketByteBuf buf) {
         this.damage = buf.readFloat();
         this.cooldown = buf.readInt();
-        this.shouldHeal = buf.readBoolean();
+        this.healMod = buf.readFloat();
+        this.maxHealthDamage = buf.readDouble();
     }
 
     public float getDamage() {
@@ -44,8 +48,12 @@ public class UTDamageCooldownSyncS2C {
         return this.cooldown;
     }
 
-    public boolean shouldHeal() {
-        return this.shouldHeal;
+    public float getHealMod() {
+        return healMod;
+    }
+
+    public double getMaxHealthDamage() {
+        return maxHealthDamage;
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
@@ -60,6 +68,7 @@ public class UTDamageCooldownSyncS2C {
     private void handlePacket(ClientWorld world, UTDamageCooldownSyncS2C packet) {
         ClientUmbralTrespassData.setDamage(packet.getDamage());
         ClientUmbralTrespassData.setCooldown(packet.getCooldown());
-        ClientUmbralTrespassData.setShouldHeal(packet.shouldHeal());
+        ClientUmbralTrespassData.setHealMod(packet.getHealMod());
+        ClientUmbralTrespassData.setMaxHealthDamage(packet.getMaxHealthDamage());
     }
 }

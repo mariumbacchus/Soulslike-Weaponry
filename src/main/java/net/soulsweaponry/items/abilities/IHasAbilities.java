@@ -512,7 +512,7 @@ public interface IHasAbilities extends IConfigDisable {
                 .map(IAbility::getProjectiles)
                 .filter(Objects::nonNull)
                 .findFirst()
-                .orElse((stack) -> stack.isOf(ItemRegistry.SILVER_BULLET));
+                .orElse((stack) -> stack.isOf(ItemRegistry.SILVER_BULLET.get()));
     }
 
     default void appendTooltipAbilities(ItemStack stack, List<Text> tooltip) {

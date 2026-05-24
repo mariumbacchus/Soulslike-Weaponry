@@ -23,7 +23,7 @@ import net.soulsweaponry.entity.projectile.DragonStaffProjectile;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.CustomDamageSource;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.util.TooltipAbilities;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -48,7 +48,7 @@ public class DragonStaff extends ModdedSword {
                     if (entity instanceof Tameable tameable && tameable.getOwnerUuid() != null && (tameable.getOwnerUuid().equals(user.getUuid()) || healTamed)) {
                         living.heal(ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
                     } else {
-                        living.damage(CustomDamageSource.create(world, CustomDamageSource.DRAGON_MIST, user), ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
+                        living.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.DRAGON_MIST, user), ConfigConstructor.dragon_staff_vigorous_fog_damage_and_heal);
                     }
                     living.addStatusEffect(new StatusEffectInstance(EffectRegistry.HALLOWED_DRAGON_MIST.get(), 100, (int) ConfigConstructor.dragon_staff_aura_strength));
                 }

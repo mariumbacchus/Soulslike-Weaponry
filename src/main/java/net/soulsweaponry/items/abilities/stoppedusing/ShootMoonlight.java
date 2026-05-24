@@ -38,7 +38,7 @@ public class ShootMoonlight implements IChargeToUse {
             if (ticksUsed >= 10) {
                 stack.damage(3, playerEntity, WeaponUtil.getActiveHandSlot(playerEntity));
                 this.shootMoonlightProjectiles(world, user, stack);
-                world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, user.getBlockPos(), SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
             }
         }
     }
@@ -52,7 +52,7 @@ public class ShootMoonlight implements IChargeToUse {
     }
 
     public EntityType<? extends MoonlightProjectile> getMoonlightType() {
-        return EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE;
+        return EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get();
     }
 
     public MoonlightProjectile createMoonlightProjectile(World world, LivingEntity user, ItemStack stack, int projectileNr, int lvl) {

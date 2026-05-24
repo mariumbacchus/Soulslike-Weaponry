@@ -7,7 +7,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.client.entitydata.ClientBleedData;
-import net.soulsweaponry.client.entitydata.ClientPostureData;
 
 import java.util.function.Supplier;
 

@@ -22,6 +22,7 @@ public class ParticleRegistry {
     public static final RegistryObject<DefaultParticleType> BLUE_FLAME = PARTICLES.register("blue_flame", () -> new DefaultParticleType(true));
     public static final RegistryObject<DefaultParticleType> SOUL_SPARK = PARTICLES.register("soul_spark", () -> new DefaultParticleType(true));
     public static final RegistryObject<DefaultParticleType> ECHO_SMOKE = PARTICLES.register("echo_smoke", () -> new DefaultParticleType(true));
+    public static final RegistryObject<DefaultParticleType> ECHO_SWEEP_ATTACK = PARTICLES.register("echo_sweep_attack", () -> new DefaultParticleType(true));
 
     public static void register(IEventBus bus) {
         PARTICLES.register(bus);

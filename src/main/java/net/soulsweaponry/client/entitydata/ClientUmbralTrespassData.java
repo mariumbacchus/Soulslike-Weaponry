@@ -5,7 +5,8 @@ public class ClientUmbralTrespassData {
     private static boolean shouldDamageRiding;
     private static float damage;
     private static int cooldown;
-    private static boolean shouldHeal;
+    private static float healMod;
+    private static double maxHealthDamage;
 
     public static void setShouldDamageRiding(boolean bl) {
         shouldDamageRiding = bl;
@@ -19,8 +20,12 @@ public class ClientUmbralTrespassData {
         cooldown = amount;
     }
 
-    public static void setShouldHeal(boolean bl) {
-        shouldHeal = bl;
+    public static void setHealMod(float healMod) {
+        ClientUmbralTrespassData.healMod = healMod;
+    }
+
+    public static void setMaxHealthDamage(double maxHealthDamage) {
+        ClientUmbralTrespassData.maxHealthDamage = maxHealthDamage;
     }
 
     public static boolean shouldDamageRiding() {
@@ -35,7 +40,11 @@ public class ClientUmbralTrespassData {
         return cooldown;
     }
 
-    public static boolean shouldHeal() {
-        return shouldHeal;
+    public static float getHealMod() {
+        return healMod;
+    }
+
+    public static double getMaxHealthDamage() {
+        return maxHealthDamage;
     }
 }

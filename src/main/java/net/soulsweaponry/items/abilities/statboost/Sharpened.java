@@ -35,7 +35,7 @@ public record Sharpened(
             int duration = this.bleedDuration + this.bleedDurationPerLvl * lvl;
             int amp = (int) (this.bleedAmp + this.bleedAmpPerLvl * lvl);
             BleedData.addBleed(target, (int) (this.bleedPostHit + this.bonusBleedPerLvl * lvl));
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, duration, amp));
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), duration, amp));
             if (attacker instanceof PlayerEntity player) {
                 if (!this.isCoolingDown(player, stack)) {
                     this.reduceEmpowered(stack, player.getWorld(), attacker);

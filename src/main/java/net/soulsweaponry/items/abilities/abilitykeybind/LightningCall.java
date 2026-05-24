@@ -47,7 +47,7 @@ public record LightningCall(
             return;
         }
         stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
-        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL, 20, 0));
+        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.STORMVEIL.get(), 20, 0));
         int lvl = WeaponUtil.getUpgradeLevel(stack);
         int lightning = (int) (this.lightningAmount + this.bonusLightningPerLvl * lvl);
         for (Entity nearbyEntity : nearbyEntities) {

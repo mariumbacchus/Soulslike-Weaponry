@@ -70,7 +70,7 @@ public class VeilOfFireAbility extends DawnbreakerExplosion implements IKeybindA
             int duration = (int) (this.veilOfFireDuration + this.veilOfFireBonusDurationPerLvl * lvl);
             int amp = (int) (this.veilOfFireAmp + this.veilOfFireBonusAmpPerLvl * lvl);
             this.dawnbreakerEvent(world, player, player, stack);
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE, duration, amp));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE.get(), duration, amp));
             this.applyItemCooldown(stack.getItem(), player, this.getScaledCooldown(stack));
         }
         /*

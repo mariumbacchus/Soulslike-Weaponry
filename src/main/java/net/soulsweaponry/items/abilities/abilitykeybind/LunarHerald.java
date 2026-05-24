@@ -22,11 +22,11 @@ public record LunarHerald(
 
     @Override
     public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
-        if (!player.hasStatusEffect(EffectRegistry.MOON_HERALD)) {
+        if (!player.hasStatusEffect(EffectRegistry.MOON_HERALD.get())) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int duration = (int) (this.duration + this.bonusDurationPerLvl * lvl);
             int amp = (int) (this.amp + this.bonusAmpPerLvl * lvl);
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD, duration, amp));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.MOON_HERALD.get(), duration, amp));
             world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, SoundCategory.PLAYERS, 1f, 1f);
             stack.damage(1, player, p -> p.sendToolBreakStatus(hand == null ? player.getActiveHand() : hand));
         }

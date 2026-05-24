@@ -21,13 +21,13 @@ public record ApplyEchoEffect(
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (attacker instanceof PlayerEntity player && !this.isCoolingDown(player, stack) && !target.hasStatusEffect(EffectRegistry.ECHO)) {
+        if (attacker instanceof PlayerEntity player && !this.isCoolingDown(player, stack) && !target.hasStatusEffect(EffectRegistry.ECHO.get())) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int duration = (int) (this.duration + this.durationPerLvl * lvl);
             int amp = (int) (this.amp + this.ampPerLvl * lvl);
             float savedDamageMod = this.savedDamageMod + this.savedDamageAddedModPerLvl * lvl;
             EchoDamageData.setEchoDamageSavedMod(target, savedDamageMod);
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.ECHO, duration, amp));
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.ECHO.get(), duration, amp));
             this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
         }
     }

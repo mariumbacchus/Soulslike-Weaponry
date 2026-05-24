@@ -45,7 +45,7 @@ public record Sawblade(
                         world.playSound(null, user.getBlockPos(), SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, SoundCategory.PLAYERS, 1f, 1f);
                         target.takeKnockback(this.knockback, 0, 0);
                         BleedData.addBleed(target, (int) (this.bleed + this.bleedPerLvl * lvl));
-                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, duration, amp));
+                        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), duration, amp));
                     }
                 }
             }

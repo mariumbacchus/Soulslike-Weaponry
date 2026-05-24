@@ -5,59 +5,77 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.S2C.ParrySyncS2C;
 
 public class ParryData {
 
+    public static final String PARRY_TICKS_ID = "parry_ticks";
+    public static final String MAX_PARRY_TICKS_ID = "max_parry_ticks";
     public static final String PARRY_FRAMES_ID = "parry_frames";
-    public static final int MAX_PARRY_FRAMES = (int) ConfigConstructor.shield_parry_max_animation_frames;
 
-    public static int addParryFrames(PlayerEntity player, int amount) {
+    public static void addParryTicks(PlayerEntity player, int ticks) {
         NbtCompound nbt = player.getPersistentData();
-        if (!nbt.contains(PARRY_FRAMES_ID)) {
-            nbt.putInt(PARRY_FRAMES_ID, 0);
+        int maxTicks = getMaxParryTicks(player);
+        if (!nbt.contains(PARRY_TICKS_ID)) {
+            nbt.putInt(PARRY_TICKS_ID, 0);
         }
-        int frame = nbt.getInt(PARRY_FRAMES_ID);
-        if (frame >= MAX_PARRY_FRAMES) {
-            frame = 0;
+        int tick = nbt.getInt(PARRY_TICKS_ID);
+        if (tick >= maxTicks) {
+            tick = 0;
         } else {
-            frame += amount;
+            tick += ticks;
         }
-        nbt.putInt(PARRY_FRAMES_ID, frame);
-        if (player instanceof ServerPlayerEntity) {
-            syncFrames(frame, (ServerPlayerEntity) player);
-        }
-        return frame;
+        nbt.putInt(PARRY_TICKS_ID, tick);
+        syncTicks(tick, getParryFrames(player), maxTicks, (ServerPlayerEntity) player);
     }
 
-    public static int setParryFrames(PlayerEntity player, int amount) {
+    public static void setParryTicks(PlayerEntity player, int ticks, int frames, int maxTicks) {
         NbtCompound nbt = player.getPersistentData();
-        nbt.putInt(PARRY_FRAMES_ID, amount);
-        if (player instanceof ServerPlayerEntity) {
-            syncFrames(amount, (ServerPlayerEntity) player);
-        }
-        return amount;
+        nbt.putInt(PARRY_TICKS_ID, ticks);
+        nbt.putInt(PARRY_FRAMES_ID, frames);
+        nbt.putInt(MAX_PARRY_TICKS_ID, maxTicks);
+        syncTicks(ticks, frames, maxTicks, (ServerPlayerEntity) player);
     }
 
-    public static int getParryFrames(PlayerEntity player) {
-        if (!player.getPersistentData().contains(PARRY_FRAMES_ID)) {
-            player.getPersistentData().putInt(PARRY_FRAMES_ID, 0);
+    public static int getParryTicks(PlayerEntity entity) {
+        if (!entity.getPersistentData().contains(PARRY_TICKS_ID)) {
+            entity.getPersistentData().putInt(PARRY_TICKS_ID, 0);
         }
-        return player.getPersistentData().getInt(PARRY_FRAMES_ID);
+        return entity.getPersistentData().getInt(PARRY_TICKS_ID);
     }
 
     public static boolean successfulParry(PlayerEntity player, boolean checkIfCanBeParried, DamageSource source) {
+        int ticks = ParryData.getParryTicks(player);
         int frames = ParryData.getParryFrames(player);
         boolean bl = true;
         if (checkIfCanBeParried) {
             bl = !source.isIn(DamageTypeTags.BYPASSES_SHIELD);
         }
-        return frames >= 1 && frames <= ConfigConstructor.shield_parry_frames && bl;
+        return ticks >= 1 && ticks <= frames && bl;
     }
 
-    public static void syncFrames(int frames, ServerPlayerEntity player) {
-        ModMessages.sendToPlayer(new ParrySyncS2C(frames), player);
+    /**
+     * Actual frames the player can counter opponents.
+     */
+    public static int getParryFrames(PlayerEntity entity) {
+        if (!entity.getPersistentData().contains(PARRY_FRAMES_ID)) {
+            entity.getPersistentData().putInt(PARRY_FRAMES_ID, 0);
+        }
+        return entity.getPersistentData().getInt(PARRY_FRAMES_ID);
+    }
+
+    /**
+     * How long the parry animation will last.
+     */
+    public static int getMaxParryTicks(PlayerEntity entity) {
+        if (!entity.getPersistentData().contains(MAX_PARRY_TICKS_ID)) {
+            entity.getPersistentData().putInt(MAX_PARRY_TICKS_ID, 0);
+        }
+        return entity.getPersistentData().getInt(MAX_PARRY_TICKS_ID);
+    }
+
+    public static void syncTicks(int ticks, int frames, int maxTicks, ServerPlayerEntity player) {
+        ModMessages.sendToPlayer(new ParrySyncS2C(ticks, frames, maxTicks), player);
     }
 }

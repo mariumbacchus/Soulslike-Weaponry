@@ -45,7 +45,7 @@ public record Obliterate(
                         entity.addVelocity(0, this.yVelocity, 0);
                     }
                 }
-                world.playSound(null, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
                 ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
             }
         }

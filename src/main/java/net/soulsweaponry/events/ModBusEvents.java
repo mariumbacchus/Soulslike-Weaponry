@@ -31,6 +31,8 @@ public class ModBusEvents {
         event.add(EntityType.PLAYER, AttributeRegistry.BASE_POSTURE_INCREASE.get());
         event.add(EntityType.PLAYER, AttributeRegistry.BLEED_BUILDUP_RESISTANCE.get());
         event.add(EntityType.PLAYER, AttributeRegistry.BLEED_DAMAGE_RESISTANCE.get());
+        event.add(EntityType.PLAYER, AttributeRegistry.FROST_BUILDUP_RESISTANCE.get());
+        event.add(EntityType.PLAYER, AttributeRegistry.FROST_DAMAGE_RESISTANCE.get());
     }
 
     @SubscribeEvent

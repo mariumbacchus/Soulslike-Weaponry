@@ -29,7 +29,7 @@ public record BloodlustAbility(float selfDamage, int selfBleed, int bloodthirsty
         player.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.BLEED), this.selfDamage);
         BleedData.addBleed(player, this.selfBleed);
         stack.damage(1, player, WeaponUtil.getActiveHandSlot(player));
-        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY, this.bloodthirstyDuration, this.bloodthirstyAmp));
+        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY.get(), this.bloodthirstyDuration, this.bloodthirstyAmp));
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, this.strengthDuration, this.strengthAmp));
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, SoundCategory.PLAYERS, .75f, 1f);
     }

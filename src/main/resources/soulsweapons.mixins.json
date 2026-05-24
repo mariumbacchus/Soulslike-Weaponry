@@ -13,6 +13,7 @@
     "EnderDragonEntityMixin",
     "EntityMixin",
     "GlassBottleMixin",
+    "ItemAccessor",
     "ItemMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",

@@ -33,7 +33,7 @@ public record ShadowStep(float baseBonusDamage, float bonusDamagePerAmp, int sha
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         if (attacker instanceof PlayerEntity player && !this.isCoolingDown(player, stack)) {
             int lvl = WeaponUtil.getUpgradeLevel(stack);
-            attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.SHADOW_STEP, this.shadowStepTicks,
+            attacker.addStatusEffect(new StatusEffectInstance(EffectRegistry.SHADOW_STEP.get(), this.shadowStepTicks,
                     (int) (this.shadowStepBaseAmp + this.bonusAmpPerLvl * lvl)));
             this.applyItemCooldown(stack.getItem(), player,
                     Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
@@ -44,8 +44,8 @@ public record ShadowStep(float baseBonusDamage, float bonusDamagePerAmp, int sha
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         double damage = WeaponUtil.getBaseItemAttackDamage(stack);
         double attackSpeed = WeaponUtil.getBaseItemAttackSpeed(stack);
-        if (entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP)) {
-            int amp = living.getStatusEffect(EffectRegistry.SHADOW_STEP).getAmplifier();
+        if (entity instanceof LivingEntity living && living.hasStatusEffect(EffectRegistry.SHADOW_STEP.get())) {
+            int amp = living.getStatusEffect(EffectRegistry.SHADOW_STEP.get()).getAmplifier();
             damage += this.baseBonusDamage + this.bonusDamagePerAmp * amp;
         }
         WeaponUtil.modifyStackAttributes(stack, damage, attackSpeed);

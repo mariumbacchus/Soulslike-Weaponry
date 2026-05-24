@@ -29,7 +29,7 @@ public record UmbralTrespass(float baseDamage, float bonusDamagePerLvl, float bo
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
-        if (user.hasStatusEffect(EffectRegistry.COOLDOWN)) {
+        if (user.hasStatusEffect(EffectRegistry.COOLDOWN.get())) {
             this.notifyCooldown(user);
             return TypedActionResult.fail(stack);
         }
@@ -43,9 +43,9 @@ public record UmbralTrespass(float baseDamage, float bonusDamagePerLvl, float bo
                                     + this.bonusEnchantDamageModifier * EnchantmentHelper.getAttackDamage(stack, target.getGroup()),
                             Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl), this.healMod, this.maxHealthBonusDamage);
                     user.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, this.ticksBeforeDismount, 0));
-                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY, this.ticksBeforeDismount, 0));
+                    user.addStatusEffect(new StatusEffectInstance(EffectRegistry.GHOSTLY.get(), this.ticksBeforeDismount, 0));
                 }
-                world.playSound(null, user.getBlockPos(), SoundRegistry.UMBRAL_TRESPASS_EVENT, SoundCategory.PLAYERS, 0.8f, 1f);
+                world.playSound(null, user.getBlockPos(), SoundRegistry.UMBRAL_TRESPASS_EVENT.get(), SoundCategory.PLAYERS, 0.8f, 1f);
                 ParticleHandler.particleOutburstMap(world, 150, user.getX(), user.getEyeY(), user.getZ(), ParticleEvents.SOUL_FLAME_SMALL_OUTBURST_MAP, 1f);
                 return TypedActionResult.success(stack);
             }

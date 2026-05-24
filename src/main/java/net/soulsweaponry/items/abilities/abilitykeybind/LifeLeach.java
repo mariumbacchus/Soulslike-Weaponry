@@ -26,9 +26,9 @@ public record LifeLeach(
             int lvl = WeaponUtil.getUpgradeLevel(stack);
             int duration = (int) (this.duration + this.bonusDurationPerLvl * lvl);
             int amp = (int) (this.amp + this.bonusAmpPerLvl * lvl);
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH, duration, amp, false, false));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH.get(), duration, amp, false, false));
             this.applyItemCooldown(stack, player, Math.max(this.minCooldown, this.cooldown - lvl * this.reducedCooldownPerLvl));
-            world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
+            world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT.get(), SoundCategory.PLAYERS, 0.75f, 1f);
         }
     }
 

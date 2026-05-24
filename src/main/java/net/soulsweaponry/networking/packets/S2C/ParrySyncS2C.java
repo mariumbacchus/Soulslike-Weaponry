@@ -12,24 +12,40 @@ import java.util.function.Supplier;
 
 public class ParrySyncS2C {
 
+    private final int parryTicks;
     private final int parryFrames;
+    private final int maxParryTicks;
 
-    public ParrySyncS2C(int parryFrames) {
+    public ParrySyncS2C(int parryTicks, int parryFrames, int maxParryTicks) {
+        this.parryTicks = parryTicks;
         this.parryFrames = parryFrames;
+        this.maxParryTicks = maxParryTicks;
     }
 
     // Same as encode
     public void toBytes(PacketByteBuf buf) {
+        buf.writeInt(this.parryTicks);
         buf.writeInt(this.parryFrames);
+        buf.writeInt(this.maxParryTicks);
     }
 
     //Same as decode/fromBytes
     public ParrySyncS2C(PacketByteBuf buf) {
+        this.parryTicks = buf.readInt();
         this.parryFrames = buf.readInt();
+        this.maxParryTicks = buf.readInt();
+    }
+
+    public int getParryTicks() {
+        return parryTicks;
     }
 
     public int getParryFrames() {
-        return this.parryFrames;
+        return parryFrames;
+    }
+
+    public int getMaxParryTicks() {
+        return maxParryTicks;
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
@@ -42,7 +58,9 @@ public class ParrySyncS2C {
     }
 
     private void handlePacket(ClientWorld world, ParrySyncS2C packet) {
+        ClientParryData.setParryTicks(packet.getParryTicks());
         ClientParryData.setParryFrames(packet.getParryFrames());
+        ClientParryData.setMaxParryTicks(packet.getMaxParryTicks());
         //MinecraftClient.getInstance().player.getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, packet.getParryFrames());
     }
 }

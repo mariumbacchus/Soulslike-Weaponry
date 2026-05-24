@@ -72,10 +72,10 @@ public interface IDetonateGround {
      * @return whether the event was successful, i.e. had the effect, damage was from falling and the ground was detonated
      */
     static boolean triggerCalculateFall(LivingEntity entity, float fallDistance, DamageSource source) {
-        if (source.isOf(DamageTypes.FALL) && entity.hasStatusEffect(EffectRegistry.CALCULATED_FALL)) {
-            StatusEffectInstance effect = entity.getStatusEffect(EffectRegistry.CALCULATED_FALL);
+        if (source.isOf(DamageTypes.FALL) && entity.hasStatusEffect(EffectRegistry.CALCULATED_FALL.get())) {
+            StatusEffectInstance effect = entity.getStatusEffect(EffectRegistry.CALCULATED_FALL.get());
             DetonateGroundAbility ability = CometSpear.METEOR_STRIKE;
-            ItemStack stack = WeaponRegistry.COMET_SPEAR.getDefaultStack();
+            ItemStack stack = WeaponRegistry.COMET_SPEAR.get().getDefaultStack();
             for (Hand hand : Hand.values()) {
                 ItemStack itemStack = entity.getStackInHand(hand);
                 Optional<DetonateGroundAbility> op = IHasAbilities.getAbility(itemStack, DetonateGroundAbility.class);
@@ -86,9 +86,9 @@ public interface IDetonateGround {
                 }
             }
             ability.detonateGroundEffect(entity, effect.getAmplifier(), fallDistance, entity.getWorld(), stack);
-            entity.removeStatusEffect(EffectRegistry.CALCULATED_FALL);
+            entity.removeStatusEffect(EffectRegistry.CALCULATED_FALL.get());
             //Removes, then re-adds for half a second so that "dream_on" advancement may trigger
-            entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL, 10, 0));
+            entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.CALCULATED_FALL.get(), 10, 0));
             return true;
         }
         return false;

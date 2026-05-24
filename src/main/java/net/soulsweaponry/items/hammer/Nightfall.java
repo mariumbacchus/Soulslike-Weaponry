@@ -28,6 +28,7 @@ import net.soulsweaponry.items.ISummonAllies;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.*;
@@ -75,7 +76,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
                 float power = ConfigConstructor.nightfall_ability_damage;
                 for (Entity entity : entities) {
                     if (entity instanceof LivingEntity target) {
-                        entity.damage(CustomDamageSource.create(world, CustomDamageSource.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
+                        entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
                         entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
                         this.spawnRemnant(target, user);
                     }

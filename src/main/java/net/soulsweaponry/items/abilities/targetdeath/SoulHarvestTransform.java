@@ -1,6 +1,5 @@
 package net.soulsweaponry.items.abilities.targetdeath;
 
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalEntityTypeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -52,7 +51,7 @@ public class SoulHarvestTransform extends SoulHarvest {
 
     @Override
     public void handleKill(LivingEntity target, ItemStack stack) {
-        int amount = target.getType().isIn(ConventionalEntityTypeTags.BOSSES) ? 20 : 1;
+        int amount = target.getType().isIn(ModTags.Entities.BOSSES) ? 20 : 1;
         if (target.getType().isIn(ModTags.Entities.RANGED_MOBS) || target.getMainHandStack().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
             this.addAmount(stack, amount, NbtIds.BLUE_SOULS);
         } else {
@@ -68,7 +67,7 @@ public class SoulHarvestTransform extends SoulHarvest {
                     ParticleHandler.particleSphere(world, 1000, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleTypes.FLAME, 1f);
                     ParticleHandler.particleOutburstMap(world, 200, entity.getX(), entity.getY() + .1f, entity.getZ(), ParticleEvents.DAWNBREAKER_MAP, 1f);
                 }
-                world.playSound(null, entity.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 0.8f, 1f);
+                world.playSound(null, entity.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT.get(), SoundCategory.HOSTILE, 0.8f, 1f);
                 Item item = this.redWeapon.get();
                 if (this.getDominantType(stack).equals(SoulType.BLUE)) {
                     item = this.blueWeapon.get();

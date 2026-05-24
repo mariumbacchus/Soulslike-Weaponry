@@ -24,15 +24,15 @@ public record MoonveilHorizontal(int maxAge, float baseDamage, float bonusDamage
             if (ticksUsed >= 10) {
                 int lvl = WeaponUtil.getUpgradeLevel(stack);
                 MoonveilWave entity = new MoonveilWave(world, user, this.maxAge);
-                entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE);
+                entity.setAreaParticle(ParticleRegistry.MOONVEIL_PARTICLE.get());
                 entity.setAreaParticleCount((byte) 15);
                 entity.setDespawnParticleCount(40);
-                entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME);
+                entity.setDespawnParticle(ParticleRegistry.BLUE_FLAME.get());
                 entity.setPos(player.getX(), player.getEyeY() - 0.3f, player.getZ());
                 entity.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 1.0f, 1.0F);
                 entity.setDamage(this.baseDamage + this.bonusDamagePerLvl * lvl);
                 world.spawnEntity(entity);
-                world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_HORIZONTAL, SoundCategory.PLAYERS, 1f, 1f);
+                world.playSound(null, user.getBlockPos(), SoundRegistry.MOONVEIL_HORIZONTAL.get(), SoundCategory.PLAYERS, 1f, 1f);
                 stack.damage(3, player, WeaponUtil.getActiveHandSlot(player));
                 this.applyItemCooldown(stack.getItem(), player, Math.max(this.minCooldown, this.cooldown - this.reducedCooldownPerLvl * lvl));
             }

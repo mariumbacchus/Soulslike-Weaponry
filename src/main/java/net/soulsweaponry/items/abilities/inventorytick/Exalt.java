@@ -25,7 +25,7 @@ public record Exalt(float ampPerMissingHealthPercent, float bonusPerLvl, int max
             if (living.getHealth() < living.getMaxHealth()) {
                 int amp = this.getExaltAmplifier(living, stack);
                 boolean visible = amp > 2 + this.maxPerLvl * WeaponUtil.getUpgradeLevel(stack);
-                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.EXALTED, this.duration, amp, false, visible));
+                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.EXALTED.get(), this.duration, amp, false, visible));
             }
         }
     }

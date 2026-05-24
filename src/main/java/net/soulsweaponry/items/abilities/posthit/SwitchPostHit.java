@@ -72,7 +72,7 @@ public final class SwitchPostHit implements IAbility {
     @Override
     public void onMainHandEquip(PlayerEntity player, ItemStack stack) {
         this.selectRandomEffect(stack);
-        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.POTENCY, 140, 0));
+        player.addStatusEffect(new StatusEffectInstance(EffectRegistry.POTENCY.get(), 140, 0));
     }
 
     @Override
@@ -81,7 +81,7 @@ public final class SwitchPostHit implements IAbility {
         switch (this.getPostHitEffect(stack)) {
             case BLEED -> {
                 BleedData.addBleed(target, this.baseBleed);
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED, this.bleedDuration, this.bleedAmp));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLEED.get(), this.bleedDuration, this.bleedAmp));
             }
             case POISON -> {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, this.poisonDuration, this.poisonAmp));
@@ -97,7 +97,7 @@ public final class SwitchPostHit implements IAbility {
             case FREEZE -> {
                 FrostData.setFrostSource(target, attacker);
                 FrostData.addFrost(target, this.baseFreeze);
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, this.freezeDuration, this.freezeAmp));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), this.freezeDuration, this.freezeAmp));
             }
             case FIRE -> {
                 target.setOnFireFor((int) Math.floor(this.fireTicks / 20f));
@@ -108,8 +108,8 @@ public final class SwitchPostHit implements IAbility {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, this.crippleDuration, this.weakAmp));
             }
             case DECAY -> {
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY, this.decayDuration, this.decayAmp));
-                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, this.blightDuration, this.blightAmp));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DECAY.get(), this.decayDuration, this.decayAmp));
+                target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT.get(), this.blightDuration, this.blightAmp));
             }
             case MAGIC_DAMAGE -> {
                 this.magicDamageAbility.postHit(stack, target, attacker);

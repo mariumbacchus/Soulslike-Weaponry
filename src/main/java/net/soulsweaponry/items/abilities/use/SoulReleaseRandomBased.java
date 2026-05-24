@@ -54,7 +54,7 @@ public record SoulReleaseRandomBased(
                 if (!user.isCreative()) {
                     this.addAmount(stack, -5);
                 }
-                world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.PLAYERS, 0.75f, 1f);
+                world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 0.75f, 1f);
                 ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
                 return TypedActionResult.success(stack, true);
             }

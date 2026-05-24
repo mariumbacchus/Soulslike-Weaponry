@@ -53,7 +53,7 @@ public interface ICooldownItem {
      */
     default void applyEffectCooldown(PlayerEntity player, int cooldown, boolean showParticles) {
         if (!player.isCreative()) {
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN, cooldown, 0, false, showParticles));
+            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.COOLDOWN.get(), cooldown, 0, false, showParticles));
         }
     }
 
@@ -74,6 +74,6 @@ public interface ICooldownItem {
     }
 
     default boolean hasCooldownEffect(PlayerEntity user) {
-        return user.hasStatusEffect(EffectRegistry.COOLDOWN);
+        return user.hasStatusEffect(EffectRegistry.COOLDOWN.get());
     }
 }

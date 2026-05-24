@@ -127,8 +127,8 @@ public record ShootRandomProjectile(
         PROJECTILES.add(new LuckChosenObject<>(EntityType.SNOWBALL, WeaponUtil.LuckType.BAD));
         PROJECTILES.add(new LuckChosenObject<>(EntityType.WITHER_SKULL, WeaponUtil.LuckType.BAD));
         PROJECTILES.add(new LuckChosenObject<>(EntityType.FIREBALL, WeaponUtil.LuckType.NEUTRAL));
-        PROJECTILES.add(new LuckChosenObject<>(EntityRegistry.GROWING_FIREBALL_ENTITY, WeaponUtil.LuckType.NEUTRAL));
-        PROJECTILES.add(new LuckChosenObject<>(EntityRegistry.DRAGON_STAFF_PROJECTILE, WeaponUtil.LuckType.NEUTRAL));
-        PROJECTILES.add(new LuckChosenObject<>(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE, WeaponUtil.LuckType.GOOD));
+        PROJECTILES.add(new LuckChosenObject<>(EntityRegistry.GROWING_FIREBALL_ENTITY.get(), WeaponUtil.LuckType.NEUTRAL));
+        PROJECTILES.add(new LuckChosenObject<>(EntityRegistry.DRAGON_STAFF_PROJECTILE.get(), WeaponUtil.LuckType.NEUTRAL));
+        PROJECTILES.add(new LuckChosenObject<>(EntityRegistry.WITHERED_WABBAJACK_PROJECTILE.get(), WeaponUtil.LuckType.GOOD));
     }
 }

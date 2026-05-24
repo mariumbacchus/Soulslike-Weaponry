@@ -22,20 +22,20 @@ public class EffectRegistry {
     public static final DeferredRegister<StatusEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, SoulsWeaponry.ModId);
     public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, SoulsWeaponry.ModId);
 
-    public static final RegistryObject<StatusEffect> DECAY = EFFECTS.register("decay", Decay::new);
-    public static final RegistryObject<StatusEffect> FEAR = EFFECTS.register("fear", Fear::new);
-    public static final RegistryObject<StatusEffect> FREEZING = EFFECTS.register("freezing", Freezing::new);
     public static final RegistryObject<StatusEffect> HALLOWED_DRAGON_MIST = EFFECTS.register("hallowed_dragon_mist", HallowedDragonMist::new);
-    public static final RegistryObject<StatusEffect> LIFE_LEACH = EFFECTS.register("life_leach", LifeLeach::new);
-    public static final RegistryObject<StatusEffect> POSTURE_BREAK = EFFECTS.register("posture_break", PostureBreak::new);
-    public static final RegistryObject<StatusEffect> RETRIBUTION = EFFECTS.register("retribution", () -> new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xc76700));
-    public static final RegistryObject<StatusEffect> VEIL_OF_FIRE = EFFECTS.register("veil_of_fire", VeilOfFire::new);
     public static final RegistryObject<StatusEffect> BLOODTHIRSTY = EFFECTS.register("bloodthirsty", Bloodthirsty::new);
+    public static final RegistryObject<StatusEffect> POSTURE_BREAK = EFFECTS.register("posture_break", PostureBreak::new);
+    public static final RegistryObject<StatusEffect> LIFE_LEACH = EFFECTS.register("life_leach", LifeLeach::new);
+    public static final RegistryObject<StatusEffect> RETRIBUTION = EFFECTS.register("retribution", () -> new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xc76700));
+    public static final RegistryObject<StatusEffect> FEAR = EFFECTS.register("fear", Fear::new);
+    public static final RegistryObject<StatusEffect> DECAY = EFFECTS.register("decay", Decay::new);
     public static final RegistryObject<StatusEffect> MAGIC_RESISTANCE = EFFECTS.register("magic_resistance", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x80ffff));
     public static final RegistryObject<StatusEffect> MOON_HERALD = EFFECTS.register("moon_herald", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x03e8fc));
+    public static final RegistryObject<StatusEffect> FREEZING = EFFECTS.register("freezing", Freezing::new);
     public static final RegistryObject<StatusEffect> DISABLE_HEAL = EFFECTS.register("disable_heal", () -> new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0xfc9d9d));
     public static final RegistryObject<StatusEffect> BLEED = EFFECTS.register("bleed", Bleed::new);
     public static final RegistryObject<StatusEffect> CALCULATED_FALL = EFFECTS.register("calculated_fall", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xffffff));
+    public static final RegistryObject<StatusEffect> VEIL_OF_FIRE = EFFECTS.register("veil_of_fire", VeilOfFire::new);
     public static final RegistryObject<StatusEffect> BLIGHT = EFFECTS.register("blight", () -> new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x73013c));
     public static final RegistryObject<StatusEffect> SHADOW_STEP = EFFECTS.register("shadow_step", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x020e78).addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, "48403ce1-d9b3-4757-b1ef-9fbacff0ed37", 0.30000000298023224, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<StatusEffect> COOLDOWN = EFFECTS.register("cooldown", () -> new DefaultStatusEffect(StatusEffectCategory.HARMFUL, 0x525252));
@@ -44,6 +44,26 @@ public class EffectRegistry {
     public static final RegistryObject<StatusEffect> FROST_MOON = EFFECTS.register("frost_moon", FrostMoon::new);
     public static final RegistryObject<StatusEffect> BLADE_DANCE = EFFECTS.register("blade_dance", BladeDance::new);
     public static final RegistryObject<StatusEffect> STORMVEIL = EFFECTS.register("stormveil", Stormveil::new);
+    public static final RegistryObject<StatusEffect> POTENCY = EFFECTS.register("potency", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x200094));
+    public static final RegistryObject<StatusEffect> SOUL_OF_CINDER = EFFECTS.register("soul_of_cinder", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xcc3300)
+            .addAttributeModifier(
+                    EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                    "895bad0e-6ca8-40f5-8a83-a7c8ea83357f", 2.0,
+                    EntityAttributeModifier.Operation.ADDITION
+            )
+    );
+    public static final RegistryObject<StatusEffect> EXALTED = EFFECTS.register("exalted", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xff0000)
+            .addAttributeModifier(
+                    EntityAttributes.GENERIC_ATTACK_DAMAGE,
+                    "c49bff3d-6493-405c-aa6a-5533a973dfb1", 1.5f,
+                    EntityAttributeModifier.Operation.ADDITION
+            ).addAttributeModifier(
+                    EntityAttributes.GENERIC_ATTACK_SPEED,
+                    "f7b8619e-5c30-45ec-9da9-1e4f30fd88eb", 0.1F,
+                    EntityAttributeModifier.Operation.MULTIPLY_TOTAL
+            )
+    );
+    public static final RegistryObject<StatusEffect> ECHO = EFFECTS.register("echo", Echo::new);
 
     public static final RegistryObject<Potion> WARDING = POTIONS.register("warding", () -> new Potion(new StatusEffectInstance(MAGIC_RESISTANCE.get(), 4000, 0)));
     public static final RegistryObject<Potion> STRONG_WARDING = POTIONS.register("strong_warding", () -> new Potion(new StatusEffectInstance(MAGIC_RESISTANCE.get(), 2000, 1)));
