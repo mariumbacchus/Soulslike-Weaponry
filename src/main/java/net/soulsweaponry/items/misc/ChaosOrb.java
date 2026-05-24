@@ -1,4 +1,4 @@
-package net.soulsweaponry.items;
+package net.soulsweaponry.items.misc;
 
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
+import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,7 @@ public class ChaosOrb extends Item implements IConfigDisable {
         if (!world.isClient) {
             ChaosOrbEntity orb = new ChaosOrbEntity(EntityRegistry.CHAOS_ORB_ENTITY.get(), world);
             orb.setPosition(user.getX(), user.getEyeY(), user.getZ());
-            world.emitGameEvent(user, GameEvent.PROJECTILE_SHOOT, orb.getBlockPos());
+            world.emitGameEvent(GameEvent.PROJECTILE_SHOOT, orb.getPos(), GameEvent.Emitter.of(user));
             world.spawnEntity(orb);
             world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_EYE_LAUNCH, SoundCategory.NEUTRAL, 0.5f, 0.4f / (world.getRandom().nextFloat() * 0.4f + 0.8f));
             if (!user.getAbilities().creativeMode) {

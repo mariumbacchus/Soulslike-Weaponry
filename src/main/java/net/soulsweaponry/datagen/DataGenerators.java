@@ -5,6 +5,7 @@ import net.minecraft.data.DataOutput;
 import net.minecraft.data.server.loottable.LootTableProvider;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -17,6 +18,8 @@ import net.soulsweaponry.datagen.loot_tables.BossLootTables;
 import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTables;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 import net.soulsweaponry.datagen.tags.EntityTagsProvider;
+import net.soulsweaponry.datagen.tags.ModItemTagsProvider;
+import net.soulsweaponry.datagen.tags.ModBlockTagsProvider;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenProvider;
 
 import java.util.Collections;
@@ -48,6 +51,10 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new ForgeAdvancementProvider(output, event.getLookupProvider(), event.getExistingFileHelper(),
                 List.of(new AdvancementsProvider())
         ));
+
+        BlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookupProvider, fileHelper);
+        generator.addProvider(event.includeServer(), blockTagsProvider);
+        generator.addProvider(event.includeServer(), new ModItemTagsProvider(output, lookupProvider, blockTagsProvider.getTagLookupFuture(), fileHelper));
 
         generator.addProvider(event.includeServer(), new ModWorldGenProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new DamageSourceProvider(output, lookupProvider));

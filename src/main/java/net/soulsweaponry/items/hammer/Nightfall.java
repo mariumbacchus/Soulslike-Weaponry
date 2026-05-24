@@ -1,49 +1,34 @@
 package net.soulsweaponry.items.hammer;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.entitydata.SummonsData;
-import net.soulsweaponry.items.ISummonAllies;
 import net.soulsweaponry.items.UltraHeavyWeapon;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.DamageSourceRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.*;
+import net.soulsweaponry.items.abilities.abilitykeybind.Unbreakable;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
+import net.soulsweaponry.items.abilities.stoppedusing.Obliterate;
+import net.soulsweaponry.items.abilities.targetdeath.SummonRemnant;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
-public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbility, ISummonAllies {
+public class Nightfall extends UltraHeavyWeapon implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+    private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
             ConfigConstructor.nightfall_calculated_fall_base_radius,
             ConfigConstructor.nightfall_calculated_fall_height_increase_radius_modifier,
             ConfigConstructor.nightfall_calculated_fall_target_launch_modifier,
@@ -53,86 +38,35 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
             ConfigConstructor.nightfall_calculated_fall_height_increase_damage_modifier,
             ConfigConstructor.nightfall_calculated_fall_heal_from_damage_modifier,
             Map.of(ParticleTypes.SOUL_FIRE_FLAME, new Vec3d(1, 6, 1)),
-            (target, user, fallDistance) -> this.spawnRemnant(target, user),
+            (target, user, fallDistance) -> {},
             (user, fallDistance, stack) -> {}
     );
+    private static final Unbreakable UNBREAKABLE = new Unbreakable(
+            (int) ConfigConstructor.nightfall_shield_min_cooldown, (int) ConfigConstructor.nightfall_shield_cooldown,
+            (int) ConfigConstructor.nightfall_shield_reduced_cooldown_per_level,
+            (int) ConfigConstructor.nightfall_shield_duration,
+            (int) ConfigConstructor.nightfall_shield_absorption_amp,
+            (int) ConfigConstructor.nightfall_shield_resistance_amp
+    );
+    private static final Obliterate OBLITERATE = new Obliterate(
+            ConfigConstructor.nightfall_obliterate_base_damage,
+            ConfigConstructor.nightfall_obliterate_bonus_damage_per_level,
+            ConfigConstructor.nightfall_obliterate_enchant_bonus_damage_modifier,
+            ConfigConstructor.nightfall_obliterate_y_velocity_launch_power,
+            ConfigConstructor.nightfall_obliterate_aoe_expansion,
+            ConfigConstructor.nightfall_obliterate_range_outwards,
+            (int) ConfigConstructor.nightfall_obliterate_min_cooldown,
+            (int) ConfigConstructor.nightfall_obliterate_cooldown,
+            (int) ConfigConstructor.nightfall_obliterate_reduced_cooldown_per_level
+    );
+    private static final SummonRemnant SUMMON_REMNANT = new SummonRemnant(
+            ConfigConstructor.nightfall_allow_non_undead_to_maybe_be_summoned, ConfigConstructor.nightfall_summon_chance,
+            (int) ConfigConstructor.nightfall_summoned_allies_cap, "NightfallSummons"
+    );
 
-    public Nightfall(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, true);
-        this.addTooltipAbility(TooltipAbilities.SUMMON_GHOST, TooltipAbilities.SHIELD, TooltipAbilities.OBLITERATE);
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
-            if (i >= 10) {
-                this.applyItemCooldown(player, this.getScaledCooldownSmash(stack));
-                stack.damage(3, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-                Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
-                BlockPos targetArea = new BlockPos((int)vecBlocksAway.x, (int) user.getY(), (int) vecBlocksAway.z);
-                Box aoe = new Box(targetArea).expand(3);
-                List<Entity> entities = world.getOtherEntities(player, aoe);
-                float power = ConfigConstructor.nightfall_ability_damage;
-                for (Entity entity : entities) {
-                    if (entity instanceof LivingEntity target) {
-                        entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, target.getGroup()));
-                        entity.setVelocity(entity.getVelocity().x, .5f, entity.getVelocity().z);
-                        this.spawnRemnant(target, user);
-                    }
-                }
-                world.playSound(player, targetArea, SoundRegistry.NIGHTFALL_BONK_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
-                if (!world.isClient) {
-                    ParticleHandler.particleOutburstMap(world, 150, targetArea.getX(), targetArea.getY() + .1f, targetArea.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.nightfall_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.nightfall_enchant_reduces_cooldown_ids;
-    }
-
-    protected int getScaledCooldownSmash(ItemStack stack) {
-        float base = ConfigConstructor.nightfall_smash_cooldown;
-        return (int) Math.max(ConfigConstructor.nightfall_smash_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 50);
-    }
-
-    protected int getScaledCooldownShield(ItemStack stack) {
-        float base = ConfigConstructor.nightfall_shield_cooldown;
-        return (int) Math.max(ConfigConstructor.nightfall_shield_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 100);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!this.isDisabled(stack)) {
-            this.spawnRemnant(target, attacker);
-        }
-        return super.postHit(stack, target, attacker);
-    }
-
-    public void spawnRemnant(LivingEntity target, LivingEntity attacker) {
-        if (target.isUndead() && target.isDead() && attacker instanceof PlayerEntity && !this.isDisabled(attacker.getMainHandStack())) {
-            double chance = new Random().nextDouble();
-            World world = attacker.getEntityWorld();
-            if (!world.isClient && this.canSummonEntity((ServerWorld) world, attacker, this.getSummonsListId()) && chance < ConfigConstructor.nightfall_summon_chance) {
-                Remnant entity = new Remnant(EntityRegistry.REMNANT.get(), world);
-                entity.setPos(target.getX(), target.getY() + .1F, target.getZ());
-                entity.setOwner((PlayerEntity) attacker);
-                world.spawnEntity(entity);
-                this.saveSummonUuid(attacker, entity.getUuid());
-                world.playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
-                if (!attacker.getWorld().isClient) {
-                    ParticleHandler.particleOutburstMap(attacker.getWorld(), 50, target.getX(), target.getY(), target.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
-                }
-            }
-        }
+    public Nightfall(ToolMaterial toolMaterial, Item.Settings settings) {
+        super(toolMaterial, (int) ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, (int) ConfigConstructor.nightfall_posture_loss, ATTRIBUTES);
+        this.addAbility(OBLITERATE, UNBREAKABLE, SUMMON_REMNANT);
     }
 
     @Override
@@ -146,59 +80,13 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private NightfallRenderer renderer = null;
-            // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getCustomRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new NightfallRenderer();
+            private final NightfallRenderer renderer = new NightfallRenderer();
 
-                return renderer;
+            @Override
+            public BuiltinModelItemRenderer getCustomRenderer() {
+                return this.renderer;
             }
         });
-    }
-
-    @Override
-    public Text[] getAdditionalTooltips() {
-        return new Text[] {
-                Text.translatable("tooltip.soulsweapons.nightfall.part_1").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.nightfall.part_2").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.nightfall.part_3").formatted(Formatting.DARK_GRAY)
-        };
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_nightfall;
-    }
-
-    @Override
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(this)) {
-            this.applyItemCooldown(player, this.getScaledCooldownShield(stack));
-            stack.damage(3, (LivingEntity)player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 200, (int) ConfigConstructor.nightfall_ability_shield_power));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 200, 0));
-            world.playSound(null, player.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
-        }
-    }
-
-    @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
-    }
-
-    @Override
-    public int getMaxSummons() {
-        return (int) ConfigConstructor.nightfall_summoned_allies_cap;
-    }
-
-    @Override
-    public String getSummonsListId() {
-        return "NightfallSummons";
-    }
-
-    @Override
-    public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
-        SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
     }
 
     @Override
@@ -207,12 +95,16 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem, IKeybindAbil
     }
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
-        return attributes;
+    public List<Text> getItemLore() {
+        return List.of(
+                Text.translatable("tooltip.soulsweapons.nightfall.part_1").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.nightfall.part_2").formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.nightfall.part_3").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.nightfall_posture_loss;
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_nightfall;
     }
 }

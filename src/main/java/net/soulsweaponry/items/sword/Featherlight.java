@@ -1,22 +1,20 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.UltraHeavyWeapon;
+import net.soulsweaponry.items.abilities.BasicInfoAbility;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.DetonateGroundAttributes;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
 
+import java.util.List;
 import java.util.Map;
 
 public class Featherlight extends UltraHeavyWeapon {
@@ -25,7 +23,7 @@ public class Featherlight extends UltraHeavyWeapon {
             new StatusEffectInstance(EffectRegistry.BLIGHT.get(), 200, 4),
             new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 2)
     };
-    private final DetonateGroundAttributes attributes = new DetonateGroundAttributes(
+    private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
             ConfigConstructor.featherlight_calculated_fall_base_radius,
             ConfigConstructor.featherlight_calculated_fall_height_increase_radius_modifier,
             ConfigConstructor.featherlight_calculated_fall_target_launch_modifier,
@@ -42,34 +40,15 @@ public class Featherlight extends UltraHeavyWeapon {
             },
             (user, fallDistance, stack) -> {}
     );
+    private static final BasicInfoAbility LIGHT_WEAPON = new BasicInfoAbility(List.of(
+            Text.translatable("tooltip.soulsweapons.featherlight").formatted(Formatting.LIGHT_PURPLE),
+            Text.translatable("tooltip.soulsweapons.featherlight.1").formatted(Formatting.GRAY)
+    ));
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ? 1f : ConfigConstructor.featherlight_attack_speed, settings, true);
-        this.addTooltipAbility(TooltipAbilities.FEATHERLIGHT);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_featherlight;
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return TypedActionResult.fail(user.getStackInHand(hand));
+        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ?
+                1f : ConfigConstructor.featherlight_attack_speed, settings, (int) ConfigConstructor.featherlight_posture_loss, ATTRIBUTES);
+        this.addAbility(LIGHT_WEAPON);
     }
 
     @Override
@@ -78,12 +57,7 @@ public class Featherlight extends UltraHeavyWeapon {
     }
 
     @Override
-    public DetonateGroundAttributes getDetonationAttributes() {
-        return attributes;
-    }
-
-    @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.featherlight_posture_loss;
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_featherlight;
     }
 }

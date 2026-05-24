@@ -1,51 +1,49 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.DawnbreakerRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.posthit.BlazingBlade;
+import net.soulsweaponry.items.abilities.posthit.DawnbreakerExplosion;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class Dawnbreaker extends AbstractDawnbreaker {
+public class Dawnbreaker extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final BlazingBlade BLAZING_BLADE = new BlazingBlade(
+            ConfigConstructor.dawnbreaker_post_hit_base_fire_seconds,
+            ConfigConstructor.dawnbreaker_post_hit_bonus_fire_seconds_per_level,
+            ConfigConstructor.dawnbreaker_post_hit_bonus_fire_seconds_per_fire_aspect_level
+    );
+    private static final DawnbreakerExplosion DAWNBREAKER_EXPLOSION = new DawnbreakerExplosion(
+            ConfigConstructor.dawnbreaker_explosion_affect_all_entities,
+            (int) ConfigConstructor.dawnbreaker_post_hit_base_retribution_amp,
+            ConfigConstructor.dawnbreaker_post_hit_bonus_retribution_amp_per_level,
+            ConfigConstructor.dawnbreaker_explosion_percent_chance_addition,
+            ConfigConstructor.dawnbreaker_explosion_range,
+            ConfigConstructor.dawnbreaker_explosion_base_fire_seconds,
+            ConfigConstructor.dawnbreaker_explosion_bonus_fire_seconds_per_level,
+            ConfigConstructor.dawnbreaker_explosion_base_damage,
+            ConfigConstructor.dawnbreaker_explosion_bonus_damage_per_level,
+            (int) ConfigConstructor.dawnbreaker_explosion_fear_duration
+    );
 
     public Dawnbreaker(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.dawnbreaker_damage, ConfigConstructor.dawnbreaker_attack_speed, settings);
+        this.addAbility(BLAZING_BLADE, DAWNBREAKER_EXPLOSION);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return TypedActionResult.fail(user.getStackInHand(hand));
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {}
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_dawnbreaker;
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -55,13 +53,11 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private DawnbreakerRenderer renderer = null;
-            // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getCustomRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new DawnbreakerRenderer();
+            private final DawnbreakerRenderer renderer = new DawnbreakerRenderer();
 
-                return renderer;
+            @Override
+            public BuiltinModelItemRenderer getCustomRenderer() {
+                return this.renderer;
             }
         });
     }
@@ -69,5 +65,10 @@ public class Dawnbreaker extends AbstractDawnbreaker {
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_dawnbreaker;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_dawnbreaker;
     }
 }

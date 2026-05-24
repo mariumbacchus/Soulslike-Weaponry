@@ -1,41 +1,40 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.ModdedSword;
-import net.soulsweaponry.mixin.LivingEntityInvoker;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.posthit.ApplyEchoEffect;
+import net.soulsweaponry.items.abilities.posthit.BlazingBlade;
+import net.soulsweaponry.items.abilities.posthit.BonusMagicDamage;
 
 public class LichBane extends ModdedSword {
 
+    private static final BlazingBlade BLAZING_BLADE = new BlazingBlade(
+            ConfigConstructor.lich_bane_post_hit_base_fire_seconds,
+            ConfigConstructor.lich_bane_post_hit_bonus_fire_seconds_per_level,
+            ConfigConstructor.lich_bane_post_hit_bonus_fire_seconds_per_fire_aspect_level
+    );
+    private static final BonusMagicDamage BONUS_MAGIC_DAMAGE = new BonusMagicDamage(
+            ConfigConstructor.lich_bane_spellblade_bonus_magic_damage,
+            ConfigConstructor.lich_bane_spellblade_bonus_magic_damage_per_level,
+            ConfigConstructor.lich_bane_spellblade_target_is_player_mod
+    );
+    private static final ApplyEchoEffect APPLY_ECHO_EFFECT = new ApplyEchoEffect(
+            (int) ConfigConstructor.lich_bane_echo_duration,
+            ConfigConstructor.lich_bane_echo_duration_per_level,
+            (int) ConfigConstructor.lich_bane_echo_amp,
+            ConfigConstructor.lich_bane_echo_amp_per_level,
+            ConfigConstructor.lich_bane_echo_saved_damage_taken_mod,
+            ConfigConstructor.lich_bane_echo_saved_damage_taken_bonus_added_to_mod_per_level,
+            (int) ConfigConstructor.lich_bane_echo_min_cooldown,
+            (int) ConfigConstructor.lich_bane_echo_cooldown,
+            (int) ConfigConstructor.lich_bane_echo_reduced_cooldown_per_level
+    );
+
     public LichBane(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.lich_bane_damage, ConfigConstructor.lich_bane_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.MAGIC_DAMAGE, TooltipAbilities.BLAZING_BLADE);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        if (target.getHealth() > target.getMaxHealth()/3 && target.getHealth() > this.getBonusMagicDamage(stack)) {
-            ((LivingEntityInvoker)target).invokeApplyDamage(attacker.getWorld().getDamageSources().magic(), this.getBonusMagicDamage(stack));
-        }
-        target.setOnFireFor(4 + 3 * EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack));
-        return super.postHit(stack, target, attacker);
-    }
-
-    public float getBonusMagicDamage(ItemStack stack) {
-        return ConfigConstructor.lich_bane_bonus_magic_damage + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, stack);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_lich_bane;
+        this.addAbility(BLAZING_BLADE, BONUS_MAGIC_DAMAGE, APPLY_ECHO_EFFECT);
     }
 
     @Override
@@ -44,12 +43,7 @@ public class LichBane extends ModdedSword {
     }
 
     @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_lich_bane;
     }
 }

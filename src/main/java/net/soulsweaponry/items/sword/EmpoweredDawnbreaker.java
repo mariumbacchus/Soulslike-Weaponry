@@ -1,95 +1,75 @@
 package net.soulsweaponry.items.sword;
 
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.item.EmpoweredDawnbreakerRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.noclip.DamagingWarmupEntityEvents;
-import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.abilitykeybind.VeilOfFireAbility;
+import net.soulsweaponry.items.abilities.posthit.BlazingBlade;
+import net.soulsweaponry.items.abilities.stoppedusing.ChaosStorm;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * Also known as "Genesis Fracture"
  */
-public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybindAbility {
+public class EmpoweredDawnbreaker extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final BlazingBlade BLAZING_BLADE = new BlazingBlade(
+            ConfigConstructor.empowered_dawnbreaker_post_hit_base_fire_seconds,
+            ConfigConstructor.empowered_dawnbreaker_post_hit_bonus_fire_seconds_per_level,
+            ConfigConstructor.empowered_dawnbreaker_post_hit_bonus_fire_seconds_per_fire_aspect_level
+    );
+    private static final VeilOfFireAbility VEIL_OF_FIRE_ABILITY = new VeilOfFireAbility(
+            ConfigConstructor.empowered_dawnbreaker_explosion_affect_all_entities,
+            (int) ConfigConstructor.empowered_dawnbreaker_post_hit_base_retribution_amp,
+            ConfigConstructor.empowered_dawnbreaker_post_hit_bonus_retribution_amp_per_level,
+            ConfigConstructor.empowered_dawnbreaker_explosion_percent_chance_addition,
+            ConfigConstructor.empowered_dawnbreaker_explosion_range,
+            ConfigConstructor.empowered_dawnbreaker_explosion_base_fire_seconds,
+            ConfigConstructor.empowered_dawnbreaker_explosion_bonus_fire_seconds_per_level,
+            ConfigConstructor.empowered_dawnbreaker_explosion_base_damage,
+            ConfigConstructor.empowered_dawnbreaker_explosion_bonus_damage_per_level,
+            (int) ConfigConstructor.empowered_dawnbreaker_explosion_fear_duration,
+
+            (int) ConfigConstructor.empowered_dawnbreaker_veil_of_fire_duration,
+            ConfigConstructor.empowered_dawnbreaker_veil_of_fire_bonus_duration_per_level,
+            (int) ConfigConstructor.empowered_dawnbreaker_veil_of_fire_amp,
+            ConfigConstructor.empowered_dawnbreaker_veil_of_fire_bonus_amp_per_level,
+            (int) ConfigConstructor.empowered_dawnbreaker_veil_of_fire_min_cooldown,
+            (int) ConfigConstructor.empowered_dawnbreaker_veil_of_fire_cooldown,
+            (int) ConfigConstructor.empowered_dawnbreaker_veil_of_fire_reduced_cooldown_per_level
+    );
+    private static final ChaosStorm CHAOS_STORM = new ChaosStorm(
+            ConfigConstructor.empowered_dawnbreaker_chaos_storm_damage,
+            ConfigConstructor.empowered_dawnbreaker_chaos_storm_bonus_damage_per_level,
+            (int) ConfigConstructor.empowered_dawnbreaker_chaos_storm_fire_resistance_duration,
+
+            (int) ConfigConstructor.empowered_dawnbreaker_chaos_storm_pillar_spawn_range,
+            (int) ConfigConstructor.empowered_dawnbreaker_chaos_storm_pillars_amount,
+            (int) ConfigConstructor.empowered_dawnbreaker_chaos_storm_bonus_pillars_per_level,
+            ConfigConstructor.empowered_dawnbreaker_chaos_storm_pillar_size,
+
+            (int) ConfigConstructor.empowered_dawnbreaker_chaos_storm_min_cooldown,
+            (int) ConfigConstructor.empowered_dawnbreaker_chaos_storm_cooldown,
+            (int) ConfigConstructor.empowered_dawnbreaker_chaos_storm_reduced_cooldown_per_level
+    );
 
     public EmpoweredDawnbreaker(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.empowered_dawnbreaker_damage, ConfigConstructor.empowered_dawnbreaker_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.CHAOS_STORM, TooltipAbilities.VEIL_OF_FIRE);
+        this.addAbility(BLAZING_BLADE, VEIL_OF_FIRE_ABILITY, CHAOS_STORM);
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(this)) {
-            int i = WeaponUtil.getChargeTime(stack, remainingUseTicks);
-            if (i >= 10) {
-                stack.damage(1, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(user.getActiveHand()));
-                this.summonFlamePillars(world, stack, user);
-                this.applyItemCooldown(player, this.getScaledCooldown(stack));
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 300, 0));
-            }
-        }
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.empowered_dawnbreaker_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.empowered_dawnbreaker_ability_enchant_reduces_cooldown_ids;
-    }
-
-    protected int getScaledCooldown(ItemStack stack) {
-        int base = (int) ConfigConstructor.empowered_dawnbreaker_ability_cooldown;
-        return (int) Math.max(ConfigConstructor.empowered_dawnbreaker_ability_min_cooldown, base - this.getReduceCooldownEnchantLevel(stack) * 40);
-    }
-
-    private void summonFlamePillars(World world, ItemStack stack, LivingEntity user) {
-        if (!world.isClient) {
-            int i = 0;
-            List<BlockPos> list = new ArrayList<>();
-            list.add(new BlockPos(0, 0, 0));
-            while (i < 20 + 3 * WeaponUtil.getEnchantDamageBonus(stack)) {
-                int x = user.getBlockX() + user.getRandom().nextInt(12) - 6;
-                int y = user.getBlockY();
-                int z = user.getBlockZ() + user.getRandom().nextInt(12) - 6;
-                BlockPos pos = new BlockPos(x, y, z);
-                for (BlockPos listPos : list) {
-                    if (listPos != pos) {
-                        FlamePillar pillar = new FlamePillar(world, user, 1.5f, i * 2, DamagingWarmupEntityEvents.SPAWN_FIRE);
-                        pillar.setDamage(ConfigConstructor.empowered_dawnbreaker_ability_damage + WeaponUtil.getEnchantDamageBonus(stack) * 2);
-                        pillar.setPos(x, y, z);
-                        world.spawnEntity(pillar);
-                        i++;
-                    }
-                }
-            }
-        }
-    }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -99,28 +79,13 @@ public class EmpoweredDawnbreaker extends AbstractDawnbreaker implements IKeybin
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private EmpoweredDawnbreakerRenderer renderer = null;
-            // Don't instantiate until ready. This prevents race conditions breaking things
-            @Override public BuiltinModelItemRenderer getCustomRenderer() {
-                if (this.renderer == null)
-                    this.renderer = new EmpoweredDawnbreakerRenderer();
+            private final EmpoweredDawnbreakerRenderer renderer = new EmpoweredDawnbreakerRenderer();
 
-                return renderer;
+            @Override
+            public BuiltinModelItemRenderer getCustomRenderer() {
+                return this.renderer;
             }
         });
-    }
-
-    @Override
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(this)) {
-            AbstractDawnbreaker.dawnbreakerEvent(player, player, stack);
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.VEIL_OF_FIRE.get(), 200, MathHelper.floor(WeaponUtil.getEnchantDamageBonus(stack)/2f)));
-            this.applyItemCooldown(player, this.getScaledCooldown(stack));
-        }
-    }
-
-    @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
     }
 
     @Override

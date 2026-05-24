@@ -1,108 +1,43 @@
 package net.soulsweaponry.items.gun;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.Cannonball;
-import net.soulsweaponry.entity.projectile.SilverBulletEntity;
-import net.soulsweaponry.registry.EnchantRegistry;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.abilities.use.ShootCannonball;
 
 public class HunterCannon extends GunItem {
 
+    private static final ShootCannonball SHOOT_SILVER_CANNONBALL = new ShootCannonball(
+            ConfigConstructor.hunter_cannon_damage,
+            ConfigConstructor.hunter_cannon_velocity,
+            ConfigConstructor.hunter_cannon_divergence,
+            (int) ConfigConstructor.hunter_cannon_posture_loss,
+            ConfigConstructor.hunter_cannon_posture_loss_per_enchant_level,
+            (int) ConfigConstructor.hunter_cannon_projectile_amount,
+            ConfigConstructor.hunter_cannon_projectile_amount_per_level,
+            (int) ConfigConstructor.hunter_cannon_bullets_needed_with_infinity,
+            (int) ConfigConstructor.hunter_cannon_bullets_needed,
+            (int) ConfigConstructor.hunter_cannon_level_to_unlock_infinity,
+            3, 120, 60,
+            (int) ConfigConstructor.hunter_cannon_min_cooldown,
+            (int) ConfigConstructor.hunter_cannon_cooldown,
+            (int) ConfigConstructor.hunter_cannon_reduced_cooldown_per_fast_hands,
+            50, 0.4f,
+            ConfigConstructor.hunter_cannon_launch_power,
+            ConfigConstructor.hunter_cannon_bullets_bypass_entity_invincibility_frames
+    );
+
     public HunterCannon(Settings settings) {
         super(settings);
-    }
-
-    @Override
-    public int getPostureLoss(ItemStack stack) {
-        int lvl = EnchantmentHelper.getLevel(EnchantRegistry.VISCERAL, stack);
-        return (int) (ConfigConstructor.hunter_cannon_posture_loss + lvl * ConfigConstructor.hunter_cannon_posture_loss_per_enchant_level);
-    }
-
-    @Override
-    public float getBulletDamage(ItemStack stack) {
-        return ConfigConstructor.hunter_cannon_damage;
-    }
-
-    @Override
-    public float getBulletVelocity(ItemStack stack) {
-        return ConfigConstructor.hunter_cannon_velocity;
-    }
-
-    @Override
-    public float getBulletDivergence(ItemStack stack) {
-        return ConfigConstructor.hunter_cannon_divergence;
-    }
-
-    @Override
-    public int getCooldown(ItemStack stack) {
-        return (int) (ConfigConstructor.hunter_cannon_cooldown - 4 * this.getReducedCooldown(stack) + EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) * 50);
-    }
-
-    @Override
-    public int getBulletsNeeded(ItemStack stack) {
-        return EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0 ? this.getBulletsNeededWithInfinity(stack) : (int) ConfigConstructor.hunter_cannon_bullets_needed;
-    }
-
-    @Override
-    public int getBulletsNeededWithInfinity(ItemStack stack) {
-        return (int) ConfigConstructor.hunter_cannon_bullets_needed_with_infinity;
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_hunter_cannon;
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if (this.isDisabled(user.getStackInHand(hand))) {
-            this.notifyDisabled(user);
-            return TypedActionResult.fail(user.getStackInHand(hand));
-        }
-        ItemStack stack = user.getStackInHand(hand);
-        ItemStack itemStack = this.canShoot(user, stack);
-        if (itemStack != null) {
-            this.spawnShotParticles(world, user, 50, 0.4f);
-            PersistentProjectileEntity entity = this.createSilverBulletEntity(world, user, stack);
-            world.spawnEntity(entity);
-            WeaponUtil.launchTarget(user, 2f, true);
-            this.postShot(world, user, stack);
-            return TypedActionResult.consume(stack);
-        }
-        return TypedActionResult.fail(stack);
-    }
-
-    @Override
-    public int getStackDamageToApply() {
-        return this.getBulletsNeeded(this.getDefaultStack());
-    }
-
-    @Override
-    public int getProjectileMaxAge() {
-        return 120;
-    }
-
-    @Override
-    public int getProjectileMaxAgeEthereal() {
-        return 60;
-    }
-
-    @Override
-    public SilverBulletEntity getModdedProjectile(World world, LivingEntity shooter, ItemStack gunStack) {
-        return new Cannonball(world, shooter);
+        this.addAbility(SHOOT_SILVER_CANNONBALL);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_hunter_cannon;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_hunter_cannon;
     }
 }

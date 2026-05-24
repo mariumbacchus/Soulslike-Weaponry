@@ -1,90 +1,37 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.mobs.FrostGiant;
-import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.entity.mobs.RimeSpectre;
-import net.soulsweaponry.entitydata.SummonsData;
-import net.soulsweaponry.items.ISummonAllies;
 import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
+import net.soulsweaponry.items.abilities.use.SoulReleaseRandomBased;
 import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
 
-import java.util.UUID;
+import java.util.List;
 
-public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
+public class Frostmourne extends SoulHarvestingItem {
+
+    private static final Permafrost PERMAFROST = new Permafrost(
+            (int) ConfigConstructor.frostmourne_frost_buildup_post_hit,
+            (int) ConfigConstructor.frostmourne_frost_post_hit_permafrost_base_duration,
+            (int) ConfigConstructor.frostmourne_frost_post_hit_permafrost_base_amplifier,
+            ConfigConstructor.frostmourne_frost_post_hit_permafrost_amp_per_level
+    );
+    private static final SoulReleaseRandomBased SOUL_RELEASE_RANDOM_BASED = new SoulReleaseRandomBased(
+            (int) ConfigConstructor.frostmourne_summoned_allies_cap,
+            "FrostmourneSummons",
+            List.of(EntityRegistry.FROST_GIANT.get(), EntityRegistry.RIME_SPECTRE.get()),
+            (int) ConfigConstructor.frostmourne_summon_soul_cost,
+            ConfigConstructor.frostmourne_summon_bonus_health_per_soul, ConfigConstructor.frostmourne_summon_bonus_health_per_soul_addition_per_level,
+            ConfigConstructor.frostmourne_summon_max_bonus_health,
+            ConfigConstructor.frostmourne_summon_bonus_attack_damage_per_soul, ConfigConstructor.frostmourne_summon_bonus_attack_damage_per_soul_addition_per_level,
+            ConfigConstructor.frostmourne_summon_max_bonus_attack_damage
+    );
 
     public Frostmourne(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.frostmourne_damage, ConfigConstructor.frostmourne_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.SOUL_RELEASE, TooltipAbilities.FREEZE, TooltipAbilities.PERMAFROST);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        int amp = MathHelper.ceil((float) WeaponUtil.getEnchantDamageBonus(stack)/2f);
-        target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 160, amp));
-        return super.postHit(stack, target, attacker);
-    }
-
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(user);
-            return TypedActionResult.fail(stack);
-        }
-        if (this.getSouls(stack) >= 5 && !world.isClient && this.canSummonEntity((ServerWorld) world, user, this.getSummonsListId())) {
-            Vec3d vecBlocksAway = user.getRotationVector().multiply(3).add(user.getPos());
-            BlockPos on = BlockPos.ofFloored(vecBlocksAway);
-            Remnant entity = user.getRandom().nextBoolean() ? new FrostGiant(EntityRegistry.FROST_GIANT.get(), world) : new RimeSpectre(EntityRegistry.RIME_SPECTRE.get(), world);
-            entity.setPos(vecBlocksAway.x, user.getY() + .1f, vecBlocksAway.z);
-            entity.setOwner(user);
-            if (entity instanceof RimeSpectre) entity.addVelocity(0, 0.1f, 0);
-            entity.setTamed(true);
-            world.spawnEntity(entity);
-            this.saveSummonUuid(user, entity.getUuid());
-            this.addAmount(stack, -5);
-            world.playSound(null, on, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.PLAYERS, 0.75f, 1f);
-            ParticleHandler.particleOutburstMap(world, 50, vecBlocksAway.getX(), vecBlocksAway.getY(), vecBlocksAway.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
-            return TypedActionResult.success(stack, true);
-        }
-        return TypedActionResult.fail(stack);
-    }
-
-    @Override
-    public int getMaxSummons() {
-        return (int) ConfigConstructor.frostmourne_summoned_allies_cap;
-    }
-
-    @Override
-    public String getSummonsListId() {
-        return "FrostmourneSummons";
-    }
-
-    @Override
-    public void saveSummonUuid(LivingEntity user, UUID summonUuid) {
-        SummonsData.addSummonUUID(user, summonUuid, this.getSummonsListId());
+        this.addAbility(PERMAFROST, SOUL_RELEASE_RANDOM_BASED);
     }
 
     @Override
@@ -95,15 +42,5 @@ public class Frostmourne extends SoulHarvestingItem implements ISummonAllies {
     @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_frostmourne;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
     }
 }

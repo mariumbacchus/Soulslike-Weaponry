@@ -1,124 +1,46 @@
 package net.soulsweaponry.items.sword;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.math.*;
-import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.noclip.HolyMoonlightPillar;
-import net.soulsweaponry.items.ChargeToUseItem;
-import net.soulsweaponry.items.IChargeNeeded;
-import net.soulsweaponry.items.IUndeadBonus;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.DamageSourceRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.bonusdamage.UndeadBonus;
+import net.soulsweaponry.items.abilities.predicate.EssenceNeeded;
+import net.soulsweaponry.items.abilities.posthit.GivesEssence;
+import net.soulsweaponry.items.abilities.stoppedusing.Moonfall;
 
-public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeNeeded, IUndeadBonus {
+public class HolyMoonlightGreatsword extends ModdedSword {
+
+    private static final UndeadBonus UNDEAD_BONUS = new UndeadBonus(
+            ConfigConstructor.holy_moonlight_greatsword_righteous_base_undead_bonus_damage,
+            ConfigConstructor.holy_moonlight_greatsword_righteous_undead_bonus_damage_per_level
+    );
+    private static final EssenceNeeded ESSENCE_NEEDED = new EssenceNeeded(
+            (int) ConfigConstructor.holy_moonlight_ability_essence_needed, true, (int) ConfigConstructor.holy_moonlight_ability_item_upgrade_needed_to_remove_essence_requirement
+    );
+    private static final GivesEssence GIVES_ESSENCE = new GivesEssence(
+            (int) ConfigConstructor.holy_moonlight_greatsword_essence_added_post_hit,
+            (int) ConfigConstructor.holy_moonlight_greatsword_bonus_essence_added_post_hit_per_level,
+            (int) ConfigConstructor.holy_moonlight_ability_essence_needed
+    );
+    private static final Moonfall MOONFALL = new Moonfall(
+            (int) ConfigConstructor.holy_moonlight_moonfall_ruptures_amount,
+            ConfigConstructor.holy_moonlight_moonfall_bonus_ruptures_amount_per_level,
+            ConfigConstructor.holy_moonlight_moonfall_rupture_radius,
+            ConfigConstructor.holy_moonlight_moonfall_damage,
+            ConfigConstructor.holy_moonlight_moonfall_bonus_damage_per_level,
+            ConfigConstructor.holy_moonlight_moonfall_bonus_damage_enchant_mod,
+            ConfigConstructor.holy_moonlight_moonfall_knockup,
+            ConfigConstructor.holy_moonlight_moonfall_bonus_knockup_per_level,
+            (int) ConfigConstructor.holy_moonlight_moonfall_min_cooldown,
+            (int) ConfigConstructor.holy_moonlight_moonfall_cooldown,
+            (int) ConfigConstructor.holy_moonlight_moonfall_reduced_cooldown_per_level,
+            (int) ConfigConstructor.holy_moonlight_moonfall_reduced_cooldown_per_moon_herald_effect_amp
+    );
 
     public HolyMoonlightGreatsword(ToolMaterial toolMaterial, Settings settings) {
         super(toolMaterial, (int) ConfigConstructor.holy_moonlight_greatsword_damage, ConfigConstructor.holy_moonlight_greatsword_attack_speed, settings);
-        this.addTooltipAbility(TooltipAbilities.NEED_CHARGE, TooltipAbilities.LUNAR_HERALD_NO_CHARGE, TooltipAbilities.CHARGE, TooltipAbilities.MOONFALL);
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (user instanceof PlayerEntity player) {
-            int chargeTime = WeaponUtil.getChargeTime(stack, remainingUseTicks);
-            if (chargeTime >= 10) {
-                int emp = player.hasStatusEffect(EffectRegistry.MOON_HERALD.get()) ? 20 * player.getStatusEffect(EffectRegistry.MOON_HERALD.get()).getAmplifier() : 0;
-                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.holy_moonlight_ability_min_cooldown, ConfigConstructor.holy_moonlight_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 30 - emp));
-                stack.damage(5, player, (p_220045_0_) -> p_220045_0_.sendToolBreakStatus(player.getActiveHand()));
-                int ruptures = (int) (ConfigConstructor.holy_moonlight_ruptures_amount + WeaponUtil.getEnchantDamageBonus(stack));
-                Vec3d vecBlocksAway = player.getRotationVector().multiply(3).add(player.getPos());
-                BlockPos targetArea = new BlockPos((int)vecBlocksAway.x, (int)user.getY(), (int)vecBlocksAway.z);
-                float power = ConfigConstructor.holy_moonlight_ability_damage;
-                for (Entity entity : world.getOtherEntities(player, new Box(targetArea).expand(3))) {
-                    if (entity instanceof LivingEntity) {
-                        entity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, player), power + 2 * EnchantmentHelper.getAttackDamage(stack, ((LivingEntity) entity).getGroup()));
-                        entity.addVelocity(0, this.getKnockup(stack), 0);
-                    }
-                }
-                if (!world.isClient) {
-                    WeaponUtil.doConsumerOnLine(world, user.getYaw() + 90, user.getPos(), 4, ruptures, 1.75f,
-                            (Vec3d position, Integer warmup, Float yaw) -> {
-                                HolyMoonlightPillar pillar = new HolyMoonlightPillar(EntityRegistry.HOLY_MOONLIGHT_PILLAR.get(), world);
-                                pillar.setOwner(user);
-                                pillar.setParticleAmountMod(1f);
-                                pillar.setRadius(1.85f);
-                                pillar.setDamage(this.getAbilityDamage());
-                                pillar.setKnockUp(this.getKnockup(stack));
-                                pillar.setWarmup(warmup);
-                                pillar.setPos(position.getX(), position.getY(), position.getZ());
-                                world.spawnEntity(pillar);
-                            }
-                    );
-                }
-                if (!player.isCreative()) {
-                    stack.getOrCreateNbt().putInt(IChargeNeeded.CHARGE, 0);
-                }
-                world.playSound(player, targetArea, SoundRegistry.MOONLIGHT_BIG_EVENT.get(), SoundCategory.PLAYERS, 1f, 1f);
-                world.playSound(player, targetArea, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.PLAYERS, 1f, 1f);
-                if (!world.isClient) {
-                    ParticleHandler.particleOutburstMap(player.getWorld(), 150, vecBlocksAway.getX(), user.getY(), vecBlocksAway.getZ(), ParticleEvents.MOONFALL_MAP, 1f);
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!this.isDisabled(stack)) this.addCharge(stack, this.getAddedCharge(stack));
-        return super.postHit(stack, target, attacker);
-    }
-
-    private float getAbilityDamage() {
-        return ConfigConstructor.holy_moonlight_ability_damage;
-    }
-
-    private float getKnockup(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_ability_knockup + (float)WeaponUtil.getEnchantDamageBonus(stack)/10;
-    }
-
-    @Override
-    public int getMaxCharge() {
-        return (int) ConfigConstructor.holy_moonlight_ability_charge_needed;
-    }
-
-    @Override
-    public int getAddedCharge(ItemStack stack) {
-        int base = (int) ConfigConstructor.holy_moonlight_greatsword_charge_added_post_hit;
-        return base + WeaponUtil.getEnchantDamageBonus(stack) * 2;
-    }
-
-    @Override
-    public boolean acceptsMoonHeraldEffect(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_ability_enchant_reduces_cooldown_ids;
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_holy_moonlight_greatsword;
+        this.addAbility(MOONFALL, UNDEAD_BONUS, ESSENCE_NEEDED, GIVES_ESSENCE);
     }
 
     @Override
@@ -127,12 +49,7 @@ public class HolyMoonlightGreatsword extends ChargeToUseItem implements IChargeN
     }
 
     @Override
-    public boolean isRighteous() {
-        return true;
-    }
-
-    @Override
-    public float getUndeadBonus(ItemStack stack) {
-        return ConfigConstructor.holy_moonlight_greatsword_righteous_undead_bonus_damage;
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_holy_moonlight_greatsword;
     }
 }

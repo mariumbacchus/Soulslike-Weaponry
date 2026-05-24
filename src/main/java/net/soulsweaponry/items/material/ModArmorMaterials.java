@@ -12,11 +12,13 @@ import net.soulsweaponry.registry.ItemRegistry;
 public enum ModArmorMaterials implements ArmorMaterial {
     //Boots are on the left
     CHAOS_ARMOR("chaos_armor", new int[]{500, 600, 700, 500}, ConfigConstructor.chaos_armor_armor_points, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.MOONSTONE.get(), Items.NETHERITE_INGOT)),
+    ENHANCED_CHAOS_ARMOR("enhanced_chaos_armor", new int[]{500, 600, 700, 500}, ConfigConstructor.enhanced_chaos_armor_armor_points, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.MOONSTONE.get(), Items.NETHERITE_INGOT)),
     CHAOS_SET("chaos_set", new int[]{400, 500, 600, 400}, ConfigConstructor.chaos_set_armor_points, 10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f, 0f, Ingredient.ofItems(ItemRegistry.MOONSTONE.get())),
     SOUL_INGOT("soul_ingot", new int[]{350, 410, 480, 380}, ConfigConstructor.soul_ingot_armor_points, 10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
     SOUL_ROBES("soul_robes", new int[]{150, 210, 280, 180}, ConfigConstructor.soul_robes_armor_points, 30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
     FORLORN_ARMOR("forlorn", new int[]{380, 440, 510, 320}, ConfigConstructor.forlorn_armor_armor_points, 8, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0f, 0f, Ingredient.ofItems(ItemRegistry.SOUL_INGOT.get())),
-    WITHERED_ARMOR("withered_armor", new int[]{500, 600, 700, 500}, ConfigConstructor.withered_armor_armor_points, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT.get(), Items.NETHERITE_INGOT));
+    WITHERED_ARMOR("withered_armor", new int[]{500, 600, 700, 500}, ConfigConstructor.withered_armor_armor_points, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT.get(), Items.NETHERITE_INGOT)),
+    ENHANCED_WITHERED_ARMOR("enhanced_withered_armor", new int[]{500, 600, 700, 500}, ConfigConstructor.enhanced_withered_armor_armor_points, 15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f, Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT.get(), Items.NETHERITE_INGOT));
 
     private final String name;
     private final int[] baseDurability;

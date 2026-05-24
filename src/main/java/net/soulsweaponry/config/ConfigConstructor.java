@@ -258,10 +258,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_soul_robes_set = false;
     @Entry public static boolean is_fireproof_forlorn_set = true;
 
-    @Entry(min=0) public static float withered_demon_spawnweight = 20;
-    @Entry(min=0) public static float moderatly_sized_chungus_spawnweight = 100;
     @Entry public static float chungus_monolith_radius = 32;
-    @Entry(min=0) public static float evil_forlorn_spawnweight = 15;
 
     @Entry public static boolean can_withered_demon_spawn = true;
     @Entry public static boolean can_moderatly_sized_chungus_spawn = true;

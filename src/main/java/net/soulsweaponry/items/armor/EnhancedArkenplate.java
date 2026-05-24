@@ -3,46 +3,85 @@ package net.soulsweaponry.items.armor;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
-import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
-import net.soulsweaponry.registry.ArmorRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.items.abilities.inventorytick.HalfHealthResistances;
+import net.soulsweaponry.items.abilities.predicate.Equipped;
+import net.soulsweaponry.items.abilities.userdamaged.Aftershock;
+import net.soulsweaponry.items.abilities.userdamaged.Mirror;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
-public class EnhancedArkenplate extends Arkenplate {
+public class EnhancedArkenplate extends ModdedArmor implements GeoItem {
 
-    public EnhancedArkenplate(ArmorMaterial material, Type type, Item.Settings settings) {
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final HalfHealthResistances UNBREAKABLE = new HalfHealthResistances(
+            ConfigConstructor.enhanced_arkenplate_unbreakable_activate_percent_threshold,
+            ConfigConstructor.enhanced_arkenplate_unbreakable_activate_bonus_percent_threshold_per_level,
+            (int) ConfigConstructor.enhanced_arkenplate_unbreakable_resistance_amp,
+            ConfigConstructor.enhanced_arkenplate_unbreakable_resistance_bonus_amp_per_level,
+            (int) ConfigConstructor.enhanced_arkenplate_unbreakable_magic_resistance_amp,
+            ConfigConstructor.enhanced_arkenplate_unbreakable_magic_resistance_bonus_amp_per_level
+    );
+    private static final Aftershock AFTERSHOCK = new Aftershock(
+            ConfigConstructor.enhanced_arkenplate_aftershock_activate_percent_health_threshold,
+            ConfigConstructor.enhanced_arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level,
+            ConfigConstructor.enhanced_arkenplate_aftershock_knockback,
+            ConfigConstructor.enhanced_arkenplate_aftershock_bonus_knockback_per_level,
+            ConfigConstructor.enhanced_arkenplate_aftershock_damage,
+            ConfigConstructor.enhanced_arkenplate_aftershock_bonus_damage_per_level,
+            0, // Armor items can't have sharpness or something like that
+            ConfigConstructor.enhanced_arkenplate_aftershock_expansion_radius,
+            (int) ConfigConstructor.enhanced_arkenplate_aftershock_min_cooldown,
+            (int) ConfigConstructor.enhanced_arkenplate_aftershock_cooldown,
+            (int) ConfigConstructor.enhanced_arkenplate_aftershock_reduced_cooldown_per_level,
+            List.of(
+                    new StatusEffectInstance(StatusEffects.WEAKNESS,
+                            (int) ConfigConstructor.enhanced_arkenplate_aftershock_weakness_duration,
+                            (int) ConfigConstructor.enhanced_arkenplate_aftershock_weakness_amp)
+            )
+    );
+    private static final Mirror MIRROR = new Mirror(
+            ConfigConstructor.enhanced_arkenplate_mirror_trigger_percent,
+            ConfigConstructor.enhanced_arkenplate_mirror_bonus_trigger_percent_per_level
+    );
+
+    public EnhancedArkenplate(ArmorMaterial material, Type type, Settings settings) {
         super(material, type, settings);
-        this.addTooltipAbility(TooltipAbilities.MIRROR);
+        this.addAbility(Equipped.CHEST_SLOT, UNBREAKABLE, AFTERSHOCK, MIRROR);
     }
 
     @Override
-    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
-        ItemStack stack = player.getEquippedStack(slot);
-        return !stack.isEmpty() && !this.isDisabled(stack) && stack.isOf(ArmorRegistry.ENHANCED_ARKENPLATE.get());
-    }
-
-    @Override
-    public Text[] getLoreTooltips() {
-        return new Text[]{
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.arkenplate_lore_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.arkenplate_lore_2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.arkenplate_lore_3").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.arkenplate_lore_4").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.arkenplate_lore_4").formatted(Formatting.DARK_GRAY)
+        );
+    }
+
+    @Override
+    public boolean isDisabled(ItemStack stack) {
+        return ConfigConstructor.disable_use_enhanced_arkenplate;
     }
 
     @Override
@@ -61,9 +100,38 @@ public class EnhancedArkenplate extends Arkenplate {
         });
     }
 
-    @Override
     public PlayState predicate(AnimationState<?> event) {
         event.getController().setAnimation(RawAnimation.begin().thenPlay("soul_spin"));
         return PlayState.CONTINUE;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.factory;
+    }
+
+    @Override
+    public float[] getBasePostureIncrease() {
+        return ConfigConstructor.enhanced_chaos_armor_base_posture_increase;
+    }
+
+    @Override
+    public float[] getPostureBuildupResistances() {
+        return ConfigConstructor.enhanced_chaos_armor_posture_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedBuildupResistances() {
+        return ConfigConstructor.enhanced_chaos_armor_bleed_buildup_resistances;
+    }
+
+    @Override
+    public float[] getBleedDamageResistances() {
+        return ConfigConstructor.enhanced_chaos_armor_bleed_damage_resistances;
     }
 }

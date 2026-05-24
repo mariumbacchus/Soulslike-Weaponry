@@ -1998,6 +1998,13 @@ M	src/main/resources/soulsweapons.mixins.json
 ------------------------------------------------------------
 Files that need something else, like an api upgrade:
 UpgradeUtil - RangedWeaponAPI doesnt exist for forge 1.20.1 so gotta make my own
+DarkmoonLongbow - same thing with RangedWeaponAPI lacking
+ModdedBow
+Galeforce
+KrakenSlayer
+SimonsBowblade
+KrakenSlayerCrossbow
+ModdedCrossbow
 
 ----------------------------------------------
 Files updated fully:
@@ -2007,6 +2014,8 @@ util folder
 config folder
 entitystats folder
 entitydata folder
+
+items folder (partly, some other implementations are missing for the items to work 100%)
 
 ItemAccessor
 ItemUpgradeRecipe
@@ -2023,3 +2032,9 @@ FrostSyncS2C
 ParryC2S
 ParrySyncS2C
 UT S2C
+
+WeaponRegistry
+ItemRegistry
+
+ModItemTagsProvider (ItemTagsProvider)
+ModBlockTagsProvider

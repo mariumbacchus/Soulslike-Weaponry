@@ -1,26 +1,26 @@
 package net.soulsweaponry.items.bow;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.projectile_damage.api.IProjectileWeapon;
+import net.minecraft.recipe.Ingredient;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entity.projectile.arrow.SilverArrow;
-import net.soulsweaponry.items.IPostureLossItem;
-import net.soulsweaponry.items.IUndeadBonus;
-import net.soulsweaponry.items.ModdedBow;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.customarrows.SilverArrows;
 
-public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureLossItem {
+import java.util.function.Supplier;
 
-    public SimonsBowblade(Settings settings) {
-        super(settings);
-        this.addTooltipAbility(TooltipAbilities.RIGHTEOUS, TooltipAbilities.PROJECTILE_POSTURE_LOSS, TooltipAbilities.SLOW_PULL);
-        ((IProjectileWeapon)this).setProjectileDamage(ConfigConstructor.simons_bowblade_projectile_damage);
-        ((IProjectileWeapon)this).setCustomLaunchVelocity((double) ConfigConstructor.simons_bowblade_max_velocity);
+public class SimonsBowblade extends ModdedBow {
+
+    private static final SilverArrows SILVER_ARROWS = new SilverArrows(
+            (int) ConfigConstructor.simons_bowblade_silver_arrows_posture_loss,
+            ConfigConstructor.simons_bowblade_silver_arrows_bonus_posture_loss_per_level,
+            ConfigConstructor.simons_bowblade_silver_arrows_base_undead_bonus_damage,
+            ConfigConstructor.simons_bowblade_silver_arrows_undead_bonus_damage_per_level
+    );
+
+    public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
+        super(settings, createConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks,
+                        ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_bonus_velocity),
+                repairIngredientSupplier);
+        this.addAbility(SILVER_ARROWS);
     }
 
     @Override
@@ -29,45 +29,7 @@ public class SimonsBowblade extends ModdedBow implements IUndeadBonus, IPostureL
     }
 
     @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return null;
-    }
-
-    @Override
-    public PersistentProjectileEntity getModifiedProjectile(World world, ItemStack bowStack, ItemStack arrowStack, LivingEntity shooter, PersistentProjectileEntity originalArrow) {
-        SilverArrow arrow = new SilverArrow(shooter, world);
-        arrow.setBonusUndeadDamage(this.getUndeadBonus(bowStack) + EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, bowStack));
-        arrow.setPostureLoss(this.getPostureLoss());
-        return arrow;
-    }
-
-    @Override
-    public int getPullTime() {
-        return (int) ConfigConstructor.simons_bowblade_pull_time_ticks;
-    }
-
-    @Override
     public boolean isFireproof() {
         return ConfigConstructor.is_fireproof_simons_bowblade;
-    }
-
-    @Override
-    public boolean isRighteous() {
-        return true;
-    }
-
-    @Override
-    public float getUndeadBonus(ItemStack stack) {
-        return ConfigConstructor.simons_bowblade_projectile_righteous_undead_bonus_damage;
-    }
-
-    @Override
-    public int getPostureLoss() {
-        return (int) ConfigConstructor.simons_bowblade_projectile_posture_loss;
     }
 }

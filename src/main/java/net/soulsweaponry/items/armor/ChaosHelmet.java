@@ -13,17 +13,13 @@ import net.soulsweaponry.config.ConfigConstructor;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ChaosHelmet extends ChaosCrown {
 
     public ChaosHelmet(ArmorMaterial material, Type type, Settings settings) {
         super(material, type, settings);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_chaos_helmet;
     }
 
     @Override
@@ -43,13 +39,13 @@ public class ChaosHelmet extends ChaosCrown {
     }
 
     @Override
-    public Text[] getLoreTooltips() {
-        return new Text[]{
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.chaos_helm_lore_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_helm_lore_2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_helm_lore_3").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_4").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.chaos_helm_lore_4").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     @Override
@@ -70,5 +66,10 @@ public class ChaosHelmet extends ChaosCrown {
     @Override
     public float[] getBleedDamageResistances() {
         return ConfigConstructor.chaos_armor_bleed_damage_resistances;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_chaos_helmet;
     }
 }

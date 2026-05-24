@@ -1,27 +1,20 @@
 package net.soulsweaponry.items.armor;
 
 import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.IKeybindAbility;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.abilitykeybind.LifeLeach;
+import net.soulsweaponry.items.abilities.immunity.EffectImmunity;
+import net.soulsweaponry.items.abilities.predicate.Equipped;
+import net.soulsweaponry.items.abilities.userdamaged.Infectious;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -33,49 +26,51 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
-public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility {
+public class Hallowheart extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private static final EffectImmunity WITHER_IMMUNITY = new EffectImmunity(Set.of(StatusEffects.WITHER));
+    private static final LifeLeach LIFE_LEACH = new LifeLeach(
+            (int) ConfigConstructor.withered_chest_unceasing_life_leach_duration,
+            ConfigConstructor.withered_chest_unceasing_life_leach_duration_per_level,
+            (int) ConfigConstructor.withered_chest_unceasing_life_leach_amplifier,
+            ConfigConstructor.withered_chest_unceasing_life_leach_amplifier_per_level,
+            (int) ConfigConstructor.withered_chest_unceasing_min_cooldown,
+            (int) ConfigConstructor.withered_chest_unceasing_cooldown,
+            (int) ConfigConstructor.withered_chest_unceasing_reduced_cooldown_per_level
+    );
+    private static final Infectious INFECTIOUS = new Infectious(
+            ConfigConstructor.withered_chest_infectious_damage,
+            ConfigConstructor.withered_chest_infectious_damage_per_level,
+            ConfigConstructor.withered_chest_infectious_knockback,
+            ConfigConstructor.withered_chest_infectious_knockback_per_level,
+            List.of(StatusEffects.WITHER),
+            (int) ConfigConstructor.withered_chest_infectious_apply_wither_duration,
+            ConfigConstructor.withered_chest_infectious_apply_wither_duration_per_level,
+            (int) ConfigConstructor.withered_chest_infectious_apply_wither_amplifier,
+            ConfigConstructor.withered_chest_infectious_apply_wither_amplifier_per_level,
+            (int) ConfigConstructor.withered_chest_infectious_apply_fire_seconds,
+            (int) ConfigConstructor.withered_chest_infectious_apply_fire_seconds_per_level
+    );
 
     public Hallowheart(ArmorMaterial material, Type type, Settings settings) {
         super(material, type, settings);
-        this.addTooltipAbility(TooltipAbilities.UNCEASING, TooltipAbilities.INFECTIOUS);
+        this.addAbility(Equipped.CHEST_SLOT, WITHER_IMMUNITY, LIFE_LEACH, INFECTIOUS);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.CHEST)) {
-            if (player.hasStatusEffect(StatusEffects.WITHER)) {
-                player.removeStatusEffect(StatusEffects.WITHER);
-            }
-        }
-    }
-
-    @Override
-    public void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player) {
-        if (!player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
-            player.addStatusEffect(new StatusEffectInstance(EffectRegistry.LIFE_LEACH.get(), (int) ConfigConstructor.withered_chest_life_leach_duration, (int) ConfigConstructor.withered_chest_life_leach_amplifier, false, false));
-            player.getItemCooldownManager().set(stack.getItem(), (int) Math.max(ConfigConstructor.withered_chest_ability_min_cooldown,
-                    ConfigConstructor.withered_chest_ability_cooldown - this.getReduceCooldownEnchantLevel(stack) * 60));
-            world.playSound(null, player.getBlockPos(), SoundRegistry.DEMON_BOSS_IDLE_EVENT.get(), SoundCategory.PLAYERS, 0.75f, 1f);
-        }
-    }
-
-    @Override
-    public Text[] getLoreTooltips() {
-        return new Text[] {
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.withered_chest.lore.1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.withered_chest.lore.2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.withered_chest.lore.3").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.withered_chest.lore.4").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.withered_chest.lore.4").formatted(Formatting.DARK_GRAY)
+        );
     }
-
-    @Override
-    public void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player) {}
 
     public PlayState soulsAnimation(AnimationState<?> event) {
         event.getController().setAnimation(RawAnimation.begin().thenPlay("no_souls"));
@@ -83,29 +78,8 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_hallowheart;
-    }
-
-    @Override
-    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
-        ItemStack stack = player.getEquippedStack(slot);
-        return !stack.isEmpty() && !this.isDisabled(stack) && stack.getItem() instanceof Hallowheart;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_hallowheart;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.withered_chest_ability_enchant_reduces_cooldown_ids;
     }
 
     @Override
@@ -116,9 +90,10 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
             @Override
             public @NotNull BipedEntityModel<LivingEntity> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, BipedEntityModel<?> original) {
                 if (this.renderer == null) {
-                    this.renderer = new WitheredArmorRenderer<>();
+                    this.renderer = new WitheredArmorRenderer<Hallowheart>();
                 }
                 this.renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
+
                 return this.renderer;
             }
         });
@@ -152,5 +127,10 @@ public class Hallowheart extends ModdedArmor implements GeoItem, IKeybindAbility
     @Override
     public float[] getBleedDamageResistances() {
         return ConfigConstructor.withered_armor_bleed_damage_resistances;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_hallowheart;
     }
 }

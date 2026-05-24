@@ -1,43 +1,37 @@
 package net.soulsweaponry.items.scythe;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.UmbralTrespassItem;
-import net.soulsweaponry.util.TooltipAbilities;
-import net.soulsweaponry.util.WeaponUtil;
+import net.soulsweaponry.items.ModdedSword;
+import net.soulsweaponry.items.abilities.targetdamaged.Omnivamp;
+import net.soulsweaponry.items.abilities.use.UmbralTrespass;
 
-public class DarkinScythePrime extends UmbralTrespassItem {
+public class DarkinScythePrime extends ModdedSword {
+
+    private static final UmbralTrespass UMBRAL_TRESPASS = new UmbralTrespass(
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_damage,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_damage_per_level,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_enchant_damage_modifier,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_min_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_reduced_cooldown_per_level,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_heal_modifier,
+            (int) ConfigConstructor.darkin_scythe_prime_umbral_trespass_ticks_before_dismount,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_bonus_percent_max_health_damage,
+            ConfigConstructor.darkin_scythe_prime_umbral_trespass_max_range_from_target
+    );
+    private static final Omnivamp OMNIVAMP = new Omnivamp(
+            ConfigConstructor.darkin_scythe_prime_omnivamp_base_heal,
+            ConfigConstructor.darkin_scythe_prime_omnivamp_bonus_heal_per_level,
+            (int) ConfigConstructor.darkin_scythe_prime_omnivamp_min_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_omnivamp_cooldown,
+            (int) ConfigConstructor.darkin_scythe_prime_omnivamp_reduced_cooldown_per_level
+    );
 
     public DarkinScythePrime(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) (ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage), ConfigConstructor.darkin_scythe_prime_attack_speed, settings, (int) ConfigConstructor.darkin_scythe_prime_ticks_before_dismount);
-        this.addTooltipAbility(TooltipAbilities.OMNIVAMP);
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (this.isDisabled(stack)) {
-            return super.postHit(stack, target, attacker);
-        }
-        if (attacker instanceof PlayerEntity player) {
-            if (!player.getItemCooldownManager().isCoolingDown(stack.getItem()) && !(player.getHealth() >= player.getMaxHealth())) {
-                this.applyItemCooldown(player, (int) Math.max(ConfigConstructor.lifesteal_item_min_cooldown, ConfigConstructor.lifesteal_item_cooldown - this.getReduceLifeStealCooldownEnchantLevel(stack) * 6));
-                float healing = ConfigConstructor.lifesteal_item_base_healing;
-                if (ConfigConstructor.lifesteal_item_heal_scales) {
-                    healing += MathHelper.ceil(((float) WeaponUtil.getEnchantDamageBonus(stack))/2);
-                }
-                attacker.heal(healing);
-            }
-        }
-        return super.postHit(stack, target, attacker);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_darkin_scythe_prime;
+        super(toolMaterial, (int) (ConfigConstructor.darkin_scythe_damage + ConfigConstructor.darkin_scythe_bonus_damage), ConfigConstructor.darkin_scythe_prime_attack_speed, settings);
+        this.addAbility(UMBRAL_TRESPASS, OMNIVAMP);
     }
 
     @Override
@@ -46,28 +40,7 @@ public class DarkinScythePrime extends UmbralTrespassItem {
     }
 
     @Override
-    public float getAbilityDamage() {
-        return ConfigConstructor.darkin_scythe_prime_ability_damage;
-    }
-
-    @Override
-    public int getAbilityCooldown(ItemStack stack) {
-        return (int) Math.max(ConfigConstructor.darkin_scythe_prime_ability_min_cooldown, ConfigConstructor.darkin_scythe_prime_ability_cooldown
-                - this.getReduceCooldownEnchantLevel(stack) * 25);
-    }
-
-    @Override
-    public boolean shouldAbilityHeal() {
-        return true;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return ConfigConstructor.darkin_scythe_prime_ability_enchant_reduces_cooldown_ids;
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_darkin_scythe_prime;
     }
 }

@@ -13,9 +13,12 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
-import net.soulsweaponry.items.*;
+import net.soulsweaponry.datagen.tags.ModItemTagsProvider;
+import net.soulsweaponry.items.SoulHarvestingItem;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.items.material.ModToolMaterials;
-import net.soulsweaponry.items.potion.BloodVial;
+import net.soulsweaponry.items.misc.*;
 import net.soulsweaponry.util.RecipeHandler;
 
 import java.util.function.Supplier;
@@ -24,45 +27,46 @@ public class ItemRegistry {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SoulsWeaponry.ModId);
 
-    public static final RegistryObject<LoreItem> LORD_SOUL_RED = ITEMS.register("lord_soul_red", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 4, true));
-    public static final RegistryObject<LoreItem> LORD_SOUL_DARK = registerItem("lord_soul_dark", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true));
-    public static final RegistryObject<LoreItem> LORD_SOUL_VOID = registerItem("lord_soul_void",() -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true));
-    public static final RegistryObject<LoreItem> LORD_SOUL_ROSE = registerItem("lord_soul_rose",() -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true));
-    public static final RegistryObject<LoreItem> LORD_SOUL_PURPLE = registerItem("lord_soul_purple", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true));
-    public static final RegistryObject<LoreItem> LORD_SOUL_WHITE = registerItem("lord_soul_white", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true));
-    public static final RegistryObject<LoreItem> LORD_SOUL_DAY_STALKER = registerItem("lord_soul_day_stalker", () ->new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 2, true));
-    public static final RegistryObject<LoreItem> LORD_SOUL_NIGHT_PROWLER = registerItem("lord_soul_night_prowler",() -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3, true));
+    public static final RegistryObject<LoreItem> LORD_SOUL_RED = ITEMS.register("lord_soul_red", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 4));
+    public static final RegistryObject<LoreItem> LORD_SOUL_DARK = registerItem("lord_soul_dark", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
+    public static final RegistryObject<LoreItem> LORD_SOUL_VOID = registerItem("lord_soul_void",() -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
+    public static final RegistryObject<LoreItem> LORD_SOUL_ROSE = registerItem("lord_soul_rose",() -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
+    public static final RegistryObject<LoreItem> LORD_SOUL_PURPLE = registerItem("lord_soul_purple", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
+    public static final RegistryObject<LoreItem> LORD_SOUL_WHITE = registerItem("lord_soul_white", () -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
+    public static final RegistryObject<LoreItem> LORD_SOUL_DAY_STALKER = registerItem("lord_soul_day_stalker", () ->new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 2));
+    public static final RegistryObject<LoreItem> LORD_SOUL_NIGHT_PROWLER = registerItem("lord_soul_night_prowler",() -> new LoreItem(new Item.Settings().rarity(Rarity.EPIC).fireproof(), 3));
     public static final RegistryObject<Item> LOST_SOUL = registerItem("lost_soul", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE), 5));
     public static final RegistryObject<Item> MOONSTONE = registerItem("moonstone", () -> new Item(new Item.Settings()));
-    public static final RegistryObject<Item> CHUNGUS_EMERALD = registerItem("chungus_emerald", () -> new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true, false));
+    public static final RegistryObject<Item> CHUNGUS_EMERALD = registerItem("chungus_emerald", () -> new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 1, true));
     public static final RegistryObject<Item> DEMON_HEART = registerItem("demon_heart", () -> new LoreItem(new Item.Settings().food(new FoodComponent.Builder()
             .hunger(4).saturationModifier(6f).meat().alwaysEdible()
             .effect(() -> new StatusEffectInstance(StatusEffects.STRENGTH, 150, 0), 1)
             .effect(() -> new StatusEffectInstance(EffectRegistry.BLOODTHIRSTY.get(), 150, 0), 10)
             .effect(() -> new StatusEffectInstance(StatusEffects.NAUSEA, 400, 0), 1).build()), 3));
     public static final RegistryObject<Item> MOLTEN_DEMON_HEART= registerItem("molten_demon_heart", () -> new Item(new Item.Settings()));
-    public static final RegistryObject<Item> DEMON_CHUNK = registerItem("demon_chunk",() -> new LoreItem(new Item.Settings(), 1, true, false));
+    public static final RegistryObject<Item> DEMON_CHUNK = registerItem("demon_chunk",() -> new LoreItem(new Item.Settings(), 1, true));
     public static final RegistryObject<Item> CRIMSON_INGOT = registerItem("crimson_ingot",() -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> SOUL_INGOT = registerItem("soul_ingot", () -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> SILVER_BULLET = registerGunItem("silver_bullet", () -> new Item(new Item.Settings().maxCount(20)));
     public static final RegistryObject<Item> BOSS_COMPASS = registerItem("boss_compass", () -> new BossCompass(new Item.Settings().rarity(Rarity.RARE)));
     public static final RegistryObject<Item> MOONSTONE_RING = registerItem("moonstone_ring", () -> new MoonstoneRing(new Item.Settings().rarity(Rarity.EPIC).maxDamage(25)));
-    public static final RegistryObject<Item> SHARD_OF_UNCERTAINTY = registerItem("shard_of_uncertainty", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 1, true, true));
+    public static final RegistryObject<Item> SHARD_OF_UNCERTAINTY = registerItem("shard_of_uncertainty", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 1, true));
     public static final RegistryObject<Item> VERGLAS = registerItem("verglas", () -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> SKOFNUNG_STONE = registerItem("skofnung_stone", () -> new SkofnungStone(new Item.Settings().maxDamage(20)));
     public static final RegistryObject<Item> IRON_SKULL = registerItem("iron_skull", () -> new Item(new Item.Settings()));
+    public static final RegistryObject<Item> TWINKLING_TITANITE = registerItem("twinkling_titanite", () -> new Item(new Item.Settings().rarity(Rarity.RARE)));
 
-    public static final RegistryObject<Item> BLOOD_VIAL_RECIPE_PAGE = registerItem("blood_vial_recipe_page", () -> new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON), 12, true, true));
+    public static final RegistryObject<Item> BLOOD_VIAL_RECIPE_PAGE = registerItem("blood_vial_recipe_page", () -> new LoreItem(new Item.Settings().rarity(Rarity.UNCOMMON).fireproof(), 12, true));
 
     public static final RegistryObject<Item> MOONSTONE_SHOVEL = registerItem("moonstone_shovel",() -> new ShovelItem(ModToolMaterials.MOONSTONE_TOOL, 1.5f, -3.0f, new Item.Settings()));
-    public static final RegistryObject<Item> MOONSTONE_PICKAXE = registerItem("moonstone_pickaxe", () -> new ModTools.ModPickaxe(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new Item.Settings()));
-    public static final RegistryObject<Item> MOONSTONE_AXE = registerItem("moonstone_axe",() -> new ModTools.ModAxe(ModToolMaterials.MOONSTONE_TOOL, 5, -3.0f, new Item.Settings()));
-    public static final RegistryObject<Item> MOONSTONE_HOE = registerItem("moonstone_hoe",() -> new ModTools.ModHoe(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f, new Item.Settings()));
+    public static final RegistryObject<Item> MOONSTONE_PICKAXE = registerItem("moonstone_pickaxe", () -> new PickaxeItem(ModToolMaterials.MOONSTONE_TOOL, 1, -2.8f, new Item.Settings()));
+    public static final RegistryObject<Item> MOONSTONE_AXE = registerItem("moonstone_axe",() -> new AxeItem(ModToolMaterials.MOONSTONE_TOOL, 5, -3.0f, new Item.Settings()));
+    public static final RegistryObject<Item> MOONSTONE_HOE = registerItem("moonstone_hoe",() -> new HoeItem(ModToolMaterials.MOONSTONE_TOOL, -3, 0.0f, new Item.Settings()));
 
-    public static final RegistryObject<LoreItem> WITHERED_DEMON_HEART = registerItem("withered_demon_heart", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true));
-    public static final RegistryObject<LoreItem> ARKENSTONE = registerItem("arkenstone", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true));
-    public static final RegistryObject<LoreItem> ESSENCE_OF_EVENTIDE = registerItem("essence_of_eventide",() -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true, true));
-    public static final RegistryObject<LoreItem> ESSENCE_OF_LUMINESCENCE = registerItem("essence_of_luminescence", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 3, true));
+    public static final RegistryObject<LoreItem> WITHERED_DEMON_HEART = registerItem("withered_demon_heart", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4));
+    public static final RegistryObject<LoreItem> ARKENSTONE = registerItem("arkenstone", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4));
+    public static final RegistryObject<LoreItem> ESSENCE_OF_EVENTIDE = registerItem("essence_of_eventide",() -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 4, true));
+    public static final RegistryObject<LoreItem> ESSENCE_OF_LUMINESCENCE = registerItem("essence_of_luminescence", () -> new LoreItem(new Item.Settings().rarity(Rarity.RARE).fireproof(), 3));
     public static final RegistryObject<Item> CHAOS_ORB = registerItem("chaos_orb", () -> new ChaosOrb(new Item.Settings().rarity(Rarity.EPIC).fireproof()));
     public static final RegistryObject<Item> GLASS_VIAL = registerItem("glass_vial", () -> new Item(new Item.Settings()));
     public static final RegistryObject<Item> BLOOD_VIAL = registerItem("blood_vial", () -> new BloodVial(new Item.Settings().maxCount(20)));
@@ -77,6 +81,26 @@ public class ItemRegistry {
     public static <I extends Item> RegistryObject<I> registerItem(String id, Supplier<I> item) {
         RegistryObject<I> registered = ITEMS.register(id, item);
         SoulsWeaponry.ITEM_GROUP_LIST.add(registered);
+        if (DatagenUtil.isDatagenRunning()) {
+            if (item instanceof SwordItem) {
+                ModItemTagsProvider.SWORDS.add(item);
+            } else if (item instanceof AxeItem) {
+                ModItemTagsProvider.AXES.add(item);
+            } else if (item instanceof BowItem) {
+                ModItemTagsProvider.BOWS.add(item);
+            } else if (item instanceof CrossbowItem) {
+                ModItemTagsProvider.CROSSBOWS.add(item);
+            } else if (item instanceof ArmorItem) {
+                ModItemTagsProvider.ARMORS.add(item);
+            }
+
+            if (IHasAbilities.getAbility(item.get().getDefaultStack(), UltraHeavy.class).isPresent()) {
+                ModItemTagsProvider.HEAVY_WEAPONS.add(item);
+            }
+            if (item instanceof SoulHarvestingItem) {
+                ModItemTagsProvider.SOUL_HARVESTING_WEAPONS.add(item);
+            }
+        }
         return registered;
     }
 

@@ -1,30 +1,21 @@
 package net.soulsweaponry.items.armor;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TallPlantBlock;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.soulsweaponry.blocks.*;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.registry.BlockRegistry;
-import net.soulsweaponry.util.TooltipAbilities;
+import net.soulsweaponry.items.abilities.immunity.EffectImmunity;
+import net.soulsweaponry.items.abilities.inventorytick.CorruptGround;
+import net.soulsweaponry.items.abilities.predicate.Equipped;
+import net.soulsweaponry.registry.EffectRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -33,90 +24,40 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ChaosRobes extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private final HashMap<Block, WitheredBlock> turnableBlocks = new HashMap<>();
-    private final HashMap<Block, WitheredGrass> turnableGrass = new HashMap<>();
-    private final HashMap<Block, WitheredTallGrass> turnableTallPlant = new HashMap<>();
+    private static final EffectImmunity DECAY_IMMUNITY = new EffectImmunity(Set.of(EffectRegistry.DECAY.get()));
+    public static final CorruptGround CORRUPT_GROUND = new CorruptGround(
+            (int) ConfigConstructor.chaos_cape_corrupt_ground_range,
+            ConfigConstructor.chaos_cape_corrupt_ground_range_per_level,
+            ConfigConstructor.chaos_cape_corrupt_ground_status_effect_range,
+            ConfigConstructor.chaos_cape_corrupt_ground_status_effect_range_per_level,
+            List.of(
+                    new StatusEffectInstance(StatusEffects.WITHER,
+                            (int) ConfigConstructor.chaos_cape_corrupt_ground_status_effect_wither_duration,
+                            (int) ConfigConstructor.chaos_cape_corrupt_ground_status_effect_wither_amp
+                    )
+            )
+    );
 
     public ChaosRobes(ArmorMaterial material, Type type, Settings settings) {
         super(material, type, settings);
-        this.addTooltipAbility(TooltipAbilities.CORRUPT_GROUND);
-        this.turnableBlocks.put(Blocks.GRASS_BLOCK, BlockRegistry.WITHERED_GRASS_BLOCK.get());
-        this.turnableBlocks.put(Blocks.DIRT, BlockRegistry.WITHERED_DIRT.get());
-
-        this.turnableGrass.put(Blocks.GRASS, BlockRegistry.WITHERED_GRASS.get());
-        this.turnableGrass.put(Blocks.FERN, BlockRegistry.WITHERED_FERN.get());
-        this.turnableGrass.put(Blocks.SWEET_BERRY_BUSH, BlockRegistry.WITHERED_BERRY_BUSH.get());
-
-        this.turnableTallPlant.put(Blocks.TALL_GRASS, BlockRegistry.WITHERED_TALL_GRASS.get());
-        this.turnableTallPlant.put(Blocks.LARGE_FERN, BlockRegistry.WITHERED_LARGE_FERN.get());
+        this.addAbility(Equipped.CHEST_SLOT, DECAY_IMMUNITY, CORRUPT_GROUND);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        super.inventoryTick(stack, world, entity, slot, selected);
-        if (entity instanceof PlayerEntity player && this.isSlotActive(player, EquipmentSlot.CHEST)) {
-            if (ConfigConstructor.chaos_cape_wither_ground) {
-                this.turnBlocks(player, world, player.getBlockPos(), 0);
-            }
-            if (player.age % 40 == 0) {
-                for (LivingEntity target : world.getNonSpectatingEntities(LivingEntity.class, player.getBoundingBox().expand(3D))) {
-                    if (!(target instanceof PlayerEntity) && target != player) {
-                        target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 1));
-                    }
-                }
-            }
-        }
-    }
-
-    public void turnBlocks(LivingEntity entity, World world, BlockPos blockPos, int bonusRadius) {
-        if (!entity.isOnGround()) {
-            return;
-        }
-        int f = Math.min(16, 3 + bonusRadius);
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
-        for (BlockPos blockPos2 : BlockPos.iterate(blockPos.add(-f, -1, -f), blockPos.add(f, -1, f))) {
-            if (!world.getBlockState(blockPos2).isAir()) {
-                for (Block turnBlock : this.turnableBlocks.keySet()) {
-                    if (world.getBlockState(blockPos2).getBlock() == turnBlock) {
-                        BlockState blockState = this.turnableBlocks.get(turnBlock).getDefaultState();
-                        if (!blockPos2.isWithinDistance(entity.getPos(), f)) continue;
-                        mutable.set(blockPos2.getX(), blockPos2.getY() + 1, blockPos2.getZ());
-                        BlockState blockState2 = world.getBlockState(mutable);
-                        if (blockState2.isIn(BlockTags.SMALL_FLOWERS)) world.setBlockState(mutable, BlockRegistry.HYDRANGEA.get().getDefaultState().with(WitheredFlower.CANNOT_TURN, false));
-                        for (Block turnGrass : this.turnableGrass.keySet()) if (blockState2.isOf(turnGrass)) world.setBlockState(mutable, this.turnableGrass.get(turnGrass).getDefaultState());
-                        for (Block turnTallPlant : this.turnableTallPlant.keySet()) if (blockState2.isOf(turnTallPlant)) {
-                            world.removeBlock(mutable, false);
-                            TallPlantBlock.placeAt(world, this.turnableTallPlant.get(turnTallPlant).getDefaultState(), mutable, 2);
-                        }
-                        if (blockState2.isIn(BlockTags.TALL_FLOWERS)) {
-                            world.removeBlock(mutable, false);
-                            TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.get().getDefaultState().with(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
-                        }
-                        world.setBlockState(blockPos2, blockState);
-                        world.scheduleBlockTick(blockPos2, this.turnableBlocks.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));
-                    } else if (world.getBlockState(blockPos2).getBlock() == this.turnableBlocks.get(turnBlock)) {
-                        WitheredBlock block = (WitheredBlock) world.getBlockState(blockPos2).getBlock();
-                        block.resetAge(world.getBlockState(blockPos2), world, blockPos2);
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
-    public Text[] getLoreTooltips() {
-        return new Text[]{
+    public List<Text> getItemLore() {
+        return List.of(
                 Text.translatable("tooltip.soulsweapons.chaos_robes_lore_1").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_robes_lore_2").formatted(Formatting.DARK_GRAY),
                 Text.translatable("tooltip.soulsweapons.chaos_robes_lore_3").formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.chaos_robes_lore_4").formatted(Formatting.DARK_GRAY),
-        };
+                Text.translatable("tooltip.soulsweapons.chaos_robes_lore_4").formatted(Formatting.DARK_GRAY)
+        );
     }
 
     private PlayState predicate(AnimationState<?> event) {
@@ -125,29 +66,8 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     }
 
     @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_chaos_robes;
-    }
-
-    @Override
-    public boolean isSlotActive(PlayerEntity player, EquipmentSlot slot) {
-        ItemStack stack = player.getEquippedStack(slot);
-        return !stack.isEmpty() && !this.isDisabled(stack) && stack.getItem() instanceof ChaosRobes;
-    }
-
-    @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_chaos_robes;
-    }
-
-    @Override
-    public boolean canEnchantReduceCooldown(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public String[] getReduceCooldownEnchantIds(ItemStack stack) {
-        return new String[0];
     }
 
     @Override
@@ -194,5 +114,10 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     @Override
     public float[] getBasePostureIncrease() {
         return ConfigConstructor.chaos_set_base_posture_increase;
+    }
+
+    @Override
+    public boolean isFireproof() {
+        return ConfigConstructor.is_fireproof_chaos_robes;
     }
 }
