@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -341,8 +342,13 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                     for (int l = -3; l <= 3; ++l) {
                         for (int m = -3; m <= 3; ++m) {
                             for (int n = 0; n <= 8; ++n) {
-                                if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                    this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
+                                //Condition: not WITHER_IMMUNE Block
+                                BlockPos targetPos = new BlockPos(j + l, i + n, k + m);
+                                net.minecraft.block.BlockState targetState = this.getWorld().getBlockState(targetPos);
+                                if (!(targetState.getBlock() instanceof BlockWithEntity)
+                                        && targetState.getHardness(this.getWorld(), targetPos) >= 0.0F
+                                        && !targetState.isIn(BlockTags.WITHER_IMMUNE)) {
+                                    this.getWorld().breakBlock(targetPos, true);
                                 }
                             }
                         }
