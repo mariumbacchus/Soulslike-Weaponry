@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.mobs;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
@@ -24,21 +23,18 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.BossConfig;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -55,7 +51,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
     private int spawnTicks;
     private int phaseTransitionTicks;
     private final int phaseTransitionMaxTicks = 120;
-    private int blockBreakingCooldown;
     private final List<EntityType<?>> absorbedProjectileTypes = new ArrayList<>();
     private final List<Float> absorbedProjectileDamage = new ArrayList<>();
     public float prevBeamHeight;
@@ -197,9 +192,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.blockBreakingCooldown <= 0) {
-            this.blockBreakingCooldown = 20;
-        }
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
@@ -285,29 +277,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 this.bossBar.setColor(Color.BLUE);
             }
         }
-        
-        if (ConfigConstructor.can_bosses_break_blocks) {
-            int j;
-            int i;
-            int k;
-            if (this.blockBreakingCooldown > 0) {
-                --this.blockBreakingCooldown;
-                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
-                    i = MathHelper.floor(this.getY());
-                    j = MathHelper.floor(this.getX());
-                    k = MathHelper.floor(this.getZ());
-                    for (int l = -3; l <= 3; ++l) {
-                        for (int m = -3; m <= 3; ++m) {
-                            for (int n = 0; n <= 8; ++n) {
-                                if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                    this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        this.breakSurroundingBlocks();
     }
 
     @Override
