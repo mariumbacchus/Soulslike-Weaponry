@@ -27,15 +27,6 @@ public class DarkmoonLongbow extends ModdedBow {
 
     }
 
-    /* TODO ranged weapon api doenst exist for 1.20.1 forge so gotta make it myself
-    * public DarkmoonLongbow(Settings settings) {
-        super(settings);
-        this.addTooltipAbility( TooltipAbilities.SLOW_PULL, TooltipAbilities.MOONLIGHT_ARROW, TooltipAbilities.ARROW_STORM);
-        ((IProjectileWeapon)this).setProjectileDamage(ConfigConstructor.darkmoon_longbow_damage);
-        ((IProjectileWeapon)this).setCustomLaunchVelocity((double) ConfigConstructor.darkmoon_longbow_max_velocity);
-    }
-    * */
-
     @Override
     public boolean isDisabled(ItemStack stack) {
         return ConfigConstructor.disable_use_darkmoon_longbow;

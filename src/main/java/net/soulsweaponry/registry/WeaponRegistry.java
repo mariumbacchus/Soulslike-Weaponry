@@ -1,6 +1,7 @@
 package net.soulsweaponry.registry;
 
 import net.minecraft.item.*;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Rarity;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.config.ConfigConstructor;
@@ -109,7 +110,7 @@ public class WeaponRegistry {
         NIGHTFALL = ItemRegistry.registerLegendaryWeapon("nightfall", () -> new Nightfall(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_nightfall);
         COMET_SPEAR = ItemRegistry.registerLegendaryWeapon("comet_spear", () -> new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_comet_spear);
         LICH_BANE = ItemRegistry.registerLegendaryWeapon("lich_bane", () -> new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_lich_bane);
-        GALEFORCE = ItemRegistry.registerLegendaryWeapon("galeforce", () -> new Galeforce(new Item.Settings().maxDamage(1300).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_galeforce);
+        GALEFORCE = ItemRegistry.registerLegendaryWeapon("galeforce", () -> new Galeforce(new Item.Settings().maxDamage(1300).rarity(Rarity.EPIC), () -> Ingredient.ofItems(ItemRegistry.VERGLAS.get(), ItemRegistry.MOONSTONE.get())), ConfigConstructor.disable_recipe_galeforce);
         TRANSLUCENT_SWORD = ItemRegistry.registerWeaponItem("translucent_sword", () -> new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) ConfigConstructor.translucent_sword_damage, ConfigConstructor.translucent_sword_attack_speed, new Item.Settings().rarity(Rarity.RARE)), ConfigConstructor.disable_recipe_translucent_sword);
         TRANSLUCENT_GLAIVE = ItemRegistry.registerWeaponItem("translucent_glaive", () -> new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) ConfigConstructor.translucent_glaive_damage, ConfigConstructor.translucent_glaive_attack_speed, new Item.Settings().rarity(Rarity.RARE)), ConfigConstructor.disable_recipe_translucent_glaive);
         TRANSLUCENT_DOUBLE_GREATSWORD = ItemRegistry.registerWeaponItem("translucent_double_greatsword", () -> new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) ConfigConstructor.translucent_double_edged_greatsword_damage, ConfigConstructor.translucent_double_edged_greatsword_attack_speed, new Item.Settings().rarity(Rarity.RARE)), ConfigConstructor.disable_recipe_translucent_double_edged_greatsword);
@@ -137,15 +138,15 @@ public class WeaponRegistry {
         MASTER_SWORD = ItemRegistry.registerLegendaryWeapon("master_sword", () -> new MasterSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_master_sword);
         NIGHTS_EDGE_ITEM = ItemRegistry.registerLegendaryWeapon("nights_edge_item", () -> new NightsEdgeItem(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_nights_edge);
         EMPOWERED_DAWNBREAKER = ItemRegistry.registerLegendaryWeapon("empowered_dawnbreaker", () -> new EmpoweredDawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_empowered_dawnbreaker);
-        KRAKEN_SLAYER = ItemRegistry.registerWeaponItem("kraken_slayer", () -> new KrakenSlayer(new Item.Settings().maxDamage(1258).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_kraken_slayer_bow);
-        KRAKEN_SLAYER_CROSSBOW = ItemRegistry.registerLegendaryWeapon("kraken_slayer_crossbow", () -> new KrakenSlayerCrossbow(new Item.Settings().maxDamage(1258).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_kraken_slayer_crossbow);
-        DARKMOON_LONGBOW = ItemRegistry.registerLegendaryWeapon("darkmoon_longbow", () -> new DarkmoonLongbow(new Item.Settings().maxDamage(1400).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_darkmoon_longbow);
+        KRAKEN_SLAYER = ItemRegistry.registerWeaponItem("kraken_slayer", () -> new KrakenSlayer(new Item.Settings().maxDamage(1258).rarity(Rarity.EPIC), () -> Ingredient.ofItems(Items.GOLD_INGOT)), ConfigConstructor.disable_recipe_kraken_slayer_bow);
+        KRAKEN_SLAYER_CROSSBOW = ItemRegistry.registerLegendaryWeapon("kraken_slayer_crossbow", () -> new KrakenSlayerCrossbow(new Item.Settings().maxDamage(1258).rarity(Rarity.EPIC), () -> Ingredient.ofItems(Items.GOLD_INGOT)), ConfigConstructor.disable_recipe_kraken_slayer_crossbow);
+        DARKMOON_LONGBOW = ItemRegistry.registerLegendaryWeapon("darkmoon_longbow", () -> new DarkmoonLongbow(new Item.Settings().maxDamage(1400).rarity(Rarity.EPIC), () -> Ingredient.ofItems(Items.GOLD_INGOT)), ConfigConstructor.disable_recipe_darkmoon_longbow);
         CHUNGUS_STAFF = ItemRegistry.registerLegendaryWeapon("chungus_staff", () -> new ChungusStaff(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().maxDamage(1258).rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_chungus_staff);
         DARK_MOON_GREATSWORD = ItemRegistry.registerLegendaryWeapon("dark_moon_greatsword", () -> new DarkMoonGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_dark_moon_greatsword);
         GLAIVE_OF_HODIR = ItemRegistry.registerLegendaryWeapon("glaive_of_hodir", () -> new GlaiveOfHodir(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_glaive_of_hodir);
         EXCALIBUR = ItemRegistry.registerLegendaryWeapon("excalibur", () -> new Excalibur(ModToolMaterials.ECHO_SHARD, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_excalibur);
         MOONVEIL = ItemRegistry.registerLegendaryWeapon("moonveil", () -> new Moonveil(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_moonveil);
-        SIMONS_BOWBLADE = ItemRegistry.registerLegendaryWeapon("simons_bowblade", () -> new SimonsBowblade(new Item.Settings().maxDamage(1354).rarity(Rarity.RARE)), ConfigConstructor.disable_recipe_simons_bowblade);
+        SIMONS_BOWBLADE = ItemRegistry.registerLegendaryWeapon("simons_bowblade", () -> new SimonsBowblade(new Item.Settings().maxDamage(1354).rarity(Rarity.RARE), () -> Ingredient.ofItems(Items.IRON_BLOCK, ItemRegistry.SOUL_INGOT.get())), ConfigConstructor.disable_recipe_simons_bowblade);
         SIMONS_BLADE = ItemRegistry.registerLegendaryItem("simons_blade", () -> new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.simons_blade_damage,  ConfigConstructor.simons_blade_attack_speed, new Item.Settings().rarity(Rarity.RARE), ConfigConstructor.is_fireproof_simons_blade, ConfigConstructor.disable_use_simons_blade)); // Switched to by Simon's Bowblade
         DRAGONBANE = ItemRegistry.registerLegendaryWeapon("dragonbane", () -> new Dragonbane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_dragonbane);
         SUPERNOVA = ItemRegistry.registerLegendaryWeapon("supernova", () -> new Supernova(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_supernova);

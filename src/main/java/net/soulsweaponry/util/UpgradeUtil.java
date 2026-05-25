@@ -2,13 +2,13 @@ package net.soulsweaponry.util;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.fabric_extras.ranged_weapon.api.EntityAttributes_RangedWeapon;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.*;
 import net.minecraft.recipe.RecipeManager;
-import net.projectile_damage.api.EntityAttributes_ProjectileDamage;
 import net.soulsweaponry.items.gun.GunItem;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import org.jetbrains.annotations.Nullable;
@@ -127,12 +127,10 @@ public class UpgradeUtil {
             return;
         }
 
-        builder.put(EntityAttributes_ProjectileDamage.GENERIC_PROJECTILE_DAMAGE, new EntityAttributeModifier(UPGRADE_RANGED_DAMAGE, "upgrade.ranged_damage", damageBonus, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        //TODO there is no ranged weapon api version for forge 1.20.1, lowkey gotta make one myself then
-        //builder.put(EntityAttributes_RangedWeapon.DAMAGE.attribute, new EntityAttributeModifier(UPGRADE_RANGED_DAMAGE, "upgrade.ranged_damage", damageBonus, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        //if (hasteBonus > 0) {
-        //    builder.put(EntityAttributes_RangedWeapon.HASTE.attribute, new EntityAttributeModifier(UPGRADE_RANGED_HASTE, "upgrade.ranged_haste", hasteBonus, EntityAttributeModifier.Operation.MULTIPLY_BASE));
-        //}
+        builder.put(EntityAttributes_RangedWeapon.DAMAGE.attribute, new EntityAttributeModifier(UPGRADE_RANGED_DAMAGE, "upgrade.ranged_damage", damageBonus, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        if (hasteBonus > 0) {
+            builder.put(EntityAttributes_RangedWeapon.HASTE.attribute, new EntityAttributeModifier(UPGRADE_RANGED_HASTE, "upgrade.ranged_haste", hasteBonus, EntityAttributeModifier.Operation.MULTIPLY_BASE));
+        }
     }
 
     public static void rebuildRecipeCache(RecipeManager manager) {

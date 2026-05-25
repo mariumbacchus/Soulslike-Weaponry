@@ -56,7 +56,7 @@ public record NightsEdgeAbility(
     }
 
     public void spawnNightsEdge(World world, LivingEntity user, Vec3d position, int warmup, float yaw, float damage) {
-        NightsEdge edge = new NightsEdge(EntityRegistry.NIGHTS_EDGE, world);
+        NightsEdge edge = new NightsEdge(EntityRegistry.NIGHTS_EDGE.get(), world);
         edge.setOwner(user);
         edge.setDamage(damage);
         edge.setWarmup(warmup);

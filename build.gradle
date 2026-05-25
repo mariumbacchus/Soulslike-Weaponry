@@ -65,6 +65,10 @@ repositories {
         name "KosmX's maven"
         url 'https://maven.kosmx.dev/'
     }
+
+    flatDir {
+        dirs "libs"
+    }
 }
 
 dependencies {
@@ -75,7 +79,8 @@ dependencies {
     modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation("com.eliotlash.mclib:mclib:20")
     modImplementation "curse.maven:attributefix-${project.attributefix}"
-    modImplementation "maven.modrinth:projectile-damage-attribute:${project.projectile_damage_attribute_version}-forge"
+
+    modImplementation name: "ranged_weapon_api-forge-1.1.4+1.20.1" // inside libs folder
 
     // Mixin extras
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))

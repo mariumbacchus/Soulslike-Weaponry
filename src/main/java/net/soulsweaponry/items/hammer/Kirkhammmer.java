@@ -37,12 +37,7 @@ public class Kirkhammmer extends TrickWeapon {
     private static final UltraHeavy HEAVY_WEAPON = new UltraHeavy((int) ConfigConstructor.kirkhammer_posture_loss, 200, 1);
 
     public Kirkhammmer(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, ConfigConstructor.disable_use_kirkhammer);
+        super(toolMaterial, (int) ConfigConstructor.kirkhammer_damage, ConfigConstructor.kirkhammer_attack_speed, settings, ConfigConstructor.is_fireproof_kirkhammer, ConfigConstructor.disable_use_kirkhammer);
         this.addAbility(DETONATE_GROUND_ABILITY, HEAVY_WEAPON);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_kirkhammer;
     }
 }

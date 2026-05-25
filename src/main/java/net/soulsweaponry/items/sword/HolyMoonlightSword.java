@@ -20,13 +20,9 @@ public class HolyMoonlightSword extends TrickWeapon {
     );
 
     public HolyMoonlightSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.holy_moonlight_sword_damage, ConfigConstructor.holy_moonlight_sword_attack_speed, settings, ConfigConstructor.disable_use_holy_moonlight_sword,
+        super(toolMaterial, (int) ConfigConstructor.holy_moonlight_sword_damage, ConfigConstructor.holy_moonlight_sword_attack_speed, settings,
+                ConfigConstructor.is_fireproof_holy_moonlight_sword, ConfigConstructor.disable_use_holy_moonlight_sword,
                 ConfigConstructor.holy_moonlight_sword_righteous_base_undead_bonus_damage, ConfigConstructor.holy_moonlight_sword_righteous_undead_bonus_damage_per_level);
         this.addAbility(ESSENCE_BOOST_STATS, GIVES_ESSENCE);
-    }
-
-    @Override
-    public boolean isFireproof() {
-        return ConfigConstructor.is_fireproof_holy_moonlight_sword;
     }
 }
