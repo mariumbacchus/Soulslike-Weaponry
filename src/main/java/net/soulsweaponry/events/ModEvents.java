@@ -23,6 +23,7 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.api.entitystats.EntityBleed;
+import net.soulsweaponry.api.entitystats.EntityFrost;
 import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
@@ -80,9 +81,9 @@ public class ModEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side == LogicalSide.SERVER) {
             PlayerEntity player = event.player;
-            int parryFrames = ParryData.getParryFrames(player);
+            int parryFrames = ParryData.getParryTicks(player);
             if (parryFrames >= 1) {
-                ParryData.addParryFrames(player, 1);
+                ParryData.addParryTicks(player, 1);
                 player.stopUsingItem();
             }
             if (player.getAttacking() != null) {
@@ -98,6 +99,8 @@ public class ModEvents {
         LivingEntity entity = event.getEntity();
         int posture = PostureData.getPosture(entity);
         int bleed = BleedData.getBleed(entity);
+        int frost = FrostData.getFrost(entity);
+        boolean frostCoolingDown = FrostData.isFrostCoolingDown(entity);
         if (!EntityPosture.isPostureDisabled(entity) && posture >= EntityPosture.getMaxPostureLoss(entity) && EntityPosture.getMaxPostureLoss(entity) != 0) {
             if (!entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK.get())) {
                 entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.POSTURE_BREAK_EVENT.get(), SoundCategory.PLAYERS, .5f, 1f);
@@ -108,12 +111,21 @@ public class ModEvents {
         if (!EntityBleed.isBleedDisabled(entity) && bleed >= EntityBleed.getMaxBleed(entity)) {
             EntityBleed.triggerBloodLoss(entity);
         }
+        if (!EntityFrost.isFrostBuildupDisabled(entity) && frost >= EntityFrost.getMaxFrostBuildup(entity) && !frostCoolingDown) {
+            EntityFrost.triggerFrost(entity);
+        }
         if (!entity.getWorld().isClient) {
             if (entity.age % ((int) ConfigConstructor.posture_loss_reduction_interval) == 0 && posture > 0) {
                 PostureData.reducePosture(entity, (int) ConfigConstructor.posture_loss_reduction_amount);
             }
             if (entity.age % ((int) ConfigConstructor.bleed_reduction_interval) == 0 && bleed > 0) {
-                BleedData.reduceBleed(entity, (int) ConfigConstructor.bleed_reduction_amount);
+                BleedData.reduceBleed(entity, (int) ConfigConstructor.bleed_reduction_amount, EntityBleed.getMaxBleed(entity));
+            }
+            if (entity.age % ((int) ConfigConstructor.frost_reduction_interval) == 0 && (!entity.hasStatusEffect(EffectRegistry.FREEZING.get()) || frostCoolingDown)) {
+                int newFrost = FrostData.reduceFrost(entity, (int) ConfigConstructor.frost_reduction_amount, EntityFrost.getMaxFrostBuildup(entity));
+                if (newFrost <= 0) {
+                    FrostData.setFrostCoolingDown(entity, false);
+                }
             }
         }
     }

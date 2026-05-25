@@ -4,12 +4,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
-import net.soulsweaponry.items.IConfigDisable;
+import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -42,18 +43,18 @@ public class SwitchTrickWeaponC2S {
     }
 
     private void handlePacket(ServerPlayerEntity player, SwitchTrickWeaponC2S packet) {
+        ServerWorld serverWorld = player.getServerWorld();
         ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         Item handItem = stack.getItem();
-        ItemStack newWeapon = TrickWeaponUtil.getMappedStack(stack);
+        ItemStack newWeapon = TrickWeaponUtil.getMappedStack(serverWorld, stack);
         if (newWeapon != null && !player.getItemCooldownManager().isCoolingDown(handItem)) {
             if (newWeapon.getItem() instanceof IConfigDisable disable && disable.isDisabled(stack)) {
                 disable.notifyDisabled(player);
                 return;
             }
             player.getItemCooldownManager().set(newWeapon.getItem(), 20);
-            player.getWorld().playSound(null, player.getBlockPos(), SoundRegistry.TRICK_WEAPON_EVENT.get(), SoundCategory.PLAYERS, 0.8f, MathHelper.nextFloat(player.getRandom(), 0.75f, 1.5f));
-            ParticleHandler.particleSphereList(player.getWorld(), 20, player.getX(), player.getY(), player.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
-            newWeapon.setDamage(stack.getDamage());
+            serverWorld.playSound(null, player.getBlockPos(), SoundRegistry.TRICK_WEAPON_EVENT.get(), SoundCategory.PLAYERS, 0.8f, MathHelper.nextFloat(player.getRandom(), 0.75f, 1.5f));
+            ParticleHandler.particleSphereList(serverWorld, 20, player.getX(), player.getY(), player.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
             int slot = player.getInventory().selectedSlot;
             player.getInventory().removeStack(slot);
             player.getInventory().insertStack(slot, newWeapon);

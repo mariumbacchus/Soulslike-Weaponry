@@ -35,6 +35,7 @@ public class ModMessages {
         net.messageBuilder(ReturnThrownWeaponC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(ReturnThrownWeaponC2S::new).encoder(ReturnThrownWeaponC2S::toBytes).consumerMainThread(ReturnThrownWeaponC2S::handle).add();
         net.messageBuilder(StationaryFreyrSwordC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(StationaryFreyrSwordC2S::new).encoder(StationaryFreyrSwordC2S::toBytes).consumerMainThread(StationaryFreyrSwordC2S::handle).add();
         net.messageBuilder(SwitchTrickWeaponC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(SwitchTrickWeaponC2S::new).encoder(SwitchTrickWeaponC2S::toBytes).consumerMainThread(SwitchTrickWeaponC2S::handle).add();
+        net.messageBuilder(AttackClickC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(AttackClickC2S::new).encoder(AttackClickC2S::toBytes).consumerMainThread(AttackClickC2S::handle).add();
         if (!FMLLoader.isProduction()) {
             net.messageBuilder(KillNearbyEntitiesC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(KillNearbyEntitiesC2S::new).encoder(KillNearbyEntitiesC2S::toBytes).consumerMainThread(KillNearbyEntitiesC2S::handle).add();
             net.messageBuilder(GiveResistanceC2S.class, id(), NetworkDirection.PLAY_TO_SERVER).decoder(GiveResistanceC2S::new).encoder(GiveResistanceC2S::toBytes).consumerMainThread(GiveResistanceC2S::handle).add();
