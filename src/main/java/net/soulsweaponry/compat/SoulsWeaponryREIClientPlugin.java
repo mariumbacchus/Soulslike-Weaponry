@@ -6,11 +6,13 @@ import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import me.shedaniel.rei.forge.REIPluginClient;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.screen.ingame.SmithingScreen;
 import net.minecraft.recipe.RecipeType;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 
+@REIPluginClient
 public class SoulsWeaponryREIClientPlugin implements REIClientPlugin {
 
     @Override

@@ -2,7 +2,6 @@ package net.soulsweaponry.events;
 
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -76,7 +75,7 @@ public class ClientModBusEvents {
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((stack, tintIndex) -> {
             if (tintIndex > 0) {
-                return ColorHelper.Argb.getAlpha(SwitchPostHit.getModelColor(stack));
+                return SwitchPostHit.getModelColor(stack);
             }
             return -1;
         }, WeaponRegistry.NIGHTLORDS_SWORD.get());

@@ -231,6 +231,16 @@ public class ItemRecipes extends RecipeProvider {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.BLOOD_VIAL_RECIPE_PAGE.get()).build()))
                 .offerTo(consumer, "special_page_to_paper");
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.TWINKLING_TITANITE.get(), 1)
+                .input('#', ItemRegistry.MOONSTONE.get())
+                .input('S', ModTags.Items.LORD_SOUL)
+                .input('V', ItemRegistry.VERGLAS.get())
+                .pattern(" #V")
+                .pattern("#S#")
+                .pattern("V# ")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .offerTo(consumer);
 
         WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(ItemRegistry.DEMON_CHUNK.get()), ItemRegistry.CRIMSON_INGOT.get(), 0.1f, 200, ItemRegistry.DEMON_HEART.get(), consumer);
         WeaponRecipeProvider.smeltingRecipe(Ingredient.ofItems(Items.SOUL_SAND), ItemRegistry.LOST_SOUL.get(), 0.1f, 200, Items.SOUL_SAND, consumer);

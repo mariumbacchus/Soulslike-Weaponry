@@ -8,12 +8,14 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -21,6 +23,7 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.api.entitystats.EntityBleed;
 import net.soulsweaponry.api.entitystats.EntityFrost;
@@ -49,6 +52,12 @@ public class ModEvents {
     public static void onServerStarting(ServerStartingEvent event) {
         TrickWeaponUtil.loadMappings(event.getServer());
         UpgradeUtil.rebuildRecipeCache(event.getServer().getRecipeManager());
+    }
+
+    @SubscribeEvent
+    public static void onDatapackReload(OnDatapackSyncEvent event) {
+        MinecraftServer server = event.getPlayerList().getServer();
+        UpgradeUtil.rebuildRecipeCache(server.getRecipeManager());
     }
 
     @SubscribeEvent
