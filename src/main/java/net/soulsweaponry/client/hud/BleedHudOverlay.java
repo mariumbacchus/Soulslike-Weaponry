@@ -13,20 +13,22 @@ public class BleedHudOverlay extends EffectHudOverlay {
 
     private static final Identifier TEXTURE = new Identifier(SoulsWeaponry.ModId, "textures/gui/bleed_bars.png");
     public static final BleedHudOverlay INSTANCE = new BleedHudOverlay();
-    public static final IGuiOverlay HUD_POSTURE = (gui, drawContext, partialTicks, width, height) -> {
+    public static final IGuiOverlay HUD_BLEED = (gui, drawContext, partialTicks, width, height) -> {
         INSTANCE.render(drawContext, partialTicks);
     };
 
     @Override
-    public Identifier getTexture() {
+    public Identifier getTexture(ClientPlayerEntity player) {
         return TEXTURE;
     }
 
     @Override
     public int getBarPixelOffset(ClientPlayerEntity player) {
-        int bleed = ClientBleedData.getBleed();
-        float bleedPerPixel = EntityBleed.getMaxBleed(player) / (float) 182;
-        return MathHelper.floor((float) bleed / bleedPerPixel);
+        int bleed = Math.max(0, ClientBleedData.getBleed());
+        int max = Math.max(1, EntityBleed.getMaxBleed(player));
+        bleed = Math.min(bleed, max);
+        int pixels = bleed * BAR_WIDTH / max;
+        return MathHelper.clamp(pixels, 0, BAR_WIDTH);
     }
 
     @Override

@@ -8,10 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.client.hud.BleedHudOverlay;
-import net.soulsweaponry.client.hud.CustomBossBar;
-import net.soulsweaponry.client.hud.PostureHudOverlay;
-import net.soulsweaponry.client.hud.TargetPostureHudOverlay;
+import net.soulsweaponry.client.hud.*;
 import net.soulsweaponry.client.particles.CyanSweepAttackParticle;
 import net.soulsweaponry.client.particles.factory.EchoSmokeFactory;
 import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
@@ -54,8 +51,9 @@ public class ClientModBusEvents {
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("posture_bar", PostureHudOverlay.HUD_POSTURE);
-        event.registerAboveAll("bleed_bar", BleedHudOverlay.HUD_POSTURE);
+        event.registerAboveAll("bleed_bar", BleedHudOverlay.HUD_BLEED);
         event.registerAboveAll("target_posture", TargetPostureHudOverlay.HUD_TARGET_POSTURE);
+        event.registerAboveAll("frost_bar", FrostHudOverlay.HUD_FROST);
     }
 
     @SubscribeEvent

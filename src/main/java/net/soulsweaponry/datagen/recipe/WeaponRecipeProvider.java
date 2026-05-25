@@ -31,6 +31,7 @@ public class WeaponRecipeProvider extends RecipeProvider implements IConditionBu
         GunRecipes.generateRecipes(consumer);
         WeaponRecipes.generateRecipes(consumer);
         ArmorRecipes.generateRecipes(consumer);
+        UpgradeRecipes.generateRecipes(consumer);
     }
 
     public static void smithingRecipe(Ingredient smithingTemplate, Ingredient base, Ingredient addition, Item output, RecipeCategory recipeCategory, Item itemCriterion, Consumer<RecipeJsonProvider> consumer) {

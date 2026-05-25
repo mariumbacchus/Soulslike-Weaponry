@@ -13,6 +13,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -51,7 +52,7 @@ public class SoulHarvestTransform extends SoulHarvest {
 
     @Override
     public void handleKill(LivingEntity target, ItemStack stack) {
-        int amount = target.getType().isIn(ModTags.Entities.BOSSES) ? 20 : 1;
+        int amount = target.getType().isIn(Tags.EntityTypes.BOSSES) ? 20 : 1;
         if (target.getType().isIn(ModTags.Entities.RANGED_MOBS) || target.getMainHandStack().getItem() instanceof RangedWeaponItem || target instanceof PassiveEntity) {
             this.addAmount(stack, amount, NbtIds.BLUE_SOULS);
         } else {

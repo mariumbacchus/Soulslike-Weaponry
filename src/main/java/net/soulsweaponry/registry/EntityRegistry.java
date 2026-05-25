@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.soulsweaponry.datagen.loot_tables.BossLootTables;
+import net.soulsweaponry.datagen.loot_tables.EntityLootTablesProvider;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.*;
@@ -111,7 +111,7 @@ public class EntityRegistry {
     }
 
     private static void registerBossDrops(String id, Item... items) {
-        BossLootTables.BOSS_DROPS.put(id, Lists.newArrayList(items));
+        EntityLootTablesProvider.BOSS_DROPS.put(id, Lists.newArrayList(items));
     }
 
     public static void register(IEventBus bus) {

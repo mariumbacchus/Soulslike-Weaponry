@@ -104,7 +104,6 @@ public class ModTags {
         public static final TagKey<EntityType<?>> DRAGONS = createCommonTag("dragons");
         public static final TagKey<EntityType<?>> ARTHROPOD = createCommonTag("arthropod");
         public static final TagKey<EntityType<?>> UNDEAD = createCommonTag("undead");
-        public static final TagKey<EntityType<?>> BOSSES = createCommonTag("bosses");
         public static final TagKey<EntityType<?>> SKELETONS = createCommonTag("skeletons");
 
         private static TagKey<EntityType<?>> createCommonTag(String id) {

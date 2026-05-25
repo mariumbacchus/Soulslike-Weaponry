@@ -6,11 +6,12 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.gun.GunItem;
+import net.soulsweaponry.registry.EnchantRegistry;
 
 public class BlightCarrierEnchantment extends Enchantment {
 
     public BlightCarrierEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
-        super(weight, EnchantmentTarget.BOW, slotTypes);
+        super(weight, EnchantRegistry.GUN, slotTypes);
     }
 
     @Override

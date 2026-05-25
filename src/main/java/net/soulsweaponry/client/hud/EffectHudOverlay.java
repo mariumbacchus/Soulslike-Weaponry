@@ -35,7 +35,7 @@ public abstract class EffectHudOverlay {
 
                 // Icon
                 drawContext.drawTexture(
-                        this.getTexture(),
+                        this.getTexture(client.player),
                         barX - 25, barY - 10,
                         0, 0,
                         25, 25,
@@ -44,7 +44,7 @@ public abstract class EffectHudOverlay {
 
                 // Empty bar
                 drawContext.drawTexture(
-                        this.getTexture(),
+                        this.getTexture(client.player),
                         barX, barY,
                         25, 10,
                         BAR_WIDTH, BAR_HEIGHT,
@@ -53,7 +53,7 @@ public abstract class EffectHudOverlay {
 
                 // Filled bar
                 drawContext.drawTexture(
-                        this.getTexture(),
+                        this.getTexture(client.player),
                         barX, barY,
                         25, 15,
                         pixelOffset, BAR_HEIGHT,
@@ -63,7 +63,7 @@ public abstract class EffectHudOverlay {
         }
     }
 
-    public abstract Identifier getTexture();
+    public abstract Identifier getTexture(ClientPlayerEntity player);
     public abstract int getBarPixelOffset(ClientPlayerEntity player);
     public abstract boolean shouldShow(ClientPlayerEntity player);
 

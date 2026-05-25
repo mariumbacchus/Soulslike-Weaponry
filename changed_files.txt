@@ -2014,6 +2014,10 @@ util folder
 config folder
 entitystats folder
 entitydata folder
+hud (client folder)
+compat folder
+loot_tables folder (datagen)
+tags folder (datagen)
 
 items folder (partly, some other implementations are missing for the items to work 100%)
 
@@ -2032,9 +2036,16 @@ FrostSyncS2C
 ParryC2S
 ParrySyncS2C
 UT S2C
+UpgradeRecipes (datagen)
+EnchantmentHelperMixin
+StaggerEnchantment
+BladeDanceEffect
 
 WeaponRegistry
 ItemRegistry
 
 ModItemTagsProvider (ItemTagsProvider)
 ModBlockTagsProvider
+DamageTypeTagsProvider
+EntityTagsProvider
+FluidTagsProvider

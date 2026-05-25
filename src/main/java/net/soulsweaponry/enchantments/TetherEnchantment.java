@@ -6,11 +6,12 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.gun.GunItem;
+import net.soulsweaponry.registry.EnchantRegistry;
 
 public class TetherEnchantment extends Enchantment {
 
     public TetherEnchantment(Rarity weight, EquipmentSlot... slotTypes) {
-        super(weight, EnchantmentTarget.BREAKABLE, slotTypes);
+        super(weight, EnchantRegistry.GUN, slotTypes);
     }
 
     @Override

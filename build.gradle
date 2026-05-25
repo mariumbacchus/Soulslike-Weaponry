@@ -96,6 +96,7 @@ dependencies {
     // Compile only
     // Controllable mod for controller support
     modCompileOnly 'curse.maven:controllable-317269:6171424'
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-forge:${project.rei_version}"
 }
 
 processResources {

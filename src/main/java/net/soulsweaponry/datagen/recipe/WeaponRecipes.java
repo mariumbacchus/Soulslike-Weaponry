@@ -9,6 +9,7 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.util.Identifier;
+import net.minecraftforge.common.Tags;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -453,23 +454,23 @@ public class WeaponRecipes extends RecipeProvider {
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.TONITRUS.get())
                 .input('I', ModTags.Items.STICKS)
-                .input('#', ModTags.Items.IRON_INGOTS)
+                .input('#', Tags.Items.INGOTS_IRON)
                 .input('O', Items.SOUL_LANTERN)
                 .pattern(" ##")
                 .pattern(" O#")
                 .pattern("I  ")
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.IRON_INGOTS).build()))
+                        .tag(Tags.Items.INGOTS_IRON).build()))
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.BLOODLUST.get())
-                .input('X', ModTags.Items.IRON_INGOTS)
+                .input('X', Tags.Items.INGOTS_IRON)
                 .input('O', ModTags.Items.DEMON_HEARTS)
                 .input('/', ModTags.Items.STICKS)
                 .pattern(" XX")
                 .pattern("XO ")
                 .pattern("/  ")
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .tag(ModTags.Items.IRON_INGOTS).build()))
+                        .tag(Tags.Items.INGOTS_IRON).build()))
                 .offerTo(consumer);
 
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER.get()), WeaponRegistry.DARKIN_BLADE.get(), consumer);
@@ -477,12 +478,13 @@ public class WeaponRecipes extends RecipeProvider {
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLUEMOON_GREATSWORD.get()), WeaponRegistry.MOONLIGHT_GREATSWORD.get(), consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLUEMOON_SHORTSWORD.get()), WeaponRegistry.MOONLIGHT_SHORTSWORD.get(), consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.IRON_SWORD), WeaponRegistry.SKOFNUNG.get(), consumer);
-        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.fromTag(ModTags.Items.MOONLIGHT_SWORD), Ingredient.ofItems(ItemRegistry.ESSENCE_OF_LUMINESCENCE.get()), WeaponRegistry.PURE_MOONLIGHT_GREATSWORD.get(), ItemRegistry.ESSENCE_OF_LUMINESCENCE.get(), consumer);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.fromTag(ModTags.Items.UPGRADABLE_MOONLIGHT_SWORDS), Ingredient.ofItems(ItemRegistry.ESSENCE_OF_LUMINESCENCE.get()), WeaponRegistry.PURE_MOONLIGHT_GREATSWORD.get(), ItemRegistry.ESSENCE_OF_LUMINESCENCE.get(), consumer);
         WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.IRON_SWORD), Ingredient.ofItems(ItemRegistry.ESSENCE_OF_EVENTIDE.get()), WeaponRegistry.DRAUGR.get(), ItemRegistry.ESSENCE_OF_EVENTIDE.get(), consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.NETHERITE_SWORD), WeaponRegistry.CRUCIBLE_SWORD.get(), consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.STING.get()), WeaponRegistry.HOLY_MOONLIGHT_SWORD.get(), consumer);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.DIAMOND_SWORD), WeaponRegistry.MASTER_SWORD.get(), consumer);
         WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(WeaponRegistry.DAWNBREAKER.get()), Ingredient.ofItems(ItemRegistry.LORD_SOUL_DAY_STALKER.get()), WeaponRegistry.EMPOWERED_DAWNBREAKER.get(), ItemRegistry.LORD_SOUL_DAY_STALKER.get(), consumer);
+        WeaponRecipeProvider.smithingRecipeCombat(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(Items.STONE_SWORD), Ingredient.ofItems(ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get()), WeaponRegistry.NIGHTLORDS_SWORD.get(), ItemRegistry.LORD_SOUL_NIGHT_PROWLER.get(), consumer);
     }
 
     @Override

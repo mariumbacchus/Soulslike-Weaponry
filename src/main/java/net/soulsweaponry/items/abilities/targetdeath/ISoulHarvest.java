@@ -2,6 +2,7 @@ package net.soulsweaponry.items.abilities.targetdeath;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.Tags;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.ModTags;
 import net.soulsweaponry.util.NbtHelper;
@@ -10,7 +11,7 @@ import net.soulsweaponry.util.NbtIds;
 public interface ISoulHarvest extends IAbility {
 
     default void handleKill(LivingEntity target, ItemStack stack) {
-        if (target.getType().isIn(ModTags.Entities.BOSSES)) {
+        if (target.getType().isIn(Tags.EntityTypes.BOSSES)) {
             addAmount(stack, 50);
         } else {
             this.addKillCounter(stack);

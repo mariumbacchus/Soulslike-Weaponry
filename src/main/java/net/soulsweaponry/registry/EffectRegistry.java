@@ -42,7 +42,7 @@ public class EffectRegistry {
     public static final RegistryObject<StatusEffect> GHOSTLY = EFFECTS.register("ghostly", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x5e9191));
     public static final RegistryObject<StatusEffect> CHUNGUS_TONIC_EFFECT = EFFECTS.register("chungus_tonic_effect", ChungusTonic::new);
     public static final RegistryObject<StatusEffect> FROST_MOON = EFFECTS.register("frost_moon", FrostMoon::new);
-    public static final RegistryObject<StatusEffect> BLADE_DANCE = EFFECTS.register("blade_dance", BladeDance::new);
+    public static final RegistryObject<StatusEffect> BLADE_DANCE = EFFECTS.register("blade_dance", BladeDanceEffect::new);
     public static final RegistryObject<StatusEffect> STORMVEIL = EFFECTS.register("stormveil", Stormveil::new);
     public static final RegistryObject<StatusEffect> POTENCY = EFFECTS.register("potency", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0x200094));
     public static final RegistryObject<StatusEffect> SOUL_OF_CINDER = EFFECTS.register("soul_of_cinder", () -> new DefaultStatusEffect(StatusEffectCategory.BENEFICIAL, 0xcc3300)

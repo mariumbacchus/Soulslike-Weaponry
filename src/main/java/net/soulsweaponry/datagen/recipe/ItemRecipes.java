@@ -10,6 +10,7 @@ import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.util.Identifier;
+import net.minecraftforge.common.Tags;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
@@ -52,19 +53,10 @@ public class ItemRecipes extends RecipeProvider {
                 .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .items(ItemRegistry.MOONSTONE.get()).build()))
                 .offerTo(consumer);
-        /*ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.FRENZIED_SHADE_DISC.get())
-                .input('#', ItemRegistry.MOONSTONE.get())
-                .input('X', ItemRegistry.LOST_SOUL.get())
-                .pattern("#X#")
-                .pattern("X X")
-                .pattern("#X#")
-                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
-                        .items(ItemRegistry.MOONSTONE.get()).build()))
-                .offerTo(consumer);*/
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.IRON_SKULL.get())
                 .input('Y', ModTags.Items.LOST_SOUL)
                 .input('I', Items.BONE)
-                .input('X', ModTags.Items.IRON_INGOTS)
+                .input('X', Tags.Items.INGOTS_IRON)
                 .pattern("XIX")
                 .pattern("IYI")
                 .pattern("XIX")
@@ -81,7 +73,7 @@ public class ItemRecipes extends RecipeProvider {
                         .tag(ModTags.Items.LOST_SOUL).build()))
                 .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "soul_lantern_lost_soul"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, ItemRegistry.SOUL_INGOT.get())
-                .input('C', ModTags.Items.IRON_INGOTS)
+                .input('C', Tags.Items.INGOTS_IRON)
                 .input('#', ModTags.Items.LOST_SOUL)
                 .pattern(" # ")
                 .pattern("#C#")
@@ -152,7 +144,7 @@ public class ItemRecipes extends RecipeProvider {
                 .offerTo(consumer);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.MOONSTONE_RING.get())
                 .input('D', ItemRegistry.ARKENSTONE.get())
-                .input('i', ModTags.Items.IRON_INGOTS)
+                .input('i', Tags.Items.INGOTS_IRON)
                 .pattern("Di ")
                 .pattern("i i")
                 .pattern(" i ")
@@ -161,7 +153,7 @@ public class ItemRecipes extends RecipeProvider {
                 .offerTo(consumer, new Identifier(SoulsWeaponry.ModId, "moonstone_ring_left"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ItemRegistry.MOONSTONE_RING.get())
                 .input('D', ItemRegistry.ARKENSTONE.get())
-                .input('i', ModTags.Items.IRON_INGOTS)
+                .input('i', Tags.Items.INGOTS_IRON)
                 .pattern(" iD")
                 .pattern("i i")
                 .pattern(" i ")

@@ -14,12 +14,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.damagetype.DamageSourceProvider;
-import net.soulsweaponry.datagen.loot_tables.BossLootTables;
+import net.soulsweaponry.datagen.loot_tables.BlockLootTableProvider;
+import net.soulsweaponry.datagen.loot_tables.EntityLootTablesProvider;
+import net.soulsweaponry.datagen.loot_tables.ChestLootTableProvider;
 import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTables;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
-import net.soulsweaponry.datagen.tags.EntityTagsProvider;
-import net.soulsweaponry.datagen.tags.ModItemTagsProvider;
-import net.soulsweaponry.datagen.tags.ModBlockTagsProvider;
+import net.soulsweaponry.datagen.tags.*;
 import net.soulsweaponry.datagen.worldgen.ModWorldGenProvider;
 
 import java.util.Collections;
@@ -43,11 +43,13 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new LootTableProvider(output, Collections.emptySet(),
                 List.of(
-                        new LootTableProvider.LootTypeGenerator(BossLootTables::new, LootContextTypes.ENTITY),
-                        new LootTableProvider.LootTypeGenerator(ChungusBarterLootTables::new, LootContextTypes.BARTER)
+                        new LootTableProvider.LootTypeGenerator(EntityLootTablesProvider::new, LootContextTypes.ENTITY),
+                        new LootTableProvider.LootTypeGenerator(ChungusBarterLootTables::new, LootContextTypes.BARTER),
+                        new LootTableProvider.LootTypeGenerator(BlockLootTableProvider::new, LootContextTypes.BLOCK),
+                        new LootTableProvider.LootTypeGenerator(ChestLootTableProvider::new, LootContextTypes.CHEST)
                 )));
         generator.addProvider(event.includeServer(), new WeaponRecipeProvider(output));
-        generator.addProvider(event.includeServer(), new EntityTagsProvider(output, lookupProvider, fileHelper));
+
         generator.addProvider(event.includeServer(), new ForgeAdvancementProvider(output, event.getLookupProvider(), event.getExistingFileHelper(),
                 List.of(new AdvancementsProvider())
         ));
@@ -55,6 +57,11 @@ public class DataGenerators {
         BlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookupProvider, fileHelper);
         generator.addProvider(event.includeServer(), blockTagsProvider);
         generator.addProvider(event.includeServer(), new ModItemTagsProvider(output, lookupProvider, blockTagsProvider.getTagLookupFuture(), fileHelper));
+        generator.addProvider(event.includeServer(), new DamageTypeTagsProvider(output, lookupProvider, fileHelper));
+        generator.addProvider(event.includeServer(), new EntityTagsProvider(output, lookupProvider, fileHelper));
+        generator.addProvider(event.includeServer(), new FluidTagsProvider(output, lookupProvider, fileHelper));
+        generator.addProvider(event.includeServer(), new StatusEffectTagProvider(output, lookupProvider, fileHelper));
+        generator.addProvider(event.includeServer(), new StructureTagProvider(output, lookupProvider, fileHelper));
 
         generator.addProvider(event.includeServer(), new ModWorldGenProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new DamageSourceProvider(output, lookupProvider));
