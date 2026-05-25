@@ -5,7 +5,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.RotationAxis;
 import net.soulsweaponry.client.model.entity.projectile.NightsEdgeModel;
-import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.entity.projectile.noclip.NightsEdge;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class NightsEdgeRenderer extends GeoEntityRenderer<NightsEdge> {

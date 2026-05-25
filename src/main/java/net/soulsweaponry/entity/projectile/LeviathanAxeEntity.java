@@ -10,7 +10,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.entitydata.FrostData;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -18,12 +19,13 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.util.WeaponUtil;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public LeviathanAxeEntity(EntityType<? extends LeviathanAxeEntity> entityType, World world) {
         super(entityType, world);
@@ -40,25 +42,28 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
     }
 
     @Override
-    public boolean collide(Entity owner, Entity target, float damage) {
+    public boolean collide(Entity owner, Entity target, DamageSource damageSource, float damage) {
         if (!this.getWorld().isClient && target instanceof MjolnirProjectile) {
             ParticleEvents.mjolnirLeviathanAxeCollision(this.getWorld(), this.getX(), this.getY(), this.getZ());
             this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
         }
-        DamageSource damageSource = this.getWorld().getDamageSources().trident(this, owner);
         boolean damaged = target.damage(damageSource, damage);
         if (damaged) {
+            int enchant = EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.asItemStack());
             if (target instanceof LivingEntity living) {
-                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 200, EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.asItemStack())));
+                FrostData.addFrost(living, (int) ConfigConstructor.leviathan_axe_projectile_frost_buildup_on_collision);
+                FrostData.setFrostSource(living, owner);
+                living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING.get(), 200, enchant));
             }
-            LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), this.getOwner(), EnchantmentHelper.getLevel(Enchantments.SHARPNESS, this.asItemStack()));
+            FrostData.setFrostSource(this, owner);
+            Permafrost.iceExplosion(getWorld(), this.getBlockPos(), this, (enchant + 1) * 1.5f, enchant);
         }
         return damaged;
     }
 
     @Override
     public double getReturnSpeed(ItemStack stack) {
-        return ConfigConstructor.leviathan_axe_return_speed + (double) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack)/2f;
+        return ConfigConstructor.leviathan_axe_return_speed + (double) EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) /2f;
     }
 
     @Override
@@ -70,8 +75,23 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
         }
     }
 
+    private PlayState predicate(AnimationState<?> state) {
+        try {
+            if (!this.inGround || this.isNoClip()) {
+                state.getController().setAnimation(RawAnimation.begin().then("spin", Animation.LoopType.LOOP));
+            } else {
+                state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+            }
+        } catch (Exception e) {
+            return PlayState.STOP;
+        }
+        return PlayState.CONTINUE;
+    }
+
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

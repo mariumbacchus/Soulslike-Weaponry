@@ -9,7 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.items.axe.LeviathanAxe;
+import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 
@@ -55,7 +55,7 @@ public class FrozenLightning extends Entity {
                     ParticleHandler.particleSphere(this.getWorld(), 500, this.getX(), this.getBodyY(0.25f), this.getZ(), ParticleEvents.ICE_PARTICLE, 2f);
                 }
                 this.getWorld().createExplosion(null, this.getX(), this.getY(), this.getZ(), 6.0F, true, World.ExplosionSourceType.TNT);
-                LeviathanAxe.iceExplosion(getWorld(), this.getBlockPos(), null, 5);
+                Permafrost.iceExplosion(getWorld(), this.getBlockPos(), this, 7.5f, 5);
                 LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                 lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(this.getBlockPos()));
                 lightningEntity.setChanneler(null);

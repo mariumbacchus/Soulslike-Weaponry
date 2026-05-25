@@ -4,6 +4,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -13,6 +14,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -21,12 +23,16 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.FrostData;
+import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
 
@@ -36,7 +42,8 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
     private static final TrackedData<Integer> EFFECT_TICKS = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Integer> EFFECT_AMPLIFIER = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<String> APPLIED_EFFECT_ID = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.STRING);
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
+    private float enchantBonusDamageMod = ConfigConstructor.moonlight_shortsword_projectile_bonus_enchant_damage_mod;//TODO make into variable that ShootMoonlight abilities call and change
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -72,7 +79,7 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
         this.dataTracker.startTracking(APPLIED_EFFECT_ID, "");
     }
 
-    public void setAgeAndPoints(int maxAge, int explosionPoints, int tickParticleAmount) {
+    public void setAgeAndPoints(int maxAge, int explosionPoints, byte tickParticleAmount) {
         this.setMaxAge(maxAge);
         this.setDespawnParticleCount(explosionPoints);
         this.setTrailParticleCount(tickParticleAmount);
@@ -119,29 +126,29 @@ public class MoonlightProjectile extends NonArrowProjectile implements GeoEntity
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (entityHitResult.getEntity() instanceof LivingEntity living && this.asItemStack() != null) {
+        if (entityHitResult.getEntity() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
+            DamageSource damageSource = this.getDamageSources().arrow(this, this.getOwner());
             float bonus = EnchantmentHelper.getAttackDamage(this.asItemStack(), living.getGroup());
-            this.setDamage(this.getDamage() + (bonus >= 5 ? bonus * 0.7f : bonus));
+            //TODO the bonus line is already calculated in super.onEnityHit, check with sout with and without line and with and without enchants
+            this.setDamage(this.getDamage() + bonus * this.enchantBonusDamageMod);
         }
         super.onEntityHit(entityHitResult);
         if (this.getAppliedEffectTicks() > 0 && this.getAppliedEffectId().isEmpty() && entityHitResult.getEntity() != null) {
             entityHitResult.getEntity().setFireTicks(this.getAppliedEffectTicks());
         }
         if (!this.getAppliedEffectId().isEmpty() && entityHitResult.getEntity() instanceof LivingEntity target) {
-            target.addStatusEffect(new StatusEffectInstance(this.getAppliedEffect(), this.getAppliedEffectTicks(), this.getEffectAmplifier()));
+            StatusEffect effect = this.getAppliedEffect();
+            if (effect.equals(EffectRegistry.FREEZING) && this.getOwner() != null) {
+                FrostData.setFrostSource(target, this.getOwner());
+            }
+            target.addStatusEffect(new StatusEffectInstance(effect, this.getAppliedEffectTicks(), this.getEffectAmplifier()));
         }
         this.discard();
     }
 
     public void detonateEntity(World world, double x, double y, double z, double points, float sizeModifier) {
-        double phi = Math.PI * (3. - Math.sqrt(5.));
-        for (int i = 0; i < points; i++) {
-            double velocityY = 1 - (i/(points - 1)) * 2;
-            double radius = Math.sqrt(1 - velocityY*velocityY);
-            double theta = phi * i;
-            double velocityX = Math.cos(theta) * radius;
-            double velocityZ = Math.sin(theta) * radius;
-            world.addParticle(this.getDespawnParticle(), true, x, y, z, velocityX*sizeModifier, velocityY*sizeModifier, velocityZ*sizeModifier);
+        for (Vec3d vec : ParticleHandler.getSphereParticleCords(points, sizeModifier)) {
+            world.addParticle(this.getDespawnParticle(), true, x, y, z, vec.x, vec.y, vec.z);
         }
     }
 

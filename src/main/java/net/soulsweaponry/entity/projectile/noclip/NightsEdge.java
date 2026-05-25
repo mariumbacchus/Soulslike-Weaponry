@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.projectile;
+package net.soulsweaponry.entity.projectile.noclip;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;

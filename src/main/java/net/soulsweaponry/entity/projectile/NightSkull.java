@@ -13,22 +13,22 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
 public class NightSkull extends NonArrowProjectile implements GeoEntity {
 
-    private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public NightSkull(EntityType<? extends NightSkull> entityType, World world) {
         super(entityType, world);
@@ -66,7 +66,7 @@ public class NightSkull extends NonArrowProjectile implements GeoEntity {
 
     @Override
     public boolean isGlowing() {
-        return ConfigConstructor.night_prowler_eclipse_skulls_glow;
+        return BossConfig.night_prowler_eclipse_skulls_glow;
     }
 
     private void detonate() {

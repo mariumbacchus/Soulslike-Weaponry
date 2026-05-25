@@ -15,7 +15,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.resource.PathPackResources;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.mobs.*;
-import net.soulsweaponry.entity.projectile.NightsEdge;
+import net.soulsweaponry.entity.projectile.noclip.NightsEdge;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.registry.AttributeRegistry;
 import net.soulsweaponry.registry.EntityRegistry;

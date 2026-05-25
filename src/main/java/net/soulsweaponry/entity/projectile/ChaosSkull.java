@@ -20,14 +20,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.minecraft.world.explosion.ExplosionBehavior;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.BigChungus;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ChaosSkull extends WitherSkullEntity {
 
@@ -53,7 +54,7 @@ public class ChaosSkull extends WitherSkullEntity {
     }
 
     private float getModifiedDamage(float damage) {
-        return damage*ConfigConstructor.chaos_monarch_damage_modifier;
+        return damage* BossConfig.chaos_monarch_damage_modifier;
     }
 
     /**
@@ -175,7 +176,7 @@ public class ChaosSkull extends WitherSkullEntity {
      * There are mainly bad/irritating effects with a few good ones sprinkled in, this is for a boss fight after all.
      */
     private StatusEffect getPotionEffect() {
-        StatusEffect[] effects = {
+        List<StatusEffect> effects = List.of(
                 StatusEffects.ABSORPTION,
                 StatusEffects.BAD_OMEN,
                 StatusEffects.BLINDNESS,
@@ -197,9 +198,9 @@ public class ChaosSkull extends WitherSkullEntity {
                 StatusEffects.SPEED,
                 StatusEffects.STRENGTH,
                 StatusEffects.WEAKNESS,
-                StatusEffects.WITHER,
-        };
-        return effects[this.random.nextInt(effects.length)];
+                StatusEffects.WITHER
+        );
+        return effects.get(this.random.nextInt(effects.size()));
     }
 
     @Override

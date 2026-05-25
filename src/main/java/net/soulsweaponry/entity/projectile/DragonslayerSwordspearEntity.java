@@ -94,7 +94,7 @@ public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
         if (!getWorld().isClient) {
             BlockPos blockPos = entity.getBlockPos();
             if (this.getWorld().isSkyVisible(blockPos)) {
-                for (int i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_amount; i++) {
+                for (int i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_call_lightning_amount; i++) {
                     LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                     lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                     lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);
