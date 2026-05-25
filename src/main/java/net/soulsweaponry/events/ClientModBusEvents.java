@@ -2,6 +2,7 @@ package net.soulsweaponry.events;
 
 import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,7 +14,9 @@ import net.soulsweaponry.client.particles.CyanSweepAttackParticle;
 import net.soulsweaponry.client.particles.factory.EchoSmokeFactory;
 import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
 import net.soulsweaponry.client.registry.*;
+import net.soulsweaponry.items.abilities.posthit.SwitchPostHit;
 import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 
 @Mod.EventBusSubscriber(modid = SoulsWeaponry.ModId, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModBusEvents {
@@ -22,7 +25,7 @@ public class ClientModBusEvents {
     public static void clientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             BlockRenderLayers.register();
-            PredicateRegistry.register();
+            PredicateRegistry.initClient();
             EntityModelRegistry.register();
             CustomBossBar.init();
         });
@@ -67,5 +70,15 @@ public class ClientModBusEvents {
             event.getAtlas().getTextureLocations().add(new Identifier(SoulsWeaponry.ModId, "block/pruified_blood_still"));
             event.getAtlas().getTextureLocations().add(new Identifier(SoulsWeaponry.ModId, "block/pruified_blood_flow"));
         }
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, tintIndex) -> {
+            if (tintIndex > 0) {
+                return ColorHelper.Argb.getAlpha(SwitchPostHit.getModelColor(stack));
+            }
+            return -1;
+        }, WeaponRegistry.NIGHTLORDS_SWORD.get());
     }
 }

@@ -11,14 +11,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
-import net.soulsweaponry.config.ChungusTonicWhitelist;
-import net.soulsweaponry.config.ClientConfig;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.config.MidnightConfig;
+import net.soulsweaponry.config.*;
 import net.soulsweaponry.entity.mobs.BigChungus;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.EvilForlorn;
-import net.soulsweaponry.items.staff.WitheredWabbajack;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.BetterBrewingRecipe;
 import org.slf4j.Logger;
@@ -41,6 +37,7 @@ public class SoulsWeaponry {
         MidnightConfig.init(CONFIG_FOLDER + ModId, ConfigConstructor.class);
         MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_boss_config", BossConfig.class);
         LOGGER.info("Config initialized!");
 
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -89,8 +86,6 @@ public class SoulsWeaponry {
             SpawnRestriction.register(EntityRegistry.BIG_CHUNGUS.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BigChungus::canSpawnInDark);
             SpawnRestriction.register(EntityRegistry.EVIL_FORLORN.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EvilForlorn::canSpawn);
             SpawnRestriction.register(EntityRegistry.DARK_SORCERER.get(), SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, DarkSorcerer::canSpawn);
-
-            WitheredWabbajack.initProjectileList();
         });
     }
 }
