@@ -9,8 +9,10 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStreamReader;
@@ -122,17 +124,14 @@ public class TrickWeaponUtil {
     }
 
     @Nullable
-    public static ItemStack getMappedStack(ItemStack heldStack) {
+    public static ItemStack getMappedStack(World world, ItemStack heldStack) {
         Item item = getMappedItem(heldStack);
         if (item == null) {
             return null;
         }
-        ItemStack stack = item.getDefaultStack();
-        stack.setCount(heldStack.getCount());
-        if (heldStack.hasNbt()) {
-            stack.setNbt(heldStack.getNbt().copy());
-        }
-        stack.getOrCreateNbt().putString(TrickWeaponUtil.MAPPED_TRICK_WEAPON, ForgeRegistries.ITEMS.getKey(heldStack.getItem()).toString());
-        return stack;
+        ItemStack outStack = item.getDefaultStack();
+        WeaponUtil.copyOverItemComponents(world, heldStack, outStack);
+        outStack.getOrCreateNbt().putString(TrickWeaponUtil.MAPPED_TRICK_WEAPON, ForgeRegistries.ITEMS.getKey(heldStack.getItem()).toString());
+        return outStack;
     }
 }

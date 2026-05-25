@@ -8,6 +8,7 @@ import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraftforge.common.Tags;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.registry.GunRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -24,10 +25,10 @@ public class UpgradeRecipes {
         createUpgrade(recipeExporter, ModTags.Items.RANGED_ITEM_UPGRADABLES, 0.4f, 0.1f, true);
 
         // Armor items (head to feet via tags)
-        createUpgrade(recipeExporter, ModTags.Items.HEAD_ARMOR, 0.6f, 0.6f, true);
-        createUpgrade(recipeExporter, ModTags.Items.CHEST_ARMOR, 1f, 0.6f, true);
-        createUpgrade(recipeExporter, ModTags.Items.LEG_ARMOR, 0.8f, 0.6f, true);
-        createUpgrade(recipeExporter, ModTags.Items.FOOT_ARMOR, 0.6f, 0.6f, true);
+        createUpgrade(recipeExporter, Tags.Items.ARMORS_HELMETS, 0.6f, 0.6f, true);
+        createUpgrade(recipeExporter, Tags.Items.ARMORS_CHESTPLATES, 1f, 0.6f, true);
+        createUpgrade(recipeExporter, Tags.Items.ARMORS_LEGGINGS, 0.8f, 0.6f, true);
+        createUpgrade(recipeExporter, Tags.Items.ARMORS_BOOTS, 0.6f, 0.6f, true);
 
         // Guns
         createUpgrade(recipeExporter, GunRegistry.GATLING_GUN.get(), 1, 0f);

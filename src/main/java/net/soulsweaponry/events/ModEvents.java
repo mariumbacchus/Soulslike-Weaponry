@@ -31,6 +31,7 @@ import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.entitydata.*;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.UpgradeUtil;
 
 import java.util.UUID;
 
@@ -47,6 +48,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onServerStarting(ServerStartingEvent event) {
         TrickWeaponUtil.loadMappings(event.getServer());
+        UpgradeUtil.rebuildRecipeCache(event.getServer().getRecipeManager());
     }
 
     @SubscribeEvent

@@ -30,7 +30,8 @@ public class AccursedLordBossRenderer extends GeoEntityRenderer<AccursedLordBoss
     public void render(AccursedLordBoss entity, float entityYaw, float partialTicks, MatrixStack stack,
                        VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
+        //TODO find other method, also just make an abstract class of GeoEntityRenderer<?> that
+        // has the custom death light handling by default instead of calling from every boss renderer
         CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
                 entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
     }
