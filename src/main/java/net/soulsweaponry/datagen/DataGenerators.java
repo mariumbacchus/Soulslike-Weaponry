@@ -62,6 +62,7 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new FluidTagsProvider(output, lookupProvider, fileHelper));
         generator.addProvider(event.includeServer(), new StatusEffectTagProvider(output, lookupProvider, fileHelper));
         generator.addProvider(event.includeServer(), new StructureTagProvider(output, lookupProvider, fileHelper));
+        generator.addProvider(event.includeServer(), new EnchantmentTagsProvider(output, lookupProvider, fileHelper));
 
         generator.addProvider(event.includeServer(), new ModWorldGenProvider(output, lookupProvider));
         generator.addProvider(event.includeServer(), new DamageSourceProvider(output, lookupProvider));

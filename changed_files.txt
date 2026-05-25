@@ -2020,6 +2020,8 @@ loot_tables folder (datagen)
 tags folder (datagen)
 mixins folder (NB! deleted a mixin used for fixing crossbow pulltime, need to reimplement that for ranged weapon api for 1.20.1 forge)
 
+arrow folder (entity/projectile)
+
 items folder (partly, some other implementations are missing for the items to work 100%)
 
 ItemAccessor

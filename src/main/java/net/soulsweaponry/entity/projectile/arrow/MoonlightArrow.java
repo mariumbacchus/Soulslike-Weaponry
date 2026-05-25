@@ -22,14 +22,14 @@ public class MoonlightArrow extends ModArrow {
         this.pickupType = PickupPermission.DISALLOWED;
     }
 
-    @Override
-    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
-        return ConfigConstructor.darkmoon_longbow_can_apply_arrow_effects;
+    public MoonlightArrow(World world, LivingEntity owner, ItemStack arrowStack, ItemStack weaponStack) {
+        super(EntityRegistry.MOONLIGHT_ARROW.get(), owner, world, arrowStack, weaponStack);
+        this.pickupType = PickupPermission.DISALLOWED;
     }
 
-    public MoonlightArrow(World world, LivingEntity owner) {
-        super(EntityRegistry.MOONLIGHT_ARROW.get(), owner, world);
-        this.pickupType = PickupPermission.DISALLOWED;
+    @Override
+    public boolean canHaveArrowEffects() {
+        return ConfigConstructor.darkmoon_longbow_can_apply_arrow_effects;
     }
 
     @Override

@@ -17,6 +17,7 @@ public class EnchantmentHelperMixin {
         for (Hand hand : Hand.values()) {
             ItemStack stack = entity.getStackInHand(hand);
             //TODO get nbt and return addition
+            //TODO isnt needed i think since there is a getBlockBreakingSpeed mixin in PlayerEntityMixin
         }
     }
 }

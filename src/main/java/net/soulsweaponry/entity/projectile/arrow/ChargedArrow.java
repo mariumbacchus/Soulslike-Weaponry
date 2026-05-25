@@ -21,13 +21,13 @@ public class ChargedArrow extends ModArrow {
         this.scaleDamageHp = false;
     }
 
-    public ChargedArrow(World world, double x, double y, double z, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), x, y, z, world);
+    public ChargedArrow(World world, double x, double y, double z, ItemStack arrowStack, ItemStack weaponStack, boolean scaleDamageHp) {
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), x, y, z, world, arrowStack, weaponStack);
         this.scaleDamageHp = scaleDamageHp;
     }
 
-    public ChargedArrow(World world, LivingEntity owner, boolean scaleDamageHp) {
-        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), owner, world);
+    public ChargedArrow(World world, LivingEntity owner, ItemStack arrowStack, ItemStack weaponStack, boolean scaleDamageHp) {
+        super(EntityRegistry.CHARGED_ARROW_ENTITY_TYPE.get(), owner, world, arrowStack, weaponStack);
         this.scaleDamageHp = scaleDamageHp;
     }
 
@@ -73,7 +73,7 @@ public class ChargedArrow extends ModArrow {
     }
 
     @Override
-    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+    public boolean canHaveArrowEffects() {
         return ConfigConstructor.galeforce_can_apply_arrow_effects;
     }
 }

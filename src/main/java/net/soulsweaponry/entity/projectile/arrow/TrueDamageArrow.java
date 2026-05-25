@@ -22,8 +22,8 @@ public class TrueDamageArrow extends ModArrow {
         super(entityType, world);
     }
 
-    public TrueDamageArrow(World world, LivingEntity owner) {
-        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE.get(), owner, world);
+    public TrueDamageArrow(World world, LivingEntity owner, ItemStack arrowStack, ItemStack weaponStack) {
+        super(EntityRegistry.KRAKEN_SLAYER_PROJECTILE.get(), owner, world, arrowStack, weaponStack);
     }
 
     public void setTrueDamage(float trueDamage) {
@@ -66,7 +66,7 @@ public class TrueDamageArrow extends ModArrow {
     }
 
     @Override
-    public boolean canHaveArrowEffects(ItemStack arrowStack, ItemStack bowStack) {
+    public boolean canHaveArrowEffects() {
         return ConfigConstructor.kraken_slayer_can_apply_arrow_effects;
     }
 }
