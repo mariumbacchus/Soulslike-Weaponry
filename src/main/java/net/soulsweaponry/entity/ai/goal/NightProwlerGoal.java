@@ -19,19 +19,18 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.entity.mobs.*;
+import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.NightSkull;
+import net.soulsweaponry.entity.projectile.NoDragWitherSkull;
 import net.soulsweaponry.entity.projectile.noclip.*;
 import net.soulsweaponry.entity.util.BlackflameSnakeUtil;
 import net.soulsweaponry.entity.util.DeathSpiralLogic;
-import net.soulsweaponry.entity.mobs.*;
-import net.soulsweaponry.entity.projectile.MoonlightProjectile;
-import net.soulsweaponry.entity.projectile.noclip.NightsEdge;
-import net.soulsweaponry.entity.projectile.NoDragWitherSkull;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -285,9 +284,9 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus > this.attackLength) {
             this.attackStatus = 0;
             this.attackCooldown = MathHelper.floor((double)attackCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.night_prowler_cooldown_modifier_phase_2 : ConfigConstructor.night_prowler_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.night_prowler_cooldown_modifier_phase_2 : BossConfig.night_prowler_cooldown_modifier_phase_1));
             if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
-                    * (this.boss.isPhaseTwo() ? ConfigConstructor.night_prowler_special_cooldown_modifier_phase_2 : ConfigConstructor.night_prowler_special_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? BossConfig.night_prowler_special_cooldown_modifier_phase_2 : BossConfig.night_prowler_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
             this.boss.setAttackAnimation(NightProwler.Attacks.IDLE);
             this.boss.setChaseTarget(true);
@@ -302,7 +301,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     private float getModifiedDamage(float damage) {
-        return (damage + this.bonusDmg) * ConfigConstructor.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
+        return (damage + this.bonusDmg) * BossConfig.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
     }
 
     private boolean damageTarget(LivingEntity target, float damage) {
@@ -364,7 +363,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.boss.isFlying() && this.attackStatus == stopFlying && !this.boss.getWorld().isClient && (partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
             this.boss.setFlying(false);
             partner.setFlying(true);
-            partner.flightTimer = (int) ConfigConstructor.duo_fight_time_before_switch;
+            partner.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
             this.boss.setVelocity(0, -2f, 0);
         }
         if (!this.hasExploded && this.attackStatus >= min && this.attackStatus <= max && this.boss.isOnGround()) {
@@ -376,8 +375,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.boss.setTargetPos(pos);
             this.boss.setParticleState(1);
             Vec3d target = Vec3d.ofCenter(pos);
-            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), new ParticleHandler.RGB(142, 107, 1), 10f);
-            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), new ParticleHandler.RGB(72, 0, 140), 2f);
+            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), 0x33ffc5, 10f);
+            ParticleHandler.flashParticle(this.boss.getWorld(), target.getX(), target.getY(), target.getZ(), 0x48008c, 2f);
             ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
             this.boss.playSound(SoundRegistry.TRINITY.get(), 1f, 1f);
             if (this.boss.isPhaseTwo()) {
@@ -405,7 +404,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         }
     }
 
-    public void aoe(Box box, float damage, float knockback, boolean knockbackAway, StatusEffect[] effects) {
+    public void aoe(Box box, float damage, float knockback, boolean knockbackAway, List<StatusEffect> effects) {
         for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, box)) {
             if (entity instanceof LivingEntity target) {
                 if (this.damageTarget(target, damage) && knockback > 0) {
@@ -422,7 +421,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     public void aoe(Box box, float damage, float knockback, boolean knockbackAway) {
-        this.aoe(box, damage, knockback, knockbackAway, new StatusEffect[0]);
+        this.aoe(box, damage, knockback, knockbackAway, List.of());
     }
 
     private void reapingSlash(LivingEntity target) {
@@ -594,8 +593,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.playSound(null, SoundRegistry.MOONLIGHT_BIG_EVENT.get(), 1f, 1f);
         for (int i = -m; i <= m; i++) {
             Vec3d vec = target.rotateY((float) Math.toRadians(8 * i));
-            MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), this.boss.getWorld());
-            entity.setAgeAndPoints(30, 150, 4);
+            MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), this.boss.getWorld(), this.boss);
+            entity.setAgeAndPoints(30, 150, (byte) 4);
             entity.setDamage(this.getModifiedDamage(20f));
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             entity.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
@@ -615,8 +614,8 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             if (bl) {
                 entity = new NoDragWitherSkull(EntityType.WITHER_SKULL, this.boss.getWorld());
             } else {
-                entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), this.boss.getWorld());
-                ((MoonlightProjectile) entity).setAgeAndPoints(30, 150, 4);
+                entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE.get(), this.boss.getWorld(), this.boss);
+                ((MoonlightProjectile) entity).setAgeAndPoints(30, 150, (byte) 4);
                 ((MoonlightProjectile) entity).setDamage(this.getModifiedDamage(20f));
             }
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
@@ -759,7 +758,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                     skull.setOwner(this.boss);
                     this.boss.getWorld().spawnEntity(skull);
                     if (target.isDead() && target.deathTime < 2) {
-                        this.boss.heal(ConfigConstructor.night_prowler_eclipse_healing);
+                        this.boss.heal(BossConfig.night_prowler_eclipse_healing);
                         DeathSpiralEntity spiral = new DeathSpiralEntity(this.boss.getWorld(), target.getPos(), 1f);
                         spiral.setPosition(target.getPos());
                         this.boss.getWorld().spawnEntity(spiral);
@@ -840,11 +839,10 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 this.boss.setFlying(true);
                 this.boss.addVelocity(0, 0.5f, 0);
             }
-            if (this.attackStatus == 84) {
+            if (this.attackStatus == 84 || this.attackStatus == 85) {
                 this.boss.setFlying(false);
-                this.boss.setVelocity(0, -1f, 0);
+                this.boss.setVelocity(0, -2f, 0);
             }
-            if (this.attackStatus >= 84) this.boss.setFlying(false);
             if (!this.hasExploded && this.boss.isOnGround() && this.attackStatus >= 88 && this.attackStatus <= 110) {
                 this.hasExploded = true;
                 this.boss.setTargetPos(this.boss.getBlockPos());
@@ -908,7 +906,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus == (phase2 ? 18 : 23)) {
             Vec3d out = this.boss.getRotationVector().multiply(5.5D, 0, 5.5D).add(this.boss.getPos().getX(), target.getY(), this.boss.getPos().getZ());
             Box box = new Box(BlockPos.ofFloored(out)).expand(3D);
-            this.aoe(box, 10f, 1f, false, phase2 ? new StatusEffect[]{StatusEffects.BLINDNESS} : new StatusEffect[0]);
+            this.aoe(box, 10f, 1f, false, phase2 ? List.of(StatusEffects.BLINDNESS) : List.of());
             this.boss.playSound(SoundRegistry.SCYTHE_SWIPE.get(), 1f, 0.75f);
             if (phase2) {
                 if (this.boss.teleportAway()) {

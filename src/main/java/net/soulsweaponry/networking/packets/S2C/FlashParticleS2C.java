@@ -10,7 +10,6 @@ import net.minecraft.util.math.Box;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
-import net.soulsweaponry.particles.ParticleHandler;
 
 import java.util.function.Supplier;
 
@@ -19,14 +18,14 @@ public class FlashParticleS2C {
     private final double x;
     private final double y;
     private final double z;
-    private final ParticleHandler.RGB rgb;
+    private final int color;
     private final float expansion;
 
-    public FlashParticleS2C(double x, double y, double z, ParticleHandler.RGB rgb, float expansion) {
+    public FlashParticleS2C(double x, double y, double z, int color, float expansion) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.rgb = rgb;
+        this.color = color;
         this.expansion = expansion;
     }
 
@@ -35,9 +34,7 @@ public class FlashParticleS2C {
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
         buf.writeDouble(this.z);
-        buf.writeFloat(this.rgb.getRed());
-        buf.writeFloat(this.rgb.getGreen());
-        buf.writeFloat(this.rgb.getBlue());
+        buf.writeInt(this.color);
         buf.writeFloat(this.expansion);
     }
 
@@ -46,7 +43,7 @@ public class FlashParticleS2C {
         this.x = buf.readDouble();
         this.y = buf.readDouble();
         this.z = buf.readDouble();
-        this.rgb = new ParticleHandler.RGB(buf.readFloat(), buf.readFloat(), buf.readFloat());
+        this.color = buf.readInt();
         this.expansion = buf.readFloat();
     }
 
@@ -62,8 +59,8 @@ public class FlashParticleS2C {
         return this.z;
     }
 
-    public ParticleHandler.RGB getRgb() {
-        return this.rgb;
+    public int getColor() {
+        return color;
     }
 
     public float getExpansion() {
@@ -80,8 +77,12 @@ public class FlashParticleS2C {
     }
 
     private void handlePacket(ClientWorld world, FlashParticleS2C packet) {
+        int color = packet.getColor();
+        float red = ((color >> 16) & 0xFF) / 255f;
+        float green = ((color >> 8) & 0xFF) / 255f;
+        float blue = (color & 0xFF) / 255f;
         Particle flash = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FLASH, packet.getX(), packet.getY(), packet.getZ(), 0, 0, 0);
         flash.setBoundingBox(new Box(BlockPos.ofFloored(x, y, z)).expand(packet.getExpansion()));
-        flash.setColor(packet.getRgb().getRed(), packet.getRgb().getGreen(), packet.getRgb().getBlue());
+        flash.setColor(red, green, blue);
     }
 }

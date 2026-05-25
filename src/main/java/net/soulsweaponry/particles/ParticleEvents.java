@@ -147,7 +147,7 @@ public class ParticleEvents {
         map.put(ParticleTypes.GLOW, vec);
         ParticleHandler.particleSphereList(world, 1000, x, y, z, 1f, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE.get());
         ParticleHandler.particleOutburstMap(world, 500, x, y, z, map, 1f);
-        ParticleHandler.flashParticle(world, x, y, z, new ParticleHandler.RGB(79, 255, 243), 10f);
+        ParticleHandler.flashParticle(world, x, y, z, 0x4ffff3, 10f);
     }
 
     public static void airCombustionEvent(World world, double x, double y, double z) {
@@ -157,6 +157,6 @@ public class ParticleEvents {
         map.put(ParticleTypes.FLAME, vec);
         map.put(ParticleTypes.SMALL_FLAME, vec);
         ParticleHandler.particleOutburstMap(world, 150, x, y, z, map, 1f);
-        ParticleHandler.flashParticle(world, x, y, z, new ParticleHandler.RGB(201, 64, 0), 1);
+        ParticleHandler.flashParticle(world, x, y, z, 0xc94000, 1);
     }
 }

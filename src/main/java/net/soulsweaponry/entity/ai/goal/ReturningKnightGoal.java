@@ -11,16 +11,16 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.entity.util.RandomSummonPos;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.DamageSourceRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -51,19 +51,19 @@ public class ReturningKnightGoal extends Goal {
     }
 
     public void resetAttackCooldown(float cooldownModifier) {
-        this.attackCooldown = (int) Math.floor(ConfigConstructor.returning_knight_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.attackCooldown = (int) Math.floor(BossConfig.returning_knight_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public void resetSummonCooldown(float cooldownModifier) {
-        this.summonCooldown = (int) Math.floor(ConfigConstructor.returning_knight_summon_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.summonCooldown = (int) Math.floor(BossConfig.returning_knight_summon_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public void resetSpecialCooldown(float cooldownModifier) {
-        this.specialCooldown = (int) Math.floor(ConfigConstructor.returning_knight_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.specialCooldown = (int) Math.floor(BossConfig.returning_knight_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.returning_knight_damage_modifier;
+        return damage * BossConfig.returning_knight_damage_modifier;
     }
 
     @Override

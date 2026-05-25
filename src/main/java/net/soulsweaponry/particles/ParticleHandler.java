@@ -168,13 +168,16 @@ public class ParticleHandler {
         }
     }
 
-    public static void flashParticle(World world, double x, double y, double z, RGB rgb, float expansion) {
+    public static void flashParticle(World world, double x, double y, double z, int color, float expansion) {
         if (world.isClient) {
+            float red = ((color >> 16) & 0xFF) / 255f;
+            float green = ((color >> 8) & 0xFF) / 255f;
+            float blue = ( color & 0xFF) / 255f;
             Particle flash = MinecraftClient.getInstance().particleManager.addParticle(ParticleTypes.FLASH, x, y, z, 0, 0, 0);
             flash.setBoundingBox(new Box(BlockPos.ofFloored(x, y, z)).expand(expansion));
-            flash.setColor(rgb.getRed(), rgb.getGreen(), rgb.getBlue());
+            flash.setColor(red, green, blue);
         } else {
-            ModMessages.sendToAllPlayers(new FlashParticleS2C(x, y, z, rgb, expansion));
+            ModMessages.sendToAllPlayers(new FlashParticleS2C(x, y, z, color, expansion));
         }
     }
 
@@ -237,30 +240,5 @@ public class ParticleHandler {
             list.add(vec);
         }
         return list;
-    }
-
-    /**
-     * Converts basic rgb values to acceptable floats for minecraft
-     */
-    public static class RGB {
-        float r, g, b;
-
-        public RGB(float red, float green, float blue) {
-            this.r = red / 255f;
-            this.g = green / 255f;
-            this.b = blue / 255f;
-        }
-
-        public float getRed() {
-            return this.r;
-        }
-
-        public float getGreen() {
-            return this.g;
-        }
-
-        public float getBlue() {
-            return this.b;
-        }
     }
 }

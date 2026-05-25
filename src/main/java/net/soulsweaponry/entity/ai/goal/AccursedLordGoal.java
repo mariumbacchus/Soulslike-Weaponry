@@ -15,7 +15,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.minecraft.util.math.Vec3d;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss;
 import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
@@ -53,15 +54,15 @@ public class AccursedLordGoal extends Goal {
     public void resetAttackCooldown(float cooldownModifier) {
         this.attackStatus = 0;
         this.cordsRegistered = false;
-        this.attackCooldown = (int) Math.floor(ConfigConstructor.decaying_king_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers();
+        this.attackCooldown = (int) Math.floor(BossConfig.decaying_king_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers();
     }
 
     public void resetSpecialCooldown(float cooldownModifier) {
-        this.specialCooldown = (int) (Math.floor(ConfigConstructor.decaying_king_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers());
+        this.specialCooldown = (int) (Math.floor(BossConfig.decaying_king_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers());
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * ConfigConstructor.decaying_king_damage_modifier;
+        return damage * BossConfig.decaying_king_damage_modifier;
     }
 
     private void damageTarget(LivingEntity target, DamageSource source, float amount) {
@@ -329,8 +330,8 @@ public class AccursedLordGoal extends Goal {
                     case FIREBALLS ->
                             new SmallFireballEntity(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h);
                     case WITHERBALLS ->
-                            new ShadowOrb(this.boss.getWorld(), this.boss, e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h,
-                                    StatusEffects.WITHER, EffectRegistry.DECAY.get());
+                            new ShadowOrb(this.boss.getWorld(), this.boss, new Vec3d(e + this.boss.getRandom().nextGaussian() * h, f, g + this.boss.getRandom().nextGaussian() * h),
+                                    List.of(StatusEffects.WITHER, EffectRegistry.DECAY.get()));
                 };
                 projectile.setPosition(projectile.getX(), this.boss.getBodyY(1.0D) - 1.5D, projectile.getZ());
                 this.boss.getWorld().spawnEntity(projectile);

@@ -17,28 +17,30 @@ import net.minecraft.world.World;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.NightShade;
 import net.soulsweaponry.items.armor.ChaosRobes;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.DamageSourceRegistry;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
+import java.util.List;
+
 public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
-    private final StatusEffect[] effects;
+    private final List<StatusEffect> effects;
 
     public ShadowOrb(EntityType<? extends ShadowOrb> entityType, World world) {
         super(entityType, world);
-        this.effects = new StatusEffect[] {StatusEffects.WITHER, EffectRegistry.DECAY.get()};
+        this.effects = List.of(StatusEffects.WITHER, EffectRegistry.DECAY.get());
     }
 
-    public ShadowOrb(World world, LivingEntity owner, double velocityX, double velocityY, double velocityZ, StatusEffect... effects) {
-        super(EntityRegistry.SHADOW_ORB.get(), owner, velocityX, velocityY, velocityZ, world);
+    public ShadowOrb(World world, LivingEntity owner, Vec3d velocity, List<StatusEffect> effects) {
+        super(EntityRegistry.SHADOW_ORB.get(), owner, velocity.x, velocity.y, velocity.z, world);
         this.effects = effects;
     }
 
