@@ -3,40 +3,54 @@ package net.soulsweaponry.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FacingBlock;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.BlockMirror;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
-import net.soulsweaponry.items.IConfigDisable;
-import net.soulsweaponry.registry.*;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.ItemRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModTags;
 
-public class AltarBlock extends Block implements IConfigDisable {
+public class AltarBlock extends SpawnBossBlock {
 
     public static final DirectionProperty FACING = FacingBlock.FACING;
 
     public AltarBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public boolean spawnBoss(World world, BlockPos pos, PlayerEntity player, ItemStack itemStack) {
+        if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
+            ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT.get(), world);
+            entity.setSpawning(true);
+            return spawnEntity(world, pos, player, entity, BossConfig.returning_knight_disable_respawn, itemStack, BossConfig.returning_knight_consume_item_on_summoning);
+        } else if (itemStack.isOf(WeaponRegistry.DRAUGR.get())) {
+            DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS.get(), world);
+            entity.setSpawning();
+            return spawnEntity(world, pos, player, entity, BossConfig.old_champions_remains_disable_respawn, itemStack, BossConfig.old_champions_remains_consume_item_on_summoning);
+        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE.get())) {
+            Moonknight entity = new Moonknight(EntityRegistry.MOONKNIGHT.get(), world);
+            entity.setSpawning(true);
+            return spawnEntity(world, pos, player, entity, BossConfig.fallen_icon_disable_respawn, itemStack, BossConfig.fallen_icon_consume_item_on_summoning);
+        }
+        return false;
     }
 
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
@@ -97,58 +111,8 @@ public class AltarBlock extends Block implements IConfigDisable {
         }
     }
 
-    private DefaultParticleType getParticleType() {
+    private ParticleEffect getParticleType() {
         return ParticleRegistry.NIGHTFALL_PARTICLE.get();
-    }
-
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getStackInHand(hand);
-        if (spawnBoss(world, pos, player, itemStack)) {
-            return ActionResult.SUCCESS;
-        }
-        return ActionResult.FAIL;
-    }
-
-    private boolean spawnBoss(World world, BlockPos pos, PlayerEntity player, ItemStack itemStack) {
-        if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
-            ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT.get(), world);
-            entity.setSpawning(true);
-            boolean bl =spawnEntity(world, pos, player, entity, ConfigConstructor.returning_knight_disable_respawn);
-            if (bl) {
-                if (!player.getAbilities().creativeMode) {
-                    itemStack.decrement(1);
-                }
-            }
-            return bl;
-        } else if (itemStack.isOf(WeaponRegistry.DRAUGR.get())) {
-            DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS.get(), world);
-            entity.setSpawning();
-            return spawnEntity(world, pos, player, entity, ConfigConstructor.old_champions_remains_disable_respawn);
-        } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE.get())) {
-            Moonknight entity = new Moonknight(EntityRegistry.MOONKNIGHT.get(), world);
-            entity.setSpawning(true);
-            boolean bl = spawnEntity(world, pos, player, entity, ConfigConstructor.fallen_icon_disable_respawn);
-            if (bl) {
-                if (!player.getAbilities().creativeMode) {
-                    itemStack.decrement(1);
-                }
-            }
-            return bl;
-        }
-        return false;
-    }
-
-    private boolean spawnEntity(World world, BlockPos pos, PlayerEntity player, LivingEntity boss, boolean disableSpawn) {
-        if (disableSpawn) {
-            this.notifyDisabledBossRespawning(player);
-            return false;
-        }
-        boss.setPos(pos.getX(), pos.getY() + 0.1f, pos.getZ());
-        world.playSound(null, pos, SoundRegistry.NIGHTFALL_SPAWN_EVENT.get(), SoundCategory.HOSTILE, 1f, 1f);
-        world.spawnEntity(boss);
-        world.removeBlock(pos, false);
-        return true;
     }
 
     @Override
@@ -169,11 +133,5 @@ public class AltarBlock extends Block implements IConfigDisable {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(FACING);
-    }
-
-    // Ignore this since it isn't an item
-    @Override
-    public boolean isDisabled(ItemStack stack) {
-        return false;
     }
 }
