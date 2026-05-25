@@ -1,5 +1,7 @@
 {
   "base_posture_unit": 240,
   "posture_loss_buildup_resistance": 10,
-  "max_bleed": -1
+  "max_bleed": -1,
+  "frost_buildup_resistance": 10,
+  "frost_damage_resistance": 0
 }

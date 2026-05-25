@@ -3,5 +3,7 @@
   "posture_loss_buildup_resistance": 80,
   "max_bleed": 250,
   "bleed_buildup_resistance": -10,
-  "bleed_damage_resistance": -10
+  "bleed_damage_resistance": -10,
+  "frost_buildup_resistance": 50,
+  "frost_damage_resistance": -20
 }
