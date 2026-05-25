@@ -5,7 +5,6 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
-import net.soulsweaponry.client.entitydata.ClientParryData;
 import net.soulsweaponry.entitydata.ParryData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,12 +21,13 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     @Inject(at = @At("HEAD"), method = "animateArms")
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
         var model = ((BipedEntityModel<?>)(Object)this);
-        // Parry animation
-        if (entity instanceof AbstractClientPlayerEntity) {
-            int frames = ClientParryData.getParryFrames();
-            if (frames >= 1) {
-                this.parryProgress = frames == 1 ? 0.1f : parryProgress;
-                float added = (1f / (float) ParryData.MAX_PARRY_FRAMES) / 3f;//6
+        // Parry animation TODO rewrite, also make use other hand if item is in other hand
+        if (entity instanceof AbstractClientPlayerEntity abstractClientPlayerEntity) {
+            int ticks = ParryData.getParryTicks(abstractClientPlayerEntity);
+            int maxTicks = ParryData.getMaxParryTicks(abstractClientPlayerEntity);
+            if (ticks >= 1) {
+                this.parryProgress = ticks == 1 ? 0.1f : parryProgress;
+                float added = (1f / (float) maxTicks) / 6f;
                 this.parryProgress = Math.min(this.parryProgress + added, 1f);
                 ModelPart modelPart = model.leftArm;
                 float f = parryProgress;
@@ -44,7 +44,7 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
                 float h = MathHelper.sin(parryProgress * (float)Math.PI) * -(model.head.pitch - 0.7f) * 0.75f;
                 modelPart.pitch -= g * 1.2f + h;
                 modelPart.yaw += model.body.yaw * 2.0f;
-                modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.4f; //0.4, 0.8
+                modelPart.roll += MathHelper.sin(parryProgress * (float)Math.PI) * -0.8f; //0.4
             }
         }
     }

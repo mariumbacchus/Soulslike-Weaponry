@@ -2,6 +2,7 @@ package net.soulsweaponry.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -12,16 +13,18 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.entitydata.EchoDamageData;
+import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
-import net.soulsweaponry.items.IDetonateGround;
-import net.soulsweaponry.items.IUltraHeavy;
-import net.soulsweaponry.items.abilities.FireThorns;
-import net.soulsweaponry.items.abilities.StormveilThorns;
+import net.soulsweaponry.items.abilities.IAbility;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.items.abilities.detonateground.IDetonateGround;
+import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
+import net.soulsweaponry.items.abilities.userdamaged.ElectricCherry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.WeaponRegistry;
 import net.soulsweaponry.util.ModifyDamageUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,6 +35,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
+
+    // Recursion depth tracker per thread to prevent abilities from infinitely calling onUserDamaged
+    @Unique
+    private static final ThreadLocal<Integer> soulsweapons$abilityDamageDepth = ThreadLocal.withInitial(() -> 0);
 
     @Unique
     private DamageSource capturedDamageSource;
@@ -61,6 +68,66 @@ public class LivingEntityMixin {
             info.setReturnValue(false);
             info.cancel();
         }
+        if (source.isIn(DamageTypeTags.IS_FIRE)) {
+            FrostData.setFrost(entity, 0, false);
+            FrostData.setFrostSource(entity, FrostData.NIL_UUID);
+            if (entity.hasStatusEffect(EffectRegistry.FREEZING.get())) {
+                entity.removeStatusEffect(EffectRegistry.FREEZING.get());
+            }
+        }
+
+        boolean anyFalse = false;
+        // Do not re-enter ability-trigger code while already inside it
+        if (soulsweapons$abilityDamageDepth.get() > 0) {
+            return;
+        }
+        soulsweapons$abilityDamageDepth.set(soulsweapons$abilityDamageDepth.get() + 1);
+        try {
+            for (ItemStack armorStack : entity.getArmorItems()) {
+                if (armorStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(armorStack)) {
+                    for (IAbility a : hasUser.getAbilities()) {
+                        if (!a.onUserDamaged(source, amount, armorStack, entity)) {
+                            anyFalse = true;
+                        }
+                    }
+                }
+            }
+            for (Hand hand : Hand.values()) {
+                ItemStack userStack = entity.getStackInHand(hand);
+                if (userStack.getItem() instanceof IHasAbilities hasUser && !hasUser.isDisabled(userStack)) {
+                    for (IAbility a : hasUser.getAbilities()) {
+                        if (!a.onUserDamaged(source, amount, userStack, entity)) {
+                            anyFalse = true;
+                        }
+                    }
+                }
+                if (source.getAttacker() instanceof LivingEntity attacker) {
+                    ItemStack attackerStack = attacker.getStackInHand(hand);
+                    if (attackerStack.getItem() instanceof IHasAbilities hasAtk && !hasAtk.isDisabled(attackerStack)) {
+                        for (IAbility a : hasAtk.getAbilities()) {
+                            if (!a.onTargetDamaged(source, amount, attackerStack, entity)) {
+                                anyFalse = true;
+                            }
+                        }
+                    }
+                }
+            }
+        } finally {
+            int depth = soulsweapons$abilityDamageDepth.get() - 1;
+            if (depth <= 0) {
+                soulsweapons$abilityDamageDepth.remove();
+            } else {
+                soulsweapons$abilityDamageDepth.set(depth);
+            }
+        }
+        // Do lightning-thorns when having Stormveil effect
+        if (entity.hasStatusEffect(EffectRegistry.STORMVEIL.get()) && source.getAttacker() instanceof LivingEntity attacker) {
+            ElectricCherry.EFFECT_INSTANCE.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL.get()).getAmplifier());
+        }
+        if (anyFalse) {
+            info.setReturnValue(false);
+            info.cancel();
+        }
     }
 
     @Inject(method = "damage", at = @At("TAIL"))
@@ -76,17 +143,25 @@ public class LivingEntityMixin {
                 entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLADE_DANCE.get(), duration, amp));
             }
         }
-        if (source.getAttacker() instanceof LivingEntity attacker) {
-            // Do fire-thorns when wielding Supernova
+        // Store damage taken if the entity has Echo effect
+        if (entity.hasStatusEffect(EffectRegistry.ECHO.get())) {
+            EchoDamageData.addEchoDamage(entity, amount);
+        }
+    }
+
+    @Inject(method = "onDeath", at = @At("HEAD"))
+    public void interceptOnDeath(DamageSource damageSource, CallbackInfo info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (damageSource.getAttacker() instanceof LivingEntity attacker) {
             for (Hand hand : Hand.values()) {
-                ItemStack stack = entity.getStackInHand(hand);
-                if (stack.isOf(WeaponRegistry.SUPERNOVA.get())) {
-                    FireThorns.trigger(entity, attacker);
+                ItemStack userStack = entity.getStackInHand(hand);
+                ItemStack attackerStack = attacker.getStackInHand(hand);
+                if (userStack.getItem() instanceof IHasAbilities has && !has.isDisabled(userStack)) {
+                    has.getAbilities().forEach(a -> a.onUserDeath(damageSource, userStack, entity, attacker));
                 }
-            }
-            // Do lightning-thorns when having Stormveil effect
-            if (entity.hasStatusEffect(EffectRegistry.STORMVEIL.get())) {
-                StormveilThorns.trigger(entity, attacker, entity.getStatusEffect(EffectRegistry.STORMVEIL.get()).getAmplifier());
+                if (attackerStack.getItem() instanceof IHasAbilities has && !has.isDisabled(attackerStack)) {
+                    has.getAbilities().forEach(a -> a.onTargetDeath(damageSource, attackerStack, entity, attacker));
+                }
             }
         }
     }
@@ -116,10 +191,11 @@ public class LivingEntityMixin {
         if (!thisEntity.getWorld().isClient && entity instanceof LivingEntity target && thisEntity instanceof PlayerEntity player) {
             if (UmbralTrespassData.shouldDamageRiding(player)) {
                 float damage = UmbralTrespassData.getAbilityDamage(player);
-                boolean shouldHeal = UmbralTrespassData.shouldAbilityHeal(player);
-                if (shouldHeal) {
-                    damage += target.getMaxHealth() * (ConfigConstructor.darkin_scythe_prime_ability_percent_health_damage / 100f);
-                    float healing = damage * ConfigConstructor.darkin_scythe_prime_heal_modifier;
+                float healMod = UmbralTrespassData.getHealModifier(player);
+                double maxDamageBonus = UmbralTrespassData.getMaxHealthDamageBonus(player);
+                if (healMod > 0) {
+                    damage += (float) (target.getMaxHealth() * maxDamageBonus);
+                    float healing = damage * healMod;
                     player.heal(healing);
                 }
                 player.removeStatusEffect(StatusEffects.INVISIBILITY);
@@ -138,9 +214,45 @@ public class LivingEntityMixin {
     @Inject(method = "disablesShield", at = @At("HEAD"), cancellable = true)
     private void interceptDisablesShield(CallbackInfoReturnable<Boolean> info) {
         LivingEntity entity = ((LivingEntity)(Object)this);
-        if (ConfigConstructor.ultra_heavy_disables_shields && entity.getMainHandStack().getItem() instanceof IUltraHeavy item && item.isHeavy()) {
+        if (ConfigConstructor.ultra_heavy_disables_shields && IHasAbilities.getAbility(entity.getMainHandStack(), UltraHeavy.class).isPresent()) {
             info.setReturnValue(true);
             info.cancel();
+        }
+    }
+
+    @Inject(method = "canHaveStatusEffect", at = @At("HEAD"), cancellable = true)
+    private void canHaveStatusEffect(StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        for (ItemStack stack : entity.getArmorItems()) {
+            this.declineEffect(stack, entity, effect, info);
+        }
+        for (Hand hand : Hand.values()) {
+            this.declineEffect(entity.getStackInHand(hand), entity, effect, info);
+        }
+    }
+
+    @Unique
+    private void declineEffect(ItemStack stack, LivingEntity entity, StatusEffectInstance effect, CallbackInfoReturnable<Boolean> info) {
+        if (stack.getItem() instanceof IHasAbilities hasAbilities && !hasAbilities.isDisabled(stack)) {
+            boolean apply = true;
+            for (IAbility ability : hasAbilities.getAbilities()) {
+                if (ability.getStatusEffectsImmuneTo().contains(effect.getEffectType())) {
+                    apply = false;
+                    ability.onStatusEffectDeclined(entity, effect, stack);
+                }
+            }
+            if (!apply) {
+                info.setReturnValue(false);
+                info.cancel();
+            }
+        }
+    }
+
+    @Inject(method = "onEquipStack", at = @At("HEAD"))
+    private void onEquipStack(EquipmentSlot slot, ItemStack oldStack, ItemStack newStack, CallbackInfo info) {
+        LivingEntity entity = ((LivingEntity)(Object)this);
+        if (newStack.getItem() instanceof IHasAbilities abilities && !abilities.isDisabled(newStack)) {
+            abilities.getAbilities().forEach(a -> a.onEquipStack(entity, slot, oldStack, newStack));
         }
     }
 }
