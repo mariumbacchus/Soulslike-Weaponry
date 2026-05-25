@@ -38,7 +38,6 @@ public class VeilOfFire extends StatusEffect {
         if (entity instanceof PlayerEntity player) {
             if (!player.isCreative()) {
                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 60, 0));
-                entity.setOnFireFor(3);
             }
         } else {
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 60, 0));
