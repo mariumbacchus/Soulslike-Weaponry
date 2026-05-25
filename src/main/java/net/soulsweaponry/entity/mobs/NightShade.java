@@ -26,7 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -43,6 +43,7 @@ import software.bernie.geckolib.core.object.PlayState;
 import java.util.UUID;
 
 public class NightShade extends BossEntity implements GeoEntity, Ownable {
+
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
@@ -64,8 +65,8 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 65D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.frenzied_shade_health)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.frenzied_shade_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.frenzied_shade_health)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.frenzied_shade_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
     }
@@ -82,6 +83,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(CHARGING, Boolean.FALSE);
@@ -128,7 +130,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
         if (this.isCopy) {
             this.bossBar.setVisible(false);
             if (!this.healthUpdated) {
-                this.setHealth((float)ConfigConstructor.frenzied_shade_health / 4f);
+                this.setHealth((float) BossConfig.frenzied_shade_health / 4f);
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
@@ -356,7 +358,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.frenzied_shade_xp;
+        return (int) BossConfig.frenzied_shade_xp;
     }
 
     @Override
@@ -374,27 +376,27 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.frenzied_shade_is_fire_immune;
+        return BossConfig.frenzied_shade_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.frenzied_shade_is_undead;
+        return BossConfig.frenzied_shade_has_inverted_heal_and_harm;
     }
 
     @Override
-    public String getGroupId() {
-        return ConfigConstructor.frenzied_shade_group_type;
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.frenzied_shade_status_effect_blacklist;
+        return BossConfig.frenzied_shade_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.frenzied_shade_disables_shields;
+        return BossConfig.frenzied_shade_disables_shields;
     }
 
     @Override

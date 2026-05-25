@@ -30,8 +30,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -120,11 +119,11 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     public static DefaultAttributeContainer.Builder createSoulmassAttributes() {
         return MobEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.soulmass_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.soulmass_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.28D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.soulmass_armor);
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.soulmass_armor);
     }
 
     public void setClap(boolean bl) {
@@ -240,11 +239,16 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     public void sacrificeEvent() {
         Box chunkBox = new Box(this.getBlockPos()).expand(16);
         List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
+        var atk = this.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        double damage = 16f;
+        if (atk != null) {
+            damage = atk.getValue() * 2f;
+        }
         for (Entity nearbyEntity : nearbyEntities) {
             if (nearbyEntity instanceof HostileEntity closestTarget) {
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 1));
                 closestTarget.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 80, 1));
-                closestTarget.damage(this.getWorld().getDamageSources().magic(), 16F);
+                closestTarget.damage(this.getWorld().getDamageSources().magic(), (float) damage);
             }
         }
     }
@@ -397,8 +401,13 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
                         this.attackStatus = 0;
                     }
                     this.entity.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
+                    var atk = this.entity.getAttributeInstance(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+                    double damage = 6f;
+                    if (atk != null) {
+                        damage = atk.getValue() * 0.8f;
+                    }
                     if (attackStatus % 5 == 0 && distanceToEntity < 130f) {
-                        target.damage(this.entity.getWorld().getDamageSources().mobAttack(this.entity), 6f);
+                        target.damage(this.entity.getWorld().getDamageSources().mobAttack(this.entity), (float) damage);
                         this.entity.heal(2f);
                         this.entity.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.PLAYERS, 1f, 1f);
                     }
@@ -472,7 +481,9 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
         super.tick();
         if (this.isSneaking() && !this.isDead()) {
             this.soulCircle(this.getWorld(), this.getX(), this.getEyeY() + 1.0F, this.getZ());
-            if (this.getHealth() < this.getMaxHealth()) this.heal(1f);
+            if (this.getHealth() < this.getMaxHealth()) {
+                this.heal((float) (0.002 * this.getMaxHealth()));
+            }
         } else if (this.getBeaming()) {
             double e = this.getBeamCords().getX() - this.getX();
             double f = this.getBeamCords().getY() - this.getEyeY();

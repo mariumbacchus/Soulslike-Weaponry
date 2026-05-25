@@ -1,7 +1,7 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
@@ -25,11 +25,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -53,7 +51,6 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     private final AnimatableInstanceCache factory = new SingletonAnimatableInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
-    private int blockBreakingCooldown;
     private final List<UUID> healers = new ArrayList<>();
 
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
@@ -95,6 +92,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         return PlayState.CONTINUE;
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(OBLITERATE, Boolean.FALSE);
@@ -110,11 +108,11 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.returning_knight_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.returning_knight_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.returning_knight_armor);
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.returning_knight_armor);
     }
 
     @Override
@@ -218,6 +216,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         return this.dataTracker.get(DEATH);
     }
 
+    @Override
     public void tickMovement() {
         super.tickMovement();
 
@@ -262,9 +261,6 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.blockBreakingCooldown <= 0) {
-            this.blockBreakingCooldown = 20;
-        }
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
@@ -278,32 +274,32 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return ConfigConstructor.returning_knight_projectile_immunity_whitelist;
+        return BossConfig.returning_knight_projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.returning_knight_status_effect_blacklist;
+        return BossConfig.returning_knight_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.returning_knight_disables_shields;
+        return BossConfig.returning_knight_disables_shields;
     }
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.returning_knight_is_undead;
+        return BossConfig.returning_knight_has_inverted_heal_and_harm;
     }
 
     @Override
-    public String getGroupId() {
-        return ConfigConstructor.returning_knight_group_type;
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.returning_knight_is_fire_immune;
+        return BossConfig.returning_knight_is_fire_immune;
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -317,13 +313,12 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.returning_knight_xp;
+        return (int) BossConfig.returning_knight_xp;
     }
 
     @Override
     protected void mobTick() {
         super.mobTick();
-
         //Reflect all projectiles
         //Box chunkBox = new Box(this.getX() - 4, this.getEyeY() - 2, this.getZ() - 4, this.getX() + 4, this.getEyeY() + 2, this.getZ() + 4);
         Box chunkBox = this.getBoundingBox().expand(3);
@@ -333,29 +328,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
             }
         }
-
-        if (ConfigConstructor.can_bosses_break_blocks) {
-            int j;
-            int i;
-            int k;
-            if (this.blockBreakingCooldown > 0) {
-                --this.blockBreakingCooldown;
-                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
-                    i = MathHelper.floor(this.getY());
-                    j = MathHelper.floor(this.getX());
-                    k = MathHelper.floor(this.getZ());
-                    for (int l = -3; l <= 3; ++l) {
-                        for (int m = -3; m <= 3; ++m) {
-                            for (int n = 0; n <= 8; ++n) {
-                                if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                    this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        this.breakSurroundingBlocks();
     }
 
     public boolean hasHealersAlive() {

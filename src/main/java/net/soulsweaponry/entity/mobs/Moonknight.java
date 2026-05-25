@@ -1,7 +1,8 @@
 package net.soulsweaponry.entity.mobs;
 
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -20,20 +21,20 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.S2C.StopBossMusicS2C;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -54,10 +55,10 @@ public class Moonknight extends BossEntity implements GeoEntity {
     private int spawnTicks;
     private int phaseTransitionTicks;
     private final int phaseTransitionMaxTicks = 120;
-    private int blockBreakingCooldown;
     private final List<EntityType<?>> absorbedProjectileTypes = new ArrayList<>();
     private final List<Float> absorbedProjectileDamage = new ArrayList<>();
     public float prevBeamHeight;
+    @OnlyIn(Dist.CLIENT)
     public float renderBeamHeight;
 
     private static final TrackedData<Boolean> SPAWNING = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -77,11 +78,11 @@ public class Moonknight extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.fallen_icon_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.fallen_icon_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.fallen_icon_armor);
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.fallen_icon_armor);
     }
 
     @Override
@@ -195,9 +196,6 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.blockBreakingCooldown <= 0) {
-            this.blockBreakingCooldown = 20;
-        }
         if (this.isInitiatingPhaseTwo()) {
             return false;
         }
@@ -234,17 +232,17 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return ConfigConstructor.fallen_icon_projectile_immunity_whitelist;
+        return BossConfig.fallen_icon_projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.fallen_icon_status_effect_blacklist;
+        return BossConfig.fallen_icon_status_effect_blacklist;
     }
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.fallen_icon_xp;
+        return (int) BossConfig.fallen_icon_xp;
     }
 
     @Override
@@ -283,29 +281,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 this.bossBar.setColor(Color.BLUE);
             }
         }
-
-        if (ConfigConstructor.can_bosses_break_blocks) {
-            int j;
-            int i;
-            int k;
-            if (this.blockBreakingCooldown > 0) {
-                --this.blockBreakingCooldown;
-                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
-                    i = MathHelper.floor(this.getY());
-                    j = MathHelper.floor(this.getX());
-                    k = MathHelper.floor(this.getZ());
-                    for (int l = -3; l <= 3; ++l) {
-                        for (int m = -3; m <= 3; ++m) {
-                            for (int n = 0; n <= 8; ++n) {
-                                if (!(this.getWorld().getBlockState(new BlockPos(j + l, i + n, k + m)).getBlock() instanceof BlockWithEntity)) {
-                                    this.getWorld().breakBlock(new BlockPos(j + l, i + n, k + m), true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        this.breakSurroundingBlocks();
     }
 
     @Override
@@ -403,22 +379,17 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.fallen_icon_is_fire_immune;
+        return BossConfig.fallen_icon_is_fire_immune;
     }
 
     @Override
     public boolean isUndead() {
-        return ConfigConstructor.fallen_icon_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.fallen_icon_group_type;
+        return BossConfig.fallen_icon_has_inverted_heal_and_harm;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.fallen_icon_disables_shields;
+        return BossConfig.fallen_icon_disables_shields;
     }
 
     @Override

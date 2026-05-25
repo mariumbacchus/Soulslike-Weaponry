@@ -1,7 +1,8 @@
 package net.soulsweaponry.entity.mobs;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar.Color;
@@ -12,15 +13,23 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.WorldEvents;
+import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.S2C.StopBossMusicS2C;
 import net.soulsweaponry.util.IAnimatedDeath;
@@ -35,6 +44,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     protected final ServerBossBar bossBar;
     private boolean hasUpdatedHealth = false;
     private boolean playingMusic = false;
+    private int blockBreakingCooldown;
 
     protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
         super(entityType, world);
@@ -60,6 +70,8 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
         }
     }
 
+    //TODO always render as long as not in idle? (meaning always render when doing attack so no desync happens)
+
     @Override
     public void tick() {
         super.tick();
@@ -72,6 +84,9 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public boolean damage(DamageSource source, float amount) {
         if (this.getHealth() - amount > 0f) {
             this.tryToPlayBossMusic();
+        }
+        if (this.blockBreakingCooldown <= 0) {
+            this.blockBreakingCooldown = 20;
         }
         return super.damage(source, amount);
     }
@@ -216,24 +231,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
     public abstract boolean isUndead();
 
     @Override
-    public EntityGroup getGroup() {
-        String id = this.getGroupId();
-        if (id == null) {
-            return EntityGroup.DEFAULT;
-        }
-        return switch (id.toUpperCase()) {
-            case "UNDEAD" -> EntityGroup.UNDEAD;
-            case "ARTHROPOD" -> EntityGroup.ARTHROPOD;
-            case "ILLAGER" -> EntityGroup.ILLAGER;
-            case "AQUATIC" -> EntityGroup.AQUATIC;
-            default -> EntityGroup.DEFAULT;
-        };
-    }
-
-    @Override
     public abstract boolean disablesShield();
-
-    public abstract String getGroupId();
 
     /**
      * Should be called during damage method for bosses that are projectile immune to check whether the entity
@@ -251,8 +249,41 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      * should damage the boss or not.
      */
     public boolean isProjectileWhitelisted(Entity entity) {
-        Identifier attackerId = EntityType.getId(entity.getType());
-        return List.of(this.getWhitelistedProjectiles()).contains(attackerId.getPath());
+        Identifier projectileId = EntityType.getId(entity.getType());
+        if (projectileId == null) {
+            return false;
+        }
+
+        EntityType<?> type = entity.getType();
+        for (String raw : this.getWhitelistedProjectiles()) {
+            if (raw == null || raw.isEmpty()) {
+                continue;
+            }
+
+            String s = raw.trim();
+            // Tag form, i.e: "#minecraft:arrows" or "#soulsweapons:something"
+            if (s.startsWith("#")) {
+                String tagStr = s.substring(1); // drop '#'
+                Identifier tagId = tagStr.contains(":")
+                        ? Identifier.tryParse(tagStr)
+                        : Identifier.of(projectileId.getNamespace(), tagStr);
+                TagKey<EntityType<?>> tagKey = TagKey.of(RegistryKeys.ENTITY_TYPE, tagId);
+                if (type.getRegistryEntry().isIn(tagKey)) {
+                    return true;
+                }
+                continue;
+            }
+
+            // Normal ID form, i.e: "arrow", "minecraft:arrow", "big_moonlight_projectile", "soulsweapons:big_moonlight_projectile"
+            Identifier whitelistId = s.contains(":")
+                    ? Identifier.tryParse(s) // full ID given
+                    : Identifier.of(projectileId.getNamespace(), s); // use projectile's namespace by default
+
+            if (whitelistId.equals(projectileId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -270,12 +301,41 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
 
     @Override
     public boolean addStatusEffect(StatusEffectInstance effect, @Nullable Entity source) {
-        String effectId = Objects.requireNonNull(ForgeRegistries.MOB_EFFECTS.getKey(effect.getEffectType())).toString();
+        String effectId = Objects.requireNonNull(Registries.STATUS_EFFECT.getId(effect.getEffectType())).toString();
         for (String blacklisted : this.getBlacklistedStatusEffects()) {
             if (blacklisted.equals(effectId)) {
                 return false;
             }
         }
         return super.addStatusEffect(effect, source);
+    }
+
+    /**
+     * Call during mobTick() to break blocks around the boss when taking damage to make way.
+     */
+    public void breakSurroundingBlocks() {
+        if (ConfigConstructor.can_bosses_break_blocks) {
+            if (this.blockBreakingCooldown > 0) {
+                this.blockBreakingCooldown--;
+                if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+                    boolean blockBroken = false;
+                    int j = MathHelper.floor(this.getWidth() / 2.0F + 1.0F);
+                    int k = MathHelper.floor(this.getHeight());
+                    for (BlockPos blockPos : BlockPos.iterate(this.getBlockX() - j, this.getBlockY(), this.getBlockZ() - j, this.getBlockX() + j, this.getBlockY() + k, this.getBlockZ() + j)) {
+                        BlockState blockState = this.getWorld().getBlockState(blockPos);
+                        if (canDestroy(blockState, blockPos)) {
+                            blockBroken = this.getWorld().breakBlock(blockPos, true, this) || blockBroken;
+                        }
+                    }
+                    if (blockBroken) {
+                        this.getWorld().syncWorldEvent(null, WorldEvents.WITHER_BREAKS_BLOCK, this.getBlockPos(), 0);
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean canDestroy(BlockState block, BlockPos pos) {
+        return !block.isAir() && !(block.getBlock() instanceof BlockWithEntity) && block.getHardness(this.getWorld(), pos) >= 0.0F && !block.isIn(BlockTags.WITHER_IMMUNE);
     }
 }

@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.armor.Hallowheart;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -96,11 +97,6 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     @Override
-    public EntityGroup getGroup() {
-        return EntityGroup.UNDEAD;
-    }
-
-    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
@@ -129,8 +125,8 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.withered_demon_health)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.withered_demon_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.withered_demon_health)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.withered_demon_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
@@ -190,12 +186,14 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     public boolean tryAttack(Entity target) {
         float f = this.getAttackDamage();
         float g = (int)f > 0 ? f / 2.0F + (float)this.random.nextInt((int)f) : f;
-        boolean bl = target.damage(this.getWorld().getDamageSources().mobAttack(this), g);
+        DamageSource damageSource = this.getDamageSources().mobAttack(this);
+        boolean bl = target.damage(damageSource, g);
         if (bl) {
-            target.setVelocity(target.getVelocity().add(0.0D, 0.4000000059604645D, 0.0D));
+            double d = target instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE) : 0.0;
+            double e = Math.max(0.0, 1.0 - d);
+            target.setVelocity(target.getVelocity().add(0.0, 0.4F * e, 0.0));
             this.applyDamageEffects(this, target);
         }
-
         return bl;
     }
 
@@ -298,6 +296,11 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     @Override
     public boolean isUndead() {
         return true;
+    }
+
+    @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     @Override

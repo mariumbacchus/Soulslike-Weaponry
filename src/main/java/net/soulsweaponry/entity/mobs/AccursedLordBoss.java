@@ -25,12 +25,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -57,7 +57,17 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return ConfigConstructor.decaying_king_is_fire_immune;
+        return BossConfig.decaying_king_is_fire_immune;
+    }
+
+    @Override
+    public boolean isUndead() {
+        return BossConfig.decaying_king_has_inverted_heal_and_harm;
+    }
+
+    @Override
+    public EntityGroup getGroup() {
+        return EntityGroup.UNDEAD;
     }
 
     private PlayState attackAnimations(AnimationState<?> state) {
@@ -91,7 +101,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) ConfigConstructor.decaying_king_xp;
+        return (int) BossConfig.decaying_king_xp;
     }
 
     @Override
@@ -135,14 +145,15 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.decaying_king_health)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.decaying_king_health)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.decaying_king_armor)
+                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.decaying_king_armor)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
+    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(ATTACKS, 9);
@@ -196,7 +207,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * ConfigConstructor.decaying_king_damage_modifier);
+                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * BossConfig.decaying_king_damage_modifier);
                     }
                 }
                 if (!this.getWorld().isClient) {
@@ -230,23 +241,13 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
-    public boolean isUndead() {
-        return ConfigConstructor.decaying_king_is_undead;
-    }
-
-    @Override
-    public String getGroupId() {
-        return ConfigConstructor.decaying_king_group_type;
-    }
-
-    @Override
     public String[] getBlacklistedStatusEffects() {
-        return ConfigConstructor.decaying_king_status_effect_blacklist;
+        return BossConfig.decaying_king_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ConfigConstructor.decaying_king_disables_shields;
+        return BossConfig.decaying_king_disables_shields;
     }
 
     @Override
