@@ -12,6 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import net.soulsweaponry.items.abilities.HasAbilitiesHooks;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -69,7 +70,7 @@ public class ItemMixin implements IHasAbilities {
             return;
         }
         boolean vanilla = info.getReturnValue();
-        boolean abilities = IHasAbilities.super.postHit(stack, target, attacker);
+        boolean abilities = HasAbilitiesHooks.postHit(this, stack, target, attacker);
         info.setReturnValue(vanilla || abilities);
     }
 
@@ -78,7 +79,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        TypedActionResult<ItemStack> result = IHasAbilities.super.use(world, user, hand);
+        TypedActionResult<ItemStack> result = HasAbilitiesHooks.use(this, world, user, hand);
         if (!result.getResult().equals(ActionResult.PASS)) {
             info.setReturnValue(result);
         }
@@ -89,7 +90,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        IHasAbilities.super.onStoppedUsing(stack, world, user, remainingUseTicks);
+        HasAbilitiesHooks.onStoppedUsing(this, stack, world, user, remainingUseTicks);
     }
 
     @Inject(method = "getUseAction", at = @At("HEAD"), cancellable = true)
@@ -97,7 +98,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        UseAction abilityAction = IHasAbilities.super.getUseAction(stack);
+        UseAction abilityAction = HasAbilitiesHooks.getUseAction(this, stack);
         if (abilityAction != UseAction.NONE) {
             info.setReturnValue(abilityAction);
         }
@@ -108,7 +109,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        int ability = IHasAbilities.super.getMaxUseTime(stack);
+        int ability = HasAbilitiesHooks.getMaxUseTime(this, stack);
         if (ability != 0) {
             info.setReturnValue(ability);
         }
@@ -119,7 +120,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        ActionResult result = IHasAbilities.super.useOnEntity(stack, user, entity, hand);
+        ActionResult result = HasAbilitiesHooks.useOnEntity(this, stack, user, entity, hand);
         if (result != ActionResult.PASS) {
             info.setReturnValue(result);
         }
@@ -130,7 +131,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        IHasAbilities.super.inventoryTick(stack, world, entity, slot, selected);
+        HasAbilitiesHooks.inventoryTick(this, stack, world, entity, slot, selected);
     }
 
     @Inject(method = "finishUsing", at = @At("HEAD"))
@@ -138,7 +139,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        IHasAbilities.super.finishUsing(stack, world, user);
+        HasAbilitiesHooks.finishUsing(this, stack, world, user);
     }
 
     @Inject(method = "usageTick", at = @At("HEAD"))
@@ -146,7 +147,7 @@ public class ItemMixin implements IHasAbilities {
         if (this.getAbilities().isEmpty()) {
             return;
         }
-        IHasAbilities.super.usageTick(world, user, stack, remainingUseTicks);
+        HasAbilitiesHooks.usageTick(this, world, user, stack, remainingUseTicks);
     }
 
     @Inject(method = "isFireproof", at = @At("HEAD"), cancellable = true)
