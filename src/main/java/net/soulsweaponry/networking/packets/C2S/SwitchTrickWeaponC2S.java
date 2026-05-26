@@ -10,10 +10,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.network.NetworkEvent;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
+import net.soulsweaponry.compat.EpicFightHelper;
 import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.function.Supplier;
 
@@ -43,6 +45,9 @@ public class SwitchTrickWeaponC2S {
     }
 
     private void handlePacket(ServerPlayerEntity player, SwitchTrickWeaponC2S packet) {
+        if (WeaponUtil.isModLoaded("epicfight") && EpicFightHelper.isBusyWithEpicFight(player)) { // Game crashes if switching weapon during epic fight skill attacks
+            return;
+        }
         ServerWorld serverWorld = player.getServerWorld();
         ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
         Item handItem = stack.getItem();

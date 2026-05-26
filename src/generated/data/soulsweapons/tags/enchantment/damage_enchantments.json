@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "minecraft:smite",
+      "required": false
+    },
+    {
+      "id": "minecraft:bane_of_arthropods",
+      "required": false
+    },
+    {
+      "id": "minecraft:sharpness",
+      "required": false
+    },
+    {
+      "id": "minecraft:impaling",
+      "required": false
+    }
+  ]
+}

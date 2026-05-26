@@ -1,0 +1,15 @@
+// 1.20.1	2026-05-26T12:43:14.1525596	Tags for minecraft:block mod id soulsweapons
+a2de49a39723526dd6abe81bb49a8e824097d890 data/forge/tags/blocks/ores.json
+bd2e13ec03ed46d1344b6d86806e8f75178adad9 data/minecraft/tags/blocks/dirt.json
+b0fb3b1e1f5347a6a6782bcb553fbf195eac9601 data/minecraft/tags/blocks/mineable/pickaxe.json
+bd2e13ec03ed46d1344b6d86806e8f75178adad9 data/minecraft/tags/blocks/mineable/shovel.json
+fb5fa0180c6929d2fd62149d96a02c90ff87b2a9 data/minecraft/tags/blocks/needs_diamond_tool.json
+1f30fd7b1e9b4cff2102cecee9053c91adae7bce data/minecraft/tags/blocks/needs_iron_tool.json
+7149059cfda4a0ff5ace43f4c415cfa1d1a41a55 data/minecraft/tags/blocks/needs_stone_tool.json
+af1e9dcb3ecb909bde41700ab3e478a302ea9b2e data/soulsweapons/tags/blocks/needs_crimson_ingot_tool.json
+af1e9dcb3ecb909bde41700ab3e478a302ea9b2e data/soulsweapons/tags/blocks/needs_echo_shard_tool.json
+597e4bf953fb072389f85739e376f01fa7e935ee data/soulsweapons/tags/blocks/needs_iron_block_tool.json
+597e4bf953fb072389f85739e376f01fa7e935ee data/soulsweapons/tags/blocks/needs_lost_soul_durable_tool.json
+597e4bf953fb072389f85739e376f01fa7e935ee data/soulsweapons/tags/blocks/needs_lost_soul_tool.json
+af1e9dcb3ecb909bde41700ab3e478a302ea9b2e data/soulsweapons/tags/blocks/needs_moonstone_or_verglas_tool.json
+af1e9dcb3ecb909bde41700ab3e478a302ea9b2e data/soulsweapons/tags/blocks/needs_moonstone_tool.json

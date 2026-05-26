@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
 import net.minecraftforge.registries.RegistryObject;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.datagen.tags.ItemDatagenType;
 import net.soulsweaponry.items.armor.*;
 import net.soulsweaponry.items.material.ModArmorMaterials;
 
@@ -35,13 +36,13 @@ public class ArmorRegistry {
     public static RegistryObject<Item> FORLORN_BOOTS;
 
     public static void register() {
-        CHAOS_CROWN = registerItem("chaos_crown", () -> new ChaosCrown(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC)));
+        CHAOS_CROWN = registerItem("chaos_crown", () -> new ChaosCrown(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC)), ItemDatagenType.ARMOR);
         CHAOS_HELMET = registerArmorItem("chaos_helmet", () -> new ChaosHelmet(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.HELMET, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_chaos_helmet);
         ARKENPLATE = registerArmorItem("arkenplate", () -> new Arkenplate(ModArmorMaterials.CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_arkenplate);
         ENHANCED_ARKENPLATE = registerArmorItem("enhanced_arkenplate", () -> new EnhancedArkenplate(ModArmorMaterials.ENHANCED_CHAOS_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_enhanced_arkenplate);
         WITHERED_CHEST = registerArmorItem("withered_chest", () -> new Hallowheart(ModArmorMaterials.WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_withered_chest);
         ENHANCED_WITHERED_CHEST = registerArmorItem("enhanced_withered_chest", () -> new EnhancedHallowheart(ModArmorMaterials.ENHANCED_WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC)), ConfigConstructor.disable_recipe_enhanced_withered_chest);
-        CHAOS_ROBES = registerItem("chaos_robes",() -> new ChaosRobes(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC)));
+        CHAOS_ROBES = registerItem("chaos_robes",() -> new ChaosRobes(ModArmorMaterials.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC)), ItemDatagenType.ARMOR);
 
         SOUL_INGOT_HELMET = registerArmorItem("soul_ingot_helmet", () -> new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.HELMET, new Item.Settings()), ConfigConstructor.disable_recipe_soul_ingot_helmet);
         SOUL_INGOT_CHESTPLATE = registerArmorItem("soul_ingot_chestplate", () -> new SoulIngotArmor(ModArmorMaterials.SOUL_INGOT, ArmorItem.Type.CHESTPLATE, new Item.Settings()), ConfigConstructor.disable_recipe_soul_ingot_chestplate);

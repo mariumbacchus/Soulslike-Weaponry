@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "soulsweapons:ethereal",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:ricochet",
+      "required": false
+    }
+  ]
+}

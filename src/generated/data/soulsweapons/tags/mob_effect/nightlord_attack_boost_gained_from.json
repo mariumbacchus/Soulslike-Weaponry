@@ -1,0 +1,40 @@
+{
+  "values": [
+    {
+      "id": "soulsweapons:bleed",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:freezing",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:decay",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:blight",
+      "required": false
+    },
+    {
+      "id": "minecraft:wither",
+      "required": false
+    },
+    {
+      "id": "minecraft:slowness",
+      "required": false
+    },
+    {
+      "id": "minecraft:mining_fatigue",
+      "required": false
+    },
+    {
+      "id": "minecraft:weakness",
+      "required": false
+    },
+    {
+      "id": "minecraft:poison",
+      "required": false
+    }
+  ]
+}

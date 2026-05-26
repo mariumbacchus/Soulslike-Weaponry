@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "soulsweapons:magic_damage_bypass_cooldown",
+      "required": false
+    }
+  ]
+}

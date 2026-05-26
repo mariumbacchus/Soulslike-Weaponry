@@ -24,6 +24,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final NavigableMap<Integer, EntityType<?>> THRESHOLDS = new TreeMap<>();
+    private static boolean initialized = false;
     private static final SoulReleasePowerBased SOUL_RELEASE = new SoulReleasePowerBased(
             (int) ConfigConstructor.soul_reaper_summoned_allies_cap,
             "SoulReaperSummons",
@@ -34,7 +35,12 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
             ConfigConstructor.soul_reaper_summon_max_bonus_attack_damage
     );
 
-    static {
+    public static void init() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
+
         THRESHOLDS.put(3, EntityRegistry.SOUL_REAPER_GHOST.get());
         THRESHOLDS.put(10, EntityRegistry.FORLORN.get());
         THRESHOLDS.put(30, EntityRegistry.SOULMASS.get());

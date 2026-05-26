@@ -13,10 +13,8 @@ import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
+import net.soulsweaponry.datagen.tags.ItemDatagenType;
 import net.soulsweaponry.datagen.tags.ModItemTagsProvider;
-import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.items.abilities.IHasAbilities;
-import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
 import net.soulsweaponry.items.material.ModToolMaterials;
 import net.soulsweaponry.items.misc.*;
 import net.soulsweaponry.util.RecipeHandler;
@@ -78,27 +76,20 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> PURIFIED_BLOOD_BUCKET = ItemRegistry.registerItem("purified_blood_bucket", () -> new BucketItem(FluidRegistry.STILL_PURIFIED_BLOOD, new Item.Settings().recipeRemainder(Items.BUCKET).maxCount(1)));
 
-    public static <I extends Item> RegistryObject<I> registerItem(String id, Supplier<I> item) {
+    public static <I extends Item> RegistryObject<I> registerItem(String id, Supplier<I> item, ItemDatagenType... types) {
         RegistryObject<I> registered = ITEMS.register(id, item);
         SoulsWeaponry.ITEM_GROUP_LIST.add(registered);
         if (DatagenUtil.isDatagenRunning()) {
-            if (item instanceof SwordItem) {
-                ModItemTagsProvider.SWORDS.add(item);
-            } else if (item instanceof AxeItem) {
-                ModItemTagsProvider.AXES.add(item);
-            } else if (item instanceof BowItem) {
-                ModItemTagsProvider.BOWS.add(item);
-            } else if (item instanceof CrossbowItem) {
-                ModItemTagsProvider.CROSSBOWS.add(item);
-            } else if (item instanceof ArmorItem) {
-                ModItemTagsProvider.ARMORS.add(item);
-            }
-
-            if (IHasAbilities.getAbility(item.get().getDefaultStack(), UltraHeavy.class).isPresent()) {
-                ModItemTagsProvider.HEAVY_WEAPONS.add(item);
-            }
-            if (item instanceof SoulHarvestingItem) {
-                ModItemTagsProvider.SOUL_HARVESTING_WEAPONS.add(item);
+            for (ItemDatagenType type : types) {
+                switch (type) {
+                    case SWORD -> ModItemTagsProvider.SWORDS.add(registered);
+                    case AXE -> ModItemTagsProvider.AXES.add(registered);
+                    case BOW -> ModItemTagsProvider.BOWS.add(registered);
+                    case CROSSBOW -> ModItemTagsProvider.CROSSBOWS.add(registered);
+                    case ARMOR -> ModItemTagsProvider.ARMORS.add(registered);
+                    case HEAVY_WEAPON -> ModItemTagsProvider.HEAVY_WEAPONS.add(registered);
+                    case SOUL_HARVESTING -> ModItemTagsProvider.SOUL_HARVESTING_WEAPONS.add(registered);
+                }
             }
         }
         return registered;
@@ -107,51 +98,71 @@ public class ItemRegistry {
     /**
      * Register an item that should be included in the all_weapons advancement
      */
-    public static <I extends Item> RegistryObject<I> registerLegendaryItem(String name, Supplier<I> item) {
-        RegistryObject<I> object = registerItem(name, item);
+    public static <I extends Item> RegistryObject<I> registerLegendaryItem(String name, Supplier<I> item, ItemDatagenType... types) {
+        RegistryObject<I> object = registerItem(name, item, types);
         if (DatagenUtil.isDatagenRunning()) {
             AdvancementsProvider.ALL_WEAPONS.add(object);
         }
         return object;
     }
 
-    public static <I extends Item> RegistryObject<I> registerItemRemovableRecipe(String name, Supplier<I> item, boolean removeRecipe) {
+    public static <I extends Item> RegistryObject<I> registerItemRemovableRecipe(String name, Supplier<I> item, boolean removeRecipe, ItemDatagenType... types) {
         RecipeHandler.RECIPE_IDS.put(new Identifier(SoulsWeaponry.ModId, name), removeRecipe);
-        return registerItem(name, item);
+        return registerItem(name, item, types);
     }
 
     public static <I extends Item> RegistryObject<I> registerArmorItem(String name, Supplier<I> item, boolean removeRecipe) {
         if (ConfigConstructor.disable_armor_recipes) {
-            return registerItemRemovableRecipe(name, item, true);
+            return registerItemRemovableRecipe(name, item, true, ItemDatagenType.ARMOR);
         } else {
-            return registerItemRemovableRecipe(name, item, removeRecipe);
+            return registerItemRemovableRecipe(name, item, removeRecipe, ItemDatagenType.ARMOR);
         }
     }
 
     /**
      * Register a weapon that has a recipe that can be disabled
      */
-    public static <I extends Item> RegistryObject<I> registerWeaponItem(String name, Supplier<I> item, boolean removeRecipe) {
+    public static <I extends Item> RegistryObject<I> registerWeaponItem(String name, Supplier<I> item, boolean removeRecipe, ItemDatagenType... types) {
         if (ConfigConstructor.disable_weapon_recipes) {
-            return registerItemRemovableRecipe(name, item, true);
+            return registerItemRemovableRecipe(name, item, true, types);
         } else {
-            return registerItemRemovableRecipe(name, item, removeRecipe);
+            return registerItemRemovableRecipe(name, item, removeRecipe, types);
         }
+    }
+
+    public static <I extends Item> RegistryObject<I> registerLegendarySword(String name, Supplier<I> item, boolean removeRecipe) {
+        return registerLegendaryWeapon(name, item, removeRecipe, ItemDatagenType.SWORD);
+    }
+
+    public static <I extends Item> RegistryObject<I> registerLegendaryHeavySword(String name, Supplier<I> item, boolean removeRecipe) {
+        return registerLegendaryWeapon(name, item, removeRecipe, ItemDatagenType.SWORD, ItemDatagenType.HEAVY_WEAPON);
+    }
+
+    public static <I extends Item> RegistryObject<I> registerLegendarySoulHarvestingSword(String name, Supplier<I> item, boolean removeRecipe) {
+        return registerLegendaryWeapon(name, item, removeRecipe, ItemDatagenType.SWORD, ItemDatagenType.SOUL_HARVESTING);
+    }
+
+    public static <I extends Item> RegistryObject<I> registerLegendaryBow(String name, Supplier<I> item, boolean removeRecipe) {
+        return registerLegendaryWeapon(name, item, removeRecipe, ItemDatagenType.BOW);
+    }
+
+    public static <I extends Item> RegistryObject<I> registerLegendaryCrossbow(String name, Supplier<I> item, boolean removeRecipe) {
+        return registerLegendaryWeapon(name, item, removeRecipe, ItemDatagenType.CROSSBOW);
     }
 
     /**
      * Register a weapon/item that should be included in the all_weapons advancement and has a recipe that can be disabled
      */
-    public static <I extends Item> RegistryObject<I> registerLegendaryWeapon(String name, Supplier<I> item, boolean removeRecipe) {
-        RegistryObject<I> object = registerWeaponItem(name, item, removeRecipe);
+    public static <I extends Item> RegistryObject<I> registerLegendaryWeapon(String name, Supplier<I> item, boolean removeRecipe, ItemDatagenType... types) {
+        RegistryObject<I> object = registerWeaponItem(name, item, removeRecipe, types);
         if (DatagenUtil.isDatagenRunning()) {
             AdvancementsProvider.ALL_WEAPONS.add(object);
         }
         return object;
     }
 
-    public static <I extends Item> RegistryObject<I> registerGunItem(String name, Supplier<I> item) {
-        RegistryObject<I> object = registerItemRemovableRecipe(name, item, ConfigConstructor.disable_gun_recipes);
+    public static <I extends Item> RegistryObject<I> registerGunItem(String name, Supplier<I> item, ItemDatagenType... types) {
+        RegistryObject<I> object = registerItemRemovableRecipe(name, item, ConfigConstructor.disable_gun_recipes, types);
         if (DatagenUtil.isDatagenRunning()) {
             AdvancementsProvider.ALL_GUNS.add(object);
         }

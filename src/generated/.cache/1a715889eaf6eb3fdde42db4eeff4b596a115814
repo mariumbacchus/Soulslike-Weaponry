@@ -1,6 +1,9 @@
-// 1.20.1	2025-12-09T23:31:02.364482	Forge EntityType Tags
-9ed6f58ded647dbe8eace5dd297e6bb37b1c0479 data/forge/tags/entity_types/bosses.json
+// 1.20.1	2026-05-26T12:26:51.2795551	Forge EntityType Tags
+019a4abc84afc647be4009baaf0e06c104466fc0 data/forge/tags/entity_types/arthropod.json
+9787a6192ff2dd8197239518efb96c2c223cd1ac data/forge/tags/entity_types/bosses.json
 35aa4b323660ba5c05bbf0df0a9c6993119028e8 data/forge/tags/entity_types/dragons.json
 c42662e3c7d99bd4115e43c7a82ea7b87914ae50 data/forge/tags/entity_types/ranged_mobs.json
-6e07fb58a00d6ac5ca53851f6dcafb4dab9aba4b data/forge/tags/entity_types/skeletons.json
+b422272374bb9149214db918fd9b9f8dbc445fdf data/forge/tags/entity_types/undead.json
+525f0866a97945036f05a68f56b769cc5fa6bfde data/minecraft/tags/entity_types/arrows.json
 7d2c4576ddca5094e15e07a86e75d2aa485ffe1a data/minecraft/tags/entity_types/freeze_immune_entity_types.json
+21a42b4b1066f4d9df6abf45636a016f9814461a data/minecraft/tags/entity_types/impact_projectiles.json

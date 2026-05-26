@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -131,8 +132,7 @@ public class PlayerEntityMixin {
             method = "attack",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityGroup;)F",
-                    ordinal = 0
+                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getAttackDamage(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/EntityGroup;)F"
             )
     )
     private float abilities$modifyAttackDamage(float original, Entity target) {
@@ -140,6 +140,9 @@ public class PlayerEntityMixin {
         ItemStack stack = attacker.getMainHandStack();
         if (!(stack.getItem() instanceof IHasAbilities has) || has.getAbilities().isEmpty()) {
             return original;
+        }
+        if (target instanceof EnderDragonPart part) {
+            target = part.owner;
         }
         DamageSource source = attacker.getDamageSources().playerAttack(attacker);
         float bonus = has.getBonusAttackDamage(target, original, source);

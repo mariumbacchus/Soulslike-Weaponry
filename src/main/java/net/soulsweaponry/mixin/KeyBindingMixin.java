@@ -3,8 +3,13 @@ package net.soulsweaponry.mixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraftforge.event.TickEvent;
 import net.soulsweaponry.events.ClientForgeEvents;
+import net.soulsweaponry.items.abilities.IHasAbilities;
+import net.soulsweaponry.networking.ModMessages;
+import net.soulsweaponry.networking.packets.C2S.AttackClickC2S;
 import net.soulsweaponry.util.WeaponUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +31,11 @@ public class KeyBindingMixin {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client != null && client.options.attackKey.getKey().equals(key)) {
                 if (client.player != null) {
-                    ClientForgeEvents.triggerMoonlightEvent(client.player);
+                    ItemStack stack = client.player.getStackInHand(Hand.MAIN_HAND);
+                    if (stack.getItem() instanceof IHasAbilities hasAbilities) {
+                        hasAbilities.onAttackClickClient(client.world, stack, client.player);
+                    }
+                    ModMessages.sendToServer(new AttackClickC2S());
                 }
             }
         }

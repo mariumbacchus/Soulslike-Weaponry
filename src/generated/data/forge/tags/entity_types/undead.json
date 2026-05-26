@@ -1,0 +1,31 @@
+{
+  "values": [
+    "minecraft:drowned",
+    "minecraft:giant",
+    "minecraft:husk",
+    "minecraft:phantom",
+    "minecraft:skeleton",
+    "minecraft:skeleton_horse",
+    "minecraft:stray",
+    "minecraft:wither",
+    "minecraft:wither_skeleton",
+    "minecraft:zoglin",
+    "minecraft:zombie",
+    "minecraft:zombie_horse",
+    "minecraft:zombie_villager",
+    "minecraft:zombified_piglin",
+    "soulsweapons:withered_demon",
+    "soulsweapons:accursed_lord_boss",
+    "soulsweapons:draugr_boss",
+    "soulsweapons:night_shade",
+    "soulsweapons:returning_knight",
+    "soulsweapons:remnant",
+    "soulsweapons:dark_sorcerer",
+    "soulsweapons:soul_reaper_ghost",
+    "soulsweapons:forlorn",
+    "soulsweapons:evil_forlorn",
+    "soulsweapons:soulmass",
+    "soulsweapons:chaos_monarch",
+    "soulsweapons:frost_giant"
+  ]
+}

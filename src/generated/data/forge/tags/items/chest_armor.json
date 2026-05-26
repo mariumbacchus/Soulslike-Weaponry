@@ -1,0 +1,18 @@
+{
+  "values": [
+    "minecraft:chainmail_chestplate",
+    "minecraft:diamond_chestplate",
+    "minecraft:golden_chestplate",
+    "minecraft:iron_chestplate",
+    "minecraft:leather_chestplate",
+    "minecraft:netherite_chestplate",
+    "soulsweapons:arkenplate",
+    "soulsweapons:chaos_robes",
+    "soulsweapons:enhanced_arkenplate",
+    "soulsweapons:enhanced_withered_chest",
+    "soulsweapons:withered_chest",
+    "soulsweapons:forlorn_chestplate",
+    "soulsweapons:soul_ingot_chestplate",
+    "soulsweapons:soul_robes_chestplate"
+  ]
+}

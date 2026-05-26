@@ -1,0 +1,9 @@
+{
+  "values": [
+    "soulsweapons:lost_soul",
+    {
+      "id": "terramity:lost_soul",
+      "required": false
+    }
+  ]
+}

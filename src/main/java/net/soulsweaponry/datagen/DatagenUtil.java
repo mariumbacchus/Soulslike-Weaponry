@@ -2,7 +2,9 @@ package net.soulsweaponry.datagen;
 
 public class DatagenUtil {
 
-    public static boolean isDatagenRunning() {//TODO didnt manage to make this work in forge so i just set it true but its probably fine lol
-        return true;
+    private static final boolean DATAGEN = Boolean.getBoolean("forge.datagen") || Boolean.getBoolean("fabric-api.datagen");
+
+    public static boolean isDatagenRunning() {
+        return DATAGEN;
     }
 }

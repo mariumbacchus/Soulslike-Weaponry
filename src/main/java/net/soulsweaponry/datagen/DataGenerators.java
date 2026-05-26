@@ -13,14 +13,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
-import net.soulsweaponry.datagen.damagetype.DamageSourceProvider;
 import net.soulsweaponry.datagen.loot_tables.BlockLootTableProvider;
-import net.soulsweaponry.datagen.loot_tables.EntityLootTablesProvider;
 import net.soulsweaponry.datagen.loot_tables.ChestLootTableProvider;
 import net.soulsweaponry.datagen.loot_tables.ChungusBarterLootTables;
+import net.soulsweaponry.datagen.loot_tables.EntityLootTablesProvider;
 import net.soulsweaponry.datagen.recipe.WeaponRecipeProvider;
 import net.soulsweaponry.datagen.tags.*;
-import net.soulsweaponry.datagen.worldgen.ModWorldGenProvider;
 
 import java.util.Collections;
 import java.util.List;
@@ -64,7 +62,6 @@ public class DataGenerators {
         generator.addProvider(event.includeServer(), new StructureTagProvider(output, lookupProvider, fileHelper));
         generator.addProvider(event.includeServer(), new EnchantmentTagsProvider(output, lookupProvider, fileHelper));
 
-        generator.addProvider(event.includeServer(), new ModWorldGenProvider(output, lookupProvider));
-        generator.addProvider(event.includeServer(), new DamageSourceProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), new ModRegistryProvider(output, lookupProvider));
     }
 }

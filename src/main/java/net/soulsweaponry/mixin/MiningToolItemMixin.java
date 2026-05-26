@@ -3,6 +3,7 @@ package net.soulsweaponry.mixin;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.MiningToolItem;
+import net.soulsweaponry.items.abilities.HasAbilitiesHooks;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +19,7 @@ public abstract class MiningToolItemMixin implements IHasAbilities {
             return;
         }
         boolean vanilla = info.getReturnValue();
-        boolean abilities = IHasAbilities.super.postHit(stack, target, attacker);
+        boolean abilities = HasAbilitiesHooks.postHit(this, stack, target, attacker);
         info.setReturnValue(vanilla || abilities);
     }
 }

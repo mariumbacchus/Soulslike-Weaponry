@@ -23,6 +23,7 @@ public class StatusEffectTagProvider extends TagProvider<StatusEffect> {
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
         this.getOrCreateTagBuilder(ModTags.Effects.DAMAGE_OVER_TIME)
                 .addOptional(RegistryKeys.STATUS_EFFECT.getValue().withPath("poison"))
+                .addOptional(EffectRegistry.BLEED.getId())
                 .addOptional(RegistryKeys.STATUS_EFFECT.getValue().withPath("wither"));
 
         this.getOrCreateTagBuilder(ModTags.Effects.NIGHTLORD_ATTACK_BOOST_GAINED_FROM)

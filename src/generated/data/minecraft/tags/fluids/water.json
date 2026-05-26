@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "soulsweapons:purified_blood",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:flowing_purified_blood",
+      "required": false
+    }
+  ]
+}

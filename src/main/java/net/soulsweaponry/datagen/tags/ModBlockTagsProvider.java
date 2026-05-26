@@ -3,6 +3,7 @@ package net.soulsweaponry.datagen.tags;
 import net.minecraft.data.DataOutput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.soulsweaponry.SoulsWeaponry;
@@ -41,6 +42,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         this.getOrCreateTagBuilder(ModTags.Blocks.NEEDS_ECHO_SHARD_TOOL)
                 .addOptionalTag(BlockTags.NEEDS_DIAMOND_TOOL);
 
+        this.getOrCreateTagBuilder(Tags.Blocks.ORES)
+                .add(BlockRegistry.MOONSTONE_ORE.get())
+                .add(BlockRegistry.MOONSTONE_ORE_DEEPSLATE.get())
+                .add(BlockRegistry.VERGLAS_ORE.get())
+                .add(BlockRegistry.VERGLAS_ORE_DEEPSLATE.get());
 
         this.getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                 .add(BlockRegistry.MOONSTONE_ORE.get())

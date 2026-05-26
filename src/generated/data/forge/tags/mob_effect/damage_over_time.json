@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "minecraft:poison",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:bleed",
+      "required": false
+    },
+    {
+      "id": "minecraft:wither",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+// 1.20.1	2026-05-26T12:26:51.2762731	Tags for minecraft:enchantment mod id soulsweapons
+8a21720e500490f85fe101dbcd880667f164c485 data/soulsweapons/tags/enchantment/apply_fire.json
+3bd0f51c0d4c37084ddd7d330f86380889938514 data/soulsweapons/tags/enchantment/damage_enchantments.json
+f207dc807442686b598c8a8da1f870531cb9e4ba data/soulsweapons/tags/enchantment/exclusive_set/bullet_collision.json
+79125d5d5f8199eb65d00c77e0879ae70b83f1ea data/soulsweapons/tags/enchantment/prevents_ammo_consume.json

@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "soulsweapons:magic_damage_bypass_cooldown",
+      "required": false
+    },
+    {
+      "id": "soulsweapons:silver_bullet_bypass_cooldown",
+      "required": false
+    }
+  ]
+}

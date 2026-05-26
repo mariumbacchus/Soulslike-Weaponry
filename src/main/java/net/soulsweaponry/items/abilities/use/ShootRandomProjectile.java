@@ -32,9 +32,13 @@ public record ShootRandomProjectile(
 ) implements IAbility {
 
     private static final List<LuckChosenObject<EntityType<?>>> PROJECTILES = new ArrayList<>();
+    private static boolean initialized = false;
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, ItemStack stack) {
+        if (PROJECTILES.isEmpty()) {
+            init();
+        }
         this.applyItemCooldown(stack.getItem(), user, 1);
         world.playSound(user, user.getX(), user.getY(), user.getZ(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT, SoundCategory.NEUTRAL,
                 0.5f, 2f / (world.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -118,7 +122,11 @@ public record ShootRandomProjectile(
         );
     }
 
-    static {
+    public static void init() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
         PROJECTILES.add(new LuckChosenObject<>(EntityType.ARROW, WeaponUtil.LuckType.BAD));
         PROJECTILES.add(new LuckChosenObject<>(EntityType.EGG, WeaponUtil.LuckType.BAD));
         PROJECTILES.add(new LuckChosenObject<>(EntityType.ENDER_PEARL, WeaponUtil.LuckType.BAD));
