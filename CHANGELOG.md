@@ -2,6 +2,7 @@
 
 # 1.4.4
 - Fixed a bug causing Returning Knight and Fallen Icon to destroy indestructible blocks around them
+- Fixed an issue with ability system and mixins regarding compatability with other mods if using Sinytra Connector
 
 # 1.4.3
 - Fixed bug causing explosions spawned by Silver Bullets with Explosive Rounds enchant to kill items, inspired by vao211's pull request
