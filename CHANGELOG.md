@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.4.5
+- Fixed crash due to Ranged Weapon API forge patch not being properly builtin as intended
+
 # 1.4.4
 - Fixed a bug causing Returning Knight and Fallen Icon to destroy indestructible blocks around them
 - Fixed a bug causing gun enchants to be applied to any other item (Forge only)

@@ -82,7 +82,7 @@ dependencies {
     implementation("com.eliotlash.mclib:mclib:20")
     modImplementation "curse.maven:attributefix-${project.attributefix}"
 
-    modImplementation name: "ranged_weapon_api-forge-1.1.4+1.20.1" // inside libs folder
+    modImplementation(include(name: "ranged_weapon_api-forge-1.1.4+1.20.1")) // inside libs folder
 
     // Mixin extras
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
