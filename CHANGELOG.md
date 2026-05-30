@@ -1,7 +1,14 @@
 # Changelog
 
+# 1.4.6
+- Fixed shield parries not working visually
+
+# 1.4.5
+- Fixed crash due to Ranged Weapon API forge patch not being properly builtin as intended (Forge only)
+
 # 1.4.4
 - Fixed a bug causing Returning Knight and Fallen Icon to destroy indestructible blocks around them
+- Fixed a bug causing gun enchants to be applied to any other item (Forge only)
 - Fixed an issue with ability system and mixins regarding compatability with other mods if using Sinytra Connector
 - Fixed a bug causing bonus damage to not apply on the Ender Dragon from items like Dragonbane
 

@@ -11,7 +11,7 @@ public class ParrySyncS2C {
 
     public static void receive(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         if (client.player != null) {
-            ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt());
+            ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_TICKS_ID, buf.readInt());
             ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.PARRY_FRAMES_ID, buf.readInt());
             ((IEntityDataSaver)client.player).getPersistentData().putInt(ParryData.MAX_PARRY_TICKS_ID, buf.readInt());
         }
