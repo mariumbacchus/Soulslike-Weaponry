@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.4.6
+- Fixed shield parries not working visually
+
 # 1.4.5
 - Fixed crash due to Ranged Weapon API forge patch not being properly builtin as intended
 

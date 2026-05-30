@@ -92,7 +92,7 @@ dependencies {
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
+    //modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
 
     //modRuntimeOnly("curse.maven:terramity-1084134:6054971")
     //modRuntimeOnly("curse.maven:caelus-api-308989:5281700")

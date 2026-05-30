@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
-import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.client.entitydata.ClientParryData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,8 +25,8 @@ public class HeldItemRendererMixin {
     protected void interceptRenderFirstPersonItem(AbstractClientPlayerEntity player, float tickDelta, float pitch,
                                                   Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices,
                                                   VertexConsumerProvider vertexConsumers, int light, CallbackInfo info) {
-        int ticks = ParryData.getParryTicks(player); // TODO rewrite
-        int maxTicks = ParryData.getMaxParryTicks(player);
+        int ticks = ClientParryData.getParryTicks(); // TODO rewrite
+        int maxTicks = ClientParryData.getMaxParryTicks();
         if (ticks >= 1) {
             this.parryProgress = ticks == 1 ? 0.1f : parryProgress;
             float added = (1f / (float) maxTicks) / 6f;

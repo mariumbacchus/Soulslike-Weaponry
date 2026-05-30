@@ -5,11 +5,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraftforge.network.NetworkEvent;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.otherkeybind.Parry;
-import net.soulsweaponry.util.ModTags;
 
 import java.util.Optional;
 import java.util.function.Supplier;

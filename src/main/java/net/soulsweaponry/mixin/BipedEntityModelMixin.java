@@ -5,7 +5,7 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
-import net.soulsweaponry.entitydata.ParryData;
+import net.soulsweaponry.client.entitydata.ClientParryData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,9 +22,9 @@ public class BipedEntityModelMixin<T extends LivingEntity> {
     protected void animateArms(T entity, float animationProgress, CallbackInfo info) {
         var model = ((BipedEntityModel<?>)(Object)this);
         // Parry animation TODO rewrite, also make use other hand if item is in other hand
-        if (entity instanceof AbstractClientPlayerEntity abstractClientPlayerEntity) {
-            int ticks = ParryData.getParryTicks(abstractClientPlayerEntity);
-            int maxTicks = ParryData.getMaxParryTicks(abstractClientPlayerEntity);
+        if (entity instanceof AbstractClientPlayerEntity) {
+            int ticks = ClientParryData.getParryTicks();
+            int maxTicks = ClientParryData.getMaxParryTicks();
             if (ticks >= 1) {
                 this.parryProgress = ticks == 1 ? 0.1f : parryProgress;
                 float added = (1f / (float) maxTicks) / 6f;
