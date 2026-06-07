@@ -99,7 +99,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.flightTimer = 0;
     }
 
-    private void checkAndSetAttack(LivingEntity target) {
+    private void checkAndSetAttack(LivingEntity target) { //TODO some of the attacks need some polish, like flamethrower should shoot out noclip entities instead, some attacks should be done while standing still, etc.
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         int rand = this.boss.getRandom().nextInt(DayStalker.ATTACKS_LENGTH);
         DayStalker.Attacks attack = DayStalker.Attacks.values()[rand];
@@ -116,7 +116,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 }
             }
             case DECIMATE, DAWNBREAKER -> {
-                if ((this.isInMeleeRange(target) && !this.boss.isFlying()) || this.boss.isPhaseTwo()) {
+                if ((this.isInRangeToTriggerMeleeAttack(target) && !this.boss.isFlying()) || this.boss.isPhaseTwo()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -137,7 +137,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             }
             case RADIANCE -> {
                 if (this.boss.isPhaseTwo()) {
-                    if (this.isInMeleeRange(target) && this.specialCooldown <= 0) {
+                    if (this.isInRangeToTriggerMeleeAttack(target) && this.specialCooldown <= 0) {
                         this.boss.setAttackAnimation(attack);
                     }
                 }
@@ -369,7 +369,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.getLookControl().lookAt(this.boss.getTargetPos().toCenterPos());
         if (this.attackStatus == 25) {
             Vec3d pos = Vec3d.ofCenter(this.boss.getTargetPos());
-            AirCombustion airCombustion = new AirCombustion(this.boss.getWorld(), this.boss, this.getModifiedDamage(35f), this.boss.isPhaseTwo() ? 5f : 3f, 12);
+            AirCombustion airCombustion = new AirCombustion(this.boss.getWorld(), this.boss, this.getModifiedDamage(35f), this.boss.isPhaseTwo() ? 6f : 3.5f, 12);
             airCombustion.setPos(pos.x, pos.y, pos.z);
             airCombustion.setEmpowered(this.boss.isEmpowered());
             this.boss.getWorld().spawnEntity(airCombustion);
@@ -906,6 +906,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     protected boolean isInMeleeRange(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
+    }
+
+    protected boolean isInRangeToTriggerMeleeAttack(LivingEntity target) {
+        double distanceToEntity = this.boss.squaredDistanceTo(target);
+        return distanceToEntity <= this.getSquaredMaxAttackDistance(target) * 3;
     }
 
     private void spawnFlamePillar(Vec3d vec, Integer warmup, Float yaw) {

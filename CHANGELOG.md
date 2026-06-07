@@ -1,5 +1,30 @@
 # Changelog
 
+# 1.5
+## Additions
+- Added the Large Sword of Moonlight (from Demon's Souls)
+  - It deals purely magic damage, therefore bypassing regular armor
+  - Attacks will go through shields
+  - Deal bonus damage against undead mobs
+  - Attacks apply Magic Frailty, a new effect that increases the magic damage taken for the entity that has it
+  - Use to block just like a shield, additionally reduce magic damage taken while blocking by 80%
+- Added the Dragon-Hunter's Great Katana (from Elden Ring: Shadow of the Erdtree)
+  - Being a great katana the attack speed is lower than a traditional one with it being 1.2
+  - Will apply bleed
+  - Great katanas have a unique moveset with Better Combat based on the moveset in Elden Ring
+  - Deal increased damage against dragon mobs
+  - Use to slice the air, shooting out a wave that goes through walls, particles left behind by the slash explode after a short delay
+
+## Changes
+- Dragonbane bonus damage against dragons per level 5 -> 6
+- Tripled the range for Day Stalker and Night Prowler melee attacks to trigger (only trigger, not the range to deal damage)
+
+## Bugfixes
+- Fixed a bug preventing Night Prowler from using the Trinity attack
+- Fixed a bug causing Edges of Night swords to have much smaller hitbox than intended
+
+---------------
+
 # 1.4.4
 - Fixed a bug causing Returning Knight and Fallen Icon to destroy indestructible blocks around them
 - Fixed an issue with ability system and mixins regarding compatability with other mods if using Sinytra Connector

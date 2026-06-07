@@ -78,6 +78,9 @@ public class SoundRegistry {
     public static SoundEvent STORMVEIL_TRIGGER = registerSound("stormveil_trigger");
     public static SoundEvent STORMVEIL_THORNS = registerSound("stormveil_thorns");
     public static SoundEvent BLOOD_LOSS = registerSound("blood_loss");
+    public static SoundEvent SHOOT_FIREWAVE = registerSound("shoot_firewave");
+    public static SoundEvent SETUP_HEAVY_ATTACK_SLAM = registerSound("setup_heavy_attack_slam");
+    public static SoundEvent DEEP_EXPLOSION = registerSound("deep_explosion"); // Firebomb sound effect from ds3 if I remember correctly
 
     public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
     public static RegistryKey<JukeboxSong> BIG_CHUNGUS_SONG_EVENT_KEY = registerJukeboxSong("big_chungus_song");

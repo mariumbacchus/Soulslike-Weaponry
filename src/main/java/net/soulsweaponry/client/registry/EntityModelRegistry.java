@@ -78,5 +78,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.CHUNGUS_HEAD, ChungusHeadRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.AIR_COMBUSTION, EmptyEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MOLTEN_METAL, MoltenMetalRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.DRAGONWOUND_WAVE_VERTICAL, DragonwoundWaveRenderer::new);
     }
 }

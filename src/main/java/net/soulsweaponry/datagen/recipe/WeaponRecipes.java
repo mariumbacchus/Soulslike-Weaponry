@@ -476,6 +476,17 @@ public class WeaponRecipes {
                 .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
                         .tag(ModTags.Items.LORD_SOUL).build()))
                 .offerTo(recipeExporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, WeaponRegistry.DRAGON_HUNTERS_GREAT_KATANA)
+                .input('#', ItemRegistry.CRIMSON_INGOT)
+                .input('G', ConventionalItemTags.GOLD_INGOTS)
+                .input('O', ModTags.Items.LORD_SOUL)
+                .input('X', Items.IRON_INGOT)
+                .pattern(" ##")
+                .pattern("#OG")
+                .pattern("X  ")
+                .criterion("has_item", conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .tag(ModTags.Items.LORD_SOUL).build()))
+                .offerTo(recipeExporter);
 
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(WeaponRegistry.BLOODTHIRSTER), WeaponRegistry.DARKIN_BLADE, recipeExporter);
         WeaponRecipeProvider.smithingRecipeLordSoulCombat(Ingredient.ofItems(Items.GOLDEN_SWORD), WeaponRegistry.DAWNBREAKER, recipeExporter);

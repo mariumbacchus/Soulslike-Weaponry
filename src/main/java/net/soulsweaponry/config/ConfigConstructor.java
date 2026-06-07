@@ -87,6 +87,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_bloodlust = false;
     @Entry public static boolean disable_recipe_sword_of_the_nightlord = false;
     @Entry public static boolean disable_recipe_large_sword_of_moonlight = false;
+    @Entry public static boolean disable_recipe_dragon_hunters_great_katana = false;
 
     @Entry public static boolean disable_recipe_arkenplate = false;
     @Entry public static boolean disable_recipe_chaos_helmet = false;
@@ -174,6 +175,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_sword_of_the_nightlord = false;
     @Entry public static boolean disable_use_sting = false;
     @Entry public static boolean disable_use_large_sword_of_moonlight = false;
+    @Entry public static boolean disable_use_dragon_hunters_great_katana = false;
 
     @Entry public static boolean disable_use_arkenplate = false;
     @Entry public static boolean disable_use_enhanced_arkenplate = false;
@@ -245,6 +247,7 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_bloodlust = false;
     @Entry public static boolean is_fireproof_sword_of_the_nightlord = true;
     @Entry public static boolean is_fireproof_large_sword_of_moonlight = true;
+    @Entry public static boolean is_fireproof_dragon_hunters_great_katana = true;
 
     @Entry public static boolean is_fireproof_blunderbuss = false;
     @Entry public static boolean is_fireproof_gatling_gun = false;
@@ -694,11 +697,31 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float dragonbane_damage = 9;
     @Entry public static float dragonbane_attack_speed = 1.6f;
     @Entry public static float dragonbane_dragons_scourge_base_bonus = 20f;
-    @Entry public static float dragonbane_dragons_scourge_bonus_per_level = 5f;
+    @Entry public static float dragonbane_dragons_scourge_bonus_per_level = 6f;
     @Entry public static float dragonbane_chain_lightning_base_damage = 6f;
     @Entry public static float dragonbane_chain_lightning_bonus_damage_per_level = 4f;
     @Entry public static float dragonbane_chain_lightning_base_range = 2.5f;
     @Entry public static float dragonbane_chain_lightning_bonus_range_per_level = 1.3f;
+
+    @Entry public static float dragon_hunters_great_katana_damage = 10f;
+    @Entry public static float dragon_hunters_great_katana_attack_speed = 1.2f;
+    @Entry public static float dragon_hunters_great_katana_dragons_scourge_base_bonus = 10;
+    @Entry public static float dragon_hunters_great_katana_dragons_scourge_bonus_per_level = 2f;
+    @Entry public static float dragon_hunters_great_katana_bleed_post_hit = 40;
+    @Entry public static float dragon_hunters_great_katana_bleed_post_hit_bonus_per_bloodthirsty_amp = 25;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_projectile_max_age = 12;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_projectile_velocity = 1.5f;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_projectile_base_damage = 12f;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_projectile_bonus_damage_per_level = 4f;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_explosion_damage = 14f;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_explosion_bonus_damage_per_level = 7f;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_explosion_radius = 3f;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_explosion_bonus_radius_per_level = 0.35f;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_explosion_delay_ticks = 12;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_cooldown = 70;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_min_cooldown = 10;
+    @Entry public static float dragon_hunters_great_katana_dragonwound_slash_reduced_cooldown_per_level = 10;
+
     @Entry public static float dragonslayer_swordspear_damage = 8;
     @Entry public static float dragonslayer_swordspear_attack_speed = 1.4f;
     @Entry public static float dragonslayer_swordspear_dragons_scourge_bonus = 2f;

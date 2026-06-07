@@ -150,13 +150,13 @@ public class ParticleEvents {
         ParticleHandler.flashParticle(world, x, y, z, 0x4ffff3, 10f);
     }
 
-    public static void airCombustionEvent(World world, double x, double y, double z) {
+    public static void airCombustionEvent(World world, double x, double y, double z, List<ParticleEffect> particles, int amount) {
         HashMap<ParticleEffect, Vec3d> map = Maps.newHashMap();
         Vec3d vec = new Vec3d(3, 3, 3);
-        map.put(ParticleTypes.LARGE_SMOKE, vec);
-        map.put(ParticleTypes.FLAME, vec);
-        map.put(ParticleTypes.SMALL_FLAME, vec);
-        ParticleHandler.particleOutburstMap(world, 150, x, y, z, map, 1f);
+        for (ParticleEffect particle : particles) {
+            map.put(particle, vec);
+        }
+        ParticleHandler.particleOutburstMap(world, amount, x, y, z, map, 1f);
         ParticleHandler.flashParticle(world, x, y, z, 0xc94000, 1);
     }
 }

@@ -105,7 +105,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         NightProwler.Attacks attack = NightProwler.Attacks.values()[rand];
         switch (attack) {
             case TRINITY -> {
-                if (this.isInMeleeRange(target) || this.boss.isFlying()) {
+                if (this.isInRangeToTriggerMeleeAttack(target) || this.boss.isFlying()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -120,12 +120,12 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 }
             }
             case RIPPLE_FANG, SOUL_REAPER -> {
-                if (this.isInMeleeRange(target)) {
+                if (this.isInRangeToTriggerMeleeAttack(target)) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
             case DARKNESS_RISE -> {
-                if (this.isInMeleeRange(target) && !this.boss.isFlying()) {
+                if (this.isInRangeToTriggerMeleeAttack(target) && !this.boss.isFlying()) {
                     this.boss.setAttackAnimation(attack);
                 }
             }
@@ -327,9 +327,9 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     @Override
     protected void attack(LivingEntity target) {}
 
-    protected boolean isInMeleeRange(LivingEntity target) {
+    protected boolean isInRangeToTriggerMeleeAttack(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
-        return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
+        return distanceToEntity <= this.getSquaredMaxAttackDistance(target) * 3;
     }
 
     //TODO move this into parent class when it is made
@@ -370,10 +370,12 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             }
         }
         DayStalker partner;
-        if (this.boss.isFlying() && this.attackStatus == stopFlying && !this.boss.getWorld().isClient && (partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
+        if (this.boss.isFlying() && this.attackStatus == stopFlying && !this.boss.getWorld().isClient) {
             this.boss.setFlying(false);
-            partner.setFlying(true);
-            partner.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
+            if ((partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
+                partner.setFlying(true);
+                partner.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
+            }
             this.boss.setVelocity(0, -2f, 0);
         }
         if (!this.hasExploded && this.attackStatus >= min && this.attackStatus <= max && this.boss.isOnGround()) {
@@ -715,7 +717,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.attackStatus++;
         this.boss.getNavigation().stop();
         if (this.attackStatus == 24) {
-            this.boss.playSound(SoundRegistry.DARKNESS_RISE, 1f, 1f);// TODO this sounds sucks
+            this.boss.playSound(SoundRegistry.DARKNESS_RISE, 1f, 1f);
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 300, 0));
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 300, 1));
             float yawRad = (float) MathHelper.atan2(

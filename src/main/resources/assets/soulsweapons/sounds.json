@@ -470,5 +470,23 @@
             "soulsweapons:bleed/blood_loss_1",
             "soulsweapons:bleed/blood_loss_2"
         ]
+    },
+    "shoot_firewave": {
+        "subtitle": "subtitles.soulsweapons.shoot_firewave",
+        "sounds": [
+            "soulsweapons:shoot_firewave"
+        ]
+    },
+    "setup_heavy_attack_slam": {
+        "subtitle": "subtitles.soulsweapons.setup_heavy_attack_slam",
+        "sounds": [
+            "soulsweapons:setup_heavy_attack_slam"
+        ]
+    },
+    "deep_explosion": {
+        "subtitle": "subtitles.soulsweapons.deep_explosion",
+        "sounds": [
+            "soulsweapons:deep_explosion"
+        ]
     }
 }

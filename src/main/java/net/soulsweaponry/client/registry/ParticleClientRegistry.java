@@ -21,5 +21,7 @@ public class ParticleClientRegistry {
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.SOUL_SPARK, SoulSparkFactory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.ECHO_SMOKE, EchoSmokeFactory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.ECHO_SWEEP_ATTACK, CyanSweepAttackParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.CRIMSON_PARTICLE, FlameParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.DRAGONWOUND_FLAME, FlameParticle.Factory::new);
     }
 }

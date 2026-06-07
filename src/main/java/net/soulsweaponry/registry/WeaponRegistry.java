@@ -14,6 +14,7 @@ import net.soulsweaponry.items.crossbow.KrakenSlayerCrossbow;
 import net.soulsweaponry.items.dagger.MehrunesRazor;
 import net.soulsweaponry.items.hammer.*;
 import net.soulsweaponry.items.katana.Bloodlust;
+import net.soulsweaponry.items.katana.DragonHuntersGreatKatana;
 import net.soulsweaponry.items.katana.Dragonbane;
 import net.soulsweaponry.items.katana.Moonveil;
 import net.soulsweaponry.items.material.ModToolMaterials;
@@ -87,9 +88,10 @@ public class WeaponRegistry {
     public static ToolItem SUPERNOVA = new Supernova(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem MEHRUNES_RAZOR = new MehrunesRazor(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem TONITRUS = new Tonitrus(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.RARE));
-    public static ToolItem BLOODLUST = new Bloodlust(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.RARE));
+    public static ToolItem BLOODLUST = new Bloodlust(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.RARE));//TODO make 2d texture
     public static ToolItem NIGHTLORDS_SWORD = new NightlordsSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
-    public static ToolItem LARGE_MOONLIGHT_SWORD = new LargeMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
+    public static ToolItem LARGE_MOONLIGHT_SWORD = new LargeMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));//TODO make 2d texture
+    public static ToolItem DRAGON_HUNTERS_GREAT_KATANA = new DragonHuntersGreatKatana(ModToolMaterials.CRIMSON_INGOT, new Item.Settings().rarity(Rarity.EPIC));//TODO make 2d texture
 
     public static void init() {
         ItemRegistry.registerLegendaryWeapon(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", ConfigConstructor.disable_recipe_bluemoon_shortsword, ConfigConstructor.is_fireproof_bluemoon_shortsword);
@@ -153,5 +155,6 @@ public class WeaponRegistry {
         ItemRegistry.registerLegendaryWeapon(BLOODLUST, "bloodlust", ConfigConstructor.disable_recipe_bloodlust, ConfigConstructor.is_fireproof_bloodlust);
         ItemRegistry.registerLegendaryWeapon(NIGHTLORDS_SWORD, "nightlords_sword", ConfigConstructor.disable_recipe_sword_of_the_nightlord, ConfigConstructor.is_fireproof_sword_of_the_nightlord);
         ItemRegistry.registerLegendaryWeapon(LARGE_MOONLIGHT_SWORD, "large_sword_of_moonlight", ConfigConstructor.disable_recipe_large_sword_of_moonlight, ConfigConstructor.is_fireproof_large_sword_of_moonlight);
+        ItemRegistry.registerLegendaryWeapon(DRAGON_HUNTERS_GREAT_KATANA, "dragon_hunters_great_katana", ConfigConstructor.disable_recipe_dragon_hunters_great_katana, ConfigConstructor.is_fireproof_dragon_hunters_great_katana);
     }
 }

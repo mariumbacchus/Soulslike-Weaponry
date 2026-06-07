@@ -171,6 +171,7 @@
     "item.soulsweapons.bloodlust": "Bloodlust",
     "item.soulsweapons.nightlords_sword": "Sword of the Nightlord",
     "item.soulsweapons.large_sword_of_moonlight": "Large Sword of Moonlight",
+    "item.soulsweapons.dragon_hunters_great_katana": "Dragon-Hunter's Great Katana",
 
     "item.soulsweapons.big_chungus_spawn_egg": "中型蠢古斯兔刷怪蛋",
     "item.soulsweapons.withered_demon_spawn_egg": "凋零恶魔刷怪蛋",
@@ -402,6 +403,9 @@
     "subtitles.soulsweapons.stormveil_ambient": "Stormveil sparks",
     "subtitles.soulsweapons.stormveil_thorns": "Stormveil electrocutes attacker",
     "subtitles.soulsweapons.blood_loss": "Entity suffers blood loss",
+    "subtitles.soulsweapons.shoot_firewave": "Shoot firewave",
+    "subtitles.soulsweapons.setup_heavy_attack_slam": "Heavy attack setup into slam",
+    "subtitles.soulsweapons.deep_explosion": "Explosion lingers",
 
     "tooltip.soulsweapons.show_item_info": "Hold [%s] for Info",
     "tooltip.soulsweapons.show_item_lore": "Hold [%s] for Lore",
@@ -845,6 +849,11 @@
     "tooltip.soulsweapons.magic_frailty": "Magic Frailty",
     "tooltip.soulsweapons.magic_frailty.1": "- Apply Magic Frailty effect on targets,",
     "tooltip.soulsweapons.magic_frailty.2": "increasing magic damage they take",
+
+    "tooltip.soulsweapons.dragonwound_slash": "Dragonwound Slash",
+    "tooltip.soulsweapons.dragonwound_slash.1": "- Heavy swing unleashes a wave going through walls",
+    "tooltip.soulsweapons.dragonwound_slash.2": "- The slash leaves behind particles that explode",
+    "tooltip.soulsweapons.dragonwound_slash.3": "after a short delay",
 
     "tooltip.soulsweapons.lord_soul_purple.part_1": "A rare form of souls, thought to be extinct.",
     "tooltip.soulsweapons.lord_soul_purple.part_2": "It's dark, but balanced color, suggests",

@@ -131,6 +131,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "soulsweapons:dragon_hunters_great_katana": {
+      "conditions": {
+        "items": [
+          {
+            "items": "soulsweapons:dragon_hunters_great_katana"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "soulsweapons:dragon_staff": {
       "conditions": {
         "items": [
@@ -717,6 +727,9 @@
     ],
     [
       "soulsweapons:large_sword_of_moonlight"
+    ],
+    [
+      "soulsweapons:dragon_hunters_great_katana"
     ]
   ],
   "sends_telemetry_event": true

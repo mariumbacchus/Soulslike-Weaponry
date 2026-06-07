@@ -1,0 +1,12 @@
+{
+    "attributes":
+    {
+        "common":
+        {
+            "armor_negation":28.0,
+            "impact":0.8,
+            "max_strikes":1
+        }
+    },
+    "type":"epicfight:uchigatana"
+}
