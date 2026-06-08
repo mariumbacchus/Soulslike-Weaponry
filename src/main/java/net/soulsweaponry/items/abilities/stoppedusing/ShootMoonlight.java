@@ -69,7 +69,7 @@ public class ShootMoonlight implements IChargeToUse {
         return (int) (this.projectileAmount + this.bonusProjectilesPerLvl * lvl);
     }
 
-    private float getYawOffsetForIndex(int index, float stepDegrees) {
+    public static float getYawOffsetForIndex(int index, float stepDegrees) {
         if (index == 0) {
             return 0f;
         }

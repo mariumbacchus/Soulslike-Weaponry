@@ -142,6 +142,10 @@ public class BossConfig extends MidnightConfig {
     @Entry(min = 0) public static float night_prowler_damage_modifier = 1f;
     @Entry(min = 0) public static float night_prowler_eclipse_healing = 3f;
     @Entry(min = 0) public static boolean night_prowler_eclipse_skulls_glow = false;
+    @Entry(min = 0) public static boolean night_prowler_eclipse_skulls_destroy_blocks = true;
+    @Entry(min = 0) public static float night_prowler_eclipse_skulls_explosion_power = 2f;
+    @Entry(min = 0) public static float night_prowler_eclipse_skulls_explosion_power_charged = 4f;
+    @Entry(min = 0) public static float night_prowler_eclipse_skull_waves_before_charged_skull_wave = 3;
     @Entry(min = 0, max = 1) public static double night_prowler_projectile_heal_below_percent_health = 0.5;
     @Entry public static String[] night_prowler_projectile_immunity_whitelist = {};
     @Entry(min = 0) public static float night_prowler_projectile_heal_amount = 5f;

@@ -25,7 +25,6 @@ import net.soulsweaponry.registry.EntityRegistry;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -49,6 +48,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
     private LivingEntity owner;
     @Nullable
     private UUID ownerUuid;
+    private boolean affectOwner = true;
 
     public AreaEffectSphere(EntityType<?> type, World world) {
         super(type, world);
@@ -130,100 +130,128 @@ public class AreaEffectSphere extends Entity implements Ownable {
         this.getDataTracker().set(PARTICLE_COUNT_MODIFIER, modifier);
     }
 
+    @Override
     public void tick() {
         super.tick();
-        boolean bl = this.isWaiting();
-        float f = this.getRadius();
+        boolean waiting = this.isWaiting();
+        float radius = this.getRadius();
         if (this.getWorld().isClient) {
-            if (bl && this.random.nextBoolean()) {
+            this.tickClient(waiting, radius);
+            return;
+        }
+        this.tickServer(waiting, radius);
+    }
+
+    private void tickClient(boolean waiting, float radius) {
+        if (waiting && this.random.nextBoolean()) {
+            return;
+        }
+        int points = MathHelper.floor(radius * this.getParticleAmountModifier());
+        randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getHeight() / 2f, this.getZ(), points, radius * 1.25f, this.getParticleType(), this.random);
+    }
+
+    private void tickServer(boolean wasWaiting, float radius) {
+        if (this.age >= this.waitTime + this.duration) {
+            this.discard();
+            return;
+        }
+        boolean shouldWait = this.age < this.waitTime;
+        if (wasWaiting != shouldWait) {
+            this.setWaiting(shouldWait);
+        }
+        if (shouldWait) {
+            return;
+        }
+        radius = this.applyRadiusGrowth(radius);
+        if (this.isRemoved()) {
+            return;
+        }
+        if (this.age % 5 != 0) {
+            return;
+        }
+        this.applyEffectsToEntities(radius);
+    }
+
+    private float applyRadiusGrowth(float radius) {
+        if (this.radiusGrowth == 0.0F) {
+            return radius;
+        }
+        radius += this.radiusGrowth;
+        if (radius < 0.5F) {
+            this.discard();
+            return radius;
+        }
+        this.setRadius(radius);
+        return radius;
+    }
+
+    private void applyEffectsToEntities(float radius) {
+        this.affectedEntities.entrySet().removeIf(entry -> this.age >= entry.getValue());
+        List<StatusEffectInstance> effectsToApply = Lists.newArrayList();
+        effectsToApply.addAll(this.effects);
+        if (effectsToApply.isEmpty()) {
+            this.affectedEntities.clear();
+            return;
+        }
+        List<LivingEntity> entities = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox());
+        for (LivingEntity entity : entities) {
+            if (!this.canAffect(entity, radius)) {
+                continue;
+            }
+            this.affectEntity(entity, effectsToApply);
+            radius = this.applyRadiusOnUse(radius);
+            if (this.isRemoved()) {
                 return;
             }
-            int points = MathHelper.floor(this.getRadius() * this.getParticleAmountModifier());
-            randomParticleBox(this.getWorld(), this.getX(), this.getY() + this.getHeight()/2f, this.getZ(), points, this.getRadius() * 1.25f, this.getParticleType(), this.random);
-        } else {
-            if (this.age >= this.waitTime + this.duration) {
-                this.discard();
+            this.applyDurationOnUse();
+            if (this.isRemoved()) {
                 return;
             }
+        }
+    }
 
-            boolean bl2 = this.age < this.waitTime;
-            if (bl != bl2) {
-                this.setWaiting(bl2);
+    private boolean canAffect(LivingEntity entity, float radius) {
+        boolean ownerOrTeammate = (this.getOwner() != null && entity.isTeammate(this.getOwner())) || entity.equals(this.getOwner());
+        if (this.affectedEntities.containsKey(entity) || !entity.isAffectedBySplashPotions() || (!this.shouldAffectOwner() && ownerOrTeammate)) {
+            return false;
+        }
+        double dx = entity.getX() - this.getX();
+        double dz = entity.getZ() - this.getZ();
+        double distanceSquared = dx * dx + dz * dz;
+        return distanceSquared <= radius * radius;
+    }
+
+    private void affectEntity(LivingEntity entity, List<StatusEffectInstance> effectsToApply) {
+        this.affectedEntities.put(entity, this.age + this.reapplicationDelay);
+        for (StatusEffectInstance effect : effectsToApply) {
+            if (effect.getEffectType().value().isInstant()) {
+                effect.getEffectType().value().applyInstantEffect(this, this.getOwner(), entity, effect.getAmplifier(), 0.5);
+            } else {
+                entity.addStatusEffect(new StatusEffectInstance(effect), this);
             }
+        }
+    }
 
-            if (bl2) {
-                return;
-            }
+    private float applyRadiusOnUse(float radius) {
+        if (this.radiusOnUse == 0.0F) {
+            return radius;
+        }
+        radius += this.radiusOnUse;
+        if (radius < 0.5F) {
+            this.discard();
+            return radius;
+        }
+        this.setRadius(radius);
+        return radius;
+    }
 
-            if (this.radiusGrowth != 0.0F) {
-                f += this.radiusGrowth;
-                if (f < 0.5F) {
-                    this.discard();
-                    return;
-                }
-                this.setRadius(f);
-            }
-
-            if (this.age % 5 == 0) {
-                this.affectedEntities.entrySet().removeIf((entry) -> this.age >= entry.getValue());
-                List<StatusEffectInstance> list = Lists.newArrayList();
-                list.addAll(this.effects);
-                if (list.isEmpty()) {
-                    this.affectedEntities.clear();
-                } else {
-                    List<LivingEntity> list2 = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox());
-                    if (!list2.isEmpty()) {
-                        Iterator<LivingEntity> var27 = list2.iterator();
-
-                        while(true) {
-                            double s;
-                            LivingEntity livingEntity;
-                            do {
-                                do {
-                                    do {
-                                        if (!var27.hasNext()) {
-                                            return;
-                                        }
-                                        livingEntity = var27.next();
-                                    } while(this.affectedEntities.containsKey(livingEntity));
-                                } while(!livingEntity.isAffectedBySplashPotions());
-
-                                double q = livingEntity.getX() - this.getX();
-                                double r = livingEntity.getZ() - this.getZ();
-                                s = q * q + r * r;
-                            } while(!(s <= (double)(f * f)));
-
-                            this.affectedEntities.put(livingEntity, this.age + this.reapplicationDelay);
-
-                            for (StatusEffectInstance statusEffectInstance2 : list) {
-                                if (statusEffectInstance2.getEffectType().value().isInstant()) {
-                                    statusEffectInstance2.getEffectType().value().applyInstantEffect(this, this.getOwner(), livingEntity, statusEffectInstance2.getAmplifier(), 0.5);
-                                } else {
-                                    livingEntity.addStatusEffect(new StatusEffectInstance(statusEffectInstance2), this);
-                                }
-                            }
-
-                            if (this.radiusOnUse != 0.0F) {
-                                f += this.radiusOnUse;
-                                if (f < 0.5F) {
-                                    this.discard();
-                                    return;
-                                }
-
-                                this.setRadius(f);
-                            }
-
-                            if (this.durationOnUse != 0) {
-                                this.duration += this.durationOnUse;
-                                if (this.duration <= 0) {
-                                    this.discard();
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    private void applyDurationOnUse() {
+        if (this.durationOnUse == 0) {
+            return;
+        }
+        this.duration += this.durationOnUse;
+        if (this.duration <= 0) {
+            this.discard();
         }
     }
 
@@ -289,6 +317,14 @@ public class AreaEffectSphere extends Entity implements Ownable {
         return this.owner;
     }
 
+    public void setAffectOwner(boolean affectOwner) {
+        this.affectOwner = affectOwner;
+    }
+
+    public boolean shouldAffectOwner() {
+        return this.affectOwner;
+    }
+
     protected void readCustomDataFromNbt(NbtCompound nbt) {
         this.age = nbt.getInt("Age");
         this.duration = nbt.getInt("Duration");
@@ -320,6 +356,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
                 }
             }
         }
+        this.setAffectOwner(nbt.getBoolean("AffectOwner"));
     }
 
     protected void writeCustomDataToNbt(NbtCompound nbt) {
@@ -344,6 +381,7 @@ public class AreaEffectSphere extends Entity implements Ownable {
             }
             nbt.put("Effects", nbtList);
         }
+        nbt.putBoolean("AffectOwner", this.shouldAffectOwner());
     }
 
     public void onTrackedDataSet(TrackedData<?> data) {

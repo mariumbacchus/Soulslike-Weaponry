@@ -6,7 +6,7 @@ import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.SoulHarvestingItem;
-import net.soulsweaponry.items.abilities.use.WitherSoulRelease;
+import net.soulsweaponry.items.abilities.use.NightSkullSoulRelease;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -18,9 +18,16 @@ import java.util.function.Consumer;
 public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private static final WitherSoulRelease WITHER_SOUL_RELEASE = new WitherSoulRelease(
-            ConfigConstructor.forlorn_scythe_wither_skull_explosion_power,
-            ConfigConstructor.forlorn_scythe_empowered_wither_skull_explosion_power
+    private static final NightSkullSoulRelease WITHER_SOUL_RELEASE = new NightSkullSoulRelease(
+            ConfigConstructor.forlorn_scythe_night_skull_explosion_power,
+            ConfigConstructor.forlorn_scythe_charged_night_skull_explosion_power,
+            ConfigConstructor.forlorn_scythe_night_skull_damage,
+            ConfigConstructor.forlorn_scythe_night_skull_bonus_damage_per_level,
+            ConfigConstructor.forlorn_scythe_charged_night_skull_damage,
+            ConfigConstructor.forlorn_scythe_charged_night_skull_bonus_damage_per_level,
+            ConfigConstructor.forlorn_scythe_night_skull_velocity,
+            ConfigConstructor.forlorn_scythe_night_skull_explosion_destroy_blocks,
+            (int) ConfigConstructor.forlorn_scythe_night_skull_max_age_ticks
     );
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {

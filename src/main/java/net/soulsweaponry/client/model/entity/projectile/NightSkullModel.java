@@ -20,6 +20,6 @@ public class NightSkullModel extends GeoModel<NightSkull> {
 
     @Override
     public Identifier getTextureResource(NightSkull object) {
-        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/night_skull.png");
+        return Identifier.of(SoulsWeaponry.ModId, "textures/entity/night_skull" + (object.isCharged() ? "_charged" : "") + ".png");
     }
 }

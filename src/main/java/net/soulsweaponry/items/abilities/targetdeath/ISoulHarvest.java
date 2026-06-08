@@ -6,8 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.registry.ComponentRegistry;
 
-import java.util.Optional;
-
 public interface ISoulHarvest extends IAbility {
 
     default void handleKill(LivingEntity target, ItemStack stack) {
@@ -23,12 +21,12 @@ public interface ISoulHarvest extends IAbility {
     }
 
     default void addAmount(ItemStack stack, int amount) {
-        amount += Optional.ofNullable(stack.get(ComponentRegistry.SOULS_HARVESTED)).orElse(0);
+        amount += stack.getOrDefault(ComponentRegistry.SOULS_HARVESTED, 0);
         stack.set(ComponentRegistry.SOULS_HARVESTED, amount);
     }
 
     default int getSouls(ItemStack stack) {
-        return Optional.ofNullable(stack.get(ComponentRegistry.SOULS_HARVESTED)).orElse(0);
+        return stack.getOrDefault(ComponentRegistry.SOULS_HARVESTED, 0);
     }
 
     default boolean canCollectSouls() {

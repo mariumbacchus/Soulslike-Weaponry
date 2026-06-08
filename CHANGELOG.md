@@ -16,8 +16,26 @@
   - Use to slice the air, shooting out a wave that goes through walls, particles left behind by the slash explode after a short delay
 
 ## Changes
+### Weapons
 - Dragonbane bonus damage against dragons per level 5 -> 6
+- Reworked the Forlorn Scythe
+  - It now shoots 3 Night Skulls instead of 1 Wither Skull
+  - Every 3rd shot makes the middle skull charged
+  - Night Skulls always despawn after 30 ticks
+  - Explosions no longer destroy blocks, this can be enabled in the config again
+  - Explosion power increased from 1 to 2, charged skulls have 3
+  - Charged skulls also leave behind a cloud of Decay, but it will not affect the user or teammates of the user
+  - Night Skulls have no drag unlike the Wither Skulls, therefore using it while other skulls are in the air will **no longer** detonate those previous skulls
+  - Config lines have been renamed to include night_skull instead of wither_skull, lines for damage and velocity has also been added
+
+### Bosses
 - Tripled the range for Day Stalker and Night Prowler melee attacks to trigger (only trigger, not the range to deal damage)
+- Night Prowler's Night Skulls during the Eclipse attack now shoot charged skulls every 3rd wave, only these will spawn clouds of Decay and will deal more damage
+  - Damage is 10 for regular, 14 for charged
+  - Explosion power is 2 for regular, 4 for charged
+  - Duration increased from 4 to 5 seconds of the cloud
+  - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
+  - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack

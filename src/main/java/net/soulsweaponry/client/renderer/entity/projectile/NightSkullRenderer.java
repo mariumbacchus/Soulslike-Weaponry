@@ -8,5 +8,6 @@ public class NightSkullRenderer extends GeoProjectileRenderer<NightSkull> {
 
     public NightSkullRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new NightSkullModel());
+        this.addRenderLayer(new NightSkullChargeLayer(this));
     }
 }

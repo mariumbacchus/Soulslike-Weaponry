@@ -837,8 +837,16 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static float forlorn_scythe_damage = 11;
     @Entry public static float forlorn_scythe_attack_speed = 1f;
-    @Entry public static float forlorn_scythe_wither_skull_explosion_power = 1f;
-    @Entry public static float forlorn_scythe_empowered_wither_skull_explosion_power = 2f;
+    @Entry public static float forlorn_scythe_night_skull_explosion_power = 2f;
+    @Entry public static float forlorn_scythe_charged_night_skull_explosion_power = 3f;
+    @Entry public static float forlorn_scythe_night_skull_damage = 8f;
+    @Entry public static float forlorn_scythe_night_skull_bonus_damage_per_level = 1f;
+    @Entry public static float forlorn_scythe_charged_night_skull_damage = 10f;
+    @Entry public static float forlorn_scythe_charged_night_skull_bonus_damage_per_level = 2f;
+    @Entry public static float forlorn_scythe_night_skull_velocity = 1.5f;
+    @Entry public static boolean forlorn_scythe_night_skull_explosion_destroy_blocks = false;
+    @Entry public static float forlorn_scythe_night_skull_max_age_ticks = 30;
+
     @Entry public static float featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;
     @Entry public static float featherlight_posture_loss = 20;
