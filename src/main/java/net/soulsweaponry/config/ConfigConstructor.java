@@ -846,6 +846,8 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float forlorn_scythe_night_skull_velocity = 1.5f;
     @Entry public static boolean forlorn_scythe_night_skull_explosion_destroy_blocks = false;
     @Entry public static float forlorn_scythe_night_skull_max_age_ticks = 30;
+    @Entry public static float forlorn_scythe_night_skull_base_count = 1;
+    @Entry public static float forlorn_scythe_night_skull_levels_needed_for_2_more_skulls = 3;
 
     @Entry public static float featherlight_damage = 8;
     @Entry public static float featherlight_attack_speed = 1.6f;

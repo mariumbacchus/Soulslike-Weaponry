@@ -29,8 +29,10 @@ public class NightSkullSoulRelease implements ISoulHarvest {
     private final float velocity;
     private final boolean destroyBlocks;
     private final int maxAge;
+    private final int baseSkullCount;
+    private final int lvlFor2MoreSkulls;
 
-    public NightSkullSoulRelease(float baseSkullExplosionPower, float chargedSkullExplosionPower, float baseDamage, float bonusDamagePerLvl, float chargedBaseDamage, float chargedBonusDamagePerLvl, float velocity, boolean destroyBlocks, int maxAge) {
+    public NightSkullSoulRelease(float baseSkullExplosionPower, float chargedSkullExplosionPower, float baseDamage, float bonusDamagePerLvl, float chargedBaseDamage, float chargedBonusDamagePerLvl, float velocity, boolean destroyBlocks, int maxAge, int baseSkullCount, int lvlNeededFor2MoreSkulls) {
         this.baseSkullExplosionPower = baseSkullExplosionPower;
         this.chargedSkullExplosionPower = chargedSkullExplosionPower;
         this.baseDamage = baseDamage;
@@ -40,6 +42,8 @@ public class NightSkullSoulRelease implements ISoulHarvest {
         this.velocity = velocity;
         this.destroyBlocks = destroyBlocks;
         this.maxAge = maxAge;
+        this.baseSkullCount = baseSkullCount;
+        this.lvlFor2MoreSkulls = lvlNeededFor2MoreSkulls;
     }
 
     @Override
@@ -54,7 +58,7 @@ public class NightSkullSoulRelease implements ISoulHarvest {
             } else {
                 stack.set(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 1 + stack.getOrDefault(ComponentRegistry.WITHER_SOUL_RELEASE_COUNTER, 0));
             }
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < this.getSkullCount(lvl); i++) {
                 NightSkull entity = this.createNightSkull(world, user, stack, i, lvl, chargeMiddle && i == 0);
                 world.spawnEntity(entity);
             }
@@ -67,6 +71,12 @@ public class NightSkullSoulRelease implements ISoulHarvest {
             return TypedActionResult.success(stack, world.isClient());
         }
         return TypedActionResult.fail(stack);
+    }
+
+    private int getSkullCount(int lvl) {
+        int skullCount = this.baseSkullCount;
+        skullCount += 2 * (lvl / this.lvlFor2MoreSkulls);
+        return skullCount;
     }
 
     private NightSkull createNightSkull(World world, LivingEntity user, ItemStack stack, int projectileNr, int lvl, boolean charged) {
@@ -90,7 +100,7 @@ public class NightSkullSoulRelease implements ISoulHarvest {
     public List<Text> getTooltipAbilities(ItemStack stack) {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.soul_release_wither").formatted(Formatting.DARK_RED),
-                Text.translatable("tooltip.soulsweapons.soul_release_wither.1").formatted(Formatting.GRAY),
+                Text.translatable("tooltip.soulsweapons.soul_release_wither.1", this.getSkullCount(WeaponUtil.getUpgradeLevel(stack))).formatted(Formatting.GRAY),
                 Text.translatable("tooltip.soulsweapons.soul_release_wither.2").formatted(Formatting.GRAY),
                 Text.translatable("tooltip.soulsweapons.soul_release_wither.3").formatted(Formatting.GRAY)
         );

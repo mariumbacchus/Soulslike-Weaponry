@@ -19,7 +19,7 @@
 ### Weapons
 - Dragonbane bonus damage against dragons per level 5 -> 6
 - Reworked the Forlorn Scythe
-  - It now shoots 3 Night Skulls instead of 1 Wither Skull
+  - It now shoots Night Skulls instead of Wither Skulls, with the amount increased by 2 for every 3rd level (will shoot 3 at lvl 3-5, 5 at lvl 6 but config needs to be changed for that since max level is 5)
   - Every 3rd shot makes the middle skull charged
   - Night Skulls always despawn after 30 ticks
   - Explosions no longer destroy blocks, this can be enabled in the config again

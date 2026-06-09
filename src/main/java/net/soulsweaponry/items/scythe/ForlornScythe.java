@@ -27,7 +27,9 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
             ConfigConstructor.forlorn_scythe_charged_night_skull_bonus_damage_per_level,
             ConfigConstructor.forlorn_scythe_night_skull_velocity,
             ConfigConstructor.forlorn_scythe_night_skull_explosion_destroy_blocks,
-            (int) ConfigConstructor.forlorn_scythe_night_skull_max_age_ticks
+            (int) ConfigConstructor.forlorn_scythe_night_skull_max_age_ticks,
+            (int) ConfigConstructor.forlorn_scythe_night_skull_base_count,
+            (int) ConfigConstructor.forlorn_scythe_night_skull_levels_needed_for_2_more_skulls
     );
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
