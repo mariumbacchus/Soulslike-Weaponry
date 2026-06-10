@@ -11,6 +11,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EnchantmentConfig;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.posthit.UltraHeavy;
@@ -21,11 +22,11 @@ public record StaggerEnchantmentEffect() implements EnchantmentEntityEffect {
 
     @Override
     public void apply(ServerWorld world, int level, EnchantmentEffectContext context, Entity target, Vec3d pos) {
-        if (ConfigConstructor.disable_enchantment_stagger) {
+        if (EnchantmentConfig.disable_enchantment_stagger) {
             return;
         }
         if (target instanceof LivingEntity living && !living.isDead()) {
-            int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
+            int postureLoss = MathHelper.floor(EnchantmentConfig.stagger_enchant_posture_loss_on_player_modifier * EnchantmentConfig.stagger_enchant_posture_loss_applied_per_level);
             if (context.owner() != null) {
                 ItemStack stack = context.owner().getStackInHand(Hand.MAIN_HAND);
                 if (IHasAbilities.getAbility(stack, UltraHeavy.class).isPresent()) {

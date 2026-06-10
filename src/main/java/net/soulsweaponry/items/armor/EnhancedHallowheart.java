@@ -11,7 +11,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.abilitykeybind.LifeLeach;
 import net.soulsweaponry.items.abilities.immunity.EffectImmunity;
 import net.soulsweaponry.items.abilities.inventorytick.BasicInventoryTickAbility;
@@ -35,26 +35,26 @@ public class EnhancedHallowheart extends ModdedArmor implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final EffectImmunity WITHER_IMMUNITY = new EffectImmunity(Set.of(StatusEffects.WITHER));
     private static final LifeLeach LIFE_LEACH = new LifeLeach(
-            (int) ConfigConstructor.enhanced_withered_chest_unceasing_life_leach_duration,
-            ConfigConstructor.enhanced_withered_chest_unceasing_life_leach_duration_per_level,
-            (int) ConfigConstructor.enhanced_withered_chest_unceasing_life_leach_amplifier,
-            ConfigConstructor.enhanced_withered_chest_unceasing_life_leach_amplifier_per_level,
-            (int) ConfigConstructor.enhanced_withered_chest_unceasing_min_cooldown,
-            (int) ConfigConstructor.enhanced_withered_chest_unceasing_cooldown,
-            (int) ConfigConstructor.enhanced_withered_chest_unceasing_reduced_cooldown_per_level
+            (int) ArmorConfig.enhanced_withered_chest_unceasing_life_leach_duration,
+            ArmorConfig.enhanced_withered_chest_unceasing_life_leach_duration_per_level,
+            (int) ArmorConfig.enhanced_withered_chest_unceasing_life_leach_amplifier,
+            ArmorConfig.enhanced_withered_chest_unceasing_life_leach_amplifier_per_level,
+            (int) ArmorConfig.enhanced_withered_chest_unceasing_min_cooldown,
+            (int) ArmorConfig.enhanced_withered_chest_unceasing_cooldown,
+            (int) ArmorConfig.enhanced_withered_chest_unceasing_reduced_cooldown_per_level
     );
     private static final Infectious INFECTIOUS = new Infectious(
-            ConfigConstructor.enhanced_withered_chest_infectious_damage,
-            ConfigConstructor.enhanced_withered_chest_infectious_damage_per_level,
-            ConfigConstructor.enhanced_withered_chest_infectious_knockback,
-            ConfigConstructor.enhanced_withered_chest_infectious_knockback_per_level,
+            ArmorConfig.enhanced_withered_chest_infectious_damage,
+            ArmorConfig.enhanced_withered_chest_infectious_damage_per_level,
+            ArmorConfig.enhanced_withered_chest_infectious_knockback,
+            ArmorConfig.enhanced_withered_chest_infectious_knockback_per_level,
             List.of(StatusEffects.WITHER),
-            (int) ConfigConstructor.enhanced_withered_chest_infectious_apply_wither_duration,
-            ConfigConstructor.enhanced_withered_chest_infectious_apply_wither_duration_per_level,
-            (int) ConfigConstructor.enhanced_withered_chest_infectious_apply_wither_amplifier,
-            ConfigConstructor.enhanced_withered_chest_infectious_apply_wither_amplifier_per_level,
-            (int) ConfigConstructor.enhanced_withered_chest_infectious_apply_fire_seconds,
-            (int) ConfigConstructor.enhanced_withered_chest_infectious_apply_fire_seconds_per_level
+            (int) ArmorConfig.enhanced_withered_chest_infectious_apply_wither_duration,
+            ArmorConfig.enhanced_withered_chest_infectious_apply_wither_duration_per_level,
+            (int) ArmorConfig.enhanced_withered_chest_infectious_apply_wither_amplifier,
+            ArmorConfig.enhanced_withered_chest_infectious_apply_wither_amplifier_per_level,
+            (int) ArmorConfig.enhanced_withered_chest_infectious_apply_fire_seconds,
+            (int) ArmorConfig.enhanced_withered_chest_infectious_apply_fire_seconds_per_level
     );
     private static final BasicInventoryTickAbility FIRE_RESISTANCE = new BasicInventoryTickAbility(
             (stack, world, entity, slot, equipped) -> entity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, 100, 0, false, false)),
@@ -64,11 +64,11 @@ public class EnhancedHallowheart extends ModdedArmor implements GeoItem {
             ), 20
     );
     private static final Exalt EXALT = new Exalt(
-            ConfigConstructor.enhanced_withered_chest_exalt_amp_per_missing_health_percent,
-            ConfigConstructor.enhanced_withered_chest_exalt_amp_per_missing_health_percent_bonus_per_level,
-            (int) ConfigConstructor.enhanced_withered_chest_exalt_amp_max,
-            ConfigConstructor.enhanced_withered_chest_exalt_amp_max_increase_per_level,
-            (int) ConfigConstructor.enhanced_withered_chest_exalt_duration
+            ArmorConfig.enhanced_withered_chest_exalt_amp_per_missing_health_percent,
+            ArmorConfig.enhanced_withered_chest_exalt_amp_per_missing_health_percent_bonus_per_level,
+            (int) ArmorConfig.enhanced_withered_chest_exalt_amp_max,
+            ArmorConfig.enhanced_withered_chest_exalt_amp_max_increase_per_level,
+            (int) ArmorConfig.enhanced_withered_chest_exalt_duration
     );
 
     public EnhancedHallowheart(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
@@ -87,7 +87,7 @@ public class EnhancedHallowheart extends ModdedArmor implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_enhanced_hallowheart;
+        return ArmorConfig.disable_use_enhanced_hallowheart;
     }
 
     @Override
@@ -129,21 +129,21 @@ public class EnhancedHallowheart extends ModdedArmor implements GeoItem {
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.enhanced_withered_armor_base_posture_increase;
+        return ArmorConfig.enhanced_withered_armor_base_posture_increase;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.enhanced_withered_armor_posture_buildup_resistances;
+        return ArmorConfig.enhanced_withered_armor_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.enhanced_withered_armor_bleed_buildup_resistances;
+        return ArmorConfig.enhanced_withered_armor_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.enhanced_withered_armor_bleed_damage_resistances;
+        return ArmorConfig.enhanced_withered_armor_bleed_damage_resistances;
     }
 }

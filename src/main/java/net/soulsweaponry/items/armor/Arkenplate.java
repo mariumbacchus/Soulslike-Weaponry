@@ -7,7 +7,7 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.inventorytick.HalfHealthResistances;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
 import net.soulsweaponry.items.abilities.userdamaged.Aftershock;
@@ -26,25 +26,25 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final HalfHealthResistances UNBREAKABLE = new HalfHealthResistances(
-            ConfigConstructor.arkenplate_unbreakable_activate_percent_threshold,
-            ConfigConstructor.arkenplate_unbreakable_activate_bonus_percent_threshold_per_level,
-            (int) ConfigConstructor.arkenplate_unbreakable_resistance_amp,
-            ConfigConstructor.arkenplate_unbreakable_resistance_bonus_amp_per_level,
-            (int) ConfigConstructor.arkenplate_unbreakable_magic_resistance_amp,
-            ConfigConstructor.arkenplate_unbreakable_magic_resistance_bonus_amp_per_level
+            ArmorConfig.arkenplate_unbreakable_activate_percent_threshold,
+            ArmorConfig.arkenplate_unbreakable_activate_bonus_percent_threshold_per_level,
+            (int) ArmorConfig.arkenplate_unbreakable_resistance_amp,
+            ArmorConfig.arkenplate_unbreakable_resistance_bonus_amp_per_level,
+            (int) ArmorConfig.arkenplate_unbreakable_magic_resistance_amp,
+            ArmorConfig.arkenplate_unbreakable_magic_resistance_bonus_amp_per_level
     );
     private static final Aftershock AFTERSHOCK = new Aftershock(
-            ConfigConstructor.arkenplate_aftershock_activate_percent_health_threshold,
-            ConfigConstructor.arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level,
-            ConfigConstructor.arkenplate_aftershock_knockback,
-            ConfigConstructor.arkenplate_aftershock_bonus_knockback_per_level,
-            ConfigConstructor.arkenplate_aftershock_damage,
-            ConfigConstructor.arkenplate_aftershock_bonus_damage_per_level,
+            ArmorConfig.arkenplate_aftershock_activate_percent_health_threshold,
+            ArmorConfig.arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level,
+            ArmorConfig.arkenplate_aftershock_knockback,
+            ArmorConfig.arkenplate_aftershock_bonus_knockback_per_level,
+            ArmorConfig.arkenplate_aftershock_damage,
+            ArmorConfig.arkenplate_aftershock_bonus_damage_per_level,
             0, // Armor items can't have sharpness or something like that
-            ConfigConstructor.arkenplate_aftershock_expansion_radius,
-            (int) ConfigConstructor.arkenplate_aftershock_min_cooldown,
-            (int) ConfigConstructor.arkenplate_aftershock_cooldown,
-            (int) ConfigConstructor.arkenplate_aftershock_reduced_cooldown_per_level,
+            ArmorConfig.arkenplate_aftershock_expansion_radius,
+            (int) ArmorConfig.arkenplate_aftershock_min_cooldown,
+            (int) ArmorConfig.arkenplate_aftershock_cooldown,
+            (int) ArmorConfig.arkenplate_aftershock_reduced_cooldown_per_level,
             List.of()
     );
 
@@ -55,7 +55,7 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_arkenplate;
+        return ArmorConfig.disable_use_arkenplate;
     }
 
     @Override
@@ -90,21 +90,21 @@ public class Arkenplate extends ModdedArmor implements GeoItem {
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.chaos_armor_base_posture_increase;
+        return ArmorConfig.chaos_armor_base_posture_increase;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.chaos_armor_posture_buildup_resistances;
+        return ArmorConfig.chaos_armor_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.chaos_armor_bleed_buildup_resistances;
+        return ArmorConfig.chaos_armor_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.chaos_armor_bleed_damage_resistances;
+        return ArmorConfig.chaos_armor_bleed_damage_resistances;
     }
 }

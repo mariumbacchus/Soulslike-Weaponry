@@ -1,6 +1,15 @@
 # Changelog
 
 # 1.5
+## Big Config Changes
+- Renamed `soulsweapons_boss_config.json` to `soulsweapons_entity_config.json`, it will now contain all entity related config lines (excluding entity stats such as frost/bleed buildup), moved the rest of entity related config lines (such as spawnweight, can chungus barter, etc.) from the previous main config to this one
+- Renamed and split the main config file `soulsweapons.json` into more files for more clarity and easier navigation
+    - `soulsweapons_weapon_config.json` contains lines for weapon stats & abilities, disabling of use and recipes and so on regarding weapons and some items, it will still act as "the main" config file so i.e shield parry and chungus tonic lines will still be here
+    - `soulsweapons_armor_config.json` contains lines for armor items instead
+    - `soulsweapons_gun_config.json` contains lines for gun items and silver bullets
+    - `soulsweapons_enchantment_config.json` contains lines for enchantments, even for guns and weapons (even though most enchant stuff is handled by datapacks in 1.21.1 and up)
+    - `soulsweapons_entity_stats_config.json` will contain config lines for entity stats values such as frost/bleed/posture buildup, damage, reduction, max values, etc.
+
 ## Additions
 - Added the Large Sword of Moonlight (from Demon's Souls)
   - It deals purely magic damage, therefore bypassing regular armor

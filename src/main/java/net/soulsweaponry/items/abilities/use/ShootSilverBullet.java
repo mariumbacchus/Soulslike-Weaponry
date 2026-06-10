@@ -20,7 +20,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EnchantmentConfig;
+import net.soulsweaponry.config.GunConfig;
 import net.soulsweaponry.entity.projectile.SilverBulletEntity;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.registry.ComponentRegistry;
@@ -107,7 +108,7 @@ public class ShootSilverBullet implements IAbility {
     }
 
     public PersistentProjectileEntity createSilverBulletEntity(World world, LivingEntity shooter, ItemStack gunStack) {
-        if (WeaponUtil.getLevel(gunStack, EnchantRegistry.MISFIRE_CURSE) > 0 && !world.isClient && shooter.getRandom().nextDouble() < ConfigConstructor.misfire_curse_enchant_trigger_chance) {
+        if (WeaponUtil.getLevel(gunStack, EnchantRegistry.MISFIRE_CURSE) > 0 && !world.isClient && shooter.getRandom().nextDouble() < EnchantmentConfig.misfire_curse_enchant_trigger_chance) {
             world.createExplosion(null, shooter.getX(), shooter.getBodyY(0.5f), shooter.getZ(), 3f, true, World.ExplosionSourceType.MOB);
             shooter.setOnFireFor(3);
         }
@@ -140,20 +141,20 @@ public class ShootSilverBullet implements IAbility {
             entity.setExplosionPower(explosivePower);
         }
         if (chainLightningLevel > 0) {
-            entity.setChainLightningDamage(this.damage * chainLightningLevel * ConfigConstructor.chain_lightning_enchant_damage_mod_per_level);
-            entity.setChainLightningRange(chainLightningLevel * ConfigConstructor.chain_lightning_enchant_range_per_level);
+            entity.setChainLightningDamage(this.damage * chainLightningLevel * EnchantmentConfig.chain_lightning_enchant_damage_mod_per_level);
+            entity.setChainLightningRange(chainLightningLevel * EnchantmentConfig.chain_lightning_enchant_range_per_level);
         }
         if (blightCarrierLevel > 0) {
-            entity.setBlightCarrier((int) (blightCarrierLevel * ConfigConstructor.blight_carrier_enchant_blight_per_level));
+            entity.setBlightCarrier((int) (blightCarrierLevel * EnchantmentConfig.blight_carrier_enchant_blight_per_level));
         }
         if (freezeLevel > 0) {
-            entity.setFreezeAmplifier((int) (freezeLevel * ConfigConstructor.frostsilver_enchant_permafrost_per_level));
+            entity.setFreezeAmplifier((int) (freezeLevel * EnchantmentConfig.frostsilver_enchant_permafrost_per_level));
         }
         if (tetherLevel > 0 && ricochetLevel == 0) {
             entity.setTether(tetherLevel);
         }
         if (ricochetLevel > 0) {
-            entity.setRicochetBounces((int) (ricochetLevel * ConfigConstructor.ricochet_enchant_bounce_per_level));
+            entity.setRicochetBounces((int) (ricochetLevel * EnchantmentConfig.ricochet_enchant_bounce_per_level));
         }
         if (phantomTraceLevel > 0) {
             for (int i = 1; i < phantomTraceLevel + 1; i++) {
@@ -165,7 +166,7 @@ public class ShootSilverBullet implements IAbility {
                 copy.setEchoCopy(true);
                 copy.setEchoCopyTimer(10 * i);
                 copy.setMaxEchoDelay(10 * i);
-                copy.setDamage(this.getCalculatedDamage(this.damage * ConfigConstructor.phantom_trace_enchant_phantom_projectile_damage_mod, gunStack));
+                copy.setDamage(this.getCalculatedDamage(this.damage * EnchantmentConfig.phantom_trace_enchant_phantom_projectile_damage_mod, gunStack));
                 world.spawnEntity(copy);
             }
         }
@@ -316,7 +317,7 @@ public class ShootSilverBullet implements IAbility {
             cooldown.formatted(Formatting.BLUE);
         }
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss").append(postureLoss).formatted(Formatting.GRAY));
-        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss_on_players", MathHelper.floor(ConfigConstructor.silver_bullet_posture_loss_on_player_modifier * 100f) + "%").formatted(Formatting.DARK_GRAY));
+        tooltip.add(Text.translatable("tooltip.soulsweapons.gun_posture_loss_on_players", MathHelper.floor(GunConfig.silver_bullet_posture_loss_on_player_modifier * 100f) + "%").formatted(Formatting.DARK_GRAY));
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_damage").formatted(Formatting.GRAY).append(damage));
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_cooldown").append(cooldown).formatted(Formatting.GRAY));
         tooltip.add(Text.translatable("tooltip.soulsweapons.gun_bullets_used").append(Text.literal(String.valueOf(this.bulletsNeeded))).formatted(Formatting.GRAY));

@@ -11,7 +11,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.EChaosArmorRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.inventorytick.HalfHealthResistances;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
 import net.soulsweaponry.items.abilities.userdamaged.Aftershock;
@@ -31,34 +31,34 @@ public class EnhancedArkenplate extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final HalfHealthResistances UNBREAKABLE = new HalfHealthResistances(
-            ConfigConstructor.enhanced_arkenplate_unbreakable_activate_percent_threshold,
-            ConfigConstructor.enhanced_arkenplate_unbreakable_activate_bonus_percent_threshold_per_level,
-            (int) ConfigConstructor.enhanced_arkenplate_unbreakable_resistance_amp,
-            ConfigConstructor.enhanced_arkenplate_unbreakable_resistance_bonus_amp_per_level,
-            (int) ConfigConstructor.enhanced_arkenplate_unbreakable_magic_resistance_amp,
-            ConfigConstructor.enhanced_arkenplate_unbreakable_magic_resistance_bonus_amp_per_level
+            ArmorConfig.enhanced_arkenplate_unbreakable_activate_percent_threshold,
+            ArmorConfig.enhanced_arkenplate_unbreakable_activate_bonus_percent_threshold_per_level,
+            (int) ArmorConfig.enhanced_arkenplate_unbreakable_resistance_amp,
+            ArmorConfig.enhanced_arkenplate_unbreakable_resistance_bonus_amp_per_level,
+            (int) ArmorConfig.enhanced_arkenplate_unbreakable_magic_resistance_amp,
+            ArmorConfig.enhanced_arkenplate_unbreakable_magic_resistance_bonus_amp_per_level
     );
     private static final Aftershock AFTERSHOCK = new Aftershock(
-            ConfigConstructor.enhanced_arkenplate_aftershock_activate_percent_health_threshold,
-            ConfigConstructor.enhanced_arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level,
-            ConfigConstructor.enhanced_arkenplate_aftershock_knockback,
-            ConfigConstructor.enhanced_arkenplate_aftershock_bonus_knockback_per_level,
-            ConfigConstructor.enhanced_arkenplate_aftershock_damage,
-            ConfigConstructor.enhanced_arkenplate_aftershock_bonus_damage_per_level,
+            ArmorConfig.enhanced_arkenplate_aftershock_activate_percent_health_threshold,
+            ArmorConfig.enhanced_arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level,
+            ArmorConfig.enhanced_arkenplate_aftershock_knockback,
+            ArmorConfig.enhanced_arkenplate_aftershock_bonus_knockback_per_level,
+            ArmorConfig.enhanced_arkenplate_aftershock_damage,
+            ArmorConfig.enhanced_arkenplate_aftershock_bonus_damage_per_level,
             0, // Armor items can't have sharpness or something like that
-            ConfigConstructor.enhanced_arkenplate_aftershock_expansion_radius,
-            (int) ConfigConstructor.enhanced_arkenplate_aftershock_min_cooldown,
-            (int) ConfigConstructor.enhanced_arkenplate_aftershock_cooldown,
-            (int) ConfigConstructor.enhanced_arkenplate_aftershock_reduced_cooldown_per_level,
+            ArmorConfig.enhanced_arkenplate_aftershock_expansion_radius,
+            (int) ArmorConfig.enhanced_arkenplate_aftershock_min_cooldown,
+            (int) ArmorConfig.enhanced_arkenplate_aftershock_cooldown,
+            (int) ArmorConfig.enhanced_arkenplate_aftershock_reduced_cooldown_per_level,
             List.of(
                     new StatusEffectInstance(StatusEffects.WEAKNESS,
-                    (int) ConfigConstructor.enhanced_arkenplate_aftershock_weakness_duration,
-                    (int) ConfigConstructor.enhanced_arkenplate_aftershock_weakness_amp)
+                    (int) ArmorConfig.enhanced_arkenplate_aftershock_weakness_duration,
+                    (int) ArmorConfig.enhanced_arkenplate_aftershock_weakness_amp)
             )
     );
     private static final Mirror MIRROR = new Mirror(
-            ConfigConstructor.enhanced_arkenplate_mirror_trigger_percent,
-            ConfigConstructor.enhanced_arkenplate_mirror_bonus_trigger_percent_per_level
+            ArmorConfig.enhanced_arkenplate_mirror_trigger_percent,
+            ArmorConfig.enhanced_arkenplate_mirror_bonus_trigger_percent_per_level
     );
 
     public EnhancedArkenplate(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
@@ -78,7 +78,7 @@ public class EnhancedArkenplate extends ModdedArmor implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_enhanced_arkenplate;
+        return ArmorConfig.disable_use_enhanced_arkenplate;
     }
 
     @Override
@@ -113,21 +113,21 @@ public class EnhancedArkenplate extends ModdedArmor implements GeoItem {
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.enhanced_chaos_armor_base_posture_increase;
+        return ArmorConfig.enhanced_chaos_armor_base_posture_increase;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.enhanced_chaos_armor_posture_buildup_resistances;
+        return ArmorConfig.enhanced_chaos_armor_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.enhanced_chaos_armor_bleed_buildup_resistances;
+        return ArmorConfig.enhanced_chaos_armor_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.enhanced_chaos_armor_bleed_damage_resistances;
+        return ArmorConfig.enhanced_chaos_armor_bleed_damage_resistances;
     }
 }

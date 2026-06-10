@@ -3,7 +3,7 @@ package net.soulsweaponry.registry;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Rarity;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.armor.*;
 
 public class ArmorRegistry {
@@ -30,25 +30,25 @@ public class ArmorRegistry {
     public static final Item FORLORN_BOOTS = new ForlornArmor(MaterialRegistry.FORLORN_ARMOR, ArmorItem.Type.BOOTS, new Item.Settings().maxDamage(ArmorItem.Type.BOOTS.getMaxDamage(30)));
 
     public static void init() {
-        ItemRegistry.registerItem(CHAOS_CROWN, "chaos_crown", ConfigConstructor.is_fireproof_chaos_crown);
-        ItemRegistry.registerArmorItem(CHAOS_HELMET, "chaos_helmet", ConfigConstructor.disable_recipe_chaos_helmet, ConfigConstructor.is_fireproof_chaos_helmet);
-        ItemRegistry.registerArmorItem(ARKENPLATE, "arkenplate", ConfigConstructor.disable_recipe_arkenplate, ConfigConstructor.is_fireproof_arkenplate);
-        ItemRegistry.registerArmorItem(ENHANCED_ARKENPLATE, "enhanced_arkenplate", ConfigConstructor.disable_recipe_enhanced_arkenplate, ConfigConstructor.is_fireproof_arkenplate);
-        ItemRegistry.registerArmorItem(WITHERED_CHEST, "withered_chest", ConfigConstructor.disable_recipe_withered_chest, ConfigConstructor.is_fireproof_hallowheart);
-        ItemRegistry.registerArmorItem(ENHANCED_WITHERED_CHEST, "enhanced_withered_chest", ConfigConstructor.disable_recipe_enhanced_withered_chest, ConfigConstructor.is_fireproof_hallowheart);
-        ItemRegistry.registerItem(CHAOS_ROBES, "chaos_robes", ConfigConstructor.is_fireproof_chaos_robes);
+        ItemRegistry.registerItem(CHAOS_CROWN, "chaos_crown", ArmorConfig.is_fireproof_chaos_crown);
+        ItemRegistry.registerArmorItem(CHAOS_HELMET, "chaos_helmet", ArmorConfig.disable_recipe_chaos_helmet, ArmorConfig.is_fireproof_chaos_helmet);
+        ItemRegistry.registerArmorItem(ARKENPLATE, "arkenplate", ArmorConfig.disable_recipe_arkenplate, ArmorConfig.is_fireproof_arkenplate);
+        ItemRegistry.registerArmorItem(ENHANCED_ARKENPLATE, "enhanced_arkenplate", ArmorConfig.disable_recipe_enhanced_arkenplate, ArmorConfig.is_fireproof_arkenplate);
+        ItemRegistry.registerArmorItem(WITHERED_CHEST, "withered_chest", ArmorConfig.disable_recipe_withered_chest, ArmorConfig.is_fireproof_hallowheart);
+        ItemRegistry.registerArmorItem(ENHANCED_WITHERED_CHEST, "enhanced_withered_chest", ArmorConfig.disable_recipe_enhanced_withered_chest, ArmorConfig.is_fireproof_hallowheart);
+        ItemRegistry.registerItem(CHAOS_ROBES, "chaos_robes", ArmorConfig.is_fireproof_chaos_robes);
 
-        ItemRegistry.registerArmorItem(SOUL_INGOT_HELMET, "soul_ingot_helmet", ConfigConstructor.disable_recipe_soul_ingot_helmet, ConfigConstructor.is_fireproof_soul_ingot_set);
-        ItemRegistry.registerArmorItem(SOUL_INGOT_CHESTPLATE, "soul_ingot_chestplate", ConfigConstructor.disable_recipe_soul_ingot_chestplate, ConfigConstructor.is_fireproof_soul_ingot_set);
-        ItemRegistry.registerArmorItem(SOUL_INGOT_LEGGINGS, "soul_ingot_leggings", ConfigConstructor.disable_recipe_soul_ingot_leggings, ConfigConstructor.is_fireproof_soul_ingot_set);
-        ItemRegistry.registerArmorItem(SOUL_INGOT_BOOTS, "soul_ingot_boots", ConfigConstructor.disable_recipe_soul_ingot_boots, ConfigConstructor.is_fireproof_soul_ingot_set);
-        ItemRegistry.registerArmorItem(SOUL_ROBES_HELMET, "soul_robes_helmet", ConfigConstructor.disable_recipe_soul_robes_helmet, ConfigConstructor.is_fireproof_soul_robes_set);
-        ItemRegistry.registerArmorItem(SOUL_ROBES_CHESTPLATE, "soul_robes_chestplate", ConfigConstructor.disable_recipe_soul_robes_chestplate, ConfigConstructor.is_fireproof_soul_robes_set);
-        ItemRegistry.registerArmorItem(SOUL_ROBES_LEGGINGS, "soul_robes_leggings", ConfigConstructor.disable_recipe_soul_robes_leggings, ConfigConstructor.is_fireproof_soul_robes_set);
-        ItemRegistry.registerArmorItem(SOUL_ROBES_BOOTS, "soul_robes_boots", ConfigConstructor.disable_recipe_soul_robes_boots, ConfigConstructor.is_fireproof_soul_robes_set);
-        ItemRegistry.registerArmorItem(FORLORN_HELMET, "forlorn_helmet", ConfigConstructor.disable_recipe_forlorn_helmet, ConfigConstructor.is_fireproof_forlorn_set);
-        ItemRegistry.registerArmorItem(FORLORN_CHESTPLATE, "forlorn_chestplate", ConfigConstructor.disable_recipe_forlorn_chestplate, ConfigConstructor.is_fireproof_forlorn_set);
-        ItemRegistry.registerArmorItem(FORLORN_LEGGINGS, "forlorn_leggings", ConfigConstructor.disable_recipe_forlorn_leggings, ConfigConstructor.is_fireproof_forlorn_set);
-        ItemRegistry.registerArmorItem(FORLORN_BOOTS, "forlorn_boots", ConfigConstructor.disable_recipe_forlorn_boots, ConfigConstructor.is_fireproof_forlorn_set);
+        ItemRegistry.registerArmorItem(SOUL_INGOT_HELMET, "soul_ingot_helmet", ArmorConfig.disable_recipe_soul_ingot_helmet, ArmorConfig.is_fireproof_soul_ingot_set);
+        ItemRegistry.registerArmorItem(SOUL_INGOT_CHESTPLATE, "soul_ingot_chestplate", ArmorConfig.disable_recipe_soul_ingot_chestplate, ArmorConfig.is_fireproof_soul_ingot_set);
+        ItemRegistry.registerArmorItem(SOUL_INGOT_LEGGINGS, "soul_ingot_leggings", ArmorConfig.disable_recipe_soul_ingot_leggings, ArmorConfig.is_fireproof_soul_ingot_set);
+        ItemRegistry.registerArmorItem(SOUL_INGOT_BOOTS, "soul_ingot_boots", ArmorConfig.disable_recipe_soul_ingot_boots, ArmorConfig.is_fireproof_soul_ingot_set);
+        ItemRegistry.registerArmorItem(SOUL_ROBES_HELMET, "soul_robes_helmet", ArmorConfig.disable_recipe_soul_robes_helmet, ArmorConfig.is_fireproof_soul_robes_set);
+        ItemRegistry.registerArmorItem(SOUL_ROBES_CHESTPLATE, "soul_robes_chestplate", ArmorConfig.disable_recipe_soul_robes_chestplate, ArmorConfig.is_fireproof_soul_robes_set);
+        ItemRegistry.registerArmorItem(SOUL_ROBES_LEGGINGS, "soul_robes_leggings", ArmorConfig.disable_recipe_soul_robes_leggings, ArmorConfig.is_fireproof_soul_robes_set);
+        ItemRegistry.registerArmorItem(SOUL_ROBES_BOOTS, "soul_robes_boots", ArmorConfig.disable_recipe_soul_robes_boots, ArmorConfig.is_fireproof_soul_robes_set);
+        ItemRegistry.registerArmorItem(FORLORN_HELMET, "forlorn_helmet", ArmorConfig.disable_recipe_forlorn_helmet, ArmorConfig.is_fireproof_forlorn_set);
+        ItemRegistry.registerArmorItem(FORLORN_CHESTPLATE, "forlorn_chestplate", ArmorConfig.disable_recipe_forlorn_chestplate, ArmorConfig.is_fireproof_forlorn_set);
+        ItemRegistry.registerArmorItem(FORLORN_LEGGINGS, "forlorn_leggings", ArmorConfig.disable_recipe_forlorn_leggings, ArmorConfig.is_fireproof_forlorn_set);
+        ItemRegistry.registerArmorItem(FORLORN_BOOTS, "forlorn_boots", ArmorConfig.disable_recipe_forlorn_boots, ArmorConfig.is_fireproof_forlorn_set);
     }
 }

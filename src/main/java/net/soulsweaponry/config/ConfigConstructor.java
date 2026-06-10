@@ -14,22 +14,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean inform_player_about_disabled_boss_respawning = true;
 
     @Entry public static boolean disable_weapon_recipes = false;
-    @Entry public static boolean disable_gun_recipes = false;
-    @Entry public static boolean disable_armor_recipes = false;
-
-    @Entry public static boolean disable_all_enchantments = false;
-    @Entry public static boolean disable_enchantment_fast_hands = false;
-    @Entry public static boolean disable_enchantment_posture_breaker = false;
-    @Entry public static boolean disable_enchantment_stagger = false;
-    @Entry public static boolean disable_enchantment_ethereal_ammunition = false;
-    @Entry public static boolean disable_enchantment_explosive_rounds = false;
-    @Entry public static boolean disable_enchantment_chain_lightning = false;
-    @Entry public static boolean disable_enchantment_misfire_curse = false;
-    @Entry public static boolean disable_enchantment_blight_carrier = false;
-    @Entry public static boolean disable_enchantment_frostsilver = false;
-    @Entry public static boolean disable_enchantment_phantom_trace = false;
-    @Entry public static boolean disable_enchantment_tether = false;
-    @Entry public static boolean disable_enchantment_ricochet = false;
 
     @Entry public static boolean disable_recipe_bloodthirster = false;
     @Entry public static boolean disable_recipe_bluemoon_greatsword = false;
@@ -89,25 +73,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_recipe_large_sword_of_moonlight = false;
     @Entry public static boolean disable_recipe_dragon_hunters_great_katana = false;
 
-    @Entry public static boolean disable_recipe_arkenplate = false;
-    @Entry public static boolean disable_recipe_chaos_helmet = false;
-    @Entry public static boolean disable_recipe_soul_ingot_helmet = false;
-    @Entry public static boolean disable_recipe_soul_ingot_chestplate = false;
-    @Entry public static boolean disable_recipe_soul_ingot_leggings = false;
-    @Entry public static boolean disable_recipe_soul_ingot_boots = false;
-    @Entry public static boolean disable_recipe_soul_robes_helmet = false;
-    @Entry public static boolean disable_recipe_soul_robes_chestplate = false;
-    @Entry public static boolean disable_recipe_soul_robes_leggings = false;
-    @Entry public static boolean disable_recipe_soul_robes_boots = false;
-    @Entry public static boolean disable_recipe_forlorn_helmet = false;
-    @Entry public static boolean disable_recipe_forlorn_chestplate = false;
-    @Entry public static boolean disable_recipe_forlorn_leggings = false;
-    @Entry public static boolean disable_recipe_forlorn_boots = false;
-    @Entry public static boolean disable_recipe_withered_chest = false;
-
-    @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
-    @Entry public static boolean disable_recipe_enhanced_withered_chest = false;
-
     @Entry public static boolean disable_use_bluemoon_shortsword = false;
     @Entry public static boolean disable_use_bluemoon_greatsword = false;
     @Entry public static boolean disable_use_moonlight_shortsword = false;
@@ -150,10 +115,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_kraken_slayer_bow = false;
     @Entry public static boolean disable_use_kraken_slayer_crossbow = false;
     @Entry public static boolean disable_use_darkmoon_longbow = false;
-    @Entry public static boolean disable_use_hunter_pistol = false;
-    @Entry public static boolean disable_use_hunter_blunderbuss = false;
-    @Entry public static boolean disable_use_gatling_gun = false;
-    @Entry public static boolean disable_use_hunter_cannon = false;
     @Entry public static boolean disable_use_kirkhammer = false;
     @Entry public static boolean disable_use_silver_sword = false;
     @Entry public static boolean disable_use_ludwigs_holy_greatsword = false;
@@ -176,16 +137,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean disable_use_sting = false;
     @Entry public static boolean disable_use_large_sword_of_moonlight = false;
     @Entry public static boolean disable_use_dragon_hunters_great_katana = false;
-
-    @Entry public static boolean disable_use_arkenplate = false;
-    @Entry public static boolean disable_use_enhanced_arkenplate = false;
-    @Entry public static boolean disable_use_chaos_crown = false;
-    @Entry public static boolean disable_use_chaos_robes = false;
-    @Entry public static boolean disable_use_hallowheart = false;
-    @Entry public static boolean disable_use_enhanced_hallowheart = false;
-    @Entry public static boolean disable_use_soul_ingot_armor = false;
-    @Entry public static boolean disable_use_soul_robes_armor = false;
-    @Entry public static boolean disable_use_forlorn_armor = false;
 
     @Entry public static boolean is_fireproof_bloodthirster = true;
     @Entry public static boolean is_fireproof_bluemoon_greatsword = false;
@@ -248,190 +199,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static boolean is_fireproof_sword_of_the_nightlord = true;
     @Entry public static boolean is_fireproof_large_sword_of_moonlight = true;
     @Entry public static boolean is_fireproof_dragon_hunters_great_katana = true;
-
-    @Entry public static boolean is_fireproof_blunderbuss = false;
-    @Entry public static boolean is_fireproof_gatling_gun = false;
-    @Entry public static boolean is_fireproof_hunter_cannon = false;
-    @Entry public static boolean is_fireproof_hunter_pistol = false;
-
-    @Entry public static boolean is_fireproof_arkenplate = true;
-    @Entry public static boolean is_fireproof_chaos_crown = true;
-    @Entry public static boolean is_fireproof_chaos_helmet = true;
-    @Entry public static boolean is_fireproof_chaos_robes = false;
-    @Entry public static boolean is_fireproof_hallowheart = true;
-
-    @Entry public static boolean is_fireproof_soul_ingot_set = false;
-    @Entry public static boolean is_fireproof_soul_robes_set = false;
-    @Entry public static boolean is_fireproof_forlorn_set = true;
-
-    @Entry(min=0) public static float withered_demon_spawnweight = 20;
-    @Entry(min=0) public static float moderatly_sized_chungus_spawnweight = 100;
-    @Entry public static float chungus_monolith_radius = 32;
-    @Entry(min=0) public static float evil_forlorn_spawnweight = 15;
-
-    @Entry public static boolean can_withered_demon_spawn = true;
-    @Entry public static boolean can_moderatly_sized_chungus_spawn = true;
-    @Entry public static boolean can_evil_forlorn_spawn = true;
-
-    @Entry public static boolean can_bosses_break_blocks = true;
-
-    @Entry public static float[] chaos_armor_armor_points = {4, 7, 10, 5};
-    @Entry public static float[] chaos_armor_base_posture_increase = {0, 0, 0, 0};
-    @Entry public static float[] chaos_armor_posture_buildup_resistances = {0, 0, 0, 0};
-    @Entry public static float[] chaos_armor_bleed_buildup_resistances = {40, 70, 100, 60};
-    @Entry public static float[] chaos_armor_bleed_damage_resistances = {30, 50, 60, 40};
-
-    @Entry public static float[] enhanced_chaos_armor_armor_points = {4, 7, 10, 5};
-    @Entry public static float[] enhanced_chaos_armor_base_posture_increase = {0, 0, 0, 0};
-    @Entry public static float[] enhanced_chaos_armor_posture_buildup_resistances = {0, 0, 0, 0};
-    @Entry public static float[] enhanced_chaos_armor_bleed_buildup_resistances = {40, 70, 100, 60};
-    @Entry public static float[] enhanced_chaos_armor_bleed_damage_resistances = {30, 50, 60, 40};
-
-    @Entry public static float[] chaos_set_armor_points = {2, 3, 4, 1};
-    @Entry public static float[] chaos_set_base_posture_increase = {0, 0, 0, 0};
-    @Entry public static float[] chaos_set_posture_buildup_resistances = {0, 0, 0, 0};
-    @Entry public static float[] chaos_set_bleed_buildup_resistances = {0, 0, 0, 0};
-    @Entry public static float[] chaos_set_bleed_damage_resistances = {0, 0, 0, 0};
-
-    @Entry public static float[] soul_ingot_armor_points = {3, 5, 7, 3};
-    @Entry public static float[] soul_ingot_base_posture_increase = {0, 0, 0, 0};
-    @Entry public static float[] soul_ingot_posture_buildup_resistances = {0, 0, 0, 0};
-    @Entry public static float[] soul_ingot_bleed_buildup_resistances = {2.5f, 7.5f, 10, 5};
-    @Entry public static float[] soul_ingot_bleed_damage_resistances = {2, 4, 6, 3};
-
-    @Entry public static float[] soul_robes_armor_points = {2, 3, 4, 3};
-    @Entry public static float[] soul_robes_base_posture_increase = {0, 0, 0, 0};
-    @Entry public static float[] soul_robes_posture_buildup_resistances = {0, 0, 0, 0};
-    @Entry public static float[] soul_robes_bleed_buildup_resistances = {0, 0, 0, 0};
-    @Entry public static float[] soul_robes_bleed_damage_resistances = {0, 0, 0, 0};
-
-    @Entry public static float[] forlorn_armor_armor_points = {3, 6, 8, 3};
-    @Entry public static float[] forlorn_armor_base_posture_increase = {10, 20, 35, 15};
-    @Entry public static float[] forlorn_armor_posture_buildup_resistances = {20, 40, 50, 30};
-    @Entry public static float[] forlorn_armor_bleed_buildup_resistances = {35, 50, 75, 40};
-    @Entry public static float[] forlorn_armor_bleed_damage_resistances = {10, 30, 40, 20};
-
-    @Entry public static float[] withered_armor_armor_points = {4, 7, 10, 5};
-    @Entry public static float[] withered_armor_base_posture_increase = {0, 0, 0, 0};
-    @Entry public static float[] withered_armor_posture_buildup_resistances = {10, 20, 25, 15};
-    @Entry public static float[] withered_armor_bleed_buildup_resistances = {15, 30, 40, 25};
-    @Entry public static float[] withered_armor_bleed_damage_resistances = {0, 0, 0, 0};
-
-    @Entry public static float[] enhanced_withered_armor_armor_points = {4, 7, 10, 5};
-    @Entry public static float[] enhanced_withered_armor_base_posture_increase = {0, 0, 0, 0};
-    @Entry public static float[] enhanced_withered_armor_posture_buildup_resistances = {10, 20, 25, 15};
-    @Entry public static float[] enhanced_withered_armor_bleed_buildup_resistances = {15, 30, 40, 25};
-    @Entry public static float[] enhanced_withered_armor_bleed_damage_resistances = {0, 0, 0, 0};
-
-    @Entry public static float chaos_cape_corrupt_ground_range = 3;
-    @Entry public static float chaos_cape_corrupt_ground_range_per_level = 1;
-    @Entry public static float chaos_cape_corrupt_ground_status_effect_range = 3;
-    @Entry public static float chaos_cape_corrupt_ground_status_effect_range_per_level = 1;
-    @Entry public static float chaos_cape_corrupt_ground_status_effect_wither_duration = 80;
-    @Entry public static float chaos_cape_corrupt_ground_status_effect_wither_amp = 1;
-
-    @Entry public static float chaos_crown_luck_given = 1;
-    @Entry public static float chaos_crown_flip_effect_duration_mod = 0.33f;
-    @Entry public static float chaos_crown_flip_effect_amp_mod = 0.5f;
-    @Entry public static float chaos_crown_flip_effect_min_cooldown = 100;
-    @Entry public static float chaos_crown_flip_effect_cooldown = 300;
-    @Entry public static float chaos_crown_flip_effect_reduced_cooldown_per_level = 40;
-
-    @Entry(min=0,max=1) public static float arkenplate_aftershock_activate_percent_health_threshold = 0.5f;
-    @Entry(min=0,max=1) public static float arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level = 0.05f;
-    @Entry public static float arkenplate_aftershock_knockback = 1f;
-    @Entry public static float arkenplate_aftershock_bonus_knockback_per_level = 0.5f;
-    @Entry public static float arkenplate_aftershock_damage = 6f;
-    @Entry public static float arkenplate_aftershock_bonus_damage_per_level = 2f;
-    @Entry public static float arkenplate_aftershock_expansion_radius = 5f;
-    @Entry public static float arkenplate_aftershock_min_cooldown = 60;
-    @Entry public static float arkenplate_aftershock_cooldown = 160;
-    @Entry public static float arkenplate_aftershock_reduced_cooldown_per_level = 20;
-    @Entry(min=0,max=1) public static float arkenplate_unbreakable_activate_percent_threshold = 0.5f;
-    @Entry(min=0,max=1) public static float arkenplate_unbreakable_activate_bonus_percent_threshold_per_level = 0.05f;
-    @Entry public static float arkenplate_unbreakable_resistance_amp = 1;
-    @Entry public static float arkenplate_unbreakable_resistance_bonus_amp_per_level = 0.3f;
-    @Entry public static float arkenplate_unbreakable_magic_resistance_amp = 1;
-    @Entry public static float arkenplate_unbreakable_magic_resistance_bonus_amp_per_level = 0.4f;
-
-    @Entry(min=0,max=1) public static float enhanced_arkenplate_aftershock_activate_percent_health_threshold = 0.5f;
-    @Entry(min=0,max=1) public static float enhanced_arkenplate_aftershock_activate_bonus_percent_health_threshold_per_level = 0.05f;
-    @Entry public static float enhanced_arkenplate_aftershock_knockback = 1.5f;
-    @Entry public static float enhanced_arkenplate_aftershock_bonus_knockback_per_level = 0.6f;
-    @Entry public static float enhanced_arkenplate_aftershock_damage = 7f;
-    @Entry public static float enhanced_arkenplate_aftershock_bonus_damage_per_level = 3f;
-    @Entry public static float enhanced_arkenplate_aftershock_expansion_radius = 5f;
-    @Entry public static float enhanced_arkenplate_aftershock_min_cooldown = 50;
-    @Entry public static float enhanced_arkenplate_aftershock_cooldown = 160;
-    @Entry public static float enhanced_arkenplate_aftershock_reduced_cooldown_per_level = 30;
-    @Entry public static float enhanced_arkenplate_aftershock_weakness_duration = 160;
-    @Entry public static float enhanced_arkenplate_aftershock_weakness_amp = 2;
-    @Entry(min=0,max=1) public static float enhanced_arkenplate_unbreakable_activate_percent_threshold = 0.5f;
-    @Entry(min=0,max=1) public static float enhanced_arkenplate_unbreakable_activate_bonus_percent_threshold_per_level = 0.05f;
-    @Entry public static float enhanced_arkenplate_unbreakable_resistance_amp = 1;
-    @Entry public static float enhanced_arkenplate_unbreakable_resistance_bonus_amp_per_level = 0.3f;
-    @Entry public static float enhanced_arkenplate_unbreakable_magic_resistance_amp = 1;
-    @Entry public static float enhanced_arkenplate_unbreakable_magic_resistance_bonus_amp_per_level = 0.4f;
-    @Entry(min=0,max=1) public static float enhanced_arkenplate_mirror_trigger_percent = 0.5f;
-    @Entry(min=0,max=1) public static float enhanced_arkenplate_mirror_bonus_trigger_percent_per_level = 0.05f;
-
-    @Entry public static float forlorn_armor_soul_feast_range = 6f;
-    @Entry public static float forlorn_armor_soul_feast_bonus_range_per_level = 1f;
-    @Entry public static float forlorn_armor_soul_feast_heal = 2f;
-    @Entry public static float forlorn_armor_soul_feast_bonus_heal_per_level = 0.5f;
-
-    @Entry public static float soul_ingot_armor_fortified_resistance_duration = 40;
-    @Entry public static float soul_ingot_armor_fortified_resistance_amp = 0;
-    @Entry public static float soul_ingot_armor_fortified_resistance_amp_per_level = 0.2f;
-
-    @Entry public static float soul_robes_armor_fortified_magic_resistance_duration = 40;
-    @Entry public static float soul_robes_armor_fortified_magic_resistance_amp = 3;
-    @Entry public static float soul_robes_armor_fortified_magic_resistance_amp_per_level = 0.2f;
-    @Entry public static float soul_robes_armor_fortified_night_vision_duration = 400;
-    @Entry public static float soul_robes_armor_fortified_night_vision_amp = 0;
-
-    @Entry public static float withered_chest_infectious_damage = 1;
-    @Entry public static float withered_chest_infectious_damage_per_level = 1;
-    @Entry public static float withered_chest_infectious_knockback = 0.5f;
-    @Entry public static float withered_chest_infectious_knockback_per_level = 0;
-    @Entry public static float withered_chest_infectious_apply_wither_duration = 100;
-    @Entry public static float withered_chest_infectious_apply_wither_duration_per_level = 20;
-    @Entry public static float withered_chest_infectious_apply_wither_amplifier = 0;
-    @Entry public static float withered_chest_infectious_apply_wither_amplifier_per_level = 0.4f;
-    @Entry public static float withered_chest_infectious_apply_fire_seconds = 0;
-    @Entry public static float withered_chest_infectious_apply_fire_seconds_per_level = 0;
-    @Entry public static float withered_chest_unceasing_life_leach_duration = 400;
-    @Entry public static float withered_chest_unceasing_life_leach_duration_per_level = 40;
-    @Entry public static float withered_chest_unceasing_life_leach_amplifier = 0;
-    @Entry public static float withered_chest_unceasing_life_leach_amplifier_per_level = 0.4f;
-    @Entry public static float withered_chest_unceasing_min_cooldown = 100;
-    @Entry public static float withered_chest_unceasing_cooldown = 500;
-    @Entry public static float withered_chest_unceasing_reduced_cooldown_per_level = 60;
-
-    @Entry public static float enhanced_withered_chest_infectious_damage = 1;
-    @Entry public static float enhanced_withered_chest_infectious_damage_per_level = 1;
-    @Entry public static float enhanced_withered_chest_infectious_knockback = 0.5f;
-    @Entry public static float enhanced_withered_chest_infectious_knockback_per_level = 0;
-    @Entry public static float enhanced_withered_chest_infectious_apply_wither_duration = 100;
-    @Entry public static float enhanced_withered_chest_infectious_apply_wither_duration_per_level = 20;
-    @Entry public static float enhanced_withered_chest_infectious_apply_wither_amplifier = 0;
-    @Entry public static float enhanced_withered_chest_infectious_apply_wither_amplifier_per_level = 0.4f;
-    @Entry public static float enhanced_withered_chest_infectious_apply_fire_seconds = 6;
-    @Entry public static float enhanced_withered_chest_infectious_apply_fire_seconds_per_level = 1;
-
-    @Entry public static float enhanced_withered_chest_unceasing_life_leach_duration = 400;
-    @Entry public static float enhanced_withered_chest_unceasing_life_leach_duration_per_level = 40;
-    @Entry public static float enhanced_withered_chest_unceasing_life_leach_amplifier = 0;
-    @Entry public static float enhanced_withered_chest_unceasing_life_leach_amplifier_per_level = 0.4f;
-    @Entry public static float enhanced_withered_chest_unceasing_min_cooldown = 100;
-    @Entry public static float enhanced_withered_chest_unceasing_cooldown = 500;
-    @Entry public static float enhanced_withered_chest_unceasing_reduced_cooldown_per_level = 60;
-
-    @Entry public static float enhanced_withered_chest_exalt_amp_per_missing_health_percent = 0.05f;
-    @Entry public static float enhanced_withered_chest_exalt_amp_per_missing_health_percent_bonus_per_level = 0.01f;
-    @Entry public static float enhanced_withered_chest_exalt_amp_max = 4;
-    @Entry public static float enhanced_withered_chest_exalt_amp_max_increase_per_level = 0.4f;
-    @Entry public static float enhanced_withered_chest_exalt_duration = 20;
 
     @Entry public static float bloodlust_damage = 7;
     @Entry public static float bloodlust_attack_speed = 1.6f;
@@ -591,7 +358,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float darkmoon_longbow_arrow_storm_min_cooldown = 60;
     @Entry public static float darkmoon_longbow_arrow_storm_cooldown = 150;
     @Entry public static float darkmoon_longbow_arrow_storm_reduced_cooldown_per_level = 30;
-
 
     @Entry public static float dark_moon_greatsword_damage = 10;
     @Entry public static float dark_moon_greatsword_attack_speed = 1.2f;
@@ -1429,61 +1195,6 @@ public class ConfigConstructor extends MidnightConfig {
     @Entry public static float ultra_heavy_posture_loss_modifier_when_stagger_enchant = 0.9f;
     @Entry public static boolean prioritize_off_hand_shield_over_weapon = false;
 
-    @Entry public static boolean disable_posture_mechanic_for_all_mobs = false;
-    @Entry public static float base_posture_unit = 120;
-    @Entry public static float base_posture_buildup_resistance_unless_overridden = 0f;
-    @Entry public static float posture_loss_reduction_amount = 1;
-    @Entry public static float posture_loss_reduction_interval = 8;
-
-    @Entry public static float posture_break_damage_per_amp = 6f;
-    @Entry public static float posture_break_player_damage_per_amp = 2f;
-    @Entry(min=0, max=1) public static float posture_break_percent_health_damage = 0.05f;
-
-    @Entry public static boolean disable_bleed_mechanic_for_all_mobs = false;
-    @Entry public static float max_bleed = 200;
-    @Entry public static float base_bleed_buildup_resistance_unless_overridden = 0f;
-    @Entry public static float base_bleed_damage_resistance_unless_overridden = 0f;
-    @Entry public static float bleed_reduction_amount = 1;
-    @Entry public static float bleed_reduction_interval = 10;
-    @Entry public static float bleed_base_damage = 6f;
-    @Entry(min=0, max=1) public static float bleed_percent_health_damage = 0.1f;
-    @Entry public static float bleed_effect_increase_per_amp = 6;
-    @Entry public static float bleed_effect_base_increase = 4;
-
-    @Entry public static boolean disable_frost_buildup_mechanic_for_all_mobs = false;
-    @Entry public static float max_frost_buildup = 200;
-    @Entry public static float base_frost_buildup_resistance_unless_overridden = 0f;
-    @Entry public static float base_frost_damage_resistance_unless_overridden = 0f;
-    @Entry public static float frost_reduction_amount = 3;
-    @Entry public static float frost_reduction_interval = 4;
-    @Entry public static float frost_base_damage = 4f;
-    @Entry(min=0, max=1) public static float frost_percent_health_damage = 0.15f;
-    @Entry public static double frost_explosion_range = 1.25;
-    @Entry public static float frost_permafrost_spread_effect_amp = 2;
-    @Entry public static float permafrost_effect_base_frost_buildup = 1;
-    @Entry public static float permafrost_effect_buildup_per_amp = 1;
-
-    @Entry(min=0) public static float blight_carrier_enchant_blight_duration = 160;
-    @Entry(min=0) public static float blight_carrier_enchant_blight_per_level = 2;
-
-    @Entry(min=0) public static float chain_lightning_enchant_damage_mod_per_level = 0.7f;
-    @Entry(min=0) public static float chain_lightning_enchant_range_per_level = 2.25f;
-
-    @Entry(min=0) public static float frostsilver_enchant_permafrost_per_level = 4;
-    @Entry(min=0) public static float frostsilver_enchant_permafrost_duration = 100;
-
-    @Entry(min=0) public static double misfire_curse_enchant_trigger_chance = 0.3;
-
-    @Entry(min=0) public static float phantom_trace_enchant_phantom_projectile_damage_mod = 0.5f;
-
-    @Entry(min=0) public static float ricochet_enchant_bounce_per_level = 1;
-
-    @Entry(min=0) public static float stagger_enchant_posture_loss_applied_per_level = 5;
-    @Entry(min=0) public static float stagger_enchant_posture_loss_on_player_modifier = 1f;
-
-    @Entry(min=0) public static float tether_enchant_drag_mod = 1f;
-    @Entry(min=0) public static float tether_enchant_min_activation_range_per_level = 3f;
-
     @Entry public static boolean enable_shield_parry = true;
     @Entry public static float shield_parry_min_cooldown = 10;
     @Entry public static float shield_parry_cooldown = 40;
@@ -1494,76 +1205,8 @@ public class ConfigConstructor extends MidnightConfig {
 
     @Entry public static boolean chungus_tonic_can_change_entities = true;
     @Entry public static float chungus_tonic_ticks_until_chungified = 300;
-    @Entry public static boolean can_chungus_barter = true;
 
     @Entry public static float blood_vial_heal = 5f;
     @Entry public static float blood_vial_regen_amp = 0;
     @Entry public static float blood_vial_regen_duration_ticks = 40;
-
-    @Entry public static boolean can_projectiles_apply_posture_loss = true;
-    @Entry public static float silver_bullet_undead_bonus_damage = 4f;
-    @Entry(min=0) public static float silver_bullet_posture_loss_on_player_modifier = 0.75f;
-
-    @Entry public static float blunderbuss_damage = 8f;
-    @Entry public static float blunderbuss_velocity = 3f;
-    @Entry public static float blunderbuss_divergence = 10f;
-    @Entry public static float blunderbuss_projectile_amount = 3;
-    @Entry public static float blunderbuss_projectile_amount_per_level = 0.4f;
-    @Entry public static float blunderbuss_posture_loss = 30;
-    @Entry public static float blunderbuss_posture_loss_per_enchant_level = 3;
-    @Entry public static float blunderbuss_min_cooldown = 50;
-    @Entry public static float blunderbuss_cooldown = 200;
-    @Entry public static float blunderbuss_reduced_cooldown_per_fast_hands_level = 8;
-    @Entry public static float blunderbuss_bullets_needed = 3;
-    @Entry public static float blunderbuss_level_to_unlock_infinity = 2;
-    @Entry public static boolean blunderbuss_bullets_bypass_entity_invincibility_frames = true;
-    @Entry public static float blunderbuss_bullets_needed_with_infinity = 3;
-
-    @Entry public static float gatling_gun_damage = 3;
-    @Entry public static float gatling_gun_velocity = 3f;
-    @Entry public static float gatling_gun_divergence = 3f;
-    @Entry public static float gatling_gun_projectile_amount = 1;
-    @Entry public static float gatling_gun_projectile_amount_per_level = 0;
-    @Entry public static float gatling_gun_posture_loss = 10;
-    @Entry public static float gatling_gun_posture_loss_per_enchant_level = 3;
-    @Entry public static float gatling_gun_max_use_time = 100;
-    @Entry public static float gatling_gun_bonus_max_use_time_per_fast_hands = 70;
-    @Entry public static float gatling_gun_min_cooldown = 20;
-    @Entry public static float gatling_gun_cooldown = 120;
-    @Entry public static float gatling_gun_reduced_cooldown_per_fast_hands = 24;
-    @Entry public static float gatling_gun_bullets_needed = 1;
-    @Entry public static float gatling_gun_bullets_needed_with_infinity = 1;
-    @Entry public static float gatling_gun_level_to_unlock_infinity = 2;
-    @Entry public static boolean gatling_gun_bullets_bypass_entity_invincibility_frames = true;
-
-    @Entry public static float hunter_cannon_damage = 30f;
-    @Entry public static float hunter_cannon_velocity = 3f;
-    @Entry public static float hunter_cannon_divergence = 1f;
-    @Entry public static float hunter_cannon_projectile_amount = 1;
-    @Entry public static float hunter_cannon_projectile_amount_per_level = 0;
-    @Entry public static float hunter_cannon_posture_loss = 120;
-    @Entry public static float hunter_cannon_posture_loss_per_enchant_level = 50;
-    @Entry public static float hunter_cannon_min_cooldown = 80;
-    @Entry public static float hunter_cannon_cooldown = 300;
-    @Entry public static float hunter_cannon_reduced_cooldown_per_fast_hands = 32;
-    @Entry public static float hunter_cannon_bullets_needed = 10;
-    @Entry public static float hunter_cannon_bullets_needed_with_infinity = 10;
-    @Entry public static float hunter_cannon_level_to_unlock_infinity = 2;
-    @Entry public static float hunter_cannon_launch_power = 2f;
-    @Entry public static boolean hunter_cannon_bullets_bypass_entity_invincibility_frames = false;
-
-    @Entry public static float hunter_pistol_damage = 6f;
-    @Entry public static float hunter_pistol_velocity = 3f;
-    @Entry public static float hunter_pistol_divergence = 1f;
-    @Entry public static float hunter_pistol_projectile_amount = 1;
-    @Entry public static float hunter_pistol_projectile_amount_per_level = 0;
-    @Entry public static float hunter_pistol_posture_loss = 50;
-    @Entry public static float hunter_pistol_posture_loss_per_enchant_level = 10;
-    @Entry public static float hunter_pistol_min_cooldown = 10;
-    @Entry public static float hunter_pistol_cooldown = 50;
-    @Entry public static float hunter_pistol_reduced_cooldown_per_fast_hands = 8;
-    @Entry public static float hunter_pistol_bullets_needed = 1;
-    @Entry public static float hunter_pistol_bullets_needed_with_infinity = 1;
-    @Entry public static float hunter_pistol_level_to_unlock_infinity = 2;
-    @Entry public static boolean hunter_pistol_bullets_bypass_entity_invincibility_frames = false;
 }

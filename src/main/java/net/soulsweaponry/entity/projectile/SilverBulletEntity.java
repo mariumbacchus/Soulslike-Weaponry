@@ -27,6 +27,8 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EnchantmentConfig;
+import net.soulsweaponry.config.GunConfig;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.ChainLightning;
@@ -248,7 +250,7 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
                 this.onPostureBreak(target);
             }
             if (target.hasInvertedHealingAndHarm()) {
-                this.setDamage(this.getDamage() + (ConfigConstructor.silver_bullet_undead_bonus_damage / this.getVelocity().length()));
+                this.setDamage(this.getDamage() + (GunConfig.silver_bullet_undead_bonus_damage / this.getVelocity().length()));
             }
             if (this.getOwner() instanceof LivingEntity owner) {
                 if (this.chainLightningDamage > 0f) {
@@ -258,9 +260,9 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
             if (this.getBlightCarrier() > 0) {
                 StatusEffectInstance instance = target.getStatusEffect(EffectRegistry.BLIGHT);
                 if (instance != null) {
-                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, (int) ConfigConstructor.blight_carrier_enchant_blight_duration, instance.getAmplifier() + this.getBlightCarrier() - 1));
+                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, (int) EnchantmentConfig.blight_carrier_enchant_blight_duration, instance.getAmplifier() + this.getBlightCarrier() - 1));
                 } else {
-                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, (int) ConfigConstructor.blight_carrier_enchant_blight_duration, this.getBlightCarrier() - 1));
+                    target.addStatusEffect(new StatusEffectInstance(EffectRegistry.BLIGHT, (int) EnchantmentConfig.blight_carrier_enchant_blight_duration, this.getBlightCarrier() - 1));
                 }
             }
         }
@@ -271,9 +273,9 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
                 double resistanceFactor = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
                 Vec3d toShooter = new Vec3d(shooter.getX() - target.getX(), 0.0, shooter.getZ() - target.getZ());
                 double distance = toShooter.length();
-                double minRange = 1 + this.getTether() * ConfigConstructor.tether_enchant_min_activation_range_per_level;
+                double minRange = 1 + this.getTether() * EnchantmentConfig.tether_enchant_min_activation_range_per_level;
                 if (distance > minRange) {
-                    double pullStrength = this.getTether() * ConfigConstructor.tether_enchant_drag_mod * resistanceFactor;
+                    double pullStrength = this.getTether() * EnchantmentConfig.tether_enchant_drag_mod * resistanceFactor;
                     Vec3d pullVel = toShooter.normalize().multiply(pullStrength);
                     double maxAllowedPull = distance - minRange;
                     if (pullVel.length() > maxAllowedPull) {
@@ -294,7 +296,7 @@ public class SilverBulletEntity extends ModPersistentProjectile implements GeoEn
             if (this.getOwner() != null) {
                 FrostData.setFrostSource(target, this.getOwner());
             }
-            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, (int) ConfigConstructor.frostsilver_enchant_permafrost_duration, this.getFreezeAmplifier() - 1));
+            target.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, (int) EnchantmentConfig.frostsilver_enchant_permafrost_duration, this.getFreezeAmplifier() - 1));
             target.getWorld().playSound(null, target.getBlockPos(), SoundEvents.ENTITY_SKELETON_CONVERTED_TO_STRAY, SoundCategory.HOSTILE, 1f, 1f);
         }
     }

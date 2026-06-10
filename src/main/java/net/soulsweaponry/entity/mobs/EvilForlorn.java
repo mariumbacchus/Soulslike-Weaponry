@@ -25,7 +25,7 @@ import java.util.Set;
 
 public class EvilForlorn extends Forlorn {
 
-    public static boolean canSpawn = ConfigConstructor.can_evil_forlorn_spawn;
+    public static boolean canSpawn = EntityConfig.can_evil_forlorn_spawn;
     private static final Set<Block> BLOCK_BLACKLIST = Set.of(
             Blocks.WARPED_WART_BLOCK, Blocks.WARPED_NYLIUM, Blocks.WARPED_STEM, Blocks.SHROOMLIGHT, Blocks.CRIMSON_STEM, Blocks.NETHER_WART_BLOCK, Blocks.BASALT
     );

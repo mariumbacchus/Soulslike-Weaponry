@@ -5,12 +5,12 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.EntityTypeTags;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
-import net.soulsweaponry.particles.ParticleHandler;
 
 public class Freezing extends StatusEffect {
 
@@ -29,7 +29,7 @@ public class Freezing extends StatusEffect {
         if (entity.getType().isIn(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || entity.hasStatusEffect(EffectRegistry.FROST_MOON)) {
             return false;
         }
-        FrostData.addFrost(entity, (int) (ConfigConstructor.permafrost_effect_base_frost_buildup + ConfigConstructor.permafrost_effect_buildup_per_amp * (amplifier + 1)));
+        FrostData.addFrost(entity, (int) (EntityStatsConfig.permafrost_effect_base_frost_buildup + EntityStatsConfig.permafrost_effect_buildup_per_amp * (amplifier + 1)));
         entity.setInPowderSnow(true);
         entity.setFrozenTicks(Math.min(entity.getMinFreezeDamageTicks(), ticks + amplifier));
         if (!entity.getWorld().isClient) {

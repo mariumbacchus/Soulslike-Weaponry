@@ -1,28 +1,28 @@
 package net.soulsweaponry.items.gun;
 
 import net.minecraft.item.ItemStack;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.GunConfig;
 import net.soulsweaponry.items.abilities.use.ShootSilverBullet;
 
 public class Blunderbuss extends GunItem {
 
     private static final ShootSilverBullet SHOOT_SILVER_BULLET = new ShootSilverBullet(
-            ConfigConstructor.blunderbuss_damage,
-            ConfigConstructor.blunderbuss_velocity,
-            ConfigConstructor.blunderbuss_divergence,
-            (int) ConfigConstructor.blunderbuss_posture_loss,
-            ConfigConstructor.blunderbuss_posture_loss_per_enchant_level,
-            (int) ConfigConstructor.blunderbuss_projectile_amount,
-            ConfigConstructor.blunderbuss_projectile_amount_per_level,
-            (int) ConfigConstructor.blunderbuss_bullets_needed_with_infinity,
-            (int) ConfigConstructor.blunderbuss_bullets_needed,
-            (int) ConfigConstructor.blunderbuss_level_to_unlock_infinity,
+            GunConfig.blunderbuss_damage,
+            GunConfig.blunderbuss_velocity,
+            GunConfig.blunderbuss_divergence,
+            (int) GunConfig.blunderbuss_posture_loss,
+            GunConfig.blunderbuss_posture_loss_per_enchant_level,
+            (int) GunConfig.blunderbuss_projectile_amount,
+            GunConfig.blunderbuss_projectile_amount_per_level,
+            (int) GunConfig.blunderbuss_bullets_needed_with_infinity,
+            (int) GunConfig.blunderbuss_bullets_needed,
+            (int) GunConfig.blunderbuss_level_to_unlock_infinity,
             1, 60, 25,
-            (int) ConfigConstructor.blunderbuss_min_cooldown,
-            (int) ConfigConstructor.blunderbuss_cooldown,
-            (int) ConfigConstructor.blunderbuss_reduced_cooldown_per_fast_hands_level,
+            (int) GunConfig.blunderbuss_min_cooldown,
+            (int) GunConfig.blunderbuss_cooldown,
+            (int) GunConfig.blunderbuss_reduced_cooldown_per_fast_hands_level,
             50, 0.2f,
-            ConfigConstructor.blunderbuss_bullets_bypass_entity_invincibility_frames
+            GunConfig.blunderbuss_bullets_bypass_entity_invincibility_frames
     );
 
     public Blunderbuss(Settings settings) {
@@ -32,6 +32,6 @@ public class Blunderbuss extends GunItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_hunter_blunderbuss;
+        return GunConfig.disable_use_hunter_blunderbuss;
     }
 }

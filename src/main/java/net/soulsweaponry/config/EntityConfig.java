@@ -5,6 +5,8 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static double dark_sorcerer_health = 10D;
     @Entry public static double dark_sorcerer_bonus_armor = 0D;
 
+    @Entry public static boolean can_evil_forlorn_spawn = true;
+    @Entry(min=0) public static float evil_forlorn_spawnweight = 15;
     @Entry public static double evil_forlorn_health = 30D;
     @Entry public static double evil_forlorn_bonus_armor = 0D;
 
@@ -14,8 +16,12 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static double frost_giant_health = 50D;
     @Entry public static double frost_giant_armor = 8D;
 
-    @Entry public static double moderatly_sized_chungus_heath = 14D;
-    @Entry public static double moderatly_sized_chungus_armor = 0D;
+    @Entry public static boolean can_moderately_sized_chungus_spawn = true;
+    @Entry(min=0) public static float moderately_sized_chungus_spawnweight = 100;
+    @Entry public static float chungus_monolith_radius = 32;
+    @Entry public static double moderately_sized_chungus_heath = 14D;
+    @Entry public static double moderately_sized_chungus_armor = 0D;
+    @Entry public static boolean can_chungus_barter = true;
 
     @Entry public static double remnant_health = 20D;
     @Entry public static double remnant_bonus_armor = 0D;
@@ -32,8 +38,12 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static double warmth_health = 20D;
     @Entry public static double warmth_armor = 0D;
 
+    @Entry public static boolean can_withered_demon_spawn = true;
+    @Entry(min=0) public static float withered_demon_spawnweight = 20;
     @Entry public static double withered_demon_health = 80D;
     @Entry public static double withered_demon_armor = 2D;
+
+    @Entry public static boolean can_bosses_break_blocks = true;
 
     @Entry public static boolean decaying_king_disable_respawn = false;
     @Entry public static boolean decaying_king_consume_item_on_summoning = true;

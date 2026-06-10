@@ -9,7 +9,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.ChaosArmorRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
@@ -50,21 +50,21 @@ public class ChaosHelmet extends ChaosCrown {
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.chaos_armor_base_posture_increase;
+        return ArmorConfig.chaos_armor_base_posture_increase;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.chaos_armor_posture_buildup_resistances;
+        return ArmorConfig.chaos_armor_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.chaos_armor_bleed_buildup_resistances;
+        return ArmorConfig.chaos_armor_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.chaos_armor_bleed_damage_resistances;
+        return ArmorConfig.chaos_armor_bleed_damage_resistances;
     }
 }

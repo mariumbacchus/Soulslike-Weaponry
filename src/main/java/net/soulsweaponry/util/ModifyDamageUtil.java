@@ -10,6 +10,7 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -62,8 +63,8 @@ public class ModifyDamageUtil {
         }
         if (entity.hasStatusEffect(EffectRegistry.POSTURE_BREAK) && !source.isIn(DamageTypeTags.IS_PROJECTILE)) {
             int amplifier = entity.getStatusEffect(EffectRegistry.POSTURE_BREAK).getAmplifier();
-            float baseAdded = entity instanceof PlayerEntity ? ConfigConstructor.posture_break_player_damage_per_amp : ConfigConstructor.posture_break_damage_per_amp;
-            float totalAdded = baseAdded * (amplifier + 1) + ConfigConstructor.posture_break_percent_health_damage * entity.getMaxHealth();
+            float baseAdded = entity instanceof PlayerEntity ? EntityStatsConfig.posture_break_player_damage_per_amp : EntityStatsConfig.posture_break_damage_per_amp;
+            float totalAdded = baseAdded * (amplifier + 1) + EntityStatsConfig.posture_break_percent_health_damage * entity.getMaxHealth();
             if (source.getAttacker() instanceof LivingEntity living) {
                 Optional<BonusCritHitDamage> op = IHasAbilities.getAbility(living.getStackInHand(Hand.MAIN_HAND), BonusCritHitDamage.class);
                 if (op.isPresent()) {

@@ -10,7 +10,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.WitheredArmorRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.abilitykeybind.LifeLeach;
 import net.soulsweaponry.items.abilities.immunity.EffectImmunity;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
@@ -32,26 +32,26 @@ public class Hallowheart extends ModdedArmor implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final EffectImmunity WITHER_IMMUNITY = new EffectImmunity(Set.of(StatusEffects.WITHER));
     private static final LifeLeach LIFE_LEACH = new LifeLeach(
-            (int) ConfigConstructor.withered_chest_unceasing_life_leach_duration,
-            ConfigConstructor.withered_chest_unceasing_life_leach_duration_per_level,
-            (int) ConfigConstructor.withered_chest_unceasing_life_leach_amplifier,
-            ConfigConstructor.withered_chest_unceasing_life_leach_amplifier_per_level,
-            (int) ConfigConstructor.withered_chest_unceasing_min_cooldown,
-            (int) ConfigConstructor.withered_chest_unceasing_cooldown,
-            (int) ConfigConstructor.withered_chest_unceasing_reduced_cooldown_per_level
+            (int) ArmorConfig.withered_chest_unceasing_life_leach_duration,
+            ArmorConfig.withered_chest_unceasing_life_leach_duration_per_level,
+            (int) ArmorConfig.withered_chest_unceasing_life_leach_amplifier,
+            ArmorConfig.withered_chest_unceasing_life_leach_amplifier_per_level,
+            (int) ArmorConfig.withered_chest_unceasing_min_cooldown,
+            (int) ArmorConfig.withered_chest_unceasing_cooldown,
+            (int) ArmorConfig.withered_chest_unceasing_reduced_cooldown_per_level
     );
     private static final Infectious INFECTIOUS = new Infectious(
-            ConfigConstructor.withered_chest_infectious_damage,
-            ConfigConstructor.withered_chest_infectious_damage_per_level,
-            ConfigConstructor.withered_chest_infectious_knockback,
-            ConfigConstructor.withered_chest_infectious_knockback_per_level,
+            ArmorConfig.withered_chest_infectious_damage,
+            ArmorConfig.withered_chest_infectious_damage_per_level,
+            ArmorConfig.withered_chest_infectious_knockback,
+            ArmorConfig.withered_chest_infectious_knockback_per_level,
             List.of(StatusEffects.WITHER),
-            (int) ConfigConstructor.withered_chest_infectious_apply_wither_duration,
-            ConfigConstructor.withered_chest_infectious_apply_wither_duration_per_level,
-            (int) ConfigConstructor.withered_chest_infectious_apply_wither_amplifier,
-            ConfigConstructor.withered_chest_infectious_apply_wither_amplifier_per_level,
-            (int) ConfigConstructor.withered_chest_infectious_apply_fire_seconds,
-            (int) ConfigConstructor.withered_chest_infectious_apply_fire_seconds_per_level
+            (int) ArmorConfig.withered_chest_infectious_apply_wither_duration,
+            ArmorConfig.withered_chest_infectious_apply_wither_duration_per_level,
+            (int) ArmorConfig.withered_chest_infectious_apply_wither_amplifier,
+            ArmorConfig.withered_chest_infectious_apply_wither_amplifier_per_level,
+            (int) ArmorConfig.withered_chest_infectious_apply_fire_seconds,
+            (int) ArmorConfig.withered_chest_infectious_apply_fire_seconds_per_level
     );
 
     public Hallowheart(RegistryEntry<ArmorMaterial> material, Type type, Settings settings) {
@@ -76,7 +76,7 @@ public class Hallowheart extends ModdedArmor implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_hallowheart;
+        return ArmorConfig.disable_use_hallowheart;
     }
 
     @Override
@@ -106,21 +106,21 @@ public class Hallowheart extends ModdedArmor implements GeoItem {
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.withered_armor_base_posture_increase;
+        return ArmorConfig.withered_armor_base_posture_increase;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.withered_armor_posture_buildup_resistances;
+        return ArmorConfig.withered_armor_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.withered_armor_bleed_buildup_resistances;
+        return ArmorConfig.withered_armor_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.withered_armor_bleed_damage_resistances;
+        return ArmorConfig.withered_armor_bleed_damage_resistances;
     }
 }

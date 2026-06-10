@@ -11,7 +11,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.immunity.EffectImmunity;
 import net.soulsweaponry.items.abilities.inventorytick.CorruptGround;
 import net.soulsweaponry.items.abilities.predicate.Equipped;
@@ -33,14 +33,14 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final EffectImmunity DECAY_IMMUNITY = new EffectImmunity(Set.of(EffectRegistry.DECAY));
     public static final CorruptGround CORRUPT_GROUND = new CorruptGround(
-            (int) ConfigConstructor.chaos_cape_corrupt_ground_range,
-            ConfigConstructor.chaos_cape_corrupt_ground_range_per_level,
-            ConfigConstructor.chaos_cape_corrupt_ground_status_effect_range,
-            ConfigConstructor.chaos_cape_corrupt_ground_status_effect_range_per_level,
+            (int) ArmorConfig.chaos_cape_corrupt_ground_range,
+            ArmorConfig.chaos_cape_corrupt_ground_range_per_level,
+            ArmorConfig.chaos_cape_corrupt_ground_status_effect_range,
+            ArmorConfig.chaos_cape_corrupt_ground_status_effect_range_per_level,
             List.of(
                     new StatusEffectInstance(StatusEffects.WITHER,
-                            (int) ConfigConstructor.chaos_cape_corrupt_ground_status_effect_wither_duration,
-                            (int) ConfigConstructor.chaos_cape_corrupt_ground_status_effect_wither_amp
+                            (int) ArmorConfig.chaos_cape_corrupt_ground_status_effect_wither_duration,
+                            (int) ArmorConfig.chaos_cape_corrupt_ground_status_effect_wither_amp
                     )
             )
     );
@@ -67,7 +67,7 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_chaos_robes;
+        return ArmorConfig.disable_use_chaos_robes;
     }
 
     @Override
@@ -97,21 +97,21 @@ public class ChaosRobes extends ModdedArmor implements GeoItem {
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.chaos_set_bleed_buildup_resistances;
+        return ArmorConfig.chaos_set_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.chaos_set_bleed_damage_resistances;
+        return ArmorConfig.chaos_set_bleed_damage_resistances;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.chaos_set_posture_buildup_resistances;
+        return ArmorConfig.chaos_set_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.chaos_set_base_posture_increase;
+        return ArmorConfig.chaos_set_base_posture_increase;
     }
 }

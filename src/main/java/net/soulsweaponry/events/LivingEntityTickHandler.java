@@ -8,6 +8,7 @@ import net.soulsweaponry.api.entitystats.EntityBleed;
 import net.soulsweaponry.api.entitystats.EntityFrost;
 import net.soulsweaponry.api.entitystats.EntityPosture;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -37,14 +38,14 @@ public class LivingEntityTickHandler implements LivingEntityTickCallback {
             EntityFrost.triggerFrost(entity);
         }
         if (!entity.getWorld().isClient) {
-            if (entity.age % ((int) ConfigConstructor.posture_loss_reduction_interval) == 0 && posture > 0) {
-                PostureData.reducePosture(entity, (int) ConfigConstructor.posture_loss_reduction_amount);
+            if (entity.age % ((int) EntityStatsConfig.posture_loss_reduction_interval) == 0 && posture > 0) {
+                PostureData.reducePosture(entity, (int) EntityStatsConfig.posture_loss_reduction_amount);
             }
-            if (entity.age % ((int) ConfigConstructor.bleed_reduction_interval) == 0 && bleed > 0) {
-                BleedData.reduceBleed((IEntityDataSaver) entity, (int) ConfigConstructor.bleed_reduction_amount, EntityBleed.getMaxBleed(entity));
+            if (entity.age % ((int) EntityStatsConfig.bleed_reduction_interval) == 0 && bleed > 0) {
+                BleedData.reduceBleed((IEntityDataSaver) entity, (int) EntityStatsConfig.bleed_reduction_amount, EntityBleed.getMaxBleed(entity));
             }
-            if (entity.age % ((int) ConfigConstructor.frost_reduction_interval) == 0 && (!entity.hasStatusEffect(EffectRegistry.FREEZING) || frostCoolingDown)) {
-                int newFrost = FrostData.reduceFrost((IEntityDataSaver) entity, (int) ConfigConstructor.frost_reduction_amount, EntityFrost.getMaxFrostBuildup(entity));
+            if (entity.age % ((int) EntityStatsConfig.frost_reduction_interval) == 0 && (!entity.hasStatusEffect(EffectRegistry.FREEZING) || frostCoolingDown)) {
+                int newFrost = FrostData.reduceFrost((IEntityDataSaver) entity, (int) EntityStatsConfig.frost_reduction_amount, EntityFrost.getMaxFrostBuildup(entity));
                 if (newFrost <= 0) {
                     FrostData.setFrostCoolingDown((IEntityDataSaver) entity, false);
                 }

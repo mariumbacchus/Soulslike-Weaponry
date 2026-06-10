@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.inventorytick.BasicInventoryTickAbility;
 import net.soulsweaponry.items.abilities.predicate.FullSetEquipped;
 import net.soulsweaponry.registry.ArmorRegistry;
@@ -25,9 +25,9 @@ public class SoulIngotArmor extends ModdedArmor {
     );
     private static final BasicInventoryTickAbility RESISTANCE = new BasicInventoryTickAbility(
             (stack, world, entity, slot, selected) -> entity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE,
-                    (int) ConfigConstructor.soul_ingot_armor_fortified_resistance_duration,
-                    (int) (ConfigConstructor.soul_ingot_armor_fortified_resistance_amp
-                            + ConfigConstructor.soul_ingot_armor_fortified_resistance_amp_per_level * WeaponUtil.getUpgradeLevel(stack)),
+                    (int) ArmorConfig.soul_ingot_armor_fortified_resistance_duration,
+                    (int) (ArmorConfig.soul_ingot_armor_fortified_resistance_amp
+                            + ArmorConfig.soul_ingot_armor_fortified_resistance_amp_per_level * WeaponUtil.getUpgradeLevel(stack)),
                     false, false)),
             List.of(
                     Text.translatable("tooltip.soulsweapons.fortified").formatted(Formatting.BLUE),
@@ -42,26 +42,26 @@ public class SoulIngotArmor extends ModdedArmor {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_soul_ingot_armor;
+        return ArmorConfig.disable_use_soul_ingot_armor;
     }
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.soul_ingot_bleed_buildup_resistances;
+        return ArmorConfig.soul_ingot_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.soul_ingot_bleed_damage_resistances;
+        return ArmorConfig.soul_ingot_bleed_damage_resistances;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.soul_ingot_posture_buildup_resistances;
+        return ArmorConfig.soul_ingot_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.soul_ingot_base_posture_increase;
+        return ArmorConfig.soul_ingot_base_posture_increase;
     }
 }

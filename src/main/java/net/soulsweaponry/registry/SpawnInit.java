@@ -8,15 +8,16 @@ import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.world.Heightmap;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.mobs.BigChungus;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.EvilForlorn;
 
 public class SpawnInit {
     
-    public static int spawnRateChungus = (int) ConfigConstructor.moderatly_sized_chungus_spawnweight;
-    public static int spawnRateDemon = (int) ConfigConstructor.withered_demon_spawnweight;
-    public static int spawnRateForlorn = (int) ConfigConstructor.evil_forlorn_spawnweight;
+    public static int spawnRateChungus = (int) EntityConfig.moderately_sized_chungus_spawnweight;
+    public static int spawnRateDemon = (int) EntityConfig.withered_demon_spawnweight;
+    public static int spawnRateForlorn = (int) EntityConfig.evil_forlorn_spawnweight;
 
     public static void init() {
 

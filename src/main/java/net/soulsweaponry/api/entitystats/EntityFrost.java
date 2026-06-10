@@ -2,11 +2,10 @@ package net.soulsweaponry.api.entitystats;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.tag.EntityTypeTags;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
-import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.registry.AttributeRegistry;
 
 import java.util.Optional;
@@ -27,8 +26,8 @@ public class EntityFrost {
      * buildup cannot be applied during cooldown
      */
     public static void triggerFrost(LivingEntity entity) {
-        Permafrost.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, ConfigConstructor.frost_base_damage,
-                (int) ConfigConstructor.frost_permafrost_spread_effect_amp, ConfigConstructor.frost_percent_health_damage, ConfigConstructor.frost_explosion_range);
+        Permafrost.iceExplosion(entity.getWorld(), entity.getBlockPos(), entity, EntityStatsConfig.frost_base_damage,
+                (int) EntityStatsConfig.frost_permafrost_spread_effect_amp, EntityStatsConfig.frost_percent_health_damage, EntityStatsConfig.frost_explosion_range);
         FrostData.setFrostCoolingDown((IEntityDataSaver) entity, true);
     }
 
@@ -41,7 +40,7 @@ public class EntityFrost {
                 return max;
             }
         }
-        return (int) ConfigConstructor.max_frost_buildup;
+        return (int) EntityStatsConfig.max_frost_buildup;
     }
 
     public static float getFrostTriggerDamage(LivingEntity entity, float amount) {
@@ -55,7 +54,7 @@ public class EntityFrost {
     public static float getFrostBuildupResistance(LivingEntity entity) {
         float base = EntityStatsUtil.getStats(entity)
                 .map(s -> s.frost_buildup_resistance)
-                .orElse(ConfigConstructor.base_frost_buildup_resistance_unless_overridden);
+                .orElse(EntityStatsConfig.base_frost_buildup_resistance_unless_overridden);
         var inst = entity.getAttributeInstance(AttributeRegistry.FROST_BUILDUP_RESISTANCE);
         float bonus = inst != null ? (float) inst.getValue() : 0f;
         return base + bonus;
@@ -67,7 +66,7 @@ public class EntityFrost {
     public static float getFrostDamageResistance(LivingEntity entity) {
         float base = EntityStatsUtil.getStats(entity)
                 .map(s -> s.frost_damage_resistance)
-                .orElse(ConfigConstructor.base_frost_damage_resistance_unless_overridden);
+                .orElse(EntityStatsConfig.base_frost_damage_resistance_unless_overridden);
         var inst = entity.getAttributeInstance(AttributeRegistry.FROST_DAMAGE_RESISTANCE);
         float bonus = inst != null ? (float) inst.getValue() : 0f;
         return base + bonus;
@@ -80,7 +79,7 @@ public class EntityFrost {
      */
     public static boolean isFrostBuildupDisabled(LivingEntity entity) {
         Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
-        return entity.getType().isIn(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || ConfigConstructor.disable_frost_buildup_mechanic_for_all_mobs
+        return entity.getType().isIn(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES) || EntityStatsConfig.disable_frost_buildup_mechanic_for_all_mobs
                 || (op.isPresent() && op.get().max_frost_buildup < 0);
     }
 }

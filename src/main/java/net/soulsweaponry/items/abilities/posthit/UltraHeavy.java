@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EnchantmentConfig;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.registry.EnchantRegistry;
@@ -29,7 +30,7 @@ public record UltraHeavy(int postureLossPostHit, int hasteDuration, int hasteAmp
     @Override
     public List<Text> getTooltipAbilities(ItemStack stack) {
         List<Text> tooltip = new ArrayList<>();
-        int postureLoss = MathHelper.floor(ConfigConstructor.stagger_enchant_posture_loss_on_player_modifier * ConfigConstructor.stagger_enchant_posture_loss_applied_per_level);
+        int postureLoss = MathHelper.floor(EnchantmentConfig.stagger_enchant_posture_loss_on_player_modifier * EnchantmentConfig.stagger_enchant_posture_loss_applied_per_level);
         postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
         postureLoss *= WeaponUtil.getLevel(stack, EnchantRegistry.STAGGER);
         postureLoss += this.postureLossPostHit;

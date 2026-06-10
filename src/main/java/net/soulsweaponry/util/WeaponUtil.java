@@ -34,7 +34,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EnchantmentConfig;
 import net.soulsweaponry.recipe.ItemUpgradeRecipe;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.EnchantRegistry;
@@ -113,7 +113,7 @@ public class WeaponUtil {
      */
     public static int getLevel(ItemStack stack, RegistryKey<Enchantment> enchantKey) {
         Boolean disable = EnchantRegistry.DISABLED_ENCHANTMENTS.get(enchantKey);
-        if (ConfigConstructor.disable_all_enchantments || (disable != null && disable)) {
+        if (EnchantmentConfig.disable_all_enchantments || (disable != null && disable)) {
             return 0;
         }
         for (Map.Entry<RegistryEntry<Enchantment>, Integer> e : EnchantmentHelper.getEnchantments(stack).getEnchantmentEntries()) {

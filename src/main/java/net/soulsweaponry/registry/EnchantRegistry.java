@@ -11,8 +11,8 @@ import net.minecraft.registry.*;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
-import net.soulsweaponry.enchantments.*;
+import net.soulsweaponry.config.EnchantmentConfig;
+import net.soulsweaponry.enchantments.StaggerEnchantmentEffect;
 import net.soulsweaponry.util.ModTags;
 
 import java.util.HashMap;
@@ -186,17 +186,17 @@ public class EnchantRegistry {
     }
 
     public static void init() {
-        DISABLED_ENCHANTMENTS.put(FAST_HANDS, ConfigConstructor.disable_enchantment_fast_hands);
-        DISABLED_ENCHANTMENTS.put(VISCERAL, ConfigConstructor.disable_enchantment_posture_breaker);
-        DISABLED_ENCHANTMENTS.put(STAGGER, ConfigConstructor.disable_enchantment_stagger);
-        DISABLED_ENCHANTMENTS.put(ETHEREAL, ConfigConstructor.disable_enchantment_ethereal_ammunition);
-        DISABLED_ENCHANTMENTS.put(EXPLOSIVE_ROUNDS, ConfigConstructor.disable_enchantment_explosive_rounds);
-        DISABLED_ENCHANTMENTS.put(CHAIN_LIGHTNING, ConfigConstructor.disable_enchantment_chain_lightning);
-        DISABLED_ENCHANTMENTS.put(MISFIRE_CURSE, ConfigConstructor.disable_enchantment_misfire_curse);
-        DISABLED_ENCHANTMENTS.put(BLIGHT_CARRIER, ConfigConstructor.disable_enchantment_blight_carrier);
-        DISABLED_ENCHANTMENTS.put(FROSTSILVER, ConfigConstructor.disable_enchantment_frostsilver);
-        DISABLED_ENCHANTMENTS.put(PHANTOM_TRACE, ConfigConstructor.disable_enchantment_phantom_trace);
-        DISABLED_ENCHANTMENTS.put(TETHER, ConfigConstructor.disable_enchantment_tether);
-        DISABLED_ENCHANTMENTS.put(RICOCHET, ConfigConstructor.disable_enchantment_ricochet);
+        DISABLED_ENCHANTMENTS.put(FAST_HANDS, EnchantmentConfig.disable_enchantment_fast_hands);
+        DISABLED_ENCHANTMENTS.put(VISCERAL, EnchantmentConfig.disable_enchantment_posture_breaker);
+        DISABLED_ENCHANTMENTS.put(STAGGER, EnchantmentConfig.disable_enchantment_stagger);
+        DISABLED_ENCHANTMENTS.put(ETHEREAL, EnchantmentConfig.disable_enchantment_ethereal_ammunition);
+        DISABLED_ENCHANTMENTS.put(EXPLOSIVE_ROUNDS, EnchantmentConfig.disable_enchantment_explosive_rounds);
+        DISABLED_ENCHANTMENTS.put(CHAIN_LIGHTNING, EnchantmentConfig.disable_enchantment_chain_lightning);
+        DISABLED_ENCHANTMENTS.put(MISFIRE_CURSE, EnchantmentConfig.disable_enchantment_misfire_curse);
+        DISABLED_ENCHANTMENTS.put(BLIGHT_CARRIER, EnchantmentConfig.disable_enchantment_blight_carrier);
+        DISABLED_ENCHANTMENTS.put(FROSTSILVER, EnchantmentConfig.disable_enchantment_frostsilver);
+        DISABLED_ENCHANTMENTS.put(PHANTOM_TRACE, EnchantmentConfig.disable_enchantment_phantom_trace);
+        DISABLED_ENCHANTMENTS.put(TETHER, EnchantmentConfig.disable_enchantment_tether);
+        DISABLED_ENCHANTMENTS.put(RICOCHET, EnchantmentConfig.disable_enchantment_ricochet);
     }
 }

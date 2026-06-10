@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.inventorytick.BasicInventoryTickAbility;
 import net.soulsweaponry.items.abilities.predicate.FullSetEquipped;
 import net.soulsweaponry.registry.ArmorRegistry;
@@ -27,15 +27,15 @@ public class SoulRobesArmor extends ModdedArmor {
     private static final BasicInventoryTickAbility MAGIC_RESISTANCE = new BasicInventoryTickAbility(
             (stack, world, entity, slot, selected) -> {
                 entity.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION,
-                                (int) ConfigConstructor.soul_robes_armor_fortified_night_vision_duration,
-                                (int) (ConfigConstructor.soul_robes_armor_fortified_night_vision_amp),
+                                (int) ArmorConfig.soul_robes_armor_fortified_night_vision_duration,
+                                (int) (ArmorConfig.soul_robes_armor_fortified_night_vision_amp),
                                 false, false
                         )
                 );
                 entity.addStatusEffect(new StatusEffectInstance(EffectRegistry.MAGIC_RESISTANCE,
-                                (int) ConfigConstructor.soul_robes_armor_fortified_magic_resistance_duration,
-                                (int) (ConfigConstructor.soul_robes_armor_fortified_magic_resistance_amp
-                                        + ConfigConstructor.soul_robes_armor_fortified_magic_resistance_amp_per_level * WeaponUtil.getUpgradeLevel(stack)),
+                                (int) ArmorConfig.soul_robes_armor_fortified_magic_resistance_duration,
+                                (int) (ArmorConfig.soul_robes_armor_fortified_magic_resistance_amp
+                                        + ArmorConfig.soul_robes_armor_fortified_magic_resistance_amp_per_level * WeaponUtil.getUpgradeLevel(stack)),
                                 false, false
                         )
                 );
@@ -56,26 +56,26 @@ public class SoulRobesArmor extends ModdedArmor {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_soul_robes_armor;
+        return ArmorConfig.disable_use_soul_robes_armor;
     }
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.soul_robes_bleed_buildup_resistances;
+        return ArmorConfig.soul_robes_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.soul_robes_bleed_damage_resistances;
+        return ArmorConfig.soul_robes_bleed_damage_resistances;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.soul_robes_posture_buildup_resistances;
+        return ArmorConfig.soul_robes_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.soul_robes_base_posture_increase;
+        return ArmorConfig.soul_robes_base_posture_increase;
     }
 }

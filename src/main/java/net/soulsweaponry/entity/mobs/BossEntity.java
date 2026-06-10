@@ -30,6 +30,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
 import net.soulsweaponry.util.IAnimatedDeath;
@@ -314,7 +315,7 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
      * Call during mobTick() to break blocks around the boss when taking damage to make way.
      */
     public void breakSurroundingBlocks() {
-        if (ConfigConstructor.can_bosses_break_blocks) {
+        if (EntityConfig.can_bosses_break_blocks) {
             if (this.blockBreakingCooldown > 0) {
                 this.blockBreakingCooldown--;
                 if (this.blockBreakingCooldown == 0 && this.getWorld().getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {

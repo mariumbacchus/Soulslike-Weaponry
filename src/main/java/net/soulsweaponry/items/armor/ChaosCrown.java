@@ -11,7 +11,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.soulsweaponry.client.renderer.armor.ChaosSetRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.items.abilities.armorattributes.Luck;
 import net.soulsweaponry.items.abilities.immunity.EffectImmunity;
 import net.soulsweaponry.items.abilities.inventorytick.FlipEffects;
@@ -25,19 +25,20 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ChaosCrown extends ModdedArmor implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private static final Luck LUCK = new Luck(ConfigConstructor.chaos_crown_luck_given);
+    private static final Luck LUCK = new Luck(ArmorConfig.chaos_crown_luck_given);
     private static final FlipEffects FLIP_EFFECTS = new FlipEffects(
-            ConfigConstructor.chaos_crown_flip_effect_duration_mod,
-            ConfigConstructor.chaos_crown_flip_effect_amp_mod,
-            (int) ConfigConstructor.chaos_crown_flip_effect_min_cooldown,
-            (int) ConfigConstructor.chaos_crown_flip_effect_cooldown,
-            (int) ConfigConstructor.chaos_crown_flip_effect_reduced_cooldown_per_level
+            ArmorConfig.chaos_crown_flip_effect_duration_mod,
+            ArmorConfig.chaos_crown_flip_effect_amp_mod,
+            (int) ArmorConfig.chaos_crown_flip_effect_min_cooldown,
+            (int) ArmorConfig.chaos_crown_flip_effect_cooldown,
+            (int) ArmorConfig.chaos_crown_flip_effect_reduced_cooldown_per_level
     );
     private static final EffectImmunity DECAY_IMMUNITY = new EffectImmunity(
             Set.of(EffectRegistry.DECAY),
@@ -65,7 +66,7 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_chaos_crown;
+        return ArmorConfig.disable_use_chaos_crown;
     }
 
     @Override
@@ -93,21 +94,21 @@ public class ChaosCrown extends ModdedArmor implements GeoItem {
 
     @Override
     public float[] getBleedBuildupResistances() {
-        return ConfigConstructor.chaos_set_bleed_buildup_resistances;
+        return ArmorConfig.chaos_set_bleed_buildup_resistances;
     }
 
     @Override
     public float[] getBleedDamageResistances() {
-        return ConfigConstructor.chaos_set_bleed_damage_resistances;
+        return ArmorConfig.chaos_set_bleed_damage_resistances;
     }
 
     @Override
     public float[] getPostureBuildupResistances() {
-        return ConfigConstructor.chaos_set_posture_buildup_resistances;
+        return ArmorConfig.chaos_set_posture_buildup_resistances;
     }
 
     @Override
     public float[] getBasePostureIncrease() {
-        return ConfigConstructor.chaos_set_base_posture_increase;
+        return ArmorConfig.chaos_set_base_posture_increase;
     }
 }

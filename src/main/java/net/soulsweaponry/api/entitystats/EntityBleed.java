@@ -10,6 +10,7 @@ import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -33,7 +34,7 @@ public class EntityBleed {
 
     public static void triggerBloodLoss(LivingEntity entity) {
         entity.damage(DamageSourceRegistry.create(entity.getWorld(), DamageSourceRegistry.BLEED), getBleedDamage(entity,
-                ConfigConstructor.bleed_base_damage + entity.getMaxHealth() * ConfigConstructor.bleed_percent_health_damage));
+                EntityStatsConfig.bleed_base_damage + entity.getMaxHealth() * EntityStatsConfig.bleed_percent_health_damage));
         entity.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.BLOOD_LOSS, entity.getSoundCategory(), 1f, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
         if (entity.getWorld() instanceof ServerWorld serverWorld) {
             serverWorld.spawnParticles(new BlockStateParticleEffect(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.getDefaultState()),
@@ -62,7 +63,7 @@ public class EntityBleed {
                 return max;
             }
         }
-        return (int) ConfigConstructor.max_bleed;
+        return (int) EntityStatsConfig.max_bleed;
     }
 
     public static float getBleedDamage(LivingEntity entity, float amount) {
@@ -76,7 +77,7 @@ public class EntityBleed {
     public static float getBleedBuildupResistance(LivingEntity entity) {
         float base = EntityStatsUtil.getStats(entity)
                 .map(s -> s.bleed_buildup_resistance)
-                .orElse(ConfigConstructor.base_bleed_buildup_resistance_unless_overridden);
+                .orElse(EntityStatsConfig.base_bleed_buildup_resistance_unless_overridden);
         var inst = entity.getAttributeInstance(AttributeRegistry.BLEED_BUILDUP_RESISTANCE);
         float bonus = inst != null ? (float) inst.getValue() : 0f;
         return base + bonus;
@@ -88,7 +89,7 @@ public class EntityBleed {
     public static float getBleedDamageResistance(LivingEntity entity) {
         float base = EntityStatsUtil.getStats(entity)
                 .map(s -> s.bleed_damage_resistance)
-                .orElse(ConfigConstructor.base_bleed_damage_resistance_unless_overridden);
+                .orElse(EntityStatsConfig.base_bleed_damage_resistance_unless_overridden);
         var inst = entity.getAttributeInstance(AttributeRegistry.BLEED_DAMAGE_RESISTANCE);
         float bonus = inst != null ? (float) inst.getValue() : 0f;
         return base + bonus;
@@ -101,7 +102,7 @@ public class EntityBleed {
      */
     public static boolean isBleedDisabled(LivingEntity entity) {
         Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
-        return entity.getType().isIn(EntityTypeTags.SKELETONS) || entity.getType().isIn(ModTags.Entities.SKELETONS) || ConfigConstructor.disable_bleed_mechanic_for_all_mobs
+        return entity.getType().isIn(EntityTypeTags.SKELETONS) || entity.getType().isIn(ModTags.Entities.SKELETONS) || EntityStatsConfig.disable_bleed_mechanic_for_all_mobs
                 || (op.isPresent() && op.get().max_bleed < 0);
     }
 }

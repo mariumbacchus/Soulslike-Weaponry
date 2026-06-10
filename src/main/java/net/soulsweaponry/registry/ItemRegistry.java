@@ -10,7 +10,9 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.config.ArmorConfig;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.GunConfig;
 import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
 import net.soulsweaponry.datagen.tags.ItemTagsProvider;
@@ -178,7 +180,7 @@ public class ItemRegistry {
     }
 
     public static <I extends Item> I registerArmorItem(I item, String name, boolean removeRecipe, boolean fireproof) {
-        if (ConfigConstructor.disable_armor_recipes) {
+        if (ArmorConfig.disable_armor_recipes) {
             return registerItemRemovableRecipe(item, name, true, fireproof);
         } else {
             return registerItemRemovableRecipe(item, name, removeRecipe, fireproof);
@@ -210,7 +212,7 @@ public class ItemRegistry {
         if (DatagenUtil.isDatagenRunning()) {
             AdvancementsProvider.ALL_GUNS.add(item);
         }
-        return registerItemRemovableRecipe(item, name, ConfigConstructor.disable_gun_recipes, fireproof);
+        return registerItemRemovableRecipe(item, name, GunConfig.disable_gun_recipes, fireproof);
     }
 
     public static void registerFireproof(Item item, boolean fireproof) {

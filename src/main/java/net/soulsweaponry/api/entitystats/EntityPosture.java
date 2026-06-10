@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.registry.AttributeRegistry;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 public class EntityPosture {
 
-    public static final int BASE_POSTURE = (int) ConfigConstructor.base_posture_unit;
+    public static final int BASE_POSTURE = (int) EntityStatsConfig.base_posture_unit;
 
     /**
      * Returns the Max Posture Loss for the entity.
@@ -64,9 +65,9 @@ public class EntityPosture {
         Optional<EntityStats> op = EntityStatsUtil.getStats(entity);
         if (op.isPresent()) {
             EntityStats stats = op.get();
-            return (stats.max_posture_loss < 0) || ConfigConstructor.disable_posture_mechanic_for_all_mobs;
+            return (stats.max_posture_loss < 0) || EntityStatsConfig.disable_posture_mechanic_for_all_mobs;
         }
-        return ConfigConstructor.disable_posture_mechanic_for_all_mobs;
+        return EntityStatsConfig.disable_posture_mechanic_for_all_mobs;
     }
 
     /**
@@ -84,7 +85,7 @@ public class EntityPosture {
     public static float getPostureResistance(LivingEntity entity) {
         float base = EntityStatsUtil.getStats(entity)
                 .map(s -> s.posture_loss_buildup_resistance)
-                .orElse(ConfigConstructor.base_posture_buildup_resistance_unless_overridden);
+                .orElse(EntityStatsConfig.base_posture_buildup_resistance_unless_overridden);
         var inst = entity.getAttributeInstance(AttributeRegistry.POSTURE_BUILDUP_RESISTANCE);
         float bonus = inst != null ? (float) inst.getValue() : 0f;
         return base + bonus;

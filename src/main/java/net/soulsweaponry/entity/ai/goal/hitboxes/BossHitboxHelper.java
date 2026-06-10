@@ -10,6 +10,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.EntityConfig;
 
 import java.util.function.BiPredicate;
 
@@ -133,7 +134,7 @@ public class BossHitboxHelper {
     }
 
     public static void breakBlocksInsideHitbox(RotatableHitbox hitbox, World world, Entity owner, BiPredicate<BlockState, BlockPos> canBreak, boolean dropBlock) {
-        if (world.isClient() || !world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) || !ConfigConstructor.can_bosses_break_blocks) {
+        if (world.isClient() || !world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) || !EntityConfig.can_bosses_break_blocks) {
             return;
         }
         Box bounds = hitbox.toAabb();

@@ -86,8 +86,8 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     public static DefaultAttributeContainer.Builder createChungusAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.moderatly_sized_chungus_heath)
-                .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.moderatly_sized_chungus_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.moderately_sized_chungus_heath)
+                .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.moderately_sized_chungus_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }
@@ -105,7 +105,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
 
     public boolean checkForMonolith() {
         BlockPos entityPos = this.getBlockPos();
-        int radius = (int) ConfigConstructor.chungus_monolith_radius;
+        int radius = (int) EntityConfig.chungus_monolith_radius;
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 if (x * x + z * z <= radius * radius) {
@@ -121,7 +121,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     }
 
     public boolean isSpawnable() {
-        return ConfigConstructor.can_moderatly_sized_chungus_spawn;
+        return EntityConfig.can_moderately_sized_chungus_spawn;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -319,7 +319,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
-        if (ConfigConstructor.can_chungus_barter && stack.isOf(ItemRegistry.CHUNGUS_EMERALD) && this.getInventory().isEmpty() && !this.isAggressive()) {
+        if (EntityConfig.can_chungus_barter && stack.isOf(ItemRegistry.CHUNGUS_EMERALD) && this.getInventory().isEmpty() && !this.isAggressive()) {
             this.addItem(stack);
             if (!player.isCreative()) {
                 stack.decrement(1);
@@ -352,7 +352,7 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
 
     @Override
     public boolean canPickUpLoot() {
-        return this.inventory.isEmpty() && ConfigConstructor.can_chungus_barter;
+        return this.inventory.isEmpty() && EntityConfig.can_chungus_barter;
     }
 
     @Override

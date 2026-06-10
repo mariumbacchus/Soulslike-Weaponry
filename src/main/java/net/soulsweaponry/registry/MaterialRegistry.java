@@ -11,7 +11,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.ArmorConfig;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -20,37 +20,37 @@ import java.util.function.Supplier;
 public class MaterialRegistry {
 
     public static final RegistryEntry<ArmorMaterial> CHAOS_ARMOR = registerArmorMaterial("chaos_armor", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.chaos_armor_armor_points),
+            createMapWithArray(ArmorConfig.chaos_armor_armor_points),
             15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, Items.NETHERITE_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "chaos_armor"))), 4.0f, 0.2f));
     public static final RegistryEntry<ArmorMaterial> ENHANCED_CHAOS_ARMOR = registerArmorMaterial("enhanced_chaos_armor", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.enhanced_chaos_armor_armor_points),
+            createMapWithArray(ArmorConfig.enhanced_chaos_armor_armor_points),
             15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE, Items.NETHERITE_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "enhanced_chaos_armor"))), 4.0f, 0.2f));
 
     public static final RegistryEntry<ArmorMaterial> WITHERED_ARMOR = registerArmorMaterial("withered_armor", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.withered_armor_armor_points),
+            createMapWithArray(ArmorConfig.withered_armor_armor_points),
             15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT, Items.NETHERITE_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "withered_armor"))), 4.0f, 0.2f));
     public static final RegistryEntry<ArmorMaterial> ENHANCED_WITHERED_ARMOR = registerArmorMaterial("enhanced_withered_armor", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.enhanced_withered_armor_armor_points),
+            createMapWithArray(ArmorConfig.enhanced_withered_armor_armor_points),
             15, SoundEvents.ITEM_ARMOR_EQUIP_NETHERITE, () -> Ingredient.ofItems(ItemRegistry.CRIMSON_INGOT, Items.NETHERITE_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "enhanced_withered_armor"))), 4.0f, 0.2f));
 
     public static final RegistryEntry<ArmorMaterial> CHAOS_SET = registerArmorMaterial("chaos_set", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.chaos_set_armor_points),
+            createMapWithArray(ArmorConfig.chaos_set_armor_points),
             10, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, () -> Ingredient.ofItems(ItemRegistry.MOONSTONE),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "chaos_set"))), 0, 0));
     public static final RegistryEntry<ArmorMaterial> SOUL_INGOT = registerArmorMaterial("soul_ingot", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.soul_ingot_armor_points),
+            createMapWithArray(ArmorConfig.soul_ingot_armor_points),
             10, SoundEvents.ITEM_ARMOR_EQUIP_IRON, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "soul_ingot"))), 0, 0));
     public static final RegistryEntry<ArmorMaterial> SOUL_ROBES = registerArmorMaterial("soul_robes", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.soul_robes_armor_points),
+            createMapWithArray(ArmorConfig.soul_robes_armor_points),
             30, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "soul_robes"))), 0, 0));
     public static final RegistryEntry<ArmorMaterial> FORLORN_ARMOR = registerArmorMaterial("forlorn", () -> new ArmorMaterial(
-            createMapWithArray(ConfigConstructor.forlorn_armor_armor_points),
+            createMapWithArray(ArmorConfig.forlorn_armor_armor_points),
             8, SoundEvents.ITEM_ARMOR_EQUIP_IRON, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "forlorn"))), 0, 0));
 

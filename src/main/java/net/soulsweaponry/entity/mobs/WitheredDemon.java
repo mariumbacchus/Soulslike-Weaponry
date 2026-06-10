@@ -147,7 +147,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     public boolean isSpawnable() {
-        return ConfigConstructor.can_withered_demon_spawn;
+        return EntityConfig.can_withered_demon_spawn;
     }
 
     @Override
