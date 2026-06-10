@@ -11,7 +11,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.DamageSourceRegistry;
@@ -75,11 +75,11 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
                 continue;
             }
             livingEntity.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.PLAYER_FIRE, this, this.getOwner()), (float) this.getDamage());
-            livingEntity.setOnFireFor((int) ConfigConstructor.supernova_molten_metal_fire_seconds);
+            livingEntity.setOnFireFor((int) WeaponConfig.supernova_molten_metal_fire_seconds);
             ItemStack stack = livingEntity.getOffHandStack();
             if (livingEntity instanceof PlayerEntity player && stack.isIn(ConventionalItemTags.SHIELD_TOOLS) && !player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
                 player.disableShield();
-                stack.damage((int) ConfigConstructor.supernova_molten_metal_shield_damage, player, LivingEntity.getSlotForHand(Hand.OFF_HAND));
+                stack.damage((int) WeaponConfig.supernova_molten_metal_shield_damage, player, LivingEntity.getSlotForHand(Hand.OFF_HAND));
             }
         }
         if (this.age > this.getMaxAge() || this.getWorld().getBlockState(this.getBlockPos().down()).isAir()) {
@@ -107,7 +107,7 @@ public class MoltenMetal extends NoClipEntity implements GeoEntity {
 
     @Override
     public int getMaxAge() {
-        return (int) ConfigConstructor.supernova_molten_metal_max_age_ticks;
+        return (int) WeaponConfig.supernova_molten_metal_max_age_ticks;
     }
 
     @Override

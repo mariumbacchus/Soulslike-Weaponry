@@ -8,7 +8,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.TonitrusRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.use.Stormveil;
 import net.soulsweaponry.items.abilities.posthit.StormveilSurge;
@@ -31,17 +31,17 @@ public class Tonitrus extends ModdedSword implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     private static final StormveilSurge STORMVEIL_SURGE = new StormveilSurge(
-            ConfigConstructor.tonitrus_stormveil_chain_lightning_range_per_amp, ConfigConstructor.tonitrus_stormveil_chain_lightning_damage_per_amp,
-            (int) ConfigConstructor.tonitrus_ability_min_cooldown, (int) ConfigConstructor.tonitrus_ability_cooldown, (int) ConfigConstructor.tonitrus_ability_reduced_cooldown_per_level
+            WeaponConfig.tonitrus_stormveil_chain_lightning_range_per_amp, WeaponConfig.tonitrus_stormveil_chain_lightning_damage_per_amp,
+            (int) WeaponConfig.tonitrus_ability_min_cooldown, (int) WeaponConfig.tonitrus_ability_cooldown, (int) WeaponConfig.tonitrus_ability_reduced_cooldown_per_level
     );
     private static final Stormveil STORMVEIL = new Stormveil(
-            (int) ConfigConstructor.tonitrus_stormveil_effect_base_amp,
-            ConfigConstructor.tonitrus_stormveil_effect_amp_per_sharpness_enchant_ceiled,
-            (int) ConfigConstructor.tonitrus_stormveil_effect_duration
+            (int) WeaponConfig.tonitrus_stormveil_effect_base_amp,
+            WeaponConfig.tonitrus_stormveil_effect_amp_per_sharpness_enchant_ceiled,
+            (int) WeaponConfig.tonitrus_stormveil_effect_duration
     );
 
     public Tonitrus(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.tonitrus_damage, ConfigConstructor.tonitrus_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.tonitrus_damage, WeaponConfig.tonitrus_attack_speed, settings);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
         this.addAbility(STORMVEIL, STORMVEIL_SURGE, ElectricCherry.EFFECT_INSTANCE);
     }
@@ -60,7 +60,7 @@ public class Tonitrus extends ModdedSword implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_tonitrus;
+        return WeaponConfig.disable_use_tonitrus;
     }
 
     @Override

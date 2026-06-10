@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.otherkeybind.Parry;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,24 +21,24 @@ public abstract class ShieldItemMixin implements IHasAbilities {
 
     @Unique
     private static final Parry PARRY = new Parry(
-            (int) ConfigConstructor.shield_parry_frames,
-            ConfigConstructor.shield_parry_bonus_frames_per_level,
-            (int) ConfigConstructor.shield_parry_max_animation_frames,
-            (int) ConfigConstructor.shield_parry_min_cooldown,
-            (int) ConfigConstructor.shield_parry_cooldown,
-            (int) ConfigConstructor.shield_parry_reduced_cooldown_per_level
+            (int) WeaponConfig.shield_parry_frames,
+            WeaponConfig.shield_parry_bonus_frames_per_level,
+            (int) WeaponConfig.shield_parry_max_animation_frames,
+            (int) WeaponConfig.shield_parry_min_cooldown,
+            (int) WeaponConfig.shield_parry_cooldown,
+            (int) WeaponConfig.shield_parry_reduced_cooldown_per_level
     );
 
     @Inject(method = "<init>", at = @At("TAIL"))
     public void shield$init(Item.Settings settings, CallbackInfo info) {
-        if (ConfigConstructor.enable_shield_parry) {
+        if (WeaponConfig.enable_shield_parry) {
             this.addAbility(PARRY);
         }
     }
 
     @Inject(method = "appendTooltip", at = @At("TAIL"))
     protected void interceptTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type, CallbackInfo info) {
-        if (ConfigConstructor.enable_shield_parry) {
+        if (WeaponConfig.enable_shield_parry) {
             this.appendTooltipAbilities(stack, tooltip);
         }
     }

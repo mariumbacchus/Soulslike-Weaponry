@@ -16,7 +16,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.spear.CometSpear;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -44,7 +44,7 @@ public interface IDetonateGround {
                 }
                 float bonus = world instanceof ServerWorld serverWorld ? EnchantmentHelper.getDamage(serverWorld, stack, livingEntity, user.getDamageSources().mobAttack(user), 0) : 0;
                 boolean canDamageTarget = livingEntity.damage(DamageSourceRegistry.create(world, DamageSourceRegistry.OBLITERATED, user), power + bonus);
-                if (canDamageTarget || ConfigConstructor.calculated_fall_hits_immune_entities) {
+                if (canDamageTarget || WeaponConfig.calculated_fall_hits_immune_entities) {
                     livingEntity.addVelocity(0, Math.min(fallDistance * this.getDetonationAttributes().launchMod(), this.getDetonationAttributes().maxLaunchPower()), 0);
                     float healMod = this.getDetonationAttributes().healMod();
                     if (healMod > 0) user.heal(power * healMod); // power was prev. divided by 10

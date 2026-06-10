@@ -3,7 +3,7 @@ package net.soulsweaponry.registry;
 import net.minecraft.item.*;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Rarity;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.*;
 import net.soulsweaponry.items.axe.LeviathanAxe;
 import net.soulsweaponry.items.bow.DarkmoonLongbow;
@@ -47,9 +47,9 @@ public class WeaponRegistry {
     public static ToolItem COMET_SPEAR = new CometSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem LICH_BANE = new LichBane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static BowItem GALEFORCE = new Galeforce(new Item.Settings().maxDamage(1300).rarity(Rarity.EPIC), () -> Ingredient.ofItems(ItemRegistry.VERGLAS, ItemRegistry.MOONSTONE));
-    public static ToolItem TRANSLUCENT_SWORD = new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) ConfigConstructor.translucent_sword_damage, ConfigConstructor.translucent_sword_attack_speed, new Item.Settings().rarity(Rarity.RARE));
-    public static ToolItem TRANSLUCENT_GLAIVE = new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) ConfigConstructor.translucent_glaive_damage, ConfigConstructor.translucent_glaive_attack_speed, new Item.Settings().rarity(Rarity.RARE));
-    public static ToolItem TRANSLUCENT_DOUBLE_GREATSWORD = new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) ConfigConstructor.translucent_double_edged_greatsword_damage, ConfigConstructor.translucent_double_edged_greatsword_attack_speed, new Item.Settings().rarity(Rarity.RARE));
+    public static ToolItem TRANSLUCENT_SWORD = new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) WeaponConfig.translucent_sword_damage, WeaponConfig.translucent_sword_attack_speed, new Item.Settings().rarity(Rarity.RARE));
+    public static ToolItem TRANSLUCENT_GLAIVE = new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) WeaponConfig.translucent_glaive_damage, WeaponConfig.translucent_glaive_attack_speed, new Item.Settings().rarity(Rarity.RARE));
+    public static ToolItem TRANSLUCENT_DOUBLE_GREATSWORD = new TranslucentWeapon(ModToolMaterials.LOST_SOUL, (int) WeaponConfig.translucent_double_edged_greatsword_damage, WeaponConfig.translucent_double_edged_greatsword_attack_speed, new Item.Settings().rarity(Rarity.RARE));
     public static ToolItem DRAUGR = new Draugr(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem DAWNBREAKER = new Dawnbreaker(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem SOUL_REAPER = new SoulReaper(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
@@ -65,8 +65,8 @@ public class WeaponRegistry {
     public static ToolItem DARKIN_SCYTHE_PRIME = new DarkinScythePrime(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem SHADOW_ASSASSIN_SCYTHE = new ShadowAssassinScythe(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static TrickWeapon KIRKHAMMER = new Kirkhammmer(ModToolMaterials.IRON_BLOCK, new Item.Settings().rarity(Rarity.RARE));
-    public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.kirkhammer_silver_sword_damage, ConfigConstructor.kirkhammer_silver_sword_attack_speed, new Item.Settings().rarity(Rarity.RARE), ConfigConstructor.disable_use_silver_sword, ConfigConstructor.kirkhammer_silver_sword_righteous_base_undead_bonus_damage, ConfigConstructor.kirkhammer_silver_sword_righteous_undead_bonus_damage_per_level);
-    public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.ludwigs_holy_greatsword_damage,  ConfigConstructor.ludwigs_holy_greatsword_attack_speed, new Item.Settings().rarity(Rarity.RARE), ConfigConstructor.disable_use_ludwigs_holy_greatsword, ConfigConstructor.ludwigs_holy_greatsword_righteous_base_undead_bonus_damage, ConfigConstructor.ludwigs_holy_greatsword_righteous_undead_bonus_damage_per_level);
+    public static TrickWeapon SILVER_SWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) WeaponConfig.kirkhammer_silver_sword_damage, WeaponConfig.kirkhammer_silver_sword_attack_speed, new Item.Settings().rarity(Rarity.RARE), WeaponConfig.disable_use_silver_sword, WeaponConfig.kirkhammer_silver_sword_righteous_base_undead_bonus_damage, WeaponConfig.kirkhammer_silver_sword_righteous_undead_bonus_damage_per_level);
+    public static TrickWeapon HOLY_GREATSWORD = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) WeaponConfig.ludwigs_holy_greatsword_damage,  WeaponConfig.ludwigs_holy_greatsword_attack_speed, new Item.Settings().rarity(Rarity.RARE), WeaponConfig.disable_use_ludwigs_holy_greatsword, WeaponConfig.ludwigs_holy_greatsword_righteous_base_undead_bonus_damage, WeaponConfig.ludwigs_holy_greatsword_righteous_undead_bonus_damage_per_level);
     public static ToolItem DRAUPNIR_SPEAR = new DraupnirSpear(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static HolyMoonlightGreatsword HOLY_MOONLIGHT_GREATSWORD = new HolyMoonlightGreatsword(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new Item.Settings().rarity(Rarity.EPIC));
     public static TrickWeapon HOLY_MOONLIGHT_SWORD = new HolyMoonlightSword(ModToolMaterials.MOONSTONE_OR_VERGLAS,  new Item.Settings().rarity(Rarity.EPIC));
@@ -83,7 +83,7 @@ public class WeaponRegistry {
     public static ToolItem EXCALIBUR = new Excalibur(ModToolMaterials.ECHO_SHARD, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem MOONVEIL = new Moonveil(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static BowItem SIMONS_BOWBLADE = new SimonsBowblade(new Item.Settings().maxDamage(1354).rarity(Rarity.RARE), () -> Ingredient.ofItems(Items.IRON_BLOCK, ItemRegistry.SOUL_INGOT));
-    public static TrickWeapon SIMONS_BLADE = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) ConfigConstructor.simons_blade_damage,  ConfigConstructor.simons_blade_attack_speed, new Item.Settings().rarity(Rarity.RARE), ConfigConstructor.disable_use_simons_blade, ConfigConstructor.simons_blade_righteous_base_undead_bonus_damage, ConfigConstructor.simons_blade_righteous_undead_bonus_damage_per_level);
+    public static TrickWeapon SIMONS_BLADE = new TrickWeapon(ModToolMaterials.IRON_BLOCK, (int) WeaponConfig.simons_blade_damage,  WeaponConfig.simons_blade_attack_speed, new Item.Settings().rarity(Rarity.RARE), WeaponConfig.disable_use_simons_blade, WeaponConfig.simons_blade_righteous_base_undead_bonus_damage, WeaponConfig.simons_blade_righteous_undead_bonus_damage_per_level);
     public static ToolItem DRAGONBANE = new Dragonbane(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem SUPERNOVA = new Supernova(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
     public static ToolItem MEHRUNES_RAZOR = new MehrunesRazor(ModToolMaterials.MOONSTONE_OR_VERGLAS, new Item.Settings().rarity(Rarity.EPIC));
@@ -94,67 +94,67 @@ public class WeaponRegistry {
     public static ToolItem DRAGON_HUNTERS_GREAT_KATANA = new DragonHuntersGreatKatana(ModToolMaterials.CRIMSON_INGOT, new Item.Settings().rarity(Rarity.EPIC));//TODO make 2d texture
 
     public static void init() {
-        ItemRegistry.registerLegendaryWeapon(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", ConfigConstructor.disable_recipe_bluemoon_shortsword, ConfigConstructor.is_fireproof_bluemoon_shortsword);
-        ItemRegistry.registerLegendaryWeapon(BLUEMOON_GREATSWORD, "bluemoon_greatsword", ConfigConstructor.disable_recipe_bluemoon_greatsword, ConfigConstructor.is_fireproof_bluemoon_greatsword);
-        ItemRegistry.registerLegendaryWeapon(MOONLIGHT_SHORTSWORD, "moonlight_shortsword", ConfigConstructor.disable_recipe_moonlight_shortsword, ConfigConstructor.is_fireproof_moonlight_shortsword);
-        ItemRegistry.registerLegendaryWeapon(MOONLIGHT_GREATSWORD, "moonlight_greatsword", ConfigConstructor.disable_recipe_moonlight_greatsword, ConfigConstructor.is_fireproof_moonlight_greatsword);
-        ItemRegistry.registerLegendaryWeapon(PURE_MOONLIGHT_GREATSWORD, "pure_moonlight_greatsword", ConfigConstructor.disable_recipe_pure_moonlight_greatsword, ConfigConstructor.is_fireproof_pure_moonlight_greatsword);
-        ItemRegistry.registerLegendaryWeapon(BLOODTHIRSTER, "bloodthirster", ConfigConstructor.disable_recipe_bloodthirster, ConfigConstructor.is_fireproof_bloodthirster);
-        ItemRegistry.registerLegendaryWeapon(DARKIN_BLADE, "darkin_blade", ConfigConstructor.disable_recipe_darkin_blade, ConfigConstructor.is_fireproof_darkin_blade);
-        ItemRegistry.registerLegendaryWeapon(DRAGON_STAFF, "dragon_staff", ConfigConstructor.disable_recipe_dragon_staff, ConfigConstructor.is_fireproof_dragon_staff);
-        ItemRegistry.registerLegendaryWeapon(WITHERED_WABBAJACK, "withered_wabbajack", ConfigConstructor.disable_recipe_withered_wabbajack, ConfigConstructor.is_fireproof_withered_wabbajack);
-        ItemRegistry.registerLegendaryWeapon(WHIRLIGIG_SAWBLADE, "whirligig_sawblade", ConfigConstructor.disable_recipe_whirligig_sawblade, ConfigConstructor.is_fireproof_whirligig_sawblade);
-        ItemRegistry.registerLegendaryWeapon(DRAGONSLAYER_SWORDSPEAR, "dragonslayer_swordspear", ConfigConstructor.disable_recipe_dragonslayer_swordspear, ConfigConstructor.is_fireproof_dragonslayer_swordspear);
-        ItemRegistry.registerLegendaryWeapon(GUINSOOS_RAGEBLADE, "rageblade", ConfigConstructor.disable_recipe_rageblade, ConfigConstructor.is_fireproof_rageblade);
-        ItemRegistry.registerLegendaryWeapon(GUTS_SWORD, "guts_sword", ConfigConstructor.disable_recipe_heap_of_raw_iron, ConfigConstructor.is_fireproof_heap_of_raw_iron);
-        ItemRegistry.registerLegendaryWeapon(NIGHTFALL, "nightfall", ConfigConstructor.disable_recipe_nightfall, ConfigConstructor.is_fireproof_nightfall);
-        ItemRegistry.registerLegendaryWeapon(COMET_SPEAR, "comet_spear", ConfigConstructor.disable_recipe_comet_spear, ConfigConstructor.is_fireproof_comet_spear);
-        ItemRegistry.registerLegendaryWeapon(LICH_BANE, "lich_bane", ConfigConstructor.disable_recipe_lich_bane, ConfigConstructor.is_fireproof_lich_bane);
-        ItemRegistry.registerLegendaryWeapon(GALEFORCE, "galeforce", ConfigConstructor.disable_recipe_galeforce, ConfigConstructor.is_fireproof_galeforce);
-        ItemRegistry.registerWeaponItem(TRANSLUCENT_SWORD, "translucent_sword", ConfigConstructor.disable_recipe_translucent_sword, ConfigConstructor.is_fireproof_translucent_weapons);
-        ItemRegistry.registerWeaponItem(TRANSLUCENT_GLAIVE, "translucent_glaive", ConfigConstructor.disable_recipe_translucent_glaive, ConfigConstructor.is_fireproof_translucent_weapons);
-        ItemRegistry.registerWeaponItem(TRANSLUCENT_DOUBLE_GREATSWORD, "translucent_double_greatsword", ConfigConstructor.disable_recipe_translucent_double_edged_greatsword, ConfigConstructor.is_fireproof_translucent_weapons);
-        ItemRegistry.registerLegendaryWeapon(DRAUGR, "draugr", ConfigConstructor.disable_recipe_draugr, ConfigConstructor.is_fireproof_draugr);
-        ItemRegistry.registerLegendaryWeapon(DAWNBREAKER, "dawnbreaker", ConfigConstructor.disable_recipe_dawnbreaker, ConfigConstructor.is_fireproof_dawnbreaker);
-        ItemRegistry.registerLegendaryWeapon(SOUL_REAPER, "soul_reaper", ConfigConstructor.disable_recipe_soul_reaper, ConfigConstructor.is_fireproof_soul_reaper);
-        ItemRegistry.registerLegendaryWeapon(FORLORN_SCYTHE, "forlorn_scythe", ConfigConstructor.disable_recipe_forlorn_scythe, ConfigConstructor.is_fireproof_forlorn_scythe);
-        ItemRegistry.registerLegendaryItem(LEVIATHAN_AXE, "leviathan_axe", ConfigConstructor.is_fireproof_leviathan_axe); //Handled in RecipeHandler
-        ItemRegistry.registerLegendaryWeapon(SKOFNUNG, "skofnung", ConfigConstructor.disable_recipe_skofnung, ConfigConstructor.is_fireproof_skofnung);
-        ItemRegistry.registerLegendaryWeapon(MJOLNIR, "mjolnir", ConfigConstructor.disable_recipe_mjolnir, ConfigConstructor.is_fireproof_mjolnir);
-        ItemRegistry.registerLegendaryWeapon(FREYR_SWORD, "freyr_sword", ConfigConstructor.disable_recipe_sword_of_freyr, ConfigConstructor.is_fireproof_sword_of_freyr);
-        ItemRegistry.registerLegendaryWeapon(STING, "sting", ConfigConstructor.disable_recipe_sting, ConfigConstructor.is_fireproof_sting);
-        ItemRegistry.registerLegendaryWeapon(FEATHERLIGHT, "featherlight", ConfigConstructor.disable_recipe_featherlight, ConfigConstructor.is_fireproof_featherlight);
-        ItemRegistry.registerLegendaryWeapon(CRUCIBLE_SWORD, "crucible_sword", ConfigConstructor.disable_recipe_crucible_sword, ConfigConstructor.is_fireproof_crucible_sword);
-        ItemRegistry.registerLegendaryWeapon(DARKIN_SCYTHE_PRE, "darkin_scythe_pre", ConfigConstructor.disable_recipe_darkin_scythe, ConfigConstructor.is_fireproof_darkin_scythe);
-        ItemRegistry.registerLegendaryItem(DARKIN_SCYTHE_PRIME, "darkin_scythe", ConfigConstructor.is_fireproof_darkin_scythe_prime); // Gained by transforming DARKIN_SCYTHE_PRE
-        ItemRegistry.registerLegendaryItem(SHADOW_ASSASSIN_SCYTHE, "shadow_assassin_scythe", ConfigConstructor.is_fireproof_shadow_assassin_scythe); // Gained by transforming DARKIN_SCYTHE_PRE
-        ItemRegistry.registerWeaponItem(KIRKHAMMER, "kirkhammer", ConfigConstructor.disable_recipe_kirkhammer, ConfigConstructor.is_fireproof_kirkhammer);
-        ItemRegistry.registerItem(SILVER_SWORD, "silver_sword", ConfigConstructor.is_fireproof_silver_sword); // Switched to by other trick weapons
-        ItemRegistry.registerWeaponItem(HOLY_GREATSWORD, "holy_greatsword", ConfigConstructor.disable_recipe_ludwigs_holy_blade, ConfigConstructor.is_fireproof_ludwigs_holy_blade);
-        ItemRegistry.registerLegendaryWeapon(DRAUPNIR_SPEAR, "draupnir_spear", ConfigConstructor.disable_recipe_draupnir_spear, ConfigConstructor.is_fireproof_draupnir_spear);
-        ItemRegistry.registerLegendaryItem(HOLY_MOONLIGHT_GREATSWORD, "holy_moonlight_greatsword", ConfigConstructor.is_fireproof_holy_moonlight_greatsword); // Switched to by Holy Moonlight Sword
-        ItemRegistry.registerLegendaryWeapon(HOLY_MOONLIGHT_SWORD, "holy_moonlight_sword", ConfigConstructor.disable_recipe_holy_moonlight_sword, ConfigConstructor.is_fireproof_holy_moonlight_sword);
-        ItemRegistry.registerLegendaryWeapon(FROSTMOURNE, "frostmourne", ConfigConstructor.disable_recipe_frostmourne, ConfigConstructor.is_fireproof_frostmourne);
-        ItemRegistry.registerLegendaryWeapon(MASTER_SWORD, "master_sword", ConfigConstructor.disable_recipe_master_sword, ConfigConstructor.is_fireproof_master_sword);
-        ItemRegistry.registerLegendaryWeapon(NIGHTS_EDGE_ITEM, "nights_edge_item", ConfigConstructor.disable_recipe_nights_edge, ConfigConstructor.is_fireproof_nights_edge);
-        ItemRegistry.registerLegendaryWeapon(EMPOWERED_DAWNBREAKER, "empowered_dawnbreaker", ConfigConstructor.disable_recipe_empowered_dawnbreaker, ConfigConstructor.is_fireproof_empowered_dawnbreaker);
-        ItemRegistry.registerWeaponItem(KRAKEN_SLAYER, "kraken_slayer", ConfigConstructor.disable_recipe_kraken_slayer_bow, ConfigConstructor.is_fireproof_kraken_slayer_bow);
-        ItemRegistry.registerLegendaryWeapon(KRAKEN_SLAYER_CROSSBOW, "kraken_slayer_crossbow", ConfigConstructor.disable_recipe_kraken_slayer_crossbow, ConfigConstructor.is_fireproof_kraken_slayer_crossbow);
-        ItemRegistry.registerLegendaryWeapon(DARKMOON_LONGBOW, "darkmoon_longbow", ConfigConstructor.disable_recipe_darkmoon_longbow, ConfigConstructor.is_fireproof_darkmoon_longbow);
-        ItemRegistry.registerLegendaryWeapon(CHUNGUS_STAFF, "chungus_staff", ConfigConstructor.disable_recipe_chungus_staff, ConfigConstructor.is_fireproof_chungus_staff);
-        ItemRegistry.registerLegendaryWeapon(DARK_MOON_GREATSWORD, "dark_moon_greatsword", ConfigConstructor.disable_recipe_dark_moon_greatsword, ConfigConstructor.is_fireproof_dark_moon_greatsword);
-        ItemRegistry.registerLegendaryWeapon(GLAIVE_OF_HODIR, "glaive_of_hodir", ConfigConstructor.disable_recipe_glaive_of_hodir, ConfigConstructor.is_fireproof_glaive_of_hodir);
-        ItemRegistry.registerLegendaryWeapon(EXCALIBUR, "excalibur", ConfigConstructor.disable_recipe_excalibur, ConfigConstructor.is_fireproof_excalibur);
-        ItemRegistry.registerLegendaryWeapon(MOONVEIL, "moonveil", ConfigConstructor.disable_recipe_moonveil, ConfigConstructor.is_fireproof_moonveil);
-        ItemRegistry.registerLegendaryWeapon(SIMONS_BOWBLADE, "simons_bowblade", ConfigConstructor.disable_recipe_simons_bowblade, ConfigConstructor.is_fireproof_simons_bowblade);
-        ItemRegistry.registerLegendaryItem(SIMONS_BLADE, "simons_blade", ConfigConstructor.is_fireproof_simons_blade); // Switched to by Simon's Bowblade
-        ItemRegistry.registerLegendaryWeapon(DRAGONBANE, "dragonbane", ConfigConstructor.disable_recipe_dragonbane, ConfigConstructor.is_fireproof_dragonbane);
-        ItemRegistry.registerLegendaryWeapon(SUPERNOVA, "supernova", ConfigConstructor.disable_recipe_supernova, ConfigConstructor.is_fireproof_supernova);
-        ItemRegistry.registerLegendaryWeapon(MEHRUNES_RAZOR, "mehrunes_razor", ConfigConstructor.disable_recipe_mehrunes_razor, ConfigConstructor.is_fireproof_mehrunes_razor);
-        ItemRegistry.registerLegendaryWeapon(TONITRUS, "tonitrus", ConfigConstructor.disable_recipe_tonitrus, ConfigConstructor.is_fireproof_tonitrus);
-        ItemRegistry.registerLegendaryWeapon(BLOODLUST, "bloodlust", ConfigConstructor.disable_recipe_bloodlust, ConfigConstructor.is_fireproof_bloodlust);
-        ItemRegistry.registerLegendaryWeapon(NIGHTLORDS_SWORD, "nightlords_sword", ConfigConstructor.disable_recipe_sword_of_the_nightlord, ConfigConstructor.is_fireproof_sword_of_the_nightlord);
-        ItemRegistry.registerLegendaryWeapon(LARGE_MOONLIGHT_SWORD, "large_sword_of_moonlight", ConfigConstructor.disable_recipe_large_sword_of_moonlight, ConfigConstructor.is_fireproof_large_sword_of_moonlight);
-        ItemRegistry.registerLegendaryWeapon(DRAGON_HUNTERS_GREAT_KATANA, "dragon_hunters_great_katana", ConfigConstructor.disable_recipe_dragon_hunters_great_katana, ConfigConstructor.is_fireproof_dragon_hunters_great_katana);
+        ItemRegistry.registerLegendaryWeapon(BLUEMOON_SHORTSWORD, "bluemoon_shortsword", WeaponConfig.disable_recipe_bluemoon_shortsword, WeaponConfig.is_fireproof_bluemoon_shortsword);
+        ItemRegistry.registerLegendaryWeapon(BLUEMOON_GREATSWORD, "bluemoon_greatsword", WeaponConfig.disable_recipe_bluemoon_greatsword, WeaponConfig.is_fireproof_bluemoon_greatsword);
+        ItemRegistry.registerLegendaryWeapon(MOONLIGHT_SHORTSWORD, "moonlight_shortsword", WeaponConfig.disable_recipe_moonlight_shortsword, WeaponConfig.is_fireproof_moonlight_shortsword);
+        ItemRegistry.registerLegendaryWeapon(MOONLIGHT_GREATSWORD, "moonlight_greatsword", WeaponConfig.disable_recipe_moonlight_greatsword, WeaponConfig.is_fireproof_moonlight_greatsword);
+        ItemRegistry.registerLegendaryWeapon(PURE_MOONLIGHT_GREATSWORD, "pure_moonlight_greatsword", WeaponConfig.disable_recipe_pure_moonlight_greatsword, WeaponConfig.is_fireproof_pure_moonlight_greatsword);
+        ItemRegistry.registerLegendaryWeapon(BLOODTHIRSTER, "bloodthirster", WeaponConfig.disable_recipe_bloodthirster, WeaponConfig.is_fireproof_bloodthirster);
+        ItemRegistry.registerLegendaryWeapon(DARKIN_BLADE, "darkin_blade", WeaponConfig.disable_recipe_darkin_blade, WeaponConfig.is_fireproof_darkin_blade);
+        ItemRegistry.registerLegendaryWeapon(DRAGON_STAFF, "dragon_staff", WeaponConfig.disable_recipe_dragon_staff, WeaponConfig.is_fireproof_dragon_staff);
+        ItemRegistry.registerLegendaryWeapon(WITHERED_WABBAJACK, "withered_wabbajack", WeaponConfig.disable_recipe_withered_wabbajack, WeaponConfig.is_fireproof_withered_wabbajack);
+        ItemRegistry.registerLegendaryWeapon(WHIRLIGIG_SAWBLADE, "whirligig_sawblade", WeaponConfig.disable_recipe_whirligig_sawblade, WeaponConfig.is_fireproof_whirligig_sawblade);
+        ItemRegistry.registerLegendaryWeapon(DRAGONSLAYER_SWORDSPEAR, "dragonslayer_swordspear", WeaponConfig.disable_recipe_dragonslayer_swordspear, WeaponConfig.is_fireproof_dragonslayer_swordspear);
+        ItemRegistry.registerLegendaryWeapon(GUINSOOS_RAGEBLADE, "rageblade", WeaponConfig.disable_recipe_rageblade, WeaponConfig.is_fireproof_rageblade);
+        ItemRegistry.registerLegendaryWeapon(GUTS_SWORD, "guts_sword", WeaponConfig.disable_recipe_heap_of_raw_iron, WeaponConfig.is_fireproof_heap_of_raw_iron);
+        ItemRegistry.registerLegendaryWeapon(NIGHTFALL, "nightfall", WeaponConfig.disable_recipe_nightfall, WeaponConfig.is_fireproof_nightfall);
+        ItemRegistry.registerLegendaryWeapon(COMET_SPEAR, "comet_spear", WeaponConfig.disable_recipe_comet_spear, WeaponConfig.is_fireproof_comet_spear);
+        ItemRegistry.registerLegendaryWeapon(LICH_BANE, "lich_bane", WeaponConfig.disable_recipe_lich_bane, WeaponConfig.is_fireproof_lich_bane);
+        ItemRegistry.registerLegendaryWeapon(GALEFORCE, "galeforce", WeaponConfig.disable_recipe_galeforce, WeaponConfig.is_fireproof_galeforce);
+        ItemRegistry.registerWeaponItem(TRANSLUCENT_SWORD, "translucent_sword", WeaponConfig.disable_recipe_translucent_sword, WeaponConfig.is_fireproof_translucent_weapons);
+        ItemRegistry.registerWeaponItem(TRANSLUCENT_GLAIVE, "translucent_glaive", WeaponConfig.disable_recipe_translucent_glaive, WeaponConfig.is_fireproof_translucent_weapons);
+        ItemRegistry.registerWeaponItem(TRANSLUCENT_DOUBLE_GREATSWORD, "translucent_double_greatsword", WeaponConfig.disable_recipe_translucent_double_edged_greatsword, WeaponConfig.is_fireproof_translucent_weapons);
+        ItemRegistry.registerLegendaryWeapon(DRAUGR, "draugr", WeaponConfig.disable_recipe_draugr, WeaponConfig.is_fireproof_draugr);
+        ItemRegistry.registerLegendaryWeapon(DAWNBREAKER, "dawnbreaker", WeaponConfig.disable_recipe_dawnbreaker, WeaponConfig.is_fireproof_dawnbreaker);
+        ItemRegistry.registerLegendaryWeapon(SOUL_REAPER, "soul_reaper", WeaponConfig.disable_recipe_soul_reaper, WeaponConfig.is_fireproof_soul_reaper);
+        ItemRegistry.registerLegendaryWeapon(FORLORN_SCYTHE, "forlorn_scythe", WeaponConfig.disable_recipe_forlorn_scythe, WeaponConfig.is_fireproof_forlorn_scythe);
+        ItemRegistry.registerLegendaryItem(LEVIATHAN_AXE, "leviathan_axe", WeaponConfig.is_fireproof_leviathan_axe); //Handled in RecipeHandler
+        ItemRegistry.registerLegendaryWeapon(SKOFNUNG, "skofnung", WeaponConfig.disable_recipe_skofnung, WeaponConfig.is_fireproof_skofnung);
+        ItemRegistry.registerLegendaryWeapon(MJOLNIR, "mjolnir", WeaponConfig.disable_recipe_mjolnir, WeaponConfig.is_fireproof_mjolnir);
+        ItemRegistry.registerLegendaryWeapon(FREYR_SWORD, "freyr_sword", WeaponConfig.disable_recipe_sword_of_freyr, WeaponConfig.is_fireproof_sword_of_freyr);
+        ItemRegistry.registerLegendaryWeapon(STING, "sting", WeaponConfig.disable_recipe_sting, WeaponConfig.is_fireproof_sting);
+        ItemRegistry.registerLegendaryWeapon(FEATHERLIGHT, "featherlight", WeaponConfig.disable_recipe_featherlight, WeaponConfig.is_fireproof_featherlight);
+        ItemRegistry.registerLegendaryWeapon(CRUCIBLE_SWORD, "crucible_sword", WeaponConfig.disable_recipe_crucible_sword, WeaponConfig.is_fireproof_crucible_sword);
+        ItemRegistry.registerLegendaryWeapon(DARKIN_SCYTHE_PRE, "darkin_scythe_pre", WeaponConfig.disable_recipe_darkin_scythe, WeaponConfig.is_fireproof_darkin_scythe);
+        ItemRegistry.registerLegendaryItem(DARKIN_SCYTHE_PRIME, "darkin_scythe", WeaponConfig.is_fireproof_darkin_scythe_prime); // Gained by transforming DARKIN_SCYTHE_PRE
+        ItemRegistry.registerLegendaryItem(SHADOW_ASSASSIN_SCYTHE, "shadow_assassin_scythe", WeaponConfig.is_fireproof_shadow_assassin_scythe); // Gained by transforming DARKIN_SCYTHE_PRE
+        ItemRegistry.registerWeaponItem(KIRKHAMMER, "kirkhammer", WeaponConfig.disable_recipe_kirkhammer, WeaponConfig.is_fireproof_kirkhammer);
+        ItemRegistry.registerItem(SILVER_SWORD, "silver_sword", WeaponConfig.is_fireproof_silver_sword); // Switched to by other trick weapons
+        ItemRegistry.registerWeaponItem(HOLY_GREATSWORD, "holy_greatsword", WeaponConfig.disable_recipe_ludwigs_holy_blade, WeaponConfig.is_fireproof_ludwigs_holy_blade);
+        ItemRegistry.registerLegendaryWeapon(DRAUPNIR_SPEAR, "draupnir_spear", WeaponConfig.disable_recipe_draupnir_spear, WeaponConfig.is_fireproof_draupnir_spear);
+        ItemRegistry.registerLegendaryItem(HOLY_MOONLIGHT_GREATSWORD, "holy_moonlight_greatsword", WeaponConfig.is_fireproof_holy_moonlight_greatsword); // Switched to by Holy Moonlight Sword
+        ItemRegistry.registerLegendaryWeapon(HOLY_MOONLIGHT_SWORD, "holy_moonlight_sword", WeaponConfig.disable_recipe_holy_moonlight_sword, WeaponConfig.is_fireproof_holy_moonlight_sword);
+        ItemRegistry.registerLegendaryWeapon(FROSTMOURNE, "frostmourne", WeaponConfig.disable_recipe_frostmourne, WeaponConfig.is_fireproof_frostmourne);
+        ItemRegistry.registerLegendaryWeapon(MASTER_SWORD, "master_sword", WeaponConfig.disable_recipe_master_sword, WeaponConfig.is_fireproof_master_sword);
+        ItemRegistry.registerLegendaryWeapon(NIGHTS_EDGE_ITEM, "nights_edge_item", WeaponConfig.disable_recipe_nights_edge, WeaponConfig.is_fireproof_nights_edge);
+        ItemRegistry.registerLegendaryWeapon(EMPOWERED_DAWNBREAKER, "empowered_dawnbreaker", WeaponConfig.disable_recipe_empowered_dawnbreaker, WeaponConfig.is_fireproof_empowered_dawnbreaker);
+        ItemRegistry.registerWeaponItem(KRAKEN_SLAYER, "kraken_slayer", WeaponConfig.disable_recipe_kraken_slayer_bow, WeaponConfig.is_fireproof_kraken_slayer_bow);
+        ItemRegistry.registerLegendaryWeapon(KRAKEN_SLAYER_CROSSBOW, "kraken_slayer_crossbow", WeaponConfig.disable_recipe_kraken_slayer_crossbow, WeaponConfig.is_fireproof_kraken_slayer_crossbow);
+        ItemRegistry.registerLegendaryWeapon(DARKMOON_LONGBOW, "darkmoon_longbow", WeaponConfig.disable_recipe_darkmoon_longbow, WeaponConfig.is_fireproof_darkmoon_longbow);
+        ItemRegistry.registerLegendaryWeapon(CHUNGUS_STAFF, "chungus_staff", WeaponConfig.disable_recipe_chungus_staff, WeaponConfig.is_fireproof_chungus_staff);
+        ItemRegistry.registerLegendaryWeapon(DARK_MOON_GREATSWORD, "dark_moon_greatsword", WeaponConfig.disable_recipe_dark_moon_greatsword, WeaponConfig.is_fireproof_dark_moon_greatsword);
+        ItemRegistry.registerLegendaryWeapon(GLAIVE_OF_HODIR, "glaive_of_hodir", WeaponConfig.disable_recipe_glaive_of_hodir, WeaponConfig.is_fireproof_glaive_of_hodir);
+        ItemRegistry.registerLegendaryWeapon(EXCALIBUR, "excalibur", WeaponConfig.disable_recipe_excalibur, WeaponConfig.is_fireproof_excalibur);
+        ItemRegistry.registerLegendaryWeapon(MOONVEIL, "moonveil", WeaponConfig.disable_recipe_moonveil, WeaponConfig.is_fireproof_moonveil);
+        ItemRegistry.registerLegendaryWeapon(SIMONS_BOWBLADE, "simons_bowblade", WeaponConfig.disable_recipe_simons_bowblade, WeaponConfig.is_fireproof_simons_bowblade);
+        ItemRegistry.registerLegendaryItem(SIMONS_BLADE, "simons_blade", WeaponConfig.is_fireproof_simons_blade); // Switched to by Simon's Bowblade
+        ItemRegistry.registerLegendaryWeapon(DRAGONBANE, "dragonbane", WeaponConfig.disable_recipe_dragonbane, WeaponConfig.is_fireproof_dragonbane);
+        ItemRegistry.registerLegendaryWeapon(SUPERNOVA, "supernova", WeaponConfig.disable_recipe_supernova, WeaponConfig.is_fireproof_supernova);
+        ItemRegistry.registerLegendaryWeapon(MEHRUNES_RAZOR, "mehrunes_razor", WeaponConfig.disable_recipe_mehrunes_razor, WeaponConfig.is_fireproof_mehrunes_razor);
+        ItemRegistry.registerLegendaryWeapon(TONITRUS, "tonitrus", WeaponConfig.disable_recipe_tonitrus, WeaponConfig.is_fireproof_tonitrus);
+        ItemRegistry.registerLegendaryWeapon(BLOODLUST, "bloodlust", WeaponConfig.disable_recipe_bloodlust, WeaponConfig.is_fireproof_bloodlust);
+        ItemRegistry.registerLegendaryWeapon(NIGHTLORDS_SWORD, "nightlords_sword", WeaponConfig.disable_recipe_sword_of_the_nightlord, WeaponConfig.is_fireproof_sword_of_the_nightlord);
+        ItemRegistry.registerLegendaryWeapon(LARGE_MOONLIGHT_SWORD, "large_sword_of_moonlight", WeaponConfig.disable_recipe_large_sword_of_moonlight, WeaponConfig.is_fireproof_large_sword_of_moonlight);
+        ItemRegistry.registerLegendaryWeapon(DRAGON_HUNTERS_GREAT_KATANA, "dragon_hunters_great_katana", WeaponConfig.disable_recipe_dragon_hunters_great_katana, WeaponConfig.is_fireproof_dragon_hunters_great_katana);
     }
 }

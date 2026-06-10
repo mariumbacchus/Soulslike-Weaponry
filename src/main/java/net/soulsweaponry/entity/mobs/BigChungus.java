@@ -43,7 +43,6 @@ import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.*;

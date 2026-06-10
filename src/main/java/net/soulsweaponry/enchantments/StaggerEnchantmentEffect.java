@@ -10,7 +10,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.config.EnchantmentConfig;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -30,7 +30,7 @@ public record StaggerEnchantmentEffect() implements EnchantmentEntityEffect {
             if (context.owner() != null) {
                 ItemStack stack = context.owner().getStackInHand(Hand.MAIN_HAND);
                 if (IHasAbilities.getAbility(stack, UltraHeavy.class).isPresent()) {
-                    postureLoss = MathHelper.floor(postureLoss * ConfigConstructor.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
+                    postureLoss = MathHelper.floor(postureLoss * WeaponConfig.ultra_heavy_posture_loss_modifier_when_stagger_enchant);
                 }
             }
             postureLoss *= level;

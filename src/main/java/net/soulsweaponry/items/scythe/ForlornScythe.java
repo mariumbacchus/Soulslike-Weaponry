@@ -4,7 +4,7 @@ import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.ForlornScytheRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.items.abilities.use.NightSkullSoulRelease;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -19,21 +19,21 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final NightSkullSoulRelease WITHER_SOUL_RELEASE = new NightSkullSoulRelease(
-            ConfigConstructor.forlorn_scythe_night_skull_explosion_power,
-            ConfigConstructor.forlorn_scythe_charged_night_skull_explosion_power,
-            ConfigConstructor.forlorn_scythe_night_skull_damage,
-            ConfigConstructor.forlorn_scythe_night_skull_bonus_damage_per_level,
-            ConfigConstructor.forlorn_scythe_charged_night_skull_damage,
-            ConfigConstructor.forlorn_scythe_charged_night_skull_bonus_damage_per_level,
-            ConfigConstructor.forlorn_scythe_night_skull_velocity,
-            ConfigConstructor.forlorn_scythe_night_skull_explosion_destroy_blocks,
-            (int) ConfigConstructor.forlorn_scythe_night_skull_max_age_ticks,
-            (int) ConfigConstructor.forlorn_scythe_night_skull_base_count,
-            (int) ConfigConstructor.forlorn_scythe_night_skull_levels_needed_for_2_more_skulls
+            WeaponConfig.forlorn_scythe_night_skull_explosion_power,
+            WeaponConfig.forlorn_scythe_charged_night_skull_explosion_power,
+            WeaponConfig.forlorn_scythe_night_skull_damage,
+            WeaponConfig.forlorn_scythe_night_skull_bonus_damage_per_level,
+            WeaponConfig.forlorn_scythe_charged_night_skull_damage,
+            WeaponConfig.forlorn_scythe_charged_night_skull_bonus_damage_per_level,
+            WeaponConfig.forlorn_scythe_night_skull_velocity,
+            WeaponConfig.forlorn_scythe_night_skull_explosion_destroy_blocks,
+            (int) WeaponConfig.forlorn_scythe_night_skull_max_age_ticks,
+            (int) WeaponConfig.forlorn_scythe_night_skull_base_count,
+            (int) WeaponConfig.forlorn_scythe_night_skull_levels_needed_for_2_more_skulls
     );
 
     public ForlornScythe(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.forlorn_scythe_damage, ConfigConstructor.forlorn_scythe_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.forlorn_scythe_damage, WeaponConfig.forlorn_scythe_attack_speed, settings);
         this.addAbility(WITHER_SOUL_RELEASE);
     }
 
@@ -62,6 +62,6 @@ public class ForlornScythe extends SoulHarvestingItem implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_forlorn_scythe;
+        return WeaponConfig.disable_use_forlorn_scythe;
     }
 }

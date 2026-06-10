@@ -29,7 +29,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.ai.goal.FreyrSwordGoal;
 import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -103,7 +103,7 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     @Override
     public boolean isTeammate(Entity other) {
         // Don't attack players if friendly fire is off
-        if (!ConfigConstructor.sword_of_freyr_entity_friendly_fire && other instanceof PlayerEntity) {
+        if (!WeaponConfig.sword_of_freyr_entity_friendly_fire && other instanceof PlayerEntity) {
             return true;
         }
         if (other instanceof Tameable tameableOther) {
@@ -264,9 +264,9 @@ public class FreyrSwordEntity extends TameableEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return PathAwareEntity.createLivingAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 100)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, ConfigConstructor.sword_of_freyr_entity_health)
-                .add(EntityAttributes.GENERIC_ARMOR, ConfigConstructor.sword_of_freyr_entity_armor)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, ConfigConstructor.sword_of_freyr_damage);
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, WeaponConfig.sword_of_freyr_entity_health)
+                .add(EntityAttributes.GENERIC_ARMOR, WeaponConfig.sword_of_freyr_entity_armor)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, WeaponConfig.sword_of_freyr_damage);
     }
 
     public double getFollowRange() {

@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.renderer.item.NightfallRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.items.abilities.abilitykeybind.Unbreakable;
 import net.soulsweaponry.items.abilities.detonateground.DetonateGroundAttributes;
@@ -27,43 +27,43 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
-            ConfigConstructor.nightfall_calculated_fall_base_radius,
-            ConfigConstructor.nightfall_calculated_fall_height_increase_radius_modifier,
-            ConfigConstructor.nightfall_calculated_fall_target_launch_modifier,
-            ConfigConstructor.nightfall_calculated_fall_target_max_launch_power,
-            ConfigConstructor.nightfall_calculated_fall_max_radius,
-            ConfigConstructor.nightfall_calculated_fall_max_damage,
-            ConfigConstructor.nightfall_calculated_fall_height_increase_damage_modifier,
-            ConfigConstructor.nightfall_calculated_fall_heal_from_damage_modifier,
+            WeaponConfig.nightfall_calculated_fall_base_radius,
+            WeaponConfig.nightfall_calculated_fall_height_increase_radius_modifier,
+            WeaponConfig.nightfall_calculated_fall_target_launch_modifier,
+            WeaponConfig.nightfall_calculated_fall_target_max_launch_power,
+            WeaponConfig.nightfall_calculated_fall_max_radius,
+            WeaponConfig.nightfall_calculated_fall_max_damage,
+            WeaponConfig.nightfall_calculated_fall_height_increase_damage_modifier,
+            WeaponConfig.nightfall_calculated_fall_heal_from_damage_modifier,
             Map.of(ParticleTypes.SOUL_FIRE_FLAME, new Vec3d(1, 6, 1)),
             (target, user, fallDistance) -> {},
             (user, fallDistance, stack) -> {}
     );
     private static final Unbreakable UNBREAKABLE = new Unbreakable(
-            (int) ConfigConstructor.nightfall_shield_min_cooldown, (int) ConfigConstructor.nightfall_shield_cooldown,
-            (int) ConfigConstructor.nightfall_shield_reduced_cooldown_per_level,
-            (int) ConfigConstructor.nightfall_shield_duration,
-            (int) ConfigConstructor.nightfall_shield_absorption_amp,
-            (int) ConfigConstructor.nightfall_shield_resistance_amp
+            (int) WeaponConfig.nightfall_shield_min_cooldown, (int) WeaponConfig.nightfall_shield_cooldown,
+            (int) WeaponConfig.nightfall_shield_reduced_cooldown_per_level,
+            (int) WeaponConfig.nightfall_shield_duration,
+            (int) WeaponConfig.nightfall_shield_absorption_amp,
+            (int) WeaponConfig.nightfall_shield_resistance_amp
     );
     private static final Obliterate OBLITERATE = new Obliterate(
-            ConfigConstructor.nightfall_obliterate_base_damage,
-            ConfigConstructor.nightfall_obliterate_bonus_damage_per_level,
-            ConfigConstructor.nightfall_obliterate_enchant_bonus_damage_modifier,
-            ConfigConstructor.nightfall_obliterate_y_velocity_launch_power,
-            ConfigConstructor.nightfall_obliterate_aoe_expansion,
-            ConfigConstructor.nightfall_obliterate_range_outwards,
-            (int) ConfigConstructor.nightfall_obliterate_min_cooldown,
-            (int) ConfigConstructor.nightfall_obliterate_cooldown,
-            (int) ConfigConstructor.nightfall_obliterate_reduced_cooldown_per_level
+            WeaponConfig.nightfall_obliterate_base_damage,
+            WeaponConfig.nightfall_obliterate_bonus_damage_per_level,
+            WeaponConfig.nightfall_obliterate_enchant_bonus_damage_modifier,
+            WeaponConfig.nightfall_obliterate_y_velocity_launch_power,
+            WeaponConfig.nightfall_obliterate_aoe_expansion,
+            WeaponConfig.nightfall_obliterate_range_outwards,
+            (int) WeaponConfig.nightfall_obliterate_min_cooldown,
+            (int) WeaponConfig.nightfall_obliterate_cooldown,
+            (int) WeaponConfig.nightfall_obliterate_reduced_cooldown_per_level
     );
     private static final SummonRemnant SUMMON_REMNANT = new SummonRemnant(
-            ConfigConstructor.nightfall_allow_non_undead_to_maybe_be_summoned, ConfigConstructor.nightfall_summon_chance,
-            (int) ConfigConstructor.nightfall_summoned_allies_cap, "NightfallSummons"
+            WeaponConfig.nightfall_allow_non_undead_to_maybe_be_summoned, WeaponConfig.nightfall_summon_chance,
+            (int) WeaponConfig.nightfall_summoned_allies_cap, "NightfallSummons"
     );
 
     public Nightfall(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.nightfall_damage, ConfigConstructor.nightfall_attack_speed, settings, (int) ConfigConstructor.nightfall_posture_loss, ATTRIBUTES);
+        super(toolMaterial, (int) WeaponConfig.nightfall_damage, WeaponConfig.nightfall_attack_speed, settings, (int) WeaponConfig.nightfall_posture_loss, ATTRIBUTES);
         this.addAbility(OBLITERATE, UNBREAKABLE, SUMMON_REMNANT);
     }
 
@@ -92,7 +92,7 @@ public class Nightfall extends UltraHeavyWeapon implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_nightfall;
+        return WeaponConfig.disable_use_nightfall;
     }
 
     @Override

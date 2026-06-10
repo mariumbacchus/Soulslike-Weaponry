@@ -2,7 +2,7 @@ package net.soulsweaponry.util;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.config.GunConfig;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class RecipeHandler {
 
     static {
         RECIPE_IDS.put(Identifier.of(SoulsWeaponry.ModId, "silver_bullet_iron_ingot"), GunConfig.disable_gun_recipes);
-        RECIPE_IDS.put(Identifier.of(SoulsWeaponry.ModId, "leviathan_axe_left"), ConfigConstructor.disable_recipe_leviathan_axe);
-        RECIPE_IDS.put(Identifier.of(SoulsWeaponry.ModId, "leviathan_axe_right"), ConfigConstructor.disable_recipe_leviathan_axe);
+        RECIPE_IDS.put(Identifier.of(SoulsWeaponry.ModId, "leviathan_axe_left"), WeaponConfig.disable_recipe_leviathan_axe);
+        RECIPE_IDS.put(Identifier.of(SoulsWeaponry.ModId, "leviathan_axe_right"), WeaponConfig.disable_recipe_leviathan_axe);
     }
 }

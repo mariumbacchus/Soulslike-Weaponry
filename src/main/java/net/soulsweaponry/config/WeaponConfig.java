@@ -1,6 +1,6 @@
 package net.soulsweaponry.config;
 
-public class ConfigConstructor extends MidnightConfig {
+public class WeaponConfig extends MidnightConfig {
 
     @Entry public static float item_upgrading_max_level = 5f;
 

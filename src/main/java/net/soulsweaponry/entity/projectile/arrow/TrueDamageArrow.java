@@ -9,7 +9,7 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.EntityRegistry;
 
 /**
@@ -67,6 +67,6 @@ public class TrueDamageArrow extends ModArrow {
 
     @Override
     public boolean canHaveArrowEffects() {
-        return ConfigConstructor.kraken_slayer_can_apply_arrow_effects;
+        return WeaponConfig.kraken_slayer_can_apply_arrow_effects;
     }
 }

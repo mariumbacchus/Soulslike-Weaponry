@@ -7,7 +7,6 @@ import net.minecraft.entity.SpawnLocationTypes;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.world.Heightmap;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.mobs.BigChungus;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;

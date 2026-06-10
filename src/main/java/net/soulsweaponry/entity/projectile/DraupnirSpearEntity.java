@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +39,7 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.draupnir_spear_projectile_damage;
+        float f = WeaponConfig.draupnir_spear_projectile_damage;
         if (entity == null) {
             return;
         }
@@ -70,7 +70,7 @@ public class DraupnirSpearEntity extends ModPersistentProjectile implements GeoE
         if (this.inGroundTime > 4) {
             this.dealtDamage = true;
         }
-        if (this.age > ConfigConstructor.draupnir_spear_max_age) {
+        if (this.age > WeaponConfig.draupnir_spear_max_age) {
             this.remove(RemovalReason.DISCARDED);
         }
         super.tick();

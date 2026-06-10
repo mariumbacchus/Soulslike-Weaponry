@@ -23,7 +23,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -43,7 +43,7 @@ public class MoonlightProjectile extends ModPersistentProjectile implements GeoE
     private static final TrackedData<Integer> EFFECT_AMPLIFIER = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<String> APPLIED_EFFECT_ID = DataTracker.registerData(MoonlightProjectile.class, TrackedDataHandlerRegistry.STRING);
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private float enchantBonusDamageMod = ConfigConstructor.moonlight_shortsword_projectile_bonus_enchant_damage_mod;//TODO make into variable that ShootMoonlight abilities call and change
+    private float enchantBonusDamageMod = WeaponConfig.moonlight_shortsword_projectile_bonus_enchant_damage_mod;//TODO make into variable that ShootMoonlight abilities call and change
 
     public MoonlightProjectile(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);

@@ -9,7 +9,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.EntityRegistry;
 
 public class ChargedArrow extends ModArrow {
@@ -75,6 +75,6 @@ public class ChargedArrow extends ModArrow {
 
     @Override
     public boolean canHaveArrowEffects() {
-        return ConfigConstructor.galeforce_can_apply_arrow_effects;
+        return WeaponConfig.galeforce_can_apply_arrow_effects;
     }
 }

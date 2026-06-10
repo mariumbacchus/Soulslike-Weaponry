@@ -18,7 +18,6 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.config.ConfigConstructor;
 
 import java.util.Collections;
 import java.util.Set;

@@ -11,7 +11,7 @@ import net.minecraft.recipe.*;
 import net.minecraft.recipe.input.SmithingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.registry.RecipeSerializerRegistry;
 import net.soulsweaponry.util.UpgradeUtil;
@@ -39,7 +39,7 @@ public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient
             return false;
         }
         int level = input.base().getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
-        if (level >= (int) ConfigConstructor.item_upgrading_max_level) {
+        if (level >= (int) WeaponConfig.item_upgrading_max_level) {
             return false;
         }
         if (!this.fallback()) {
@@ -70,7 +70,7 @@ public record ItemUpgradeRecipe(Ingredient template, Ingredient base, Ingredient
     public ItemStack craft(SmithingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
         ItemStack out = input.base().copy();
         int prev = out.getOrDefault(ComponentRegistry.ITEM_UPGRADE_LEVEL, 0);
-        int nextLevel = Math.min(prev + 1, (int) ConfigConstructor.item_upgrading_max_level);
+        int nextLevel = Math.min(prev + 1, (int) WeaponConfig.item_upgrading_max_level);
         applyUpgrades(out, nextLevel);
         return out;
     }

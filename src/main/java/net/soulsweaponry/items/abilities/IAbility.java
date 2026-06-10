@@ -18,7 +18,7 @@ import net.minecraft.text.Texts;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.predicate.EssenceNeeded;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
@@ -470,7 +470,7 @@ public interface IAbility extends ICooldownItem {
      * Notify the player that it is out of range for the ability to trigger if config value allows it.
      */
     default void notifyRange(PlayerEntity player) {
-        if (ConfigConstructor.inform_player_about_out_of_range) {
+        if (WeaponConfig.inform_player_about_out_of_range) {
             player.sendMessage(Text.translatable("soulsweapons.weapon.out_of_range"), true);
         }
     }

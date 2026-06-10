@@ -6,7 +6,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.renderer.item.DarkinBladeRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.items.abilities.stoppedusing.SwordLeap;
 import net.soulsweaponry.items.abilities.targetdamaged.Omnivamp;
@@ -24,39 +24,39 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
-            ConfigConstructor.darkin_blade_calculated_fall_base_radius,
-            ConfigConstructor.darkin_blade_calculated_fall_height_increase_radius_modifier,
-            ConfigConstructor.darkin_blade_calculated_fall_target_launch_modifier,
-            ConfigConstructor.darkin_blade_calculated_fall_target_max_launch_power,
-            ConfigConstructor.darkin_blade_calculated_fall_max_radius,
-            ConfigConstructor.darkin_blade_calculated_fall_max_damage,
-            ConfigConstructor.darkin_blade_calculated_fall_height_increase_damage_modifier,
-            ConfigConstructor.darkin_blade_calculated_fall_heal_from_damage_modifier,
+            WeaponConfig.darkin_blade_calculated_fall_base_radius,
+            WeaponConfig.darkin_blade_calculated_fall_height_increase_radius_modifier,
+            WeaponConfig.darkin_blade_calculated_fall_target_launch_modifier,
+            WeaponConfig.darkin_blade_calculated_fall_target_max_launch_power,
+            WeaponConfig.darkin_blade_calculated_fall_max_radius,
+            WeaponConfig.darkin_blade_calculated_fall_max_damage,
+            WeaponConfig.darkin_blade_calculated_fall_height_increase_damage_modifier,
+            WeaponConfig.darkin_blade_calculated_fall_heal_from_damage_modifier,
             Map.of(ParticleTypes.FLAME, new Vec3d(1, 6, 1)),
             (target, user, fallDistance) -> {},
             (user, fallDistance, stack) -> {}
     );
     private static final SwordLeap SWORD_LEAP = new SwordLeap(
-            ConfigConstructor.darkin_blade_sword_leap_damage,
-            ConfigConstructor.darkin_blade_sword_leap_bonus_damage_per_level,
-            (int) ConfigConstructor.darkin_blade_sword_leap_calculated_fall_duration,
-            ConfigConstructor.darkin_blade_sword_leap_y_velocity,
-            (int) ConfigConstructor.darkin_blade_sword_leap_min_cooldown,
-            (int) ConfigConstructor.darkin_blade_sword_leap_cooldown,
-            (int) ConfigConstructor.darkin_blade_sword_leap_reduced_cooldown_per_level,
-            ConfigConstructor.darkin_blade_sword_leap_cooldown_mod_fully_charged,
-            ConfigConstructor.darkin_blade_sword_leap_cooldown_mod_not_fully_charged
+            WeaponConfig.darkin_blade_sword_leap_damage,
+            WeaponConfig.darkin_blade_sword_leap_bonus_damage_per_level,
+            (int) WeaponConfig.darkin_blade_sword_leap_calculated_fall_duration,
+            WeaponConfig.darkin_blade_sword_leap_y_velocity,
+            (int) WeaponConfig.darkin_blade_sword_leap_min_cooldown,
+            (int) WeaponConfig.darkin_blade_sword_leap_cooldown,
+            (int) WeaponConfig.darkin_blade_sword_leap_reduced_cooldown_per_level,
+            WeaponConfig.darkin_blade_sword_leap_cooldown_mod_fully_charged,
+            WeaponConfig.darkin_blade_sword_leap_cooldown_mod_not_fully_charged
     );
     private static final Omnivamp OMNIVAMP = new Omnivamp(
-            ConfigConstructor.darkin_blade_omnivamp_base_heal,
-            ConfigConstructor.darkin_blade_omnivamp_bonus_heal_per_level,
-            (int) ConfigConstructor.darkin_blade_omnivamp_min_cooldown,
-            (int) ConfigConstructor.darkin_blade_omnivamp_cooldown,
-            (int) ConfigConstructor.darkin_blade_omnivamp_reduced_cooldown_per_level
+            WeaponConfig.darkin_blade_omnivamp_base_heal,
+            WeaponConfig.darkin_blade_omnivamp_bonus_heal_per_level,
+            (int) WeaponConfig.darkin_blade_omnivamp_min_cooldown,
+            (int) WeaponConfig.darkin_blade_omnivamp_cooldown,
+            (int) WeaponConfig.darkin_blade_omnivamp_reduced_cooldown_per_level
     );
 
     public DarkinBlade(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.darkin_blade_damage, ConfigConstructor.darkin_blade_attack_speed, settings, (int) ConfigConstructor.darkin_blade_posture_loss, ATTRIBUTES);
+        super(toolMaterial, (int) WeaponConfig.darkin_blade_damage, WeaponConfig.darkin_blade_attack_speed, settings, (int) WeaponConfig.darkin_blade_posture_loss, ATTRIBUTES);
         this.addAbility(SWORD_LEAP, OMNIVAMP);
     }
 
@@ -92,6 +92,6 @@ public class DarkinBlade extends UltraHeavyWeapon implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_darkin_blade;
+        return WeaponConfig.disable_use_darkin_blade;
     }
 }

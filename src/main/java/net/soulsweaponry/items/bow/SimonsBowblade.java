@@ -2,7 +2,7 @@ package net.soulsweaponry.items.bow;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.customarrows.SilverArrows;
 
 import java.util.function.Supplier;
@@ -10,21 +10,21 @@ import java.util.function.Supplier;
 public class SimonsBowblade extends ModdedBow {
 
     private static final SilverArrows SILVER_ARROWS = new SilverArrows(
-            (int) ConfigConstructor.simons_bowblade_silver_arrows_posture_loss,
-            ConfigConstructor.simons_bowblade_silver_arrows_bonus_posture_loss_per_level,
-            ConfigConstructor.simons_bowblade_silver_arrows_base_undead_bonus_damage,
-            ConfigConstructor.simons_bowblade_silver_arrows_undead_bonus_damage_per_level
+            (int) WeaponConfig.simons_bowblade_silver_arrows_posture_loss,
+            WeaponConfig.simons_bowblade_silver_arrows_bonus_posture_loss_per_level,
+            WeaponConfig.simons_bowblade_silver_arrows_base_undead_bonus_damage,
+            WeaponConfig.simons_bowblade_silver_arrows_undead_bonus_damage_per_level
     );
 
     public SimonsBowblade(Settings settings, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, createConfig((int) ConfigConstructor.simons_bowblade_pull_time_ticks,
-                ConfigConstructor.simons_bowblade_projectile_damage, ConfigConstructor.simons_bowblade_bonus_velocity),
+        super(settings, createConfig((int) WeaponConfig.simons_bowblade_pull_time_ticks,
+                WeaponConfig.simons_bowblade_projectile_damage, WeaponConfig.simons_bowblade_bonus_velocity),
                 repairIngredientSupplier);
         this.addAbility(SILVER_ARROWS);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_simons_bowblade;
+        return WeaponConfig.disable_use_simons_bowblade;
     }
 }

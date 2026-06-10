@@ -26,7 +26,6 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
 import net.soulsweaponry.api.entitystats.EntityPosture;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.EnchantmentConfig;
 import net.soulsweaponry.config.GunConfig;
 import net.soulsweaponry.entitydata.FrostData;

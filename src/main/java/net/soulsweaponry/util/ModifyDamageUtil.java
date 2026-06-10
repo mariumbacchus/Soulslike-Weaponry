@@ -9,14 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.Hand;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.bonusdamage.BonusCritHitDamage;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
-import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -92,7 +91,7 @@ public class ModifyDamageUtil {
         }
         if (source.getSource() instanceof TrueDamageArrow projectile) {
             float trueDamage = projectile.getTrueDamage();
-            newAmount += entity instanceof PlayerEntity ? trueDamage * ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier : trueDamage;
+            newAmount += entity instanceof PlayerEntity ? trueDamage * WeaponConfig.kraken_slayer_player_true_damage_taken_modifier : trueDamage;
         }
         for (Hand hand : Hand.values()) {
             ItemStack stack = entity.getStackInHand(hand);

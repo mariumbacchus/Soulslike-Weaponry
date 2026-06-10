@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.ChainLightning;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -19,10 +19,10 @@ import java.util.List;
 public record ElectricCherry(float chance, float baseDamage, float damagePerAmp, float baseRange, float rangePerAmp, int stunDuration) implements IAbility {
 
     public static final ElectricCherry EFFECT_INSTANCE = new ElectricCherry(
-            ConfigConstructor.tonitrus_stormveil_effect_electric_cherry_chance,
-            ConfigConstructor.tonitrus_stormveil_effect_electric_cherry_base_damage, ConfigConstructor.tonitrus_stormveil_effect_electric_cherry_damage_per_amp_level,
-            ConfigConstructor.tonitrus_stormveil_effect_electric_cherry_base_radius, ConfigConstructor.tonitrus_stormveil_effect_electric_cherry_radius_per_amp_level,
-            (int) ConfigConstructor.tonitrus_stormveil_effect_electric_cherry_heavy_slow_duration
+            WeaponConfig.tonitrus_stormveil_effect_electric_cherry_chance,
+            WeaponConfig.tonitrus_stormveil_effect_electric_cherry_base_damage, WeaponConfig.tonitrus_stormveil_effect_electric_cherry_damage_per_amp_level,
+            WeaponConfig.tonitrus_stormveil_effect_electric_cherry_base_radius, WeaponConfig.tonitrus_stormveil_effect_electric_cherry_radius_per_amp_level,
+            (int) WeaponConfig.tonitrus_stormveil_effect_electric_cherry_heavy_slow_duration
     );
 
     public void trigger(LivingEntity user, LivingEntity attacker, float amp) {

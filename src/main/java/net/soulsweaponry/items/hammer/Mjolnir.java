@@ -4,7 +4,7 @@ import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.MjolnirItemRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.abilitykeybind.CircleLightningCall;
 import net.soulsweaponry.items.abilities.statboost.RainBoostsStats;
@@ -21,34 +21,34 @@ import java.util.function.Consumer;
 public class Mjolnir extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(ConfigConstructor.mjolnir_rain_bonus_damage, ConfigConstructor.mjolnir_rain_bonus_attack_speed);
+    private static final RainBoostsStats RAIN_BOOSTS_STATS = new RainBoostsStats(WeaponConfig.mjolnir_rain_bonus_damage, WeaponConfig.mjolnir_rain_bonus_attack_speed);
     private static final Riptide RIPTIDE = new Riptide(
-            ConfigConstructor.mjolnir_riptide_launch_power,
-            ConfigConstructor.mjolnir_riptide_bonus_launch_power_per_level,
-            ConfigConstructor.mjolnir_riptide_collision_damage,
-            (int) ConfigConstructor.mjolnir_riptide_calculated_fall_duration,
-            (int) ConfigConstructor.mjolnir_riptide_calculated_fall_amp,
-            ConfigConstructor.mjolnir_riptide_calculated_fall_bonus_amp_per_level,
-            (int) ConfigConstructor.mjolnir_riptide_min_cooldown,
-            (int) ConfigConstructor.mjolnir_riptide_cooldown,
-            (int) ConfigConstructor.mjolnir_riptide_reduced_cooldown_per_level,
+            WeaponConfig.mjolnir_riptide_launch_power,
+            WeaponConfig.mjolnir_riptide_bonus_launch_power_per_level,
+            WeaponConfig.mjolnir_riptide_collision_damage,
+            (int) WeaponConfig.mjolnir_riptide_calculated_fall_duration,
+            (int) WeaponConfig.mjolnir_riptide_calculated_fall_amp,
+            WeaponConfig.mjolnir_riptide_calculated_fall_bonus_amp_per_level,
+            (int) WeaponConfig.mjolnir_riptide_min_cooldown,
+            (int) WeaponConfig.mjolnir_riptide_cooldown,
+            (int) WeaponConfig.mjolnir_riptide_reduced_cooldown_per_level,
             Riptide.RAINING
     );
     private static final ThrowMjolnir THROW_MJOLNIR = new ThrowMjolnir(2.5f, 0.2f);
     private static final CircleLightningCall LIGHTNING_CALL = new CircleLightningCall(
-            ConfigConstructor.mjolnir_lightning_base_smash_damage,
-            ConfigConstructor.mjolnir_lightning_bonus_smash_damage_per_level,
-            ConfigConstructor.mjolnir_lightning_enchant_bonus_smash_damage_multiplier,
-            (int) ConfigConstructor.mjolnir_lightning_circle_amount,
-            (int) ConfigConstructor.mjolnir_lightning_amount_per_circle,
-            ConfigConstructor.mjolnir_lightning_range_between_circles,
-            (int) ConfigConstructor.mjolnir_lightning_smash_min_cooldown,
-            (int) ConfigConstructor.mjolnir_lightning_smash_cooldown,
-            (int) ConfigConstructor.mjolnir_lightning_smash_reduced_cooldown_per_level
+            WeaponConfig.mjolnir_lightning_base_smash_damage,
+            WeaponConfig.mjolnir_lightning_bonus_smash_damage_per_level,
+            WeaponConfig.mjolnir_lightning_enchant_bonus_smash_damage_multiplier,
+            (int) WeaponConfig.mjolnir_lightning_circle_amount,
+            (int) WeaponConfig.mjolnir_lightning_amount_per_circle,
+            WeaponConfig.mjolnir_lightning_range_between_circles,
+            (int) WeaponConfig.mjolnir_lightning_smash_min_cooldown,
+            (int) WeaponConfig.mjolnir_lightning_smash_cooldown,
+            (int) WeaponConfig.mjolnir_lightning_smash_reduced_cooldown_per_level
     );
 
     public Mjolnir(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.mjolnir_damage, ConfigConstructor.mjolnir_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.mjolnir_damage, WeaponConfig.mjolnir_attack_speed, settings);
         this.addAbility(RAIN_BOOSTS_STATS, RIPTIDE, THROW_MJOLNIR, LIGHTNING_CALL);
     }
 
@@ -62,7 +62,7 @@ public class Mjolnir extends ModdedSword implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_mjolnir;
+        return WeaponConfig.disable_use_mjolnir;
     }
 
     @Override

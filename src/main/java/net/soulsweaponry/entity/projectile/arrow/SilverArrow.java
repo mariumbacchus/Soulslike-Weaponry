@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.projectile.IPostureLossProjectile;
 import net.soulsweaponry.registry.EntityRegistry;
 
@@ -77,6 +77,6 @@ public class SilverArrow extends ModArrow implements IPostureLossProjectile {
 
     @Override
     public boolean canHaveArrowEffects() {
-        return ConfigConstructor.simons_bowblade_silver_arrows_can_apply_arrow_effects;
+        return WeaponConfig.simons_bowblade_silver_arrows_can_apply_arrow_effects;
     }
 }

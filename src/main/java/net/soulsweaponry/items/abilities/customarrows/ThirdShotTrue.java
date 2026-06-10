@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.projectile.arrow.TrueDamageArrow;
 import net.soulsweaponry.registry.ComponentRegistry;
 import net.soulsweaponry.util.WeaponUtil;
@@ -69,7 +69,7 @@ public record ThirdShotTrue(
         tooltip.add(Text.translatable("tooltip.soulsweapons.third_shot.2",
                 String.format("%.1f", this.getTrueDamage(lvl))).formatted(Formatting.GRAY));
         tooltip.add(Text.translatable("tooltip.soulsweapons.third_shot.3", String.format("%.0f",
-                (1f - ConfigConstructor.kraken_slayer_player_true_damage_taken_modifier) * 100) + "%").formatted(Formatting.DARK_GRAY));
+                (1f - WeaponConfig.kraken_slayer_player_true_damage_taken_modifier) * 100) + "%").formatted(Formatting.DARK_GRAY));
         return tooltip;
     }
 }

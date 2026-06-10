@@ -8,7 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.IAbility;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -29,7 +29,7 @@ public record FinalWounds(float killTriggerCap, float killChanceOverCap, float k
                           float missingHealthChanceOverCap, float missingHealthChanceUnderCap, float missingHealthMod, float missingHealthPlayerMod,
                           float missingHealthMaxBonus) implements IAbility {
 
-    private static final List<EntityType<?>> NO_KILL_ENTITIES = WeaponUtil.getEntityListOffArray(ConfigConstructor.mehrunes_razor_no_instakill_entity_blacklist);
+    private static final List<EntityType<?>> NO_KILL_ENTITIES = WeaponUtil.getEntityListOffArray(WeaponConfig.mehrunes_razor_no_instakill_entity_blacklist);
 
     @Override
     public void postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
@@ -61,11 +61,11 @@ public record FinalWounds(float killTriggerCap, float killChanceOverCap, float k
     public List<Text> getTooltipAbilities(ItemStack stack) {
         return List.of(
                 Text.translatable("tooltip.soulsweapons.final_wounds").formatted(Formatting.DARK_PURPLE),
-                Text.translatable("tooltip.soulsweapons.final_wounds.1", String.format("%.1f", ConfigConstructor.mehrunes_razor_missing_health_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.final_wounds.2", ConfigConstructor.mehrunes_razor_missing_health_max_bonus_damage).formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.final_wounds.3", String.format("%.1f", ConfigConstructor.mehrunes_razor_missing_health_chance_over_health_cap * 100) + "%", ConfigConstructor.mehrunes_razor_missing_health_trigger_cap).formatted(Formatting.DARK_GRAY),
-                Text.translatable("tooltip.soulsweapons.final_wounds.4", String.format("%.2f", ConfigConstructor.mehrunes_razor_kill_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY),
-                Text.translatable("tooltip.soulsweapons.final_wounds.5", String.format("%.2f", ConfigConstructor.mehrunes_razor_kill_chance_over_health_cap * 100) + "%", ConfigConstructor.mehrunes_razor_kill_trigger_cap).formatted(Formatting.DARK_GRAY)
+                Text.translatable("tooltip.soulsweapons.final_wounds.1", String.format("%.1f", WeaponConfig.mehrunes_razor_missing_health_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY),
+                Text.translatable("tooltip.soulsweapons.final_wounds.2", WeaponConfig.mehrunes_razor_missing_health_max_bonus_damage).formatted(Formatting.GRAY),
+                Text.translatable("tooltip.soulsweapons.final_wounds.3", String.format("%.1f", WeaponConfig.mehrunes_razor_missing_health_chance_over_health_cap * 100) + "%", WeaponConfig.mehrunes_razor_missing_health_trigger_cap).formatted(Formatting.DARK_GRAY),
+                Text.translatable("tooltip.soulsweapons.final_wounds.4", String.format("%.2f", WeaponConfig.mehrunes_razor_kill_chance_under_health_cap * 100) + "%").formatted(Formatting.GRAY),
+                Text.translatable("tooltip.soulsweapons.final_wounds.5", String.format("%.2f", WeaponConfig.mehrunes_razor_kill_chance_over_health_cap * 100) + "%", WeaponConfig.mehrunes_razor_kill_trigger_cap).formatted(Formatting.DARK_GRAY)
         );
     }
 }

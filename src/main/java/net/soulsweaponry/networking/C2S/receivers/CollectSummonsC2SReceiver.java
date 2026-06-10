@@ -10,7 +10,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.items.abilities.targetdeath.SoulHarvest;
@@ -45,9 +45,9 @@ public class CollectSummonsC2SReceiver {
                             }
                         }
                         Text msg = null;
-                        if (ConfigConstructor.inform_player_about_no_souls_to_collect && collectedSouls == 0) {
+                        if (WeaponConfig.inform_player_about_no_souls_to_collect && collectedSouls == 0) {
                             msg = Text.translatableWithFallback("soulsweapons.weapon.no_collected_souls", "There were no bound allies to collect!");
-                        } else if (ConfigConstructor.inform_player_about_collected_souls && collectedSouls > 0) {
+                        } else if (WeaponConfig.inform_player_about_collected_souls && collectedSouls > 0) {
                             msg = Text.translatable("soulsweapons.weapon.collected_souls", collectedSouls).append(handItem.getName());
                         }
                         ability.get().addAmount(player.getStackInHand(hand), collectedSouls);

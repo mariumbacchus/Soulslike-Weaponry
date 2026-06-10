@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.EffectRegistry;
 
 public interface ICooldownItem {
@@ -59,7 +59,7 @@ public interface ICooldownItem {
 
 
     default void notifyCooldown(LivingEntity user) {
-        if (!ConfigConstructor.inform_player_about_cooldown_effect) {
+        if (!WeaponConfig.inform_player_about_cooldown_effect) {
             return;
         }
         if (user instanceof PlayerEntity player) {

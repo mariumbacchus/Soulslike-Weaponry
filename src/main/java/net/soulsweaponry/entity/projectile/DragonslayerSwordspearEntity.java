@@ -20,7 +20,7 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 
@@ -71,7 +71,7 @@ public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
 
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        float f = ConfigConstructor.dragonslayer_swordspear_projectile_damage;
+        float f = WeaponConfig.dragonslayer_swordspear_projectile_damage;
         if (this.getOwner() == null || entity == null) {
             return;
         }
@@ -99,7 +99,7 @@ public class DragonslayerSwordspearEntity extends ModPersistentProjectile {
         if (!getWorld().isClient) {
             BlockPos blockPos = entity.getBlockPos();
             if (this.getWorld().isSkyVisible(blockPos)) {
-                for (int i = 0; i < ConfigConstructor.dragonslayer_swordspear_lightning_call_lightning_amount; i++) {
+                for (int i = 0; i < WeaponConfig.dragonslayer_swordspear_lightning_call_lightning_amount; i++) {
                     LightningEntity lightningEntity = EntityType.LIGHTNING_BOLT.create(this.getWorld());
                     lightningEntity.refreshPositionAfterTeleport(Vec3d.ofBottomCenter(blockPos));
                     lightningEntity.setChanneler(entity2 instanceof ServerPlayerEntity ? (ServerPlayerEntity)entity2 : null);

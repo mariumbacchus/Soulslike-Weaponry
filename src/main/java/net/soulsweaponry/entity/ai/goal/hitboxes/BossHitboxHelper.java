@@ -9,7 +9,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.soulsweaponry.collision.RotatableHitbox;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.EntityConfig;
 
 import java.util.function.BiPredicate;

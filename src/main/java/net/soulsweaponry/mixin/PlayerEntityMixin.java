@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundCategory;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entitydata.ParryData;
 import net.soulsweaponry.entitydata.UmbralTrespassData;
 import net.soulsweaponry.items.abilities.IHasAbilities;
@@ -127,7 +127,7 @@ public class PlayerEntityMixin {
 
         ItemStack offStack = player.getInventory().offHand.get(0);
         boolean offHeavy = IHasAbilities.getAbility(offStack, UltraHeavy.class).isPresent();
-        if (ConfigConstructor.ultra_heavy_disable_offhand_when_held) {
+        if (WeaponConfig.ultra_heavy_disable_offhand_when_held) {
             // If this statement passed if offhand also was heavy, then the item would disappear when put in offhand.
             // Therefore, only disable offhand completely if main hand is heavy, while give mining fatigue if heavy
             // is in offhand and not main hand.

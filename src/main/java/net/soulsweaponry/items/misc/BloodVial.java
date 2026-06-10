@@ -11,7 +11,7 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.ItemRegistry;
 
 public class BloodVial extends Item {
@@ -38,14 +38,14 @@ public class BloodVial extends Item {
     }
 
     public float getHeal() {
-        return ConfigConstructor.blood_vial_heal;
+        return WeaponConfig.blood_vial_heal;
     }
 
     public int getRegenDuration() {
-        return (int) ConfigConstructor.blood_vial_regen_duration_ticks;
+        return (int) WeaponConfig.blood_vial_regen_duration_ticks;
     }
 
     public int getRegenAmp() {
-        return (int) ConfigConstructor.blood_vial_regen_amp;
+        return (int) WeaponConfig.blood_vial_regen_amp;
     }
 }

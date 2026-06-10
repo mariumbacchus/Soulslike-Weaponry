@@ -9,7 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
 
@@ -29,7 +29,7 @@ public class MoonlightArrow extends ModArrow {
 
     @Override
     public boolean canHaveArrowEffects() {
-        return ConfigConstructor.darkmoon_longbow_can_apply_arrow_effects;
+        return WeaponConfig.darkmoon_longbow_can_apply_arrow_effects;
     }
 
     @Override

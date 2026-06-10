@@ -10,7 +10,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.renderer.item.BloodlustRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.abilitykeybind.BloodlustAbility;
 import net.soulsweaponry.items.abilities.posthit.Bleed;
@@ -32,18 +32,18 @@ public class Bloodlust extends ModdedSword implements GeoItem {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
-    private static final Bleed BLEED = new Bleed((int) ConfigConstructor.bloodlust_bleed_post_hit, ConfigConstructor.bloodlust_bleed_post_hit_bonus_per_bloodthirsty_amp);
+    private static final Bleed BLEED = new Bleed((int) WeaponConfig.bloodlust_bleed_post_hit, WeaponConfig.bloodlust_bleed_post_hit_bonus_per_bloodthirsty_amp);
     private static final BloodlustAbility BLOODLUST_ABILITY = new BloodlustAbility(
-            ConfigConstructor.bloodlust_ability_self_damage, (int) ConfigConstructor.bloodlust_ability_self_bleed,
-            (int) ConfigConstructor.bloodlust_ability_bloodthirsty_duration, (int) ConfigConstructor.bloodlust_ability_bloodthirsty_amp,
-            (int) ConfigConstructor.bloodlust_ability_strength_duration, (int) ConfigConstructor.bloodlust_ability_strength_amp
+            WeaponConfig.bloodlust_ability_self_damage, (int) WeaponConfig.bloodlust_ability_self_bleed,
+            (int) WeaponConfig.bloodlust_ability_bloodthirsty_duration, (int) WeaponConfig.bloodlust_ability_bloodthirsty_amp,
+            (int) WeaponConfig.bloodlust_ability_strength_duration, (int) WeaponConfig.bloodlust_ability_strength_amp
     );
     private static final BloodlossInVicinity BLOODLOSS_IN_VICINITY = new BloodlossInVicinity(
-            new StatusEffectInstance(StatusEffects.STRENGTH, (int) ConfigConstructor.bloodlust_bloodloss_in_vicinity_gives_strength_duration, (int) ConfigConstructor.bloodlust_bloodloss_in_vicinity_gives_strength_amp)
+            new StatusEffectInstance(StatusEffects.STRENGTH, (int) WeaponConfig.bloodlust_bloodloss_in_vicinity_gives_strength_duration, (int) WeaponConfig.bloodlust_bloodloss_in_vicinity_gives_strength_amp)
     );
 
     public Bloodlust(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.bloodlust_damage, ConfigConstructor.bloodlust_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.bloodlust_damage, WeaponConfig.bloodlust_attack_speed, settings);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
         this.addAbility(BLOODLUST_ABILITY, BLEED, BLOODLOSS_IN_VICINITY);
     }
@@ -62,7 +62,7 @@ public class Bloodlust extends ModdedSword implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_bloodlust;
+        return WeaponConfig.disable_use_bloodlust;
     }
 
     @Override

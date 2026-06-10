@@ -7,7 +7,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.UltraHeavyWeapon;
 import net.soulsweaponry.items.abilities.BasicInfoAbility;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -24,14 +24,14 @@ public class Featherlight extends UltraHeavyWeapon {
             new StatusEffectInstance(StatusEffects.SLOWNESS, 80, 2)
     };
     private static final DetonateGroundAttributes ATTRIBUTES = new DetonateGroundAttributes(
-            ConfigConstructor.featherlight_calculated_fall_base_radius,
-            ConfigConstructor.featherlight_calculated_fall_height_increase_radius_modifier,
-            ConfigConstructor.featherlight_calculated_fall_target_launch_modifier,
-            ConfigConstructor.featherlight_calculated_fall_target_max_launch_power,
-            ConfigConstructor.featherlight_calculated_fall_max_radius,
-            ConfigConstructor.featherlight_calculated_fall_max_damage,
-            ConfigConstructor.featherlight_calculated_fall_height_increase_damage_modifier,
-            ConfigConstructor.featherlight_calculated_fall_heal_from_damage_modifier,
+            WeaponConfig.featherlight_calculated_fall_base_radius,
+            WeaponConfig.featherlight_calculated_fall_height_increase_radius_modifier,
+            WeaponConfig.featherlight_calculated_fall_target_launch_modifier,
+            WeaponConfig.featherlight_calculated_fall_target_max_launch_power,
+            WeaponConfig.featherlight_calculated_fall_max_radius,
+            WeaponConfig.featherlight_calculated_fall_max_damage,
+            WeaponConfig.featherlight_calculated_fall_height_increase_damage_modifier,
+            WeaponConfig.featherlight_calculated_fall_heal_from_damage_modifier,
             Map.of(ParticleRegistry.PURPLE_FLAME, new Vec3d(1, 6, 1)),
             (target, user, fallDistance) -> {
                 for (StatusEffectInstance effect : CALCULATED_FALL_EFFECTS) {
@@ -46,13 +46,13 @@ public class Featherlight extends UltraHeavyWeapon {
     ));
 
     public Featherlight(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.featherlight_damage, ConfigConstructor.disable_use_featherlight ?
-                1f : ConfigConstructor.featherlight_attack_speed, settings, (int) ConfigConstructor.featherlight_posture_loss, ATTRIBUTES);
+        super(toolMaterial, (int) WeaponConfig.featherlight_damage, WeaponConfig.disable_use_featherlight ?
+                1f : WeaponConfig.featherlight_attack_speed, settings, (int) WeaponConfig.featherlight_posture_loss, ATTRIBUTES);
         this.addAbility(LIGHT_WEAPON);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_featherlight;
+        return WeaponConfig.disable_use_featherlight;
     }
 }

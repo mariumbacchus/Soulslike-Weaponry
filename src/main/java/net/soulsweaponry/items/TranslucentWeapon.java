@@ -2,7 +2,7 @@ package net.soulsweaponry.items;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.use.InvisibleItem;
 
 public class TranslucentWeapon extends ModdedSword {
@@ -16,6 +16,6 @@ public class TranslucentWeapon extends ModdedSword {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_translucent_weapons;
+        return WeaponConfig.disable_use_translucent_weapons;
     }
 }

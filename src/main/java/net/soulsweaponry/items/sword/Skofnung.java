@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.posthit.BasicPostHitAbility;
 import net.soulsweaponry.items.abilities.statboost.Sharpened;
@@ -18,8 +18,8 @@ public class Skofnung extends ModdedSword {
 
     private static final BasicPostHitAbility DISABLE_HEAL = new BasicPostHitAbility(
             (stack, target, attacker) -> {
-                int duration = (int) (ConfigConstructor.skofnung_disable_heal_duration
-                        + WeaponUtil.getUpgradeLevel(stack) * ConfigConstructor.skofnung_disable_heal_bonus_duration_per_level);
+                int duration = (int) (WeaponConfig.skofnung_disable_heal_duration
+                        + WeaponUtil.getUpgradeLevel(stack) * WeaponConfig.skofnung_disable_heal_bonus_duration_per_level);
                 target.addStatusEffect(new StatusEffectInstance(EffectRegistry.DISABLE_HEAL, duration, 0));
             },
             List.of(
@@ -29,26 +29,26 @@ public class Skofnung extends ModdedSword {
             )
     );
     private static final Sharpened SHARPENED = new Sharpened(
-            ConfigConstructor.skofnung_sharpened_bonus_damage,
-            ConfigConstructor.skofnung_sharpened_bonus_damage_per_level,
-            ConfigConstructor.skofnung_sharpened_bonus_attack_speed,
-            ConfigConstructor.skofnung_sharpened_bonus_attack_speed_per_level,
-            (int) ConfigConstructor.skofnung_sharpened_bleed_post_hit,
-            ConfigConstructor.skofnung_sharpened_bonus_bleed_post_hit_per_level,
-            (int) ConfigConstructor.skofnung_sharpened_bleed_effect_duration,
-            (int) ConfigConstructor.skofnung_sharpened_bleed_effect_bonus_duration_per_level,
-            (int) ConfigConstructor.skofnung_sharpened_bleed_effect_amp,
-            ConfigConstructor.skofnung_sharpened_bleed_effect_bonus_amp_per_level,
-            (int) ConfigConstructor.skofnung_sharpened_max_empowered_strikes
+            WeaponConfig.skofnung_sharpened_bonus_damage,
+            WeaponConfig.skofnung_sharpened_bonus_damage_per_level,
+            WeaponConfig.skofnung_sharpened_bonus_attack_speed,
+            WeaponConfig.skofnung_sharpened_bonus_attack_speed_per_level,
+            (int) WeaponConfig.skofnung_sharpened_bleed_post_hit,
+            WeaponConfig.skofnung_sharpened_bonus_bleed_post_hit_per_level,
+            (int) WeaponConfig.skofnung_sharpened_bleed_effect_duration,
+            (int) WeaponConfig.skofnung_sharpened_bleed_effect_bonus_duration_per_level,
+            (int) WeaponConfig.skofnung_sharpened_bleed_effect_amp,
+            WeaponConfig.skofnung_sharpened_bleed_effect_bonus_amp_per_level,
+            (int) WeaponConfig.skofnung_sharpened_max_empowered_strikes
     );
 
     public Skofnung(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.skofnung_damage, ConfigConstructor.skofnung_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.skofnung_damage, WeaponConfig.skofnung_attack_speed, settings);
         this.addAbility(DISABLE_HEAL, SHARPENED);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_skofnung;
+        return WeaponConfig.disable_use_skofnung;
     }
 }

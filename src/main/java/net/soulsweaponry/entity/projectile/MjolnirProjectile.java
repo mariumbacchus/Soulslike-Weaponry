@@ -14,7 +14,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.projectile.noclip.FrozenLightning;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
@@ -38,12 +38,12 @@ public class MjolnirProjectile extends ReturningProjectile implements GeoEntity 
 
     @Override
     public double getReturnSpeed(ItemStack stack) {
-        return ConfigConstructor.mjolnir_return_speed + (double) WeaponUtil.getEnchantDamageBonus(this.asItemStack())/2;
+        return WeaponConfig.mjolnir_return_speed + (double) WeaponUtil.getEnchantDamageBonus(this.asItemStack())/2;
     }
 
     @Override
     public float getDamage(Entity target) {
-        float f = ConfigConstructor.mjolnir_projectile_damage;
+        float f = WeaponConfig.mjolnir_projectile_damage;
         if (target instanceof LivingEntity && this.getWorld() instanceof ServerWorld serverWorld) {
             f = EnchantmentHelper.getDamage(serverWorld, this.getItemStack(), target, this.getDamageSources().trident(this, this.getOwner()), f);
         }

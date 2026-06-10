@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -16,7 +16,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class GhostGlaiveEntity extends DamagingNoClipEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private int postureLoss = (int) ConfigConstructor.glaive_of_hodir_projectile_posture_loss;
+    private int postureLoss = (int) WeaponConfig.glaive_of_hodir_projectile_posture_loss;
 
     public GhostGlaiveEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);

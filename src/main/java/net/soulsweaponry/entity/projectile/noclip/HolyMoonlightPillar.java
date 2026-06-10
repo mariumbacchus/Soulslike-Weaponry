@@ -8,7 +8,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class HolyMoonlightPillar extends DamagingWarmupEntity implements GeoEntity {
 
-    private float knockUp = ConfigConstructor.holy_moonlight_moonfall_knockup;
+    private float knockUp = WeaponConfig.holy_moonlight_moonfall_knockup;
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
 
     public HolyMoonlightPillar(EntityType<? extends PersistentProjectileEntity> entityType, World world) {

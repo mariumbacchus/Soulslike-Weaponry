@@ -9,7 +9,6 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.IEntityDataSaver;

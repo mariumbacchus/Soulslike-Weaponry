@@ -8,7 +8,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entitydata.FrostData;
 import net.soulsweaponry.items.abilities.posthit.Permafrost;
 import net.soulsweaponry.registry.EffectRegistry;
@@ -35,7 +35,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
 
     @Override
     public float getDamage(Entity target) {
-        return ConfigConstructor.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.getItemStack());
+        return WeaponConfig.leviathan_axe_projectile_damage + WeaponUtil.getEnchantDamageBonus(this.getItemStack());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
         if (damaged) {
             int enchant = WeaponUtil.getLevel(this.getItemStack(), Enchantments.SHARPNESS);
             if (target instanceof LivingEntity living) {
-                FrostData.addFrost(living, (int) ConfigConstructor.leviathan_axe_projectile_frost_buildup_on_collision);
+                FrostData.addFrost(living, (int) WeaponConfig.leviathan_axe_projectile_frost_buildup_on_collision);
                 FrostData.setFrostSource(living, owner);
                 living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 200, enchant));
             }
@@ -60,7 +60,7 @@ public class LeviathanAxeEntity extends ReturningProjectile implements GeoEntity
 
     @Override
     public double getReturnSpeed(ItemStack stack) {
-        return ConfigConstructor.leviathan_axe_return_speed + (double) WeaponUtil.getLevel(stack, Enchantments.SHARPNESS) /2f;
+        return WeaponConfig.leviathan_axe_return_speed + (double) WeaponUtil.getLevel(stack, Enchantments.SHARPNESS) /2f;
     }
 
     @Override

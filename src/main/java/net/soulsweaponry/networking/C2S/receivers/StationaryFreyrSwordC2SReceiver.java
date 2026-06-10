@@ -6,7 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.mobs.FreyrSwordEntity;
 import net.soulsweaponry.entitydata.FreyrSwordSummonData;
 import net.soulsweaponry.networking.C2S.packets.StationaryFreyrSwordC2S;
@@ -29,7 +29,7 @@ public class StationaryFreyrSwordC2SReceiver {
                 Entity entity = serverWorld.getEntity(uuid);
                 if (entity instanceof FreyrSwordEntity sword) {
                     sword.setStationaryPos(player.getBlockPos());
-                } else if (ConfigConstructor.inform_player_about_no_bound_freyr_sword) {
+                } else if (WeaponConfig.inform_player_about_no_bound_freyr_sword) {
                     player.sendMessage(text, true);
                 }
             }

@@ -3,7 +3,6 @@ package net.soulsweaponry.api.entitystats;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.PostureData;
 import net.soulsweaponry.registry.AttributeRegistry;

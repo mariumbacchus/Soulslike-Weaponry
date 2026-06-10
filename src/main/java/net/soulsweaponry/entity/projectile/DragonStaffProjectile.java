@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.AreaEffectSphere;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -28,7 +28,7 @@ public class DragonStaffProjectile extends DragonFireballEntity {
     private int duration = 200;
     private float radiusGrowth = 1f;
     private int effectDuration = 50;
-    private int effectAmp = (int) ConfigConstructor.dragon_staff_projectile_cloud_effect_amp;
+    private int effectAmp = (int) WeaponConfig.dragon_staff_projectile_cloud_effect_amp;
 
     public DragonStaffProjectile(EntityType<? extends DragonStaffProjectile> entityType, World world) {
         super(entityType, world);

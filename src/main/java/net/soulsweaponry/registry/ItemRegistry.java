@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.ArmorConfig;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.config.GunConfig;
 import net.soulsweaponry.datagen.DatagenUtil;
 import net.soulsweaponry.datagen.advancements.AdvancementsProvider;
@@ -106,7 +106,7 @@ public class ItemRegistry {
         registerItem(SOUL_INGOT, "soul_ingot");
         registerGunItem(SILVER_BULLET, "silver_bullet", false);
         registerItem(BOSS_COMPASS, "boss_compass");
-        registerItem(MOONSTONE_RING, "moonstone_ring", ConfigConstructor.is_fireproof_moonlight_ring);
+        registerItem(MOONSTONE_RING, "moonstone_ring", WeaponConfig.is_fireproof_moonlight_ring);
         registerItem(SHARD_OF_UNCERTAINTY, "shard_of_uncertainty");
         registerItem(VERGLAS, "verglas");
         registerItem(SKOFNUNG_STONE, "skofnung_stone");
@@ -191,7 +191,7 @@ public class ItemRegistry {
      * Register a weapon that has a recipe that can be disabled
      */
     public static <I extends Item> I registerWeaponItem(I item, String name, boolean removeRecipe, boolean fireproof) {
-        if (ConfigConstructor.disable_weapon_recipes) {
+        if (WeaponConfig.disable_weapon_recipes) {
             return registerItemRemovableRecipe(item, name, true, fireproof);
         } else {
             return registerItemRemovableRecipe(item, name, removeRecipe, fireproof);

@@ -4,7 +4,7 @@ import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.FreyrSwordItemRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.use.SummonFreyrSword;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -21,7 +21,7 @@ public class FreyrSword extends ModdedSword implements GeoItem {
     private static final SummonFreyrSword SUMMON_FREYR_SWORD = new SummonFreyrSword();
 
     public FreyrSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.sword_of_freyr_damage, ConfigConstructor.sword_of_freyr_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.sword_of_freyr_damage, WeaponConfig.sword_of_freyr_attack_speed, settings);
         this.addAbility(SUMMON_FREYR_SWORD);
     }
 
@@ -50,6 +50,6 @@ public class FreyrSword extends ModdedSword implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_sword_of_freyr;
+        return WeaponConfig.disable_use_sword_of_freyr;
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.util.ActionResult;
 import net.soulsweaponry.api.entitystats.EntityBleed;
 import net.soulsweaponry.api.entitystats.EntityFrost;
 import net.soulsweaponry.api.entitystats.EntityPosture;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.config.EntityStatsConfig;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.entitydata.FrostData;

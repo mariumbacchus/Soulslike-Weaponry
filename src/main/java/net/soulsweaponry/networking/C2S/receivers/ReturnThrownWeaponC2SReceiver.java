@@ -8,7 +8,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.entitydata.ReturningProjectileData;
 import net.soulsweaponry.networking.C2S.packets.ReturnThrownWeaponC2S;
@@ -34,10 +34,10 @@ public class ReturnThrownWeaponC2SReceiver {
                         serverWorld.playSound(null, player.getBlockPos(), SoundEvents.ITEM_TRIDENT_RETURN, SoundCategory.PLAYERS, 1f, 1f);
                     }
                     projectile.setShouldReturn(true);
-                } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
+                } else if (WeaponConfig.inform_player_about_no_soulbound_thrown_weapon) {
                     player.sendMessage(text, true);
                 }
-            } else if (ConfigConstructor.inform_player_about_no_soulbound_thrown_weapon) {
+            } else if (WeaponConfig.inform_player_about_no_soulbound_thrown_weapon) {
                 player.sendMessage(text, true);
             }
         });

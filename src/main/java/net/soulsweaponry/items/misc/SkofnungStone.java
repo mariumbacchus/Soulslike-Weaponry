@@ -1,7 +1,7 @@
 package net.soulsweaponry.items.misc;
 
 import net.minecraft.item.ItemStack;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.abilities.use.Cleanse;
 import net.soulsweaponry.items.abilities.use.SharpenItem;
 
@@ -17,6 +17,6 @@ public class SkofnungStone extends ModdedItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_skofnung_stone;
+        return WeaponConfig.disable_use_skofnung_stone;
     }
 }

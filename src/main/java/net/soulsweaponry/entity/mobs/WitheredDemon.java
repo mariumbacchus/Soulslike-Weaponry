@@ -23,7 +23,6 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.armor.Hallowheart;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;

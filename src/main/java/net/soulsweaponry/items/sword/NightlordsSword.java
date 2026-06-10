@@ -2,7 +2,7 @@ package net.soulsweaponry.items.sword;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.ModdedSword;
 import net.soulsweaponry.items.abilities.bonusdamage.AffinityPotency;
 import net.soulsweaponry.items.abilities.IAbility;
@@ -10,53 +10,53 @@ import net.soulsweaponry.items.abilities.posthit.SwitchPostHit;
 
 public class NightlordsSword extends ModdedSword {
 
-    private static final IAbility AFFINITY_POTENCY = new AffinityPotency(ConfigConstructor.sword_of_the_nightlord_bonus_damage_per_potency_amp);
+    private static final IAbility AFFINITY_POTENCY = new AffinityPotency(WeaponConfig.sword_of_the_nightlord_bonus_damage_per_potency_amp);
     public static final IAbility SWITCH_POST_HIT =
             SwitchPostHit.builder()
-                    .bonusAgainstEffect(ConfigConstructor.sword_of_the_nightlord_bonus_damage_if_target_is_afflicted)
+                    .bonusAgainstEffect(WeaponConfig.sword_of_the_nightlord_bonus_damage_if_target_is_afflicted)
                     .bleed(
-                            (int) ConfigConstructor.sword_of_the_nightlord_base_bleed,
-                            (int) ConfigConstructor.sword_of_the_nightlord_bleed_duration,
-                            (int) ConfigConstructor.sword_of_the_nightlord_bleed_amp
+                            (int) WeaponConfig.sword_of_the_nightlord_base_bleed,
+                            (int) WeaponConfig.sword_of_the_nightlord_bleed_duration,
+                            (int) WeaponConfig.sword_of_the_nightlord_bleed_amp
                     )
                     .poison(
-                            (int) ConfigConstructor.sword_of_the_nightlord_poison_duration,
-                            (int) ConfigConstructor.sword_of_the_nightlord_poison_amp
+                            (int) WeaponConfig.sword_of_the_nightlord_poison_duration,
+                            (int) WeaponConfig.sword_of_the_nightlord_poison_amp
                     )
                     .chainLightning(
-                            ConfigConstructor.sword_of_the_nightlord_chain_lightning_base_radius,
-                            ConfigConstructor.sword_of_the_nightlord_chain_lightning_radius_per_level,
-                            ConfigConstructor.sword_of_the_nightlord_chain_lightning_base_damage,
-                            ConfigConstructor.sword_of_the_nightlord_chain_lightning_damage_per_level
+                            WeaponConfig.sword_of_the_nightlord_chain_lightning_base_radius,
+                            WeaponConfig.sword_of_the_nightlord_chain_lightning_radius_per_level,
+                            WeaponConfig.sword_of_the_nightlord_chain_lightning_base_damage,
+                            WeaponConfig.sword_of_the_nightlord_chain_lightning_damage_per_level
                     )
                     .wither(
-                            (int) ConfigConstructor.sword_of_the_nightlord_wither_duration,
-                            (int) ConfigConstructor.sword_of_the_nightlord_wither_amp
+                            (int) WeaponConfig.sword_of_the_nightlord_wither_duration,
+                            (int) WeaponConfig.sword_of_the_nightlord_wither_amp
                     )
                     .freeze(
-                            (int) ConfigConstructor.sword_of_the_nightlord_frost_buildup_post_hit,
-                            (int) ConfigConstructor.sword_of_the_nightlord_permafrost_duration,
-                            (int) ConfigConstructor.sword_of_the_nightlord_permafrost_amp
+                            (int) WeaponConfig.sword_of_the_nightlord_frost_buildup_post_hit,
+                            (int) WeaponConfig.sword_of_the_nightlord_permafrost_duration,
+                            (int) WeaponConfig.sword_of_the_nightlord_permafrost_amp
                     )
-                    .fireTicks((int) ConfigConstructor.sword_of_the_nightlord_fire_ticks)
-                    .crippleDuration((int) ConfigConstructor.sword_of_the_nightlord_cripple_duration)
+                    .fireTicks((int) WeaponConfig.sword_of_the_nightlord_fire_ticks)
+                    .crippleDuration((int) WeaponConfig.sword_of_the_nightlord_cripple_duration)
                     .debuffAmps(
-                            (int) ConfigConstructor.sword_of_the_nightlord_slowness_amp,
-                            (int) ConfigConstructor.sword_of_the_nightlord_weakness_amp,
-                            (int) ConfigConstructor.sword_of_the_nightlord_mining_fatigue_amp
+                            (int) WeaponConfig.sword_of_the_nightlord_slowness_amp,
+                            (int) WeaponConfig.sword_of_the_nightlord_weakness_amp,
+                            (int) WeaponConfig.sword_of_the_nightlord_mining_fatigue_amp
                     )
                     .decay(
-                            (int) ConfigConstructor.sword_of_the_nightlord_decay_duration,
-                            (int) ConfigConstructor.sword_of_the_nightlord_decay_amp
+                            (int) WeaponConfig.sword_of_the_nightlord_decay_duration,
+                            (int) WeaponConfig.sword_of_the_nightlord_decay_amp
                     )
                     .blight(
-                            (int) ConfigConstructor.sword_of_the_nightlord_blight_duration,
-                            (int) ConfigConstructor.sword_of_the_nightlord_blight_amp
+                            (int) WeaponConfig.sword_of_the_nightlord_blight_duration,
+                            (int) WeaponConfig.sword_of_the_nightlord_blight_amp
                     )
                     .magicDamage(
-                            ConfigConstructor.sword_of_the_nightlord_spellblade_bonus_magic_damage,
-                            ConfigConstructor.sword_of_the_nightlord_spellblade_bonus_magic_damage_per_level,
-                            ConfigConstructor.sword_of_the_nightlord_spellblade_target_is_player_mod
+                            WeaponConfig.sword_of_the_nightlord_spellblade_bonus_magic_damage,
+                            WeaponConfig.sword_of_the_nightlord_spellblade_bonus_magic_damage_per_level,
+                            WeaponConfig.sword_of_the_nightlord_spellblade_target_is_player_mod
                     )
                     .build();
 
@@ -67,12 +67,12 @@ public class NightlordsSword extends ModdedSword {
      *  - Switching to this weapon makes it deal bonus damage a few seconds
      */
     public NightlordsSword(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.sword_of_the_nightlord_damage, ConfigConstructor.sword_of_the_nightlord_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.sword_of_the_nightlord_damage, WeaponConfig.sword_of_the_nightlord_attack_speed, settings);
         this.addAbility(AFFINITY_POTENCY, SWITCH_POST_HIT);
     }
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_sword_of_the_nightlord;
+        return WeaponConfig.disable_use_sword_of_the_nightlord;
     }
 }

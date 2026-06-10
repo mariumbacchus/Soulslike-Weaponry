@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolMaterial;
 import net.soulsweaponry.client.renderer.item.SoulReaperRenderer;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.items.SoulHarvestingItem;
 import net.soulsweaponry.items.abilities.use.SoulReleasePowerBased;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -24,13 +24,13 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private static final NavigableMap<Integer, EntityType<?>> THRESHOLDS = new TreeMap<>();
     private static final SoulReleasePowerBased SOUL_RELEASE = new SoulReleasePowerBased(
-            (int) ConfigConstructor.soul_reaper_summoned_allies_cap,
+            (int) WeaponConfig.soul_reaper_summoned_allies_cap,
             "SoulReaperSummons",
             THRESHOLDS,
-            ConfigConstructor.soul_reaper_summon_bonus_health_per_soul, ConfigConstructor.soul_reaper_summon_bonus_health_per_soul_addition_per_level,
-            ConfigConstructor.soul_reaper_summon_max_bonus_health,
-            ConfigConstructor.soul_reaper_summon_bonus_attack_damage_per_soul, ConfigConstructor.soul_reaper_summon_bonus_attack_damage_per_soul_addition_per_level,
-            ConfigConstructor.soul_reaper_summon_max_bonus_attack_damage
+            WeaponConfig.soul_reaper_summon_bonus_health_per_soul, WeaponConfig.soul_reaper_summon_bonus_health_per_soul_addition_per_level,
+            WeaponConfig.soul_reaper_summon_max_bonus_health,
+            WeaponConfig.soul_reaper_summon_bonus_attack_damage_per_soul, WeaponConfig.soul_reaper_summon_bonus_attack_damage_per_soul_addition_per_level,
+            WeaponConfig.soul_reaper_summon_max_bonus_attack_damage
     );
 
     static {
@@ -40,7 +40,7 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
     }
 
     public SoulReaper(ToolMaterial toolMaterial, Settings settings) {
-        super(toolMaterial, (int) ConfigConstructor.soul_reaper_damage, ConfigConstructor.soul_reaper_attack_speed, settings);
+        super(toolMaterial, (int) WeaponConfig.soul_reaper_damage, WeaponConfig.soul_reaper_attack_speed, settings);
         this.addAbility(SOUL_RELEASE);
     }
 
@@ -94,6 +94,6 @@ public class SoulReaper extends SoulHarvestingItem implements GeoItem {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_soul_reaper;
+        return WeaponConfig.disable_use_soul_reaper;
     }
 }

@@ -13,7 +13,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.ConfigConstructor;
+import net.soulsweaponry.config.WeaponConfig;
 import net.soulsweaponry.entity.projectile.ChaosOrbEntity;
 import net.soulsweaponry.items.abilities.IConfigDisable;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -62,6 +62,6 @@ public class ChaosOrb extends Item implements IConfigDisable {
 
     @Override
     public boolean isDisabled(ItemStack stack) {
-        return ConfigConstructor.disable_use_chaos_orb;
+        return WeaponConfig.disable_use_chaos_orb;
     }
 }
