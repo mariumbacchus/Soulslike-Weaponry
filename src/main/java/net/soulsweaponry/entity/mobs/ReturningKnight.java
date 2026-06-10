@@ -26,8 +26,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.soulsweaponry.collision.RotatableHitbox;
+import net.soulsweaponry.collision.RotatableHitboxDebugRegistry;
 import net.soulsweaponry.config.BossConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
+import net.soulsweaponry.entity.ai.goal.hitboxes.ReturningKnightHitboxes;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -47,6 +50,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     private int spawnTicks;
     public int deathTicks;
     private final List<UUID> healers = new ArrayList<>();
+    private final RotatableHitbox debugObliterateMaceHitbox = ReturningKnightHitboxes.createObliterateMaceHitboxPlaceholder();
     
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE);
@@ -61,6 +65,8 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     private static final TrackedData<Boolean> DEATH = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> MACE_OF_SPADES = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
+    private static final TrackedData<BlockPos> OBLITERATE_TARGET = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BLOCK_POS);
+    private static final TrackedData<Long> ATTACK_START_WORLD_TIME = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.LONG);
 
     private PlayState predicate(AnimationState<?> state) {
         if (this.getDeath()) {
@@ -98,6 +104,8 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         builder.add(SPAWN, false);
         builder.add(DEATH, false);
         builder.add(MACE_OF_SPADES, false);
+        builder.add(OBLITERATE_TARGET, BlockPos.ORIGIN);
+        builder.add(ATTACK_START_WORLD_TIME, -1L);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
@@ -211,6 +219,35 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         return this.dataTracker.get(DEATH);
     }
 
+    public void setObliterateTarget(BlockPos pos) {
+        this.dataTracker.set(OBLITERATE_TARGET, pos);
+    }
+
+    public BlockPos getObliterateTarget() {
+        return this.dataTracker.get(OBLITERATE_TARGET);
+    }
+
+    /**
+     * Set to track world age server side in the goal class when the attack starts so the client can predict attack status from the goal class.
+     */
+    public void setAttackStartWorldTime(long time) {
+        this.dataTracker.set(ATTACK_START_WORLD_TIME, time);
+    }
+
+    public long getAttackStartWorldTime() {
+        return this.dataTracker.get(ATTACK_START_WORLD_TIME);
+    }
+
+    public int getSyncedAttackStatusTick() {
+        long startTime = this.getAttackStartWorldTime();
+        if (startTime < 0L) {
+            return 0;
+        }
+        // Goal class runs every other tick (10 ticks per second instead of 20) so gotta divide by 2 to not be too fast!
+        // Also add 4 ticks since its behind those ticks when starting to track
+        return (int) ((this.getWorld().getTime() + 4 - startTime) / 2L);
+    }
+
     @Override
     public void tickMovement() {
         super.tickMovement();
@@ -250,6 +287,20 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + e;
                 double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
                 this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX(), this.getY() + 5.5f, this.getZ(), newX*25, newY*18, newZ*25);
+            }
+        }
+
+        // Debug hitbox during obliterate attack
+        if (this.getWorld().isClient() && this.getObliterate()) {
+            BlockPos targetPos = this.getObliterateTarget();
+            int attackTick = this.getSyncedAttackStatusTick();
+            if (!targetPos.equals(BlockPos.ORIGIN) && ReturningKnightHitboxes.isObliterateDebugTick(attackTick)) {
+                ReturningKnightHitboxes.updateObliterateMaceHitbox(this.debugObliterateMaceHitbox, this, targetPos, attackTick);
+                RotatableHitboxDebugRegistry.put(
+                        this.getWorld(),
+                        "returning_knight_obliterate_server_predicted_" + this.getUuidAsString(),
+                        this.debugObliterateMaceHitbox
+                );
             }
         }
     }

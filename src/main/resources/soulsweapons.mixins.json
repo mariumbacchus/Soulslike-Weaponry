@@ -33,6 +33,7 @@
     "ItemStackTooltipMixin",
     "KeyBindingAccessor",
     "PlayerEntityRendererMixin",
+    "RotatableHitboxDebugRendererMixin",
     "ShieldItemMixin"
   ],
   "injectors": {

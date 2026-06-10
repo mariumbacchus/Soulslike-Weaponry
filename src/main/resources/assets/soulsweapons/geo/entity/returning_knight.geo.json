@@ -1864,6 +1864,11 @@
 					]
 				},
 				{
+					"name": "hitboxCenter",
+					"parent": "bonker",
+					"pivot": [-31.6, 66.2, -42]
+				},
+				{
 					"name": "left_arm",
 					"parent": "body",
 					"pivot": [21, 95, 3],

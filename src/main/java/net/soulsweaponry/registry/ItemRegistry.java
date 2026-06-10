@@ -1,5 +1,6 @@
 package net.soulsweaponry.registry;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -82,6 +83,8 @@ public class ItemRegistry {
     public static final Item DRAUGR_BOSS_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.DRAUGR_BOSS_SONG_MONO_KEY).maxCount(1));
     //public static final Item FRENZIED_SHADE_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.FRENZIED_SHADE_SONG_MONO_KEY).maxCount(1));
 
+    public static final Item TEST_ITEM = new TestItem(new Item.Settings());
+
     public static void init() {
         registerItem(LORD_SOUL_RED, "lord_soul_red");
         registerItem(LORD_SOUL_DARK, "lord_soul_dark");
@@ -126,6 +129,10 @@ public class ItemRegistry {
         registerItem(FALLEN_ICON_DISC, "fallen_icon_disc");
         registerItem(DRAUGR_BOSS_DISC, "draugr_boss_disc");
         //registerItem(FRENZIED_SHADE_DISC, "frenzied_shade_disc");
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment() && !DatagenUtil.isDatagenRunning()) {
+            registerItem(TEST_ITEM, "test_item");
+        }
     }
 
     public static <I extends Item> I registerItem(I item, String name) {

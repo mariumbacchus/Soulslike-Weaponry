@@ -11,19 +11,21 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
+import net.soulsweaponry.entity.ai.goal.hitboxes.ReturningKnightHitboxes;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
 import net.soulsweaponry.entity.util.RandomSummonPos;
-import net.soulsweaponry.registry.EntityRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.DamageSourceRegistry;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 public class ReturningKnightGoal extends Goal {
     private final ReturningKnight boss;
@@ -38,6 +40,9 @@ public class ReturningKnightGoal extends Goal {
     private int summonCooldown;
     int randomAttack = 3;
     private final int numberOfAttacks = 6; // 4 = 0 = obliterate, 5 = mace of spades
+    private final RotatableHitbox obliterateMaceHitbox = ReturningKnightHitboxes.createObliterateMaceHitboxPlaceholder();
+    private final Set<UUID> obliterateHitEntities = new HashSet<>();
+    private boolean obliterateImpactDone;
 
     public ReturningKnightGoal(ReturningKnight boss) {
         this.boss = boss;
@@ -78,6 +83,9 @@ public class ReturningKnightGoal extends Goal {
         this.attackCooldown = 10;
         this.attackStatus = 0;
         this.cordsRegistered = false;
+        this.boss.setAttackStartWorldTime(-1L);
+        this.obliterateHitEntities.clear();
+        this.obliterateImpactDone = false;
     }
 
     public void tick() {
@@ -151,7 +159,12 @@ public class ReturningKnightGoal extends Goal {
             //Mace of Spades
             if (this.attackCooldown < 0 && !this.cordsRegistered && distanceToEntity < 50D && this.randomAttack == 5 && target.getBlockPos() != null) {
                 this.targetPos = target.getBlockPos();
-                this.boss.setMaceOfSpades(true);
+                this.boss.setObliterateTarget(this.targetPos);
+                this.boss.setObliterate(true);
+
+                this.obliterateHitEntities.clear();
+                this.obliterateImpactDone = false;
+
                 this.cordsRegistered = true;
             }
             if (this.boss.getMaceOfSpades() && this.targetPos != null) {
@@ -173,6 +186,7 @@ public class ReturningKnightGoal extends Goal {
                 }
                 if (this.attackStatus == 13 && target.getBlockPos() != null) {
                     this.targetPos = target.getBlockPos();
+                    this.boss.setObliterateTarget(this.targetPos);
                 }
                 if (this.attackStatus == 21 && this.targetPos != null) {
                     entities = this.boss.getWorld().getOtherEntities(this.boss, new Box(this.targetPos).expand(3D));
@@ -194,49 +208,64 @@ public class ReturningKnightGoal extends Goal {
                     this.attackStatus = 0;
                     this.boss.getNavigation().stop();
                     this.randomAttack = this.boss.getRandom().nextInt(this.numberOfAttacks);
+                    this.obliterateHitEntities.clear();
+                    this.obliterateImpactDone = false;
                 }
             }
 
             //Obliterate
-            if (this.attackCooldown < 0 && !this.cordsRegistered && distanceToEntity < 75D && this.randomAttack == 0 && target.getBlockPos() != null) {
+            if (this.attackCooldown < 0 && !this.cordsRegistered && distanceToEntity < 100D && this.randomAttack == 0 && target.getBlockPos() != null) { //75 range
                 this.targetPos = target.getBlockPos();
+                this.boss.setObliterateTarget(this.targetPos);
+                this.boss.setAttackStartWorldTime(this.boss.getWorld().getTime());
                 this.boss.setObliterate(true);
+
+                this.obliterateHitEntities.clear();
+                this.obliterateImpactDone = false;
+
                 this.cordsRegistered = true;
             }
             if (this.boss.getObliterate() && this.targetPos != null) {  //46,6 ticks
                 this.attackStatus++;
+                ReturningKnightHitboxes.updateObliterateMaceHitbox(this.obliterateMaceHitbox, this.boss, this.targetPos, this.attackStatus);
                 this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
                 this.boss.getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-                Box aoe = new Box(targetPos).expand(3D);
-                List<Entity> entities = this.boss.getWorld().getOtherEntities(this.boss, aoe);
-                
-                if (this.attackStatus == 18) { //23
-                    for (Entity entity : entities) {
-                        if (entity instanceof LivingEntity living) {
-                            entity.damage(DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.OBLITERATED, this.boss), this.getModifiedDamage(60f));
-                            entity.setVelocity(entity.getVelocity().x, 1, entity.getVelocity().z);
-                            if (living.isDead() && this.isValidSpawn(living.getBlockPos())) {
+                if (ReturningKnightHitboxes.isObliterateDamageTick(this.attackStatus)) {
+                    List<LivingEntity> entities = this.obliterateMaceHitbox.getIntersectingTargets(this.boss.getWorld(), this.boss);
+                    for (LivingEntity living : entities) {
+                        if (!this.obliterateHitEntities.add(living.getUuid())) {
+                            continue;
+                        }
+                        living.damage(DamageSourceRegistry.create(this.boss.getWorld(), DamageSourceRegistry.OBLITERATED, this.boss), this.getModifiedDamage(60f));
+                        living.setVelocity(living.getVelocity().x, 1.0, living.getVelocity().z);
+                        if (living.isDead() && this.isValidSpawn(living.getBlockPos())) {
+                            this.summonAllies(living.getPos(), false);
+                            if (this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F) {
                                 this.summonAllies(living.getPos(), false);
-                                // Summon two if under 50% health
-                                if (this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F) {
-                                    this.summonAllies(living.getPos(), false);
-                                }
                             }
                         }
                     }
-                    this.boss.getWorld().playSound(null, this.targetPos, SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-                    if (!this.boss.getWorld().isClient) {
-                        ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
+                    if (!this.obliterateImpactDone && this.attackStatus >= 19) {
+                        this.obliterateImpactDone = true;
+                        Vec3d effectPos = BossHitboxHelper.findGroundImpactPos(this.boss.getWorld(), this.obliterateMaceHitbox.getCenter(), 2);
+                        this.boss.getWorld().playSound(null, BlockPos.ofFloored(effectPos), SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 3f, 1f);
+                        ParticleHandler.particleOutburstMap(this.boss.getWorld(), 300, effectPos.x, effectPos.y, effectPos.z, ParticleEvents.OBLITERATE_MAP, 1f);
                     }
                 }
-                if (this.attackStatus >= 32) { //38
+                if (ReturningKnightHitboxes.isObliterateDamageTick(this.attackStatus)) {
+                    BossHitboxHelper.breakBlocksInsideHitbox(this.obliterateMaceHitbox.copy().offsetWorld(0, ReturningKnightHitboxes.OBLITERATE_MACE_SIZE.y / 2.0D, 0), this.boss.getWorld(), this.boss, this.boss::canDestroy, false);
+                }
+                if (this.attackStatus >= 32) {
                     this.boss.setObliterate(false);
                     this.resetAttackCooldown(1);
                     this.cordsRegistered = false;
                     this.attackStatus = 0;
                     this.boss.getNavigation().stop();
                     this.randomAttack = this.boss.getRandom().nextInt(this.numberOfAttacks);
+                    this.boss.setAttackStartWorldTime(-1L);
+                    this.obliterateHitEntities.clear();
+                    this.obliterateImpactDone = false;
                 }
             }
 
@@ -318,7 +347,6 @@ public class ReturningKnightGoal extends Goal {
             if (this.targetNotVisibleTicks < 5) {
                 this.boss.getMoveControl().moveTo(target.getX(), target.getY(), target.getZ(), 1.0D);
             }
-
             super.tick();
         }
     }

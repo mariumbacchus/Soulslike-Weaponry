@@ -14,6 +14,9 @@
   - Great katanas have a unique moveset with Better Combat based on the moveset in Elden Ring
   - Deal increased damage against dragon mobs
   - Use to slice the air, shooting out a wave that goes through walls, particles left behind by the slash explode after a short delay
+- Added system for Oriented Bounding Boxes (rotatable hitboxes) for future boss and weapon attacks
+  - More of a technical addition that should make boss attacks more accurate and interesting
+  - Can be seen by pressing F3 + B for those bosses that have it like Returning Knight
 
 ## Changes
 ### Weapons
@@ -36,6 +39,12 @@
   - Duration increased from 4 to 5 seconds of the cloud
   - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
   - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
+- Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
+  - Obliterate attack:
+    - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
+    - This means that the attack won't land just on the selected target, the hitbox will run along the whole mace as it travels to the ground
+    - The attack now also destroys all blocks in the maces path (can be disabled in config with the line `ConfigConstructor.can_bosses_break_blocks` or setting gamerule mob griefing to false)
+    - The attack will adjust its hitbox to max 2 blocks downwards if the target is under the boss
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack

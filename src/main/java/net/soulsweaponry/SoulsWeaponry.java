@@ -92,10 +92,6 @@ public class SoulsWeaponry implements ModInitializer {
             LOGGER.info("Successfully registered built-in Remove Item Shaders resourcepack!");
         });
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            ItemRegistry.registerItem(new TestItem(new Item.Settings().fireproof().rarity(Rarity.RARE)), "test_item");
-        }
-
         DefaultItemComponentEvents.MODIFY.register(context -> context.modify(
                 ItemRegistry.FIREPROOF_ITEMS::contains,
                 (builder, item) -> builder.add(DataComponentTypes.FIRE_RESISTANT, Unit.INSTANCE)
