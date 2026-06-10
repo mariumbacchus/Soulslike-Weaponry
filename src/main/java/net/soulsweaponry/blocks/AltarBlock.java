@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.mobs.DraugrBoss;
 import net.soulsweaponry.entity.mobs.Moonknight;
 import net.soulsweaponry.entity.mobs.ReturningKnight;
@@ -36,15 +36,15 @@ public class AltarBlock extends SpawnBossBlock {
         if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
             ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
             entity.setSpawning(true);
-            return spawnEntity(world, pos, player, entity, BossConfig.returning_knight_disable_respawn, itemStack, BossConfig.returning_knight_consume_item_on_summoning);
+            return spawnEntity(world, pos, player, entity, EntityConfig.returning_knight_disable_respawn, itemStack, EntityConfig.returning_knight_consume_item_on_summoning);
         } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
             DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
             entity.setSpawning();
-            return spawnEntity(world, pos, player, entity, BossConfig.old_champions_remains_disable_respawn, itemStack, BossConfig.old_champions_remains_consume_item_on_summoning);
+            return spawnEntity(world, pos, player, entity, EntityConfig.old_champions_remains_disable_respawn, itemStack, EntityConfig.old_champions_remains_consume_item_on_summoning);
         } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE)) {
             Moonknight entity = new Moonknight(EntityRegistry.MOONKNIGHT, world);
             entity.setSpawning(true);
-            return spawnEntity(world, pos, player, entity, BossConfig.fallen_icon_disable_respawn, itemStack, BossConfig.fallen_icon_consume_item_on_summoning);
+            return spawnEntity(world, pos, player, entity, EntityConfig.fallen_icon_disable_respawn, itemStack, EntityConfig.fallen_icon_consume_item_on_summoning);
         }
         return false;
     }

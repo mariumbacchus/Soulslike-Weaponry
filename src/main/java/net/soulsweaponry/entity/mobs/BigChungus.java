@@ -42,7 +42,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.DimensionType;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -86,8 +86,8 @@ public class BigChungus extends TameableEntity implements InventoryOwner {
     public static DefaultAttributeContainer.Builder createChungusAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.moderatly_sized_chungus_heath)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.moderatly_sized_chungus_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.moderatly_sized_chungus_heath)
+                .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.moderatly_sized_chungus_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.30000001192092896D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }

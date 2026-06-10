@@ -28,7 +28,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.util.IAnimatedDeath;
@@ -102,8 +102,8 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
     public static DefaultAttributeContainer.Builder createSpectreAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.rime_spectre_health)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.rime_spectre_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.rime_spectre_health)
+                .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.rime_spectre_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
     }

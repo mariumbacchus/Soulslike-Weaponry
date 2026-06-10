@@ -26,7 +26,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.MoonknightGoal;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
@@ -74,11 +74,11 @@ public class Moonknight extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.fallen_icon_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.fallen_icon_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 10.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.fallen_icon_armor);
+        .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.fallen_icon_armor);
     }
 
     @Override
@@ -228,17 +228,17 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return BossConfig.fallen_icon_projectile_immunity_whitelist;
+        return EntityConfig.fallen_icon_projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return BossConfig.fallen_icon_status_effect_blacklist;
+        return EntityConfig.fallen_icon_status_effect_blacklist;
     }
 
     @Override
     public int getXp() {
-        return (int) BossConfig.fallen_icon_xp;
+        return (int) EntityConfig.fallen_icon_xp;
     }
 
     @Override
@@ -375,17 +375,17 @@ public class Moonknight extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return BossConfig.fallen_icon_is_fire_immune;
+        return EntityConfig.fallen_icon_is_fire_immune;
     }
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return BossConfig.fallen_icon_has_inverted_heal_and_harm;
+        return EntityConfig.fallen_icon_has_inverted_heal_and_harm;
     }
 
     @Override
     public boolean disablesShield() {
-        return BossConfig.fallen_icon_disables_shields;
+        return EntityConfig.fallen_icon_disables_shields;
     }
 
     @Override

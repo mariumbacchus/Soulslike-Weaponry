@@ -25,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -57,12 +57,12 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isFireImmune() {
-        return BossConfig.decaying_king_is_fire_immune;
+        return EntityConfig.decaying_king_is_fire_immune;
     }
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return BossConfig.decaying_king_has_inverted_heal_and_harm;
+        return EntityConfig.decaying_king_has_inverted_heal_and_harm;
     }
 
     private PlayState attackAnimations(AnimationState<?> state) {
@@ -96,7 +96,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public int getXp() {
-        return (int) BossConfig.decaying_king_xp;
+        return (int) EntityConfig.decaying_king_xp;
     }
 
     @Override
@@ -140,11 +140,11 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
             .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 60D)
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.decaying_king_health)
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.decaying_king_health)
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
             .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 20.0D)
             .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-            .add(EntityAttributes.GENERIC_ARMOR, BossConfig.decaying_king_armor)
+            .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.decaying_king_armor)
             .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 2.0D);
     }
 
@@ -202,7 +202,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                         double x = closestTarget.getX() - (this.getX());
                         double z = closestTarget.getZ() - this.getZ();
                         closestTarget.takeKnockback(10F, -x, -z);
-                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * BossConfig.decaying_king_damage_modifier);
+                        closestTarget.damage(this.getWorld().getDamageSources().mobAttack(this), 50f * EntityConfig.decaying_king_damage_modifier);
                     }
                 }
                 if (!this.getWorld().isClient) {
@@ -237,12 +237,12 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return BossConfig.decaying_king_status_effect_blacklist;
+        return EntityConfig.decaying_king_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return BossConfig.decaying_king_disables_shields;
+        return EntityConfig.decaying_king_disables_shields;
     }
 
     @Override

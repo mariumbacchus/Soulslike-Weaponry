@@ -30,7 +30,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -118,11 +118,11 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     public static DefaultAttributeContainer.Builder createSoulmassAttributes() {
         return MobEntity.createMobAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 20D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.soulmass_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.soulmass_health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.28D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.soulmass_armor);
+        .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.soulmass_armor);
     }
 
     public void setClap(boolean bl) {

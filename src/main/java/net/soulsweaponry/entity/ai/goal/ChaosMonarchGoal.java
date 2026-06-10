@@ -17,7 +17,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.mobs.ChaosMonarch;
 import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
 import net.soulsweaponry.entity.projectile.*;
@@ -44,7 +44,7 @@ public class ChaosMonarchGoal extends Goal {
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * BossConfig.chaos_monarch_damage_modifier;
+        return damage * EntityConfig.chaos_monarch_damage_modifier;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ChaosMonarchGoal extends Goal {
 
     private int adjustCooldown(float cooldownModifier) {
         int reducedCooldown = MathHelper.floor(this.boss.getMaxHealth()/this.boss.getHealth())*4;
-        return MathHelper.floor(BossConfig.chaos_monarch_attack_cooldown_ticks * cooldownModifier - reducedCooldown);
+        return MathHelper.floor(EntityConfig.chaos_monarch_attack_cooldown_ticks * cooldownModifier - reducedCooldown);
     }
 
     public void randomAttack() {

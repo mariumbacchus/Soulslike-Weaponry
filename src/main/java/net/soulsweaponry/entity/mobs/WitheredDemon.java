@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.items.armor.Hallowheart;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -124,8 +124,8 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     public static DefaultAttributeContainer.Builder createDemonAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 35D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.withered_demon_health)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.withered_demon_armor)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.withered_demon_health)
+        .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.withered_demon_armor)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.12D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 12.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)

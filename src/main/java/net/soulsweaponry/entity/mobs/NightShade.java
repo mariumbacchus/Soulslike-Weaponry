@@ -26,7 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.NightShadeGoal;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
@@ -64,8 +64,8 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 65D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.frenzied_shade_health)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.frenzied_shade_armor)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.frenzied_shade_health)
+        .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.frenzied_shade_armor)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10D);
     }
@@ -129,7 +129,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
         if (this.isCopy) {
             this.bossBar.setVisible(false);
             if (!this.healthUpdated) {
-                this.setHealth((float) BossConfig.frenzied_shade_health / 4f);
+                this.setHealth((float) EntityConfig.frenzied_shade_health / 4f);
                 this.healthUpdated = true;
             }
             this.experiencePoints = 20;
@@ -357,7 +357,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public int getXp() {
-        return (int) BossConfig.frenzied_shade_xp;
+        return (int) EntityConfig.frenzied_shade_xp;
     }
 
     @Override
@@ -375,22 +375,22 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public boolean isFireImmune() {
-        return BossConfig.frenzied_shade_is_fire_immune;
+        return EntityConfig.frenzied_shade_is_fire_immune;
     }
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return BossConfig.frenzied_shade_has_inverted_heal_and_harm;
+        return EntityConfig.frenzied_shade_has_inverted_heal_and_harm;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return BossConfig.frenzied_shade_status_effect_blacklist;
+        return EntityConfig.frenzied_shade_status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return BossConfig.frenzied_shade_disables_shields;
+        return EntityConfig.frenzied_shade_disables_shields;
     }
 
     @Override

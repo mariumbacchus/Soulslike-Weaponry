@@ -14,12 +14,10 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
 import net.minecraft.util.Unit;
 import net.soulsweaponry.api.entitystats.EntityStatsUtil;
 import net.soulsweaponry.api.trickweapon.TrickWeaponUtil;
 import net.soulsweaponry.config.*;
-import net.soulsweaponry.items.misc.TestItem;
 import net.soulsweaponry.networking.PacketReceiverRegistry;
 import net.soulsweaponry.networking.PacketRegistry;
 import net.soulsweaponry.registry.*;
@@ -42,7 +40,7 @@ public class SoulsWeaponry implements ModInitializer {
         MidnightConfig.init(CONFIG_FOLDER + ModId, ConfigConstructor.class);
         MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_boss_config", BossConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_boss_config", EntityConfig.class);
         LOGGER.info("Config initialized!");
 
         AttributeRegistry.init();

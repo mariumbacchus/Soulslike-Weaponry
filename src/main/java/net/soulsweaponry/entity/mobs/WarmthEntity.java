@@ -26,7 +26,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -92,8 +92,8 @@ public class WarmthEntity extends TameableEntity implements GeoEntity {
     public static DefaultAttributeContainer.Builder createEntityAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 48D)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.warmth_health)
-                .add(EntityAttributes.GENERIC_ARMOR, BossConfig.warmth_armor)
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.warmth_health)
+                .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.warmth_armor)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.23D)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6D)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 30D);

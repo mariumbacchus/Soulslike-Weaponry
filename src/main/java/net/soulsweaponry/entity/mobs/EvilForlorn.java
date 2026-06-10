@@ -17,7 +17,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.config.ConfigConstructor;
 
 import java.util.Collections;
@@ -40,8 +40,8 @@ public class EvilForlorn extends Forlorn {
     public static DefaultAttributeContainer.Builder createForlornAttributes() {
         return MobEntity.createMobAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 250D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, BossConfig.evil_forlorn_health)
-        .add(EntityAttributes.GENERIC_ARMOR, BossConfig.evil_forlorn_bonus_armor)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.evil_forlorn_health)
+        .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.evil_forlorn_bonus_armor)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
     }

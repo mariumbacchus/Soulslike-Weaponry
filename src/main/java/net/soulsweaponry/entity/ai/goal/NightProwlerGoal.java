@@ -22,7 +22,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.mobs.*;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.NightSkull;
@@ -289,9 +289,9 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.attackStatus > this.attackLength) {
             this.attackStatus = 0;
             this.attackCooldown = MathHelper.floor((double)attackCooldown
-                    * (this.boss.isPhaseTwo() ? BossConfig.night_prowler_cooldown_modifier_phase_2 : BossConfig.night_prowler_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? EntityConfig.night_prowler_cooldown_modifier_phase_2 : EntityConfig.night_prowler_cooldown_modifier_phase_1));
             if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
-                    * (this.boss.isPhaseTwo() ? BossConfig.night_prowler_special_cooldown_modifier_phase_2 : BossConfig.night_prowler_special_cooldown_modifier_phase_1));
+                    * (this.boss.isPhaseTwo() ? EntityConfig.night_prowler_special_cooldown_modifier_phase_2 : EntityConfig.night_prowler_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
             this.boss.setAttackAnimation(NightProwler.Attacks.IDLE);
             this.boss.setChaseTarget(true);
@@ -307,7 +307,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     }
 
     private float getModifiedDamage(float damage) {
-        return (damage + this.bonusDmg) * BossConfig.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
+        return (damage + this.bonusDmg) * EntityConfig.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
     }
 
     private boolean damageTarget(LivingEntity target, float damage) {
@@ -376,7 +376,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.boss.setFlying(false);
             if ((partner = this.boss.getPartner((ServerWorld) this.boss.getWorld())) != null) {
                 partner.setFlying(true);
-                partner.flightTimer = (int) BossConfig.duo_fight_time_before_switch;
+                partner.flightTimer = (int) EntityConfig.duo_fight_time_before_switch;
             }
             this.boss.setVelocity(0, -2f, 0);
         }
@@ -764,18 +764,18 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 this.chargedSkullCounter++;
                 for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, this.boss.getBoundingBox().expand(35))) {
                     if (entity instanceof LivingEntity target) {
-                        boolean chargedSkull = this.chargedSkullCounter >= BossConfig.night_prowler_eclipse_skull_waves_before_charged_skull_wave;
+                        boolean chargedSkull = this.chargedSkullCounter >= EntityConfig.night_prowler_eclipse_skull_waves_before_charged_skull_wave;
                         int radius = (int) PORTAL_RADIUS - 6;
                         Vec3d spawn = new Vec3d(this.boss.getX() + this.boss.getRandom().nextBetween(-radius, radius),
                                 this.boss.getY() + 8f, this.boss.getZ() + this.boss.getRandom().nextBetween(-radius, radius));
                         Vec3d vec = new Vec3d(target.getX() - spawn.getX(), target.getEyeY() - spawn.getY(), target.getZ() - spawn.getZ());
-                        NightSkull skull = new NightSkull(this.boss.getWorld(), this.boss, this.getModifiedDamage(chargedSkull ? 10f : 14f), chargedSkull, BossConfig.night_prowler_eclipse_skulls_destroy_blocks,
-                            chargedSkull ? BossConfig.night_prowler_eclipse_skulls_explosion_power_charged : BossConfig.night_prowler_eclipse_skulls_explosion_power, 100);
+                        NightSkull skull = new NightSkull(this.boss.getWorld(), this.boss, this.getModifiedDamage(chargedSkull ? 10f : 14f), chargedSkull, EntityConfig.night_prowler_eclipse_skulls_destroy_blocks,
+                            chargedSkull ? EntityConfig.night_prowler_eclipse_skulls_explosion_power_charged : EntityConfig.night_prowler_eclipse_skulls_explosion_power, 100);
                         skull.setPosition(spawn);
                         skull.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
                         this.boss.getWorld().spawnEntity(skull);
                         if (target.isDead() && target.deathTime < 2) {
-                            this.boss.heal(BossConfig.night_prowler_eclipse_healing);
+                            this.boss.heal(EntityConfig.night_prowler_eclipse_healing);
                             DeathSpiralEntity spiral = new DeathSpiralEntity(this.boss.getWorld(), target.getPos(), 1f);
                             spiral.setPosition(target.getPos());
                             this.boss.getWorld().spawnEntity(spiral);

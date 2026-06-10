@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.world.World;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -30,7 +30,7 @@ public class NightWaveEntity extends NoClipEntity {
                     if (this.getOwner() instanceof LivingEntity) {
                         living.damage(this.getWorld().getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner()), (float) this.getDamage());
                     } else {
-                        living.damage(this.getWorld().getDamageSources().mobProjectile(this, null), 20f * BossConfig.night_prowler_damage_modifier);
+                        living.damage(this.getWorld().getDamageSources().mobProjectile(this, null), 20f * EntityConfig.night_prowler_damage_modifier);
                     }
                 }
             }

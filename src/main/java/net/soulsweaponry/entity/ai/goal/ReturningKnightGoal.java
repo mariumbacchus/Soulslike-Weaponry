@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.collision.RotatableHitbox;
-import net.soulsweaponry.config.BossConfig;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.ai.goal.hitboxes.ReturningKnightHitboxes;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
@@ -56,19 +56,19 @@ public class ReturningKnightGoal extends Goal {
     }
 
     public void resetAttackCooldown(float cooldownModifier) {
-        this.attackCooldown = (int) Math.floor(BossConfig.returning_knight_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.attackCooldown = (int) Math.floor(EntityConfig.returning_knight_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public void resetSummonCooldown(float cooldownModifier) {
-        this.summonCooldown = (int) Math.floor(BossConfig.returning_knight_summon_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.summonCooldown = (int) Math.floor(EntityConfig.returning_knight_summon_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public void resetSpecialCooldown(float cooldownModifier) {
-        this.specialCooldown = (int) Math.floor(BossConfig.returning_knight_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
+        this.specialCooldown = (int) Math.floor(EntityConfig.returning_knight_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers()*2;
     }
 
     public float getModifiedDamage(float damage) {
-        return damage * BossConfig.returning_knight_damage_modifier;
+        return damage * EntityConfig.returning_knight_damage_modifier;
     }
 
     @Override

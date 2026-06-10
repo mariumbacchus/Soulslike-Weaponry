@@ -1,6 +1,6 @@
 package net.soulsweaponry.config;
 
-public class BossConfig extends MidnightConfig {
+public class EntityConfig extends MidnightConfig {
 
     @Entry public static double dark_sorcerer_health = 10D;
     @Entry public static double dark_sorcerer_bonus_armor = 0D;
