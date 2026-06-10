@@ -37,10 +37,10 @@ public class SoulsWeaponry implements ModInitializer {
     @Override
     public void onInitialize() {
         long start = System.currentTimeMillis();
-        MidnightConfig.init(CONFIG_FOLDER + ModId, ConfigConstructor.class);
-        MidnightConfig.init(CONFIG_FOLDER + "soulsweapons_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_item_config", ConfigConstructor.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_boss_config", EntityConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_entity_config", EntityConfig.class);
         LOGGER.info("Config initialized!");
 
         AttributeRegistry.init();
