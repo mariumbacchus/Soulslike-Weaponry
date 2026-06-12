@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -41,23 +41,22 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class NightShade extends BossEntity implements GeoEntity, Ownable {
+public class NightShade extends BossEntity<NightShade.States> implements GeoEntity, Ownable {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
-    private boolean isCopy = false;
     private boolean healthUpdated = false;
     private boolean hasDuplicated = false;
     private int duplicateTicks;
     private UUID ownerUuid;
 
-    protected static final TrackedData<Integer> ATTACK_STATE = DataTracker.registerData(NightShade.class, TrackedDataHandlerRegistry.INTEGER);
     protected static final TrackedData<Boolean> CHARGING = DataTracker.registerData(NightShade.class, TrackedDataHandlerRegistry.BOOLEAN);
+    protected static final TrackedData<Boolean> IS_COPY = DataTracker.registerData(NightShade.class, TrackedDataHandlerRegistry.BOOLEAN);
     protected static final TrackedData<BlockPos> POS = DataTracker.registerData(NightShade.class, TrackedDataHandlerRegistry.BLOCK_POS);
 
     public NightShade(EntityType<? extends NightShade> entityType, World world) {
-        super(entityType, world, BossBar.Color.BLUE);
+        super(entityType, world, BossBar.Color.BLUE, NightShade.States.class);
         this.moveControl = new ShadeMoveControl(this);
     }
 
@@ -86,7 +85,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(CHARGING, false);
-        builder.add(ATTACK_STATE, 0);
+        builder.add(IS_COPY, false);
         builder.add(POS, BlockPos.ORIGIN);
     }
 
@@ -100,10 +99,6 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
             return serverWorld.getEntity(this.ownerUuid);
         }
         return null;
-    }
-
-    public enum AttackStates {
-        IDLE, SPAWN, DEATH, BIG_SWIPES, GENERIC_CHARGE, AOE, DUPLICATE, THROW_MOONLIGHT, SHADOW_ORBS
     }
 
     public void setTargetPos(BlockPos pos) {
@@ -126,7 +121,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
         super.tick();
         this.noClip = false;
         this.setNoGravity(true);
-        if (this.isCopy) {
+        if (this.isCopy()) {
             this.bossBar.setVisible(false);
             if (!this.healthUpdated) {
                 this.setHealth((float) EntityConfig.frenzied_shade_health / 4f);
@@ -147,7 +142,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public boolean hasBossMusic() {
-        return !this.isCopy;
+        return !this.isCopy();
     }
 
     @Override
@@ -161,14 +156,14 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
         if (this.isSpawning()) {
             this.spawnTicks++;
             if (spawnTicks >= 40) {
-                this.setAttackState(AttackStates.IDLE);
+                this.setState(States.IDLE);
             }
         }
         for (int i = 0; i < 3; ++i) {
             this.getWorld().addParticle(ParticleTypes.LARGE_SMOKE, this.getParticleX(0.5D), this.getRandomBodyY(), this.getParticleZ(0.5D), 0.0D, 0.0D, 0.0D);
         }
-        if (!this.isCopy && !this.hasDuplicated && this.getHealth() <= this.getMaxHealth() / 2.0F) {
-            this.setAttackState(AttackStates.DUPLICATE);
+        if (!this.isCopy() && !this.hasDuplicated && this.getHealth() <= this.getMaxHealth() / 2.0F) {
+            this.setState(States.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
                 CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
@@ -195,18 +190,18 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
             }
             if (this.duplicateTicks >= 60) {
                 this.hasDuplicated = true;
-                this.setAttackState(AttackStates.IDLE);
+                this.setState(States.IDLE);
             }
         }
     }
 
     public boolean isCopy() {
-        return this.isCopy;
+        return this.dataTracker.get(IS_COPY);
     }
 
     @Override
     public void setDeath() {
-        this.setAttackState(AttackStates.DEATH);
+        this.setState(States.DEATH);
     }
 
     @Override
@@ -226,7 +221,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
             this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
         }
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
-            if (this.isCopy) {
+            if (this.isCopy()) {
                 this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
                 this.remove(RemovalReason.KILLED);
                 return;
@@ -235,18 +230,6 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
             CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
             this.remove(RemovalReason.KILLED);
         }
-    }
-
-    public void setAttackState(AttackStates state) {
-        for (int i = 0; i < AttackStates.values().length; i++) {
-            if (AttackStates.values()[i] == state) {
-                this.dataTracker.set(ATTACK_STATE, i);
-            }
-        }
-    }
-
-    public AttackStates getAttackState() {
-        return AttackStates.values()[this.dataTracker.get(ATTACK_STATE)];
     }
 
     public boolean getCharging() {
@@ -259,11 +242,11 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
 
     @Override
     public boolean isSpawning() {
-        return this.getAttackState().equals(AttackStates.SPAWN);
+        return this.getState().equals(States.SPAWN);
     }
   
     public void setSpawn() {
-        this.setAttackState(AttackStates.SPAWN);
+        this.setState(States.SPAWN);
     }
 
     class ShadeMoveControl extends MoveControl {
@@ -322,7 +305,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
         }
-        switch (this.getAttackState()) {
+        switch (this.getState()) {
             case IDLE -> state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
             case SPAWN -> state.getController().setAnimation(RawAnimation.begin().then("spawn", Animation.LoopType.HOLD_ON_LAST_FRAME));
             case DEATH -> state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
@@ -341,13 +324,13 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
     }
 
     public void setCopy(boolean bl) {
-        this.isCopy = bl;
+        this.dataTracker.set(IS_COPY, bl);
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putBoolean("is_copy", this.isCopy);
+        nbt.putBoolean("is_copy", this.isCopy());
         nbt.putBoolean("has_duplicated", this.hasDuplicated);
         nbt.putBoolean("has_health_updated", this.healthUpdated);
         if (this.ownerUuid != null) {
@@ -369,7 +352,7 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
         if (nbt.contains("original_shade")) {
             this.ownerUuid = nbt.getUuid("original_shade");
         }
-        if (nbt.contains("is_copy")) this.isCopy = nbt.getBoolean("is_copy");
+        if (nbt.contains("is_copy")) this.setCopy(nbt.getBoolean("is_copy"));
         if (nbt.contains("has_health_updated")) this.healthUpdated = nbt.getBoolean("has_health_updated");
     }
 
@@ -408,5 +391,9 @@ public class NightShade extends BossEntity implements GeoEntity, Ownable {
   
     protected SoundEvent getDeathSound() {
         return SoundRegistry.NIGHT_SHADE_DEATH_EVENT;
+    }
+
+    public enum States {
+        IDLE, SPAWN, DEATH, BIG_SWIPES, GENERIC_CHARGE, AOE, DUPLICATE, THROW_MOONLIGHT, SHADOW_ORBS
     }
 }

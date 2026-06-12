@@ -9,7 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.SoulsWeaponryClient;
 import net.soulsweaponry.client.model.entity.mobs.NightProwlerModel;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
-import net.soulsweaponry.entity.mobs.NightProwler;
+import net.soulsweaponry.entity.mobs.boss.NightProwler;
 import net.soulsweaponry.util.CustomDeathHandler;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -143,6 +143,6 @@ public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
     }
 
     private boolean shouldRenderPortal(NightProwler entity) {
-        return entity.getAttackAnimation().equals(NightProwler.Attacks.ECLIPSE) && entity.getParticleState() == 4;
+        return entity.isState(NightProwler.States.ECLIPSE) && entity.getParticleState() == 4;
     }
 }

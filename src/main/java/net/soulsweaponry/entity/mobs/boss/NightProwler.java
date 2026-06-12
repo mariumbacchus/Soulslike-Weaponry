@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
@@ -44,7 +44,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.Optional;
 import java.util.UUID;
 
-public class NightProwler extends BossEntity implements GeoEntity {
+public class NightProwler extends BossEntity<NightProwler.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int openPortalTicks;
@@ -54,8 +54,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     public int phaseTwoMaxTransitionTicks = 120;
     public int maxSpawnTicks = 50;
     private int[] aliveSummons = new int[0];
-    public static final int ATTACKS_LENGTH = Attacks.values().length;
-    private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
+    public static final int ATTACKS_LENGTH = States.values().length;
     private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_PHASE_2 = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -67,7 +66,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     private static final TrackedData<Integer> SPAWN_PARTICLES_STATE = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
 
     public NightProwler(EntityType<? extends NightProwler> entityType, World world) {
-        super(entityType, world, Color.PURPLE);
+        super(entityType, world, Color.PURPLE, NightProwler.States.class);
     }
 
     @Override
@@ -78,18 +77,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true, entity -> !this.isPartner(entity)));
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
-    }
-
-    public void setAttackAnimation(NightProwler.Attacks attack) {
-        for (int i = 0; i < ATTACKS_LENGTH; i++) {
-            if (NightProwler.Attacks.values()[i].equals(attack)) {
-                this.dataTracker.set(ATTACKS, i);
-            }
-        }
-    }
-
-    public NightProwler.Attacks getAttackAnimation() {
-        return NightProwler.Attacks.values()[this.dataTracker.get(ATTACKS)];
     }
 
     public boolean isInitiatingPhaseTwo() {
@@ -109,7 +96,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
             state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
-                switch (this.getAttackAnimation()) {
+                switch (this.getState()) {
                     case TRINITY -> state.getController().setAnimation(RawAnimation.begin().then("trinity_1", Animation.LoopType.LOOP));
                     case REAPING_SLASH -> state.getController().setAnimation(RawAnimation.begin().then("reaping_slash_1", Animation.LoopType.LOOP));
                     case NIGHTS_EMBRACE -> state.getController().setAnimation(RawAnimation.begin().then("nights_embrace_1", Animation.LoopType.LOOP));
@@ -124,7 +111,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
                     default -> state.getController().setAnimation(RawAnimation.begin().then("empty_1", Animation.LoopType.LOOP));
                 }
             } else {
-                switch (this.getAttackAnimation()) {
+                switch (this.getState()) {
                     case TRINITY -> state.getController().setAnimation(RawAnimation.begin().then("trinity_2", Animation.LoopType.LOOP));
                     case NIGHTS_EMBRACE -> state.getController().setAnimation(RawAnimation.begin().then("nights_embrace_2", Animation.LoopType.LOOP));
                     case RIPPLE_FANG -> state.getController().setAnimation(RawAnimation.begin().then("ripple_fang_2", Animation.LoopType.LOOP));
@@ -145,7 +132,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
     }
 
     private PlayState idle(AnimationState<?> state) {
-        if (this.isDead() || this.getAttackAnimation().equals(Attacks.DEATH) || this.getDeathTicks() > 0) {
+        if (this.isDead() || this.getState().equals(States.DEATH) || this.getDeathTicks() > 0) {
             if (this.isPhaseTwo()) {
                 state.getController().setAnimation(RawAnimation.begin().then("death_2", Animation.LoopType.LOOP));
             } else {
@@ -188,7 +175,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(ATTACKS, 0);
         builder.add(INITIATING_PHASE_2, false);
         builder.add(IS_PHASE_2, false);
         builder.add(PARTNER_UUID, Optional.empty());
@@ -303,7 +289,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
 
     @Override
     public void setDeath() {
-        this.setAttackAnimation(Attacks.DEATH);
+        this.setState(States.DEATH);
     }
 
     @Override
@@ -343,11 +329,6 @@ public class NightProwler extends BossEntity implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
-    }
-
-    public enum Attacks {
-        IDLE, DEATH, SPAWN, TRINITY, REAPING_SLASH, NIGHTS_EMBRACE, RIPPLE_FANG, BLADES_REACH, SOUL_REAPER,
-        DIMINISHING_LIGHT, DARKNESS_RISE, ECLIPSE, ENGULF, BLACKFLAME_SNAKE, LUNAR_DISPLACEMENT, DEATHBRINGERS_GRASP
     }
 
     @Override
@@ -392,20 +373,20 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (this.isSpawning()) {
             this.spawnTicks++;
             if (this.spawnTicks >= this.maxSpawnTicks) {
-                this.setAttackAnimation(NightProwler.Attacks.IDLE);
+                this.setState(States.IDLE);
             }
         }
         this.setRemainingAniTicks(Math.max(this.getRemainingAniTicks() - 1, 0));
         if (this.getRemainingAniTicks() <= 0 && this.shouldWaitAnimation()) {
             this.setWaitAnimation(false);
-            this.setAttackAnimation(NightProwler.Attacks.IDLE);
+            this.setState(States.IDLE);
             this.getNavigation().stop();
         }
     }
 
     @Override
     public boolean isSpawning() {
-        return this.getAttackAnimation().equals(NightProwler.Attacks.SPAWN);
+        return this.getState().equals(States.SPAWN);
     }
 
     @Override
@@ -426,7 +407,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
         if (source.isOf(DamageTypes.FALL)) {
             return false;
         }
-        if (this.isEmpowered() && this.getAttackAnimation().equals(Attacks.IDLE) && !this.isFlying()
+        if (this.isEmpowered() && this.getState().equals(States.IDLE) && !this.isFlying()
                 && this.random.nextDouble() < EntityConfig.night_prowler_teleport_chance * (source.isIn(DamageTypeTags.IS_PROJECTILE) ? 1.5f : 1)
                 && source.getAttacker() instanceof LivingEntity attacker) {
             if (this.squaredDistanceTo(attacker) > 250D) {
@@ -448,7 +429,7 @@ public class NightProwler extends BossEntity implements GeoEntity {
             this.heal(EntityConfig.night_prowler_projectile_heal_amount);
             return false;
         }
-        if (this.getAttackAnimation().equals(Attacks.ECLIPSE)) {
+        if (this.getState().equals(States.ECLIPSE)) {
             amount = amount * 0.75f;
         }
         if (source.isOf(DamageTypes.EXPLOSION)) {
@@ -685,5 +666,10 @@ public class NightProwler extends BossEntity implements GeoEntity {
     @Override
     public String[] getBlacklistedStatusEffects() {
         return EntityConfig.night_prowler_status_effect_blacklist;
+    }
+
+    public enum States {
+        IDLE, DEATH, SPAWN, TRINITY, REAPING_SLASH, NIGHTS_EMBRACE, RIPPLE_FANG, BLADES_REACH, SOUL_REAPER,
+        DIMINISHING_LIGHT, DARKNESS_RISE, ECLIPSE, ENGULF, BLACKFLAME_SNAKE, LUNAR_DISPLACEMENT, DEATHBRINGERS_GRASP
     }
 }

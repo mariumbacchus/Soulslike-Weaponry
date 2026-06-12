@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -39,7 +39,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
 
-public class DraugrBoss extends BossEntity implements GeoEntity {
+public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
@@ -50,12 +50,11 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
     private int projectileCount;
 
     public DraugrBoss(EntityType<? extends DraugrBoss> entityType, World world) {
-        super(entityType, world, BossBar.Color.WHITE);
+        super(entityType, world, BossBar.Color.WHITE, DraugrBoss.States.class);
     }
 
     private static final TrackedData<Boolean> IS_SHIELDING = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> POSTURE_BROKEN = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Integer> STATES = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<BlockPos> POS = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Integer> SAME_WEAPON_COUNT = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -112,7 +111,6 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
         super.initDataTracker(builder);
         builder.add(IS_SHIELDING, Boolean.FALSE);
         builder.add(POSTURE_BROKEN, Boolean.FALSE);
-        builder.add(STATES, 0);
         builder.add(POS, BlockPos.ORIGIN);
         builder.add(SAME_WEAPON_COUNT, 0);
     }
@@ -162,23 +160,6 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
 
     public BlockPos getTargetPos() {
         return this.dataTracker.get(POS);
-    }
-
-    public void setState(States attack) {
-        for (int i = 0; i < States.values().length; i++) {
-            if (States.values()[i].equals(attack)) {
-                this.dataTracker.set(STATES, i);
-            }
-        }
-    }
-
-    public States getState() {
-        return States.values()[this.dataTracker.get(STATES)];
-    }
-
-    public enum States {
-        IDLE, SPAWN, DEATH, COUNTER, SHIELD_BASH, SHIELD_VAULT, SWIPES, BACKSTEP, HEAVY, GROUND_SLAM,
-        PARRY, BATTLE_CRY, LEAP, RUN_THRUST
     }
 
     public void setSpawning() {
@@ -405,5 +386,10 @@ public class DraugrBoss extends BossEntity implements GeoEntity {
   
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_WITHER_SKELETON_DEATH;
+    }
+
+    public enum States {
+        IDLE, SPAWN, DEATH, COUNTER, SHIELD_BASH, SHIELD_VAULT, SWIPES, BACKSTEP, HEAVY, GROUND_SLAM,
+        PARRY, BATTLE_CRY, LEAP, RUN_THRUST
     }
 }

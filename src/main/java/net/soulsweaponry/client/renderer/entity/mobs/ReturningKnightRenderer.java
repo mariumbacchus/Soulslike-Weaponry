@@ -4,7 +4,7 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
 import net.soulsweaponry.client.model.entity.mobs.ReturningKnightModel;
-import net.soulsweaponry.entity.mobs.ReturningKnight;
+import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

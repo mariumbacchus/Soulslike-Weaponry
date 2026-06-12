@@ -3,7 +3,7 @@ package net.soulsweaponry.client.model.entity.mobs;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.mobs.Moonknight;
+import net.soulsweaponry.entity.mobs.boss.Moonknight;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;

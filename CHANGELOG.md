@@ -58,6 +58,8 @@
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack
 - Fixed a bug causing Edges of Night swords to have much smaller hitbox than intended
+- Fixed a crash due to item stacks not being set on some projectiles
+- Fixed a bug where Night Shade copies would still display the death-light when they weren't supposed to, and they (the copies) would not kill themselves if the real one died
 
 ---------------
 

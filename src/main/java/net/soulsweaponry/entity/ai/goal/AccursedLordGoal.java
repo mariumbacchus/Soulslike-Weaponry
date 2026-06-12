@@ -17,8 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.mobs.AccursedLordBoss;
-import net.soulsweaponry.entity.mobs.AccursedLordBoss.AccursedLordAnimations;
+import net.soulsweaponry.entity.mobs.boss.AccursedLordBoss;
+import net.soulsweaponry.entity.mobs.boss.AccursedLordBoss.States;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.DamageSourceRegistry;
@@ -74,7 +74,7 @@ public class AccursedLordGoal extends Goal {
     @Override
     public void stop() {
         super.stop();
-        this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
+        this.boss.setIdle();
         this.attackCooldown = 10;
         this.attackStatus = 0;
         this.cordsRegistered = false;
@@ -96,47 +96,47 @@ public class AccursedLordGoal extends Goal {
      * animation until a proper attack is chosen. Some checks have a time limit, and will set a new random attack
      * if the timer runs out, namely {@code attackCooldown} being under a threshold.
      */
-    public void checkAndSetAttack(@Nullable AccursedLordAnimations specificAttack, LivingEntity target) {
-        if (target == null || (specificAttack != null && specificAttack.equals(AccursedLordAnimations.IDLE))) {
-            this.boss.setAttackAnimation(specificAttack);
+    public void checkAndSetAttack(@Nullable AccursedLordBoss.States specificAttack, LivingEntity target) {
+        if (target == null || (specificAttack != null && specificAttack.equals(States.IDLE))) {
+            this.boss.setState(specificAttack);
             return;
         }
-        int rand = this.boss.getRandom().nextInt(AccursedLordAnimations.values().length);
-        AccursedLordAnimations attack = AccursedLordAnimations.values()[rand];
+        int rand = this.boss.getRandom().nextInt(States.values().length);
+        States attack = States.values()[rand];
         if (specificAttack != null) {
             attack = specificAttack;
-        } else if (attack.equals(AccursedLordAnimations.DEATH) || attack.equals(AccursedLordAnimations.SPAWN) || attack.equals(AccursedLordAnimations.IDLE)) {
-            attack = AccursedLordAnimations.SWORDSLAM;
+        } else if (attack.equals(States.DEATH) || attack.equals(States.SPAWN) || attack.equals(States.IDLE)) {
+            attack = States.SWORDSLAM;
         }
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         switch (attack) {
             case FIREBALLS, WITHERBALLS -> {
                 if (distanceToEntity < this.getFollowRange() * this.getFollowRange()) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case HAND_SLAM, HEATWAVE, SPIN -> {
                 if (distanceToEntity < 30f && this.specialCooldown < 0) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -30 || this.specialCooldown > 10) {
-                    this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
+                    this.boss.setState(States.IDLE);
                 }
             }
             case PULL -> {
                 if (distanceToEntity < this.getFollowRange() * this.getFollowRange() * 2 && distanceToEntity > 60f) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case SWORDSLAM -> {
                 if (distanceToEntity < 40f && !this.cordsRegistered && target.getBlockPos() != null) {
                     this.attackPos = target.getBlockPos();
                     this.cordsRegistered = true;
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -30) {
-                    this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
+                    this.boss.setState(States.IDLE);
                 }
             }
-            default -> this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
+            default -> this.boss.setState(States.IDLE);
         }
     }
 
@@ -156,7 +156,7 @@ public class AccursedLordGoal extends Goal {
         }
 
         LivingEntity target = this.boss.getTarget();
-        if (target != null && !this.boss.getAttackAnimation().equals(AccursedLordAnimations.SPAWN) && !this.boss.getAttackAnimation().equals(AccursedLordAnimations.DEATH)) {
+        if (target != null && !this.boss.getState().equals(States.SPAWN) && !this.boss.getState().equals(States.DEATH)) {
             this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
             boolean entityInSight = this.boss.getVisibilityCache().canSee(target);
@@ -167,12 +167,12 @@ public class AccursedLordGoal extends Goal {
             }
             double distanceToEntity = this.boss.squaredDistanceTo(target);
 
-            if (this.attackCooldown > 0) this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
+            if (this.attackCooldown > 0) this.boss.setState(States.IDLE);
 
-            if (this.attackCooldown < 0 && this.boss.getAttackAnimation().equals(AccursedLordAnimations.IDLE)) {
+            if (this.attackCooldown < 0 && this.boss.getState().equals(States.IDLE)) {
                 this.checkAndSetAttack(null, target);
             }
-            switch (this.boss.getAttackAnimation()) {
+            switch (this.boss.getState()) {
                 case FIREBALLS -> this.projectileBarrage(target, distanceToEntity, BarrageProjectiles.FIREBALLS);
                 case WITHERBALLS -> this.projectileBarrage(target, distanceToEntity, BarrageProjectiles.WITHERBALLS);
                 case HEATWAVE -> this.heatWaveAttack();
@@ -180,7 +180,7 @@ public class AccursedLordGoal extends Goal {
                 case SPIN -> this.spinAttack();
                 case SWORDSLAM -> this.swordSlam();
                 case HAND_SLAM -> this.handSlamLava();
-                default -> this.boss.setAttackAnimation(AccursedLordAnimations.IDLE);
+                default -> this.boss.setState(States.IDLE);
             }
 
             if (this.targetNotVisibleTicks < 5) {

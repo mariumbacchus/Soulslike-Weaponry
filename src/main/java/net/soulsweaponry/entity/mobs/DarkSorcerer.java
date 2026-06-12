@@ -27,6 +27,7 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.registry.ArmorRegistry;
 
 import java.util.EnumSet;

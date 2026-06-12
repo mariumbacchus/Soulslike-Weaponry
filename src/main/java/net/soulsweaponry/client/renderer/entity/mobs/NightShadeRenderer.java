@@ -6,7 +6,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory.Context;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.NightShadeModel;
-import net.soulsweaponry.entity.mobs.NightShade;
+import net.soulsweaponry.entity.mobs.boss.NightShade;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 

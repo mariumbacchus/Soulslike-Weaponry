@@ -1,7 +1,10 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
@@ -11,9 +14,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,32 +27,27 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.AnimationState;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccursedLordBoss extends BossEntity implements GeoEntity {
+public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
-    private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(AccursedLordBoss.class, TrackedDataHandlerRegistry.INTEGER);
     public ArrayList<BlockPos> lavaPos = new ArrayList<>();
 
     public AccursedLordBoss(EntityType<? extends AccursedLordBoss> entityType, World world) {
-        super(entityType, world, BossBar.Color.RED);
+        super(entityType, world, BossBar.Color.RED, States.class);
     }
 
     @Override
@@ -66,7 +61,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     private PlayState attackAnimations(AnimationState<?> state) {
-        switch (this.getAttackAnimation()) {
+        switch (this.getState()) {
             case FIREBALLS, WITHERBALLS ->
                     state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
             case HAND_SLAM ->
@@ -101,7 +96,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isSpawning() {
-        return this.getAttackAnimation().equals(AccursedLordAnimations.SPAWN);
+        return this.isState(States.SPAWN);
     }
 
     @Override
@@ -149,29 +144,6 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        super.initDataTracker(builder);
-        builder.add(ATTACKS, 9);
-    }
-
-    /**
-     * Set attack with enum as parameter
-     */
-    public void setAttackAnimation(AccursedLordAnimations attack) {
-        for (int i = 0; i < AccursedLordAnimations.values().length; i++) {
-            if (AccursedLordAnimations.values()[i].equals(attack)) {
-                this.dataTracker.set(ATTACKS, i);
-            }
-        }
-    }
-
-    /**
-     * Set attack with an integer to easily set the data tracker value
-     */
-    public void setAttackAnimation(int random) {
-        this.dataTracker.set(ATTACKS, random);
-    }
-
     public void tickMovement() {
         super.tickMovement();
 
@@ -211,7 +183,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
                 }
             }
             if (this.spawnTicks >= 125) {
-                this.setAttackAnimation(AccursedLordAnimations.IDLE);
+                this.setIdle();
             }
         }
     }
@@ -225,13 +197,9 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         this.lavaPos.clear();
     }
 
-    public AccursedLordAnimations getAttackAnimation() {
-        return AccursedLordAnimations.values()[this.dataTracker.get(ATTACKS)];
-    }
-
     @Override
     public void setDeath() {
-        this.setAttackAnimation(AccursedLordAnimations.DEATH);
+        this.setState(States.DEATH);
         this.removePlacedLava();
     }
 
@@ -267,7 +235,7 @@ public class AccursedLordBoss extends BossEntity implements GeoEntity {
         return SoundRegistry.DEMON_BOSS_DEATH_EVENT;
     }
 
-    public enum AccursedLordAnimations {
-        SWORDSLAM, FIREBALLS, PULL, HEATWAVE, SPIN, WITHERBALLS, HAND_SLAM, SPAWN, DEATH, IDLE
+    public enum States {
+        IDLE, SWORDSLAM, FIREBALLS, PULL, HEATWAVE, SPIN, WITHERBALLS, HAND_SLAM, SPAWN, DEATH
     }
 }

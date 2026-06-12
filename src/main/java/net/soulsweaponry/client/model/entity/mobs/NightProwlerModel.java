@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.entity.mobs;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.mobs.NightProwler;
+import net.soulsweaponry.entity.mobs.boss.NightProwler;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class NightProwlerModel extends DefaultedEntityGeoModel<NightProwler> {

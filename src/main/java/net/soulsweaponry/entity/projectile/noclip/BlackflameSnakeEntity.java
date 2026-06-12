@@ -12,7 +12,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
-import net.soulsweaponry.entity.mobs.NightProwler;
+import net.soulsweaponry.entity.mobs.boss.NightProwler;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;

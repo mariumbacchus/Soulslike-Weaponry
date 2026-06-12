@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
@@ -44,51 +44,38 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-public class ReturningKnight extends BossEntity implements GeoEntity {
+public class ReturningKnight extends BossEntity<ReturningKnight.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
     public int deathTicks;
     private final List<UUID> healers = new ArrayList<>();
     private final RotatableHitbox debugObliterateMaceHitbox = ReturningKnightHitboxes.createObliterateMaceHitboxPlaceholder();
-    
-    public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
-        super(entityType, world, BossBar.Color.BLUE);
-    }
-
-    private static final TrackedData<Boolean> OBLITERATE = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> BLIND = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> SUMMON = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> RUPTURE = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> UNBREAKABLE = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> SPAWN = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> DEATH = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> MACE_OF_SPADES = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     private static final TrackedData<BlockPos> OBLITERATE_TARGET = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Long> ATTACK_START_WORLD_TIME = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.LONG);
+    
+    public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
+        super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);//TODO returning knight is completely broken now lol but i gotta rework it anyway sooo
+    }
 
     private PlayState predicate(AnimationState<?> state) {
-        if (this.getDeath()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
-        } else if (this.isSpawning()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
-        } else if (this.getUnbreakable()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
-        } else if (this.getSummon()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
-        } else if (this.getObliterate()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
-        } else if (this.getBlind()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_reflection"));
-        } else if (this.getRupture()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture"));
-        } else if (this.getMaceOfSpades()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades"));
-        } else if (this.isAttacking()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
-        } else {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
+        switch (this.getState()) {
+            case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
+            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
+            case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
+            case SUMMON -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
+            case OBLITERATE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
+            case BLIND -> state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_reflection"));
+            case RUPTURE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture"));
+            case MACE_OF_SPADES -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades"));
+            default -> {
+                if (this.isAttacking()) {
+                    state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
+                } else {
+                    state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
+                }
+            }
         }
         return PlayState.CONTINUE;
     }
@@ -96,14 +83,6 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(OBLITERATE, false);
-        builder.add(BLIND, false);
-        builder.add(SUMMON, false);
-        builder.add(RUPTURE, false);
-        builder.add(UNBREAKABLE, false);
-        builder.add(SPAWN, false);
-        builder.add(DEATH, false);
-        builder.add(MACE_OF_SPADES, false);
         builder.add(OBLITERATE_TARGET, BlockPos.ORIGIN);
         builder.add(ATTACK_START_WORLD_TIME, -1L);
     }
@@ -141,7 +120,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     @Override
     public void setDeath() {
-        this.setDeath(true);
+        this.setState(States.DEATH);
     }
 
     @Override
@@ -154,69 +133,17 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         }
     }
 
-    public void setObliterate(boolean bl) {
-        this.dataTracker.set(OBLITERATE, bl);
-    }
-
-    public boolean getObliterate() {
-        return this.dataTracker.get(OBLITERATE);
-    }
-
-    public void setBlind(boolean bl) {
-        this.dataTracker.set(BLIND, bl);
-    }
-
-    public boolean getBlind() {
-        return this.dataTracker.get(BLIND);
-    }
-
-    public void setSummon(boolean bl) {
-        this.dataTracker.set(SUMMON, bl);
-    }
-
-    public boolean getSummon() {
-        return this.dataTracker.get(SUMMON);
-    }
-
-    public void setRupture(boolean bl) {
-        this.dataTracker.set(RUPTURE, bl);
-    }
-
-    public boolean getRupture() {
-        return this.dataTracker.get(RUPTURE);
-    }
-
-    public void setMaceOfSpades(boolean bl) {
-        this.dataTracker.set(MACE_OF_SPADES, bl);
-    }
-
-    public boolean getMaceOfSpades() {
-        return this.dataTracker.get(MACE_OF_SPADES);
-    }
-
-    public void setUnbreakable(boolean bl) {
-        this.dataTracker.set(UNBREAKABLE, bl);
-    }
-
-    public boolean getUnbreakable() {
-        return this.dataTracker.get(UNBREAKABLE);
-    }
-
-    public void setSpawning(boolean bl) {
-        this.dataTracker.set(SPAWN, bl);
+    public void setSpawning() {
+        this.setState(States.SPAWN);
     }
 
     @Override
     public boolean isSpawning() {
-        return this.dataTracker.get(SPAWN);
-    }
-
-    public void setDeath(boolean bl) {
-        this.dataTracker.set(DEATH, bl);
+        return this.isState(States.SPAWN);
     }
 
     public boolean getDeath() {
-        return this.dataTracker.get(DEATH);
+        return this.isState(States.DEATH);
     }
 
     public void setObliterateTarget(BlockPos pos) {
@@ -271,7 +198,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 80) {
-                this.setSpawning(false);
+                this.setState(States.IDLE);
             }
         }
 
@@ -291,7 +218,7 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
         }
 
         // Debug hitbox during obliterate attack
-        if (this.getWorld().isClient() && this.getObliterate()) {
+        if (this.getWorld().isClient() && this.isState(States.OBLITERATE)) {
             BlockPos targetPos = this.getObliterateTarget();
             int attackTick = this.getSyncedAttackStatusTick();
             if (!targetPos.equals(BlockPos.ORIGIN) && ReturningKnightHitboxes.isObliterateDebugTick(attackTick)) {
@@ -412,5 +339,9 @@ public class ReturningKnight extends BossEntity implements GeoEntity {
 
     protected SoundEvent getDeathSound() {
         return SoundRegistry.KNIGHT_DEATH_EVENT;
+    }
+
+    public enum States {
+        IDLE, SPAWN, DEATH, OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, MACE_OF_SPADES
     }
 }

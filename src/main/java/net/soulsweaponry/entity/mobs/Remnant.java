@@ -26,6 +26,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.entity.mobs.boss.DayStalker;
+import net.soulsweaponry.entity.mobs.boss.Moonknight;
+import net.soulsweaponry.entity.mobs.boss.NightProwler;
+import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.WeaponRegistry;
 

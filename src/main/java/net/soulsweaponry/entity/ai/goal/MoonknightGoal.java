@@ -17,9 +17,8 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.mobs.Moonknight;
-import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseOne;
-import net.soulsweaponry.entity.mobs.Moonknight.MoonknightPhaseTwo;
+import net.soulsweaponry.entity.mobs.boss.Moonknight;
+import net.soulsweaponry.entity.mobs.boss.Moonknight.States;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.noclip.AbsorbedProjectilesOrb;
@@ -39,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class MoonknightGoal extends Goal {
@@ -53,6 +53,14 @@ public class MoonknightGoal extends Goal {
     private int projectileRotation = -45;
     private float bonusBeamHeight = 0f;
     private double height = 0D;
+
+    private static final List<States> PHASE_ONE_ATTACKS = List.of(
+            States.SUMMON, States.OBLITERATE, States.MACE_OF_SPADES, States.BLINDING_LIGHT, States.RUPTURE, States.UNBREAKABLE
+    );
+    private static final List<States> PHASE_TWO_ATTACKS = List.of(
+            States.BLINDING_LIGHT, States.CORE_BEAM, States.MOONVEIL, States.MOONFALL, States.RUPTURE,
+            States.SWORD_OF_LIGHT, States.HEAVY_SWING, States.THRUST, States.UNBREAKABLE
+    );
 
     public MoonknightGoal(Moonknight boss) {
         this.boss = boss;
@@ -71,9 +79,9 @@ public class MoonknightGoal extends Goal {
 
     private void resetAttack(float attackCDModifier, boolean wasSpecial, float specialCDModifier) {
         if (!this.boss.isPhaseTwo()) {
-            this.checkAttackPhaseOne(MoonknightPhaseOne.IDLE, this.boss.getTarget());
+            this.checkAttackPhaseOne(States.IDLE, this.boss.getTarget());
         } else {
-            this.checkAttackPhaseTwo(MoonknightPhaseTwo.IDLE, this.boss.getTarget());
+            this.checkAttackPhaseTwo(States.IDLE, this.boss.getTarget());
         }
         this.attackStatus = 0;
         this.attackCooldown = ((int) Math.floor((this.boss.isPhaseTwo() ? EntityConfig.fallen_icon_attack_cooldown_ticks_phase_2 : EntityConfig.fallen_icon_attack_cooldown_ticks_phase_1) * attackCDModifier) - this.boss.getReducedCooldownAttackers()*2);
@@ -95,134 +103,116 @@ public class MoonknightGoal extends Goal {
         super.stop();
         this.reset();
         this.boss.setAttacking(false);
-        if (this.boss.isPhaseTwo()) {
-            this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
-        } else {
-            this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
-        }
+        this.boss.setIdle();
     }
 
-    private MoonknightPhaseOne randomAttackPhaseOne() {
-        int rand = this.boss.getRandom().nextInt(MoonknightPhaseOne.values().length);
-        MoonknightPhaseOne attack = MoonknightPhaseOne.values()[rand];
-        if (attack.equals(MoonknightPhaseOne.IDLE)) {
-            return this.randomAttackPhaseOne();
-        } else {
-            return attack;
-        }
-    }
-
-    private MoonknightPhaseTwo randomAttackPhaseTwo() {
-        int rand = this.boss.getRandom().nextInt(MoonknightPhaseTwo.values().length);
-        MoonknightPhaseTwo attack = MoonknightPhaseTwo.values()[rand];
-        if (attack.equals(MoonknightPhaseTwo.IDLE)) {
-            return this.randomAttackPhaseTwo();
-        } else {
-            return attack;
-        }
-    }
-
-    private void checkAttackPhaseOne(@Nullable MoonknightPhaseOne specificPhaseOne, LivingEntity target) {
-        if (target == null || (specificPhaseOne != null && specificPhaseOne.equals(MoonknightPhaseOne.IDLE))) {
-            this.boss.setPhaseOneAttack(specificPhaseOne);
+    private void checkAttackPhaseOne(@Nullable States specificPhaseOne, LivingEntity target) {
+        if (target == null || (specificPhaseOne != null && specificPhaseOne.equals(States.IDLE))) {
+            this.boss.setState(specificPhaseOne);
             return;
         }
-        MoonknightPhaseOne attack;
-        attack = Objects.requireNonNullElseGet(specificPhaseOne, this::randomAttackPhaseOne);
+        States attack = Objects.requireNonNullElseGet(specificPhaseOne, this::randomAttackPhaseOne);
         double distance = this.boss.squaredDistanceTo(target);
         switch (attack) {
             case BLINDING_LIGHT -> {
                 if (distance < 30D) {
-                    this.boss.setPhaseOneAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case MACE_OF_SPADES -> {
                 if (distance < 50D && target.getBlockPos() != null) {
-                    this.boss.setPhaseOneAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case OBLITERATE -> {
                 if (distance < 75D && target.getBlockPos() != null) {
-                    this.boss.setPhaseOneAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case RUPTURE, SUMMON -> {
                 if (this.specialCooldown < 0) {
-                    this.boss.setPhaseOneAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.specialCooldown > 20) {
-                    this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case UNBREAKABLE -> {
                 if (this.boss.getRandom().nextDouble() < 0.1) {
-                    this.boss.setPhaseOneAttack(attack);
+                    this.boss.setState(attack);
                 } else {
-                    this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                    this.boss.setIdle();
                 }
             }
-            default -> this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+            default -> this.boss.setIdle();
         }
     }
 
-    private void checkAttackPhaseTwo(@Nullable MoonknightPhaseTwo specificPhaseTwo, LivingEntity target) {
-        if (target == null || (specificPhaseTwo != null && specificPhaseTwo.equals(MoonknightPhaseTwo.IDLE))) {
-            this.boss.setPhaseTwoAttack(specificPhaseTwo);
+    private void checkAttackPhaseTwo(@Nullable Moonknight.States specificPhaseTwo, LivingEntity target) {
+        if (target == null || (specificPhaseTwo != null && specificPhaseTwo.equals(States.IDLE))) {
+            this.boss.setState(specificPhaseTwo);
             return;
         }
-        MoonknightPhaseTwo attack;
-        attack = Objects.requireNonNullElseGet(specificPhaseTwo, this::randomAttackPhaseTwo);
+        States attack = Objects.requireNonNullElseGet(specificPhaseTwo, this::randomAttackPhaseTwo);
         double distance = this.boss.squaredDistanceTo(target);
         switch (attack) {
             case BLINDING_LIGHT -> {
                 if (distance < 50) {
-                    this.boss.setPhaseTwoAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case CORE_BEAM, MOONVEIL -> {
                 if (this.specialCooldown < 0 && distance < 750) {
-                    this.boss.setPhaseTwoAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.specialCooldown > 10 || this.attackCooldown < -30) {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case MOONFALL, RUPTURE -> {
                 if (distance < 120 && target.getBlockPos() != null) {
-                    this.boss.setPhaseTwoAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case SWORD_OF_LIGHT, HEAVY_SWING -> {
                 if (distance < 300D) {
-                    this.boss.setPhaseTwoAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.SWORD_OF_LIGHT);
+                    this.boss.setState(States.SWORD_OF_LIGHT);
                 }
             }
             case THRUST -> {
                 if (distance < 128D) {
-                    this.boss.setPhaseTwoAttack(attack);
+                    this.boss.setState(attack);
                 } else if (this.attackCooldown < -10) {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                    this.boss.setIdle();
                 }
             }
             case UNBREAKABLE -> {
                 if (!this.boss.getAbsorbedProjectileTypes().isEmpty()) {
-                    this.boss.setPhaseTwoAttack(attack);
+                    this.boss.setState(attack);
                 } else {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                    this.boss.setIdle();
                 }
             }
-            default -> this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+            default -> this.boss.setIdle();
         }
+    }
+
+    private States randomAttackPhaseOne() {
+        return PHASE_ONE_ATTACKS.get(this.boss.getRandom().nextInt(PHASE_ONE_ATTACKS.size()));
+    }
+
+    private States randomAttackPhaseTwo() {
+        return PHASE_TWO_ATTACKS.get(this.boss.getRandom().nextInt(PHASE_TWO_ATTACKS.size()));
     }
 
     @Override
@@ -230,8 +220,10 @@ public class MoonknightGoal extends Goal {
         this.attackCooldown--;
         this.specialCooldown--;
         LivingEntity target = this.boss.getTarget();
-        if (this.boss.isInitiatingPhaseTwo()) this.reset();
-        if (target != null && !this.boss.isDead() && !this.boss.isSpawning() && !this.boss.isInitiatingPhaseTwo()) {
+        if (this.boss.isState(States.INITIATE_PHASE_2)) {
+            this.reset();
+        }
+        if (target != null && !this.boss.isDead() && !this.boss.isSpawning() && !this.boss.isState(States.INITIATE_PHASE_2)) {
             this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
             boolean entityInSight = this.boss.getVisibilityCache().canSee(target);
@@ -242,21 +234,19 @@ public class MoonknightGoal extends Goal {
             }
 
             if (this.attackCooldown > 0) {
-                if (!this.boss.isPhaseTwo()) {
-                    this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
-                } else {
-                    this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
-                }
+                this.boss.setIdle();
             } else if (this.attackCooldown < 0 && this.attackCooldown % 5 == 0) {
-                if (!this.boss.isPhaseTwo() && this.boss.getPhaseOneAttack().equals(MoonknightPhaseOne.IDLE)) {
-                    this.checkAttackPhaseOne(null, target);
-                } else if (this.boss.getPhaseTwoAttack().equals(MoonknightPhaseTwo.IDLE)) {
-                    this.checkAttackPhaseTwo(null, target);
+                if (this.boss.isIdle()) {
+                    if (this.boss.isPhaseTwo()) {
+                        this.checkAttackPhaseTwo(null, target);
+                    } else {
+                        this.checkAttackPhaseOne(null, target);
+                    }
                 }
             }
 
             if (!this.boss.isPhaseTwo()) {
-                switch (this.boss.getPhaseOneAttack()) {
+                switch (this.boss.getState()) {
                     case BLINDING_LIGHT -> this.blindingLightLogic();
                     case MACE_OF_SPADES -> this.maceOfSpadesLogic(target);
                     case OBLITERATE ->
@@ -264,10 +254,10 @@ public class MoonknightGoal extends Goal {
                     case RUPTURE -> this.ruptureLogic();
                     case SUMMON -> this.summonLogic(target);
                     case UNBREAKABLE -> this.unbreakable(target);
-                    default -> this.boss.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                    default -> this.boss.setIdle();
                 }
             } else {
-                switch (this.boss.getPhaseTwoAttack()) {
+                switch (this.boss.getState()) {
                     case BLINDING_LIGHT -> this.blindingLightLogic();
                     case CORE_BEAM -> this.coreBeam(target);
                     case MOONFALL -> this.moonfallLogic(target);
@@ -277,7 +267,7 @@ public class MoonknightGoal extends Goal {
                     case RUPTURE -> this.rupturePhase2();
                     case HEAVY_SWING -> this.heavySwing(target);
                     case UNBREAKABLE -> this.unbreakable(target);
-                    default -> this.boss.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                    default -> this.boss.setIdle();
                 }
             }
 

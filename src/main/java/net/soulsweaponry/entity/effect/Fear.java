@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.mob.MobEntity;
-import net.soulsweaponry.entity.mobs.BossEntity;
+import net.soulsweaponry.entity.mobs.boss.BossEntity;
 
 public class Fear extends StatusEffect {
 

@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
@@ -9,6 +9,9 @@ import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.boss.BossBar.Style;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,20 +42,74 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class BossEntity extends HostileEntity implements IAnimatedDeath {
+public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implements IAnimatedDeath {
     
     protected final ServerBossBar bossBar;
     private boolean hasUpdatedHealth = false;
     private boolean playingMusic = false;
     private int blockBreakingCooldown;
+    private final Class<T> stateEnumClass;
 
-    protected BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor) {
+    private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
+    public BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor, Class<T> stateEnumClass) {
         super(entityType, world);
         this.bossBar = (ServerBossBar)(new ServerBossBar(this.getDisplayName(), barColor, Style.NOTCHED_10)).setDarkenSky(true);
         this.experiencePoints = this.getXp();
+        this.stateEnumClass = stateEnumClass;
     }
 
-    public abstract int getXp();
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(STATES, 0);
+    }
+
+    /**
+     * Set the state the boss should perform and animate.
+     * <p><b>NB! Value 0 should always be idle!</b></p>
+     * Implementation for animation must be handled independently.
+     */
+    public void setState(T state) {
+        this.dataTracker.set(STATES, state.ordinal());
+    }
+
+    /**
+     * Get the state the boss should perform and animate.
+     * <p><b>NB! Value 0 should always be idle!</b></p>
+     * Falls back to 0 if the saved state is out of bounds.
+     */
+    public T getState() {
+        T[] values = this.stateEnumClass.getEnumConstants();
+        int index = this.dataTracker.get(STATES);
+        if (index < 0 || index >= values.length) {
+            return values[0];
+        }
+        return values[index];
+    }
+
+    /**
+     * Returns whether the boss is performing the state supplied or not.
+     */
+    public boolean isState(T state) {
+        return this.getState() == state;
+    }
+
+    /**
+     * Gets the state with index 0 which should always be idle.
+     */
+    public boolean isIdle() {
+        return this.dataTracker.get(STATES) == 0;
+    }
+
+    /**
+     * Sets the state of the boss to 0 which should always be idle.
+     */
+    public void setIdle() {
+        this.dataTracker.set(STATES, 0);
+    }
+
+    public abstract boolean isSpawning();
 
     @Override
     protected void mobTick() {
@@ -90,8 +147,6 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
         }
         return super.damage(source, amount);
     }
-
-    public abstract boolean isSpawning();
 
     public abstract SoundEvent getBossMusic();
     public abstract boolean hasBossMusic();
@@ -232,6 +287,8 @@ public abstract class BossEntity extends HostileEntity implements IAnimatedDeath
 
     @Override
     public abstract boolean disablesShield();
+
+    public abstract int getXp();
 
     /**
      * Should be called during damage method for bosses that are projectile immune to check whether the entity

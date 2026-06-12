@@ -15,7 +15,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.mobs.DraugrBoss;
+import net.soulsweaponry.entity.mobs.boss.DraugrBoss;
 import net.soulsweaponry.entitydata.BleedData;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -27,7 +27,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
-import static net.soulsweaponry.entity.mobs.DraugrBoss.States;
+import static net.soulsweaponry.entity.mobs.boss.DraugrBoss.States;
 
 public class DraugrBossGoal extends MeleeAttackGoal {
 
@@ -97,7 +97,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
         return false;
     }
 
-    private void randomAttack(@Nullable States specificAttack, LivingEntity target, boolean ignoreChecks) {
+    private void randomAttack(@Nullable DraugrBoss.States specificAttack, LivingEntity target, boolean ignoreChecks) {
         if (target == null || specificAttack == States.IDLE) {
             this.boss.setState(States.IDLE);
             return;

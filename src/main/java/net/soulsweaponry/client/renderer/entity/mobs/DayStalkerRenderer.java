@@ -7,7 +7,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.client.model.entity.mobs.DayStalkerModel;
-import net.soulsweaponry.entity.mobs.DayStalker;
+import net.soulsweaponry.entity.mobs.boss.DayStalker;
 import net.soulsweaponry.util.CustomDeathHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;

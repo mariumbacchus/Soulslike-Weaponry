@@ -17,8 +17,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.mobs.DayStalker;
-import net.soulsweaponry.entity.mobs.NightProwler;
+import net.soulsweaponry.entity.mobs.boss.DayStalker;
+import net.soulsweaponry.entity.mobs.boss.NightProwler;
 import net.soulsweaponry.entity.mobs.WarmthEntity;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
@@ -102,73 +102,73 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private void checkAndSetAttack(LivingEntity target) { //TODO some of the attacks need some polish, like flamethrower should shoot out noclip entities instead, some attacks should be done while standing still, etc.
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         int rand = this.boss.getRandom().nextInt(DayStalker.ATTACKS_LENGTH);
-        DayStalker.Attacks attack = DayStalker.Attacks.values()[rand];
+        DayStalker.States attack = DayStalker.States.values()[rand];
         switch (attack) {
-            case AIR_COMBUSTION -> this.boss.setAttackAnimation(attack);
+            case AIR_COMBUSTION -> this.boss.setState(attack);
             case BLAZE_BARRAGE, SUNFIRE_RUSH -> {
                 if ((this.boss.isFlying() || this.boss.isPhaseTwo()) && !this.isInMeleeRange(target)) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case CONFLAGRATION -> {
                 if (this.boss.isFlying() || (this.boss.isPhaseTwo() && this.specialCooldown <= 0)) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case DECIMATE, DAWNBREAKER -> {
                 if ((this.isInRangeToTriggerMeleeAttack(target) && !this.boss.isFlying()) || this.boss.isPhaseTwo()) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case FLAMES_EDGE -> {
                 if (distanceToEntity < (this.boss.isPhaseTwo() ? 80D : 55D) && !this.boss.isFlying()) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case CHAOS_STORM -> {
                 if (!this.boss.isFlying() && distanceToEntity < 80D && this.specialCooldown <= 0) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case FLAMETHROWER -> {
                 if ((this.boss.isFlying() || this.boss.isPhaseTwo()) && distanceToEntity < 260D) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case RADIANCE -> {
                 if (this.boss.isPhaseTwo()) {
                     if (this.isInRangeToTriggerMeleeAttack(target) && this.specialCooldown <= 0) {
-                        this.boss.setAttackAnimation(attack);
+                        this.boss.setState(attack);
                     }
                 }
             }
             case WARMTH -> {
                 if (this.boss.isPhaseTwo() && this.specialCooldown <= 0 && this.boss.getRandom().nextBoolean()) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case OVERHEAT, INFERNO -> {
                 if (this.boss.isPhaseTwo() && distanceToEntity < 200D) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case FLAMES_REACH -> {
                 if (!this.boss.isFlying() && distanceToEntity < (this.boss.isPhaseTwo() ? 140D : 120)) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case SKY_HIGH -> {
                 if (this.boss.isPhaseTwo() && this.specialCooldown <= 0) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
-            default -> this.boss.setAttackAnimation(DayStalker.Attacks.IDLE);
+            default -> this.boss.setState(DayStalker.States.IDLE);
         }
     }
 
     @Override
     public void tick() {
-        if (this.boss.getRemainingAniTicks() > 0 || this.boss.getAttackAnimation().equals(DayStalker.Attacks.SPAWN)) {
+        if (this.boss.getRemainingAniTicks() > 0 || this.boss.getState().equals(DayStalker.States.SPAWN)) {
             return;
         }
         if (this.boss.isInitiatingPhaseTwo()) {
@@ -206,10 +206,10 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 this.moveAboveTarget(target);
             }
             double distanceToEntity = this.boss.squaredDistanceTo(target);
-            if (this.attackCooldown <= 0 && this.boss.getAttackAnimation().equals(DayStalker.Attacks.IDLE)) {
+            if (this.attackCooldown <= 0 && this.boss.getState().equals(DayStalker.States.IDLE)) {
                 this.checkAndSetAttack(target);
             }
-            switch (this.boss.getAttackAnimation()) {
+            switch (this.boss.getState()) {
                 case AIR_COMBUSTION -> {
                     this.attackLength = 55;
                     this.airCombustion(target);
@@ -334,7 +334,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
                     * (this.boss.isPhaseTwo() ? EntityConfig.day_stalker_special_cooldown_modifier_phase_2 : EntityConfig.day_stalker_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
-            this.boss.setAttackAnimation(DayStalker.Attacks.IDLE);
+            this.boss.setState(DayStalker.States.IDLE);
             this.boss.setChaseTarget(true);
             this.hasExploded = false;
             this.flyY = 6f;

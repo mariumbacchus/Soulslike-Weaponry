@@ -10,7 +10,7 @@ import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.random.Random;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
-import net.soulsweaponry.entity.mobs.Moonknight;
+import net.soulsweaponry.entity.mobs.boss.Moonknight;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import org.jetbrains.annotations.Nullable;

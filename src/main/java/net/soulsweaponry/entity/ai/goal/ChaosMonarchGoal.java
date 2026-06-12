@@ -18,13 +18,13 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.mobs.ChaosMonarch;
-import net.soulsweaponry.entity.mobs.ChaosMonarch.Attack;
+import net.soulsweaponry.entity.mobs.boss.ChaosMonarch;
+import net.soulsweaponry.entity.mobs.boss.ChaosMonarch.States;
 import net.soulsweaponry.entity.projectile.*;
 import net.soulsweaponry.entity.projectile.arrow.ChargedArrow;
-import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EntityRegistry;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -56,14 +56,14 @@ public class ChaosMonarchGoal extends Goal {
     @Override
     public void stop() {
         super.stop();
-        this.boss.setAttack(0);
+        this.boss.setState(States.IDLE);
         this.boss.setAttacking(false);
     }
 
     public void resetAttack(float cooldownModifier) {
         this.attackStatus = 0;
         this.attackCooldown = this.adjustCooldown(cooldownModifier);
-        this.boss.setAttack(0);
+        this.boss.setState(States.IDLE);
         this.randomOrNot = this.boss.getRandom().nextBoolean();
         this.controlledProjectile = this.boss.getRandom().nextInt(5);
         this.blockPos = null;
@@ -75,11 +75,11 @@ public class ChaosMonarchGoal extends Goal {
     }
 
     public void randomAttack() {
-        int attack = this.boss.getRandom().nextInt(6 - 2 + 1) + 2;
+        int attack = this.boss.getRandom().nextInt(5) + 2;
         if (attack == 3 && this.boss.getTarget() != null && this.boss.squaredDistanceTo(this.boss.getTarget()) > 40) {
-            this.boss.setAttack(0);
+            this.boss.setState(States.IDLE);
         } else {
-            this.boss.setAttack(attack);
+            this.boss.setState(States.values()[attack]);
         }
     }
 
@@ -92,8 +92,8 @@ public class ChaosMonarchGoal extends Goal {
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
 
             if (this.attackCooldown < 0) {
-                if (this.boss.getAttack() == Attack.IDLE) this.randomAttack();
-                switch (this.boss.getAttack()) {
+                if (this.boss.getState() == States.IDLE) this.randomAttack();
+                switch (this.boss.getState()) {
                     case TELEPORT -> {
                         this.attackStatus++;
                         if (this.attackStatus % 2 == 0 && this.attackStatus < 10) {

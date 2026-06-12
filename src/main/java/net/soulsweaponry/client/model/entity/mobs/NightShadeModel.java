@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.entity.mobs;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.mobs.NightShade;
+import net.soulsweaponry.entity.mobs.boss.NightShade;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class NightShadeModel extends DefaultedEntityGeoModel<NightShade> {

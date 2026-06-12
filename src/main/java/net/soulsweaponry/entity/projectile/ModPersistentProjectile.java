@@ -47,6 +47,7 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
         super(entityType, world);
         this.setBoundingBoxWidth(entityType.getDimensions().width());
         this.setBoundingBoxHeight(entityType.getDimensions().height());
+        this.setStack(ItemStack.EMPTY);
     }
 
     public ModPersistentProjectile(EntityType<? extends PersistentProjectileEntity> type, LivingEntity owner, World world, ItemStack projectileStack, @Nullable ItemStack weapon) {

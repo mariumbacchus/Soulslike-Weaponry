@@ -2,7 +2,7 @@ package net.soulsweaponry.client.model.entity.mobs;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.mobs.ChaosMonarch;
+import net.soulsweaponry.entity.mobs.boss.ChaosMonarch;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 public class ChaosMonarchModel extends DefaultedEntityGeoModel<ChaosMonarch> {

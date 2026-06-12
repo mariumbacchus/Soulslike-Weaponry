@@ -17,7 +17,7 @@ import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.ai.goal.hitboxes.ReturningKnightHitboxes;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
-import net.soulsweaponry.entity.mobs.ReturningKnight;
+import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.entity.util.RandomSummonPos;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -75,11 +75,7 @@ public class ReturningKnightGoal extends Goal {
     public void stop() {
         super.stop();
         this.boss.setAttacking(false);
-        this.boss.setObliterate(false);
-        this.boss.setBlind(false);
-        this.boss.setRupture(false);
-        this.boss.setSummon(false);
-        this.boss.setMaceOfSpades(false);
+        this.boss.setIdle();
         this.attackCooldown = 10;
         this.attackStatus = 0;
         this.cordsRegistered = false;
@@ -112,21 +108,21 @@ public class ReturningKnightGoal extends Goal {
             if (this.boss.getHealth() <= this.boss.getMaxHealth() / 2.0F && !this.hasUsedUnbreakable && this.attackCooldown > 20) {
                 this.hasUsedUnbreakable = true;
                 this.unbreakableTimer = 38;
-                this.boss.setUnbreakable(true);
+                this.boss.setState(ReturningKnight.States.UNBREAKABLE);
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 40));
             } else if (this.unbreakableTimer == 19) {
                 this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.NIGHTFALL_SHIELD_EVENT, SoundCategory.HOSTILE, .75f, 1f);
             }
             if (this.unbreakableTimer < 0) {
-                this.boss.setUnbreakable(false);
+                this.boss.setIdle();
                 this.unbreakableTimer = -5;
             }
 
             //Children of the grave (Summoning), only do if no healers are alive
             if (this.attackCooldown < 0 && this.specialCooldown < 0 && this.summonCooldown < 0 && this.randomAttack == 3 && !this.boss.hasHealersAlive()) {
-                this.boss.setSummon(true);
+                this.boss.setState(ReturningKnight.States.SUMMON);
             }
-            if (this.boss.getSummon()) {
+            if (this.boss.isState(ReturningKnight.States.SUMMON)) {
                 this.attackStatus++;
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 if (this.attackStatus == 30) { //58,4 ticks
@@ -147,7 +143,7 @@ public class ReturningKnightGoal extends Goal {
                     this.boss.getWorld().playSound(null, target.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 0.7f, 1f);
                 }
                 if (this.attackStatus >= 48) { //96,6 ticks
-                    this.boss.setSummon(false);
+                    this.boss.setIdle();
                     this.resetAttackCooldown(1);
                     this.resetSummonCooldown(1);
                     this.resetSpecialCooldown(1.5f);
@@ -160,14 +156,14 @@ public class ReturningKnightGoal extends Goal {
             if (this.attackCooldown < 0 && !this.cordsRegistered && distanceToEntity < 50D && this.randomAttack == 5 && target.getBlockPos() != null) {
                 this.targetPos = target.getBlockPos();
                 this.boss.setObliterateTarget(this.targetPos);
-                this.boss.setObliterate(true);
+                this.boss.setState(ReturningKnight.States.MACE_OF_SPADES);
 
                 this.obliterateHitEntities.clear();
                 this.obliterateImpactDone = false;
 
                 this.cordsRegistered = true;
             }
-            if (this.boss.getMaceOfSpades() && this.targetPos != null) {
+            if (this.boss.isState(ReturningKnight.States.MACE_OF_SPADES) && this.targetPos != null) {
                 this.attackStatus++;
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
@@ -202,7 +198,7 @@ public class ReturningKnightGoal extends Goal {
                     }
                 }
                 if (this.attackStatus >= 36) { //38
-                    this.boss.setMaceOfSpades(false);
+                    this.boss.setIdle();
                     this.resetAttackCooldown(1);
                     this.cordsRegistered = false;
                     this.attackStatus = 0;
@@ -218,14 +214,14 @@ public class ReturningKnightGoal extends Goal {
                 this.targetPos = target.getBlockPos();
                 this.boss.setObliterateTarget(this.targetPos);
                 this.boss.setAttackStartWorldTime(this.boss.getWorld().getTime());
-                this.boss.setObliterate(true);
+                this.boss.setState(ReturningKnight.States.OBLITERATE);
 
                 this.obliterateHitEntities.clear();
                 this.obliterateImpactDone = false;
 
                 this.cordsRegistered = true;
             }
-            if (this.boss.getObliterate() && this.targetPos != null) {  //46,6 ticks
+            if (this.boss.isState(ReturningKnight.States.OBLITERATE) && this.targetPos != null) {  //46,6 ticks
                 this.attackStatus++;
                 ReturningKnightHitboxes.updateObliterateMaceHitbox(this.obliterateMaceHitbox, this.boss, this.targetPos, this.attackStatus);
                 this.boss.getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
@@ -257,7 +253,7 @@ public class ReturningKnightGoal extends Goal {
                     BossHitboxHelper.breakBlocksInsideHitbox(this.obliterateMaceHitbox.copy().offsetWorld(0, ReturningKnightHitboxes.OBLITERATE_MACE_SIZE.y / 2.0D, 0), this.boss.getWorld(), this.boss, this.boss::canDestroy, false);
                 }
                 if (this.attackStatus >= 32) {
-                    this.boss.setObliterate(false);
+                    this.boss.setIdle();
                     this.resetAttackCooldown(1);
                     this.cordsRegistered = false;
                     this.attackStatus = 0;
@@ -271,9 +267,9 @@ public class ReturningKnightGoal extends Goal {
 
             //Blinding Light
             if (this.attackCooldown < 0 && distanceToEntity < 25D && this.randomAttack == 1) {
-                this.boss.setBlind(true);
+                this.boss.setState(ReturningKnight.States.BLIND);
             }
-            if (this.boss.getBlind()) { //22,6 ticks
+            if (this.boss.isState(ReturningKnight.States.BLIND)) { //22,6 ticks
                 this.attackStatus++;
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 double x = target.getX() - this.boss.getX();
@@ -289,7 +285,7 @@ public class ReturningKnightGoal extends Goal {
                     }
                 }
                 if (this.attackStatus >= 19) {
-                    this.boss.setBlind(false);
+                    this.boss.setIdle();
                     this.resetAttackCooldown(0);
                     this.attackStatus = 0;
                     this.randomAttack = this.boss.getRandom().nextInt(this.numberOfAttacks);
@@ -298,9 +294,9 @@ public class ReturningKnightGoal extends Goal {
 
             //Eruption
             if (this.attackCooldown < 0 && this.specialCooldown < 0 && distanceToEntity < 300D && this.randomAttack == 2) {
-                this.boss.setRupture(true);
+                this.boss.setState(ReturningKnight.States.RUPTURE);
             }
-            if (this.boss.getRupture()) { //101,6 ticks
+            if (this.boss.isState(ReturningKnight.States.RUPTURE)) { //101,6 ticks
                 this.attackStatus++;
                 this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
                 Box aoe = new Box(this.boss.getX() - 18, this.boss.getY() - 8, this.boss.getZ() - 18, this.boss.getX() + 18, this.boss.getY() + 8, this.boss.getZ() + 18);
@@ -323,7 +319,7 @@ public class ReturningKnightGoal extends Goal {
                     }
                 }
                 if (this.attackStatus >= 70) {
-                    this.boss.setRupture(false);
+                    this.boss.setIdle();
                     this.resetAttackCooldown(0);
                     this.resetSpecialCooldown(1); //300
                     this.attackStatus = 0;
@@ -340,7 +336,9 @@ public class ReturningKnightGoal extends Goal {
             if (this.randomAttack == 4) {
                 this.randomAttack = 0;
             }
-            if (((this.randomAttack == 1 && !this.boss.getBlind()) || (this.randomAttack == 5 && !this.boss.getMaceOfSpades()) || (this.randomAttack == 0 && !this.boss.getObliterate())) && this.attackCooldown < -40) {
+            if (((this.randomAttack == 1 && !this.boss.isState(ReturningKnight.States.BLIND))
+                    || (this.randomAttack == 5 && !this.boss.isState(ReturningKnight.States.MACE_OF_SPADES))
+                    || (this.randomAttack == 0 && !this.boss.isState(ReturningKnight.States.OBLITERATE))) && this.attackCooldown < -40) {
                 this.randomAttack = this.boss.getRandom().nextInt(this.numberOfAttacks);
             }
 

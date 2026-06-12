@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityStatuses;
@@ -42,7 +42,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.Optional;
 import java.util.UUID;
 
-public class DayStalker extends BossEntity implements GeoEntity {
+public class DayStalker extends BossEntity<DayStalker.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
@@ -51,8 +51,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
     public int phaseTwoMaxTransitionTicks = 120;
     public int maxSpawnTicks = 50;
     public int flightTimer = 0;
-    public static final int ATTACKS_LENGTH = DayStalker.Attacks.values().length;
-    private static final TrackedData<Integer> ATTACKS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.INTEGER);
+    public static final int ATTACKS_LENGTH = States.values().length;
     private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -66,7 +65,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
     private static final TrackedData<Float> FLAMES_EDGE_RADIUS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.FLOAT);
 
     public DayStalker(EntityType<? extends DayStalker> entityType, World world) {
-        super(entityType, world, Color.YELLOW);
+        super(entityType, world, Color.YELLOW, States.class);
     }
 
     @Override
@@ -79,18 +78,6 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
-    public void setAttackAnimation(Attacks attack) {
-        for (int i = 0; i < ATTACKS_LENGTH; i++) {
-            if (Attacks.values()[i].equals(attack)) {
-                this.dataTracker.set(ATTACKS, i);
-            }
-        }
-    }
-
-    public Attacks getAttackAnimation() {
-        return Attacks.values()[this.dataTracker.get(ATTACKS)];
-    }
-
     public boolean isInitiatingPhaseTwo() {
         return this.dataTracker.get(INITIATING_PHASE_2);
     }
@@ -101,7 +88,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     private PlayState chains(AnimationState<?> state) {
         if (!this.isInitiatingPhaseTwo() && this.isPhaseTwo()) {
-            if (this.getAttackAnimation().equals(Attacks.FLAMES_REACH)) {
+            if (this.getState().equals(States.FLAMES_REACH)) {
                 return PlayState.STOP;
             } else {
                 state.getController().setAnimation(RawAnimation.begin().then("idle_chains_2", Animation.LoopType.LOOP));
@@ -111,7 +98,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
     }
 
     private PlayState idles(AnimationState<?> state) {
-        if (this.isDead() || this.getAttackAnimation().equals(Attacks.DEATH) || this.getDeathTicks() > 0) {
+        if (this.isDead() || this.getState().equals(States.DEATH) || this.getDeathTicks() > 0) {
             if (this.isPhaseTwo()) {
                 state.getController().setAnimation(RawAnimation.begin().then("death_2", Animation.LoopType.LOOP));
             } else {
@@ -120,13 +107,13 @@ public class DayStalker extends BossEntity implements GeoEntity {
         } else {
             if (!this.isInitiatingPhaseTwo()) {
                 if (this.isPhaseTwo()) {
-                    if (!this.getAttackAnimation().equals(Attacks.FLAMES_REACH)) {
+                    if (!this.getState().equals(States.FLAMES_REACH)) {
                         state.getController().setAnimation(RawAnimation.begin().then("idle_2", Animation.LoopType.LOOP));
                     } else {
                         state.getController().setAnimation(RawAnimation.begin().then("idle_flames_reach_2", Animation.LoopType.LOOP));
                     }
                 } else {
-                    if (!this.getAttackAnimation().equals(Attacks.FLAMES_REACH)) {
+                    if (!this.getState().equals(States.FLAMES_REACH)) {
                         if (this.isFlying()) {
                             state.getController().setAnimation(RawAnimation.begin().then("idle_flying_1", Animation.LoopType.LOOP));
                         } else {
@@ -149,7 +136,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
             state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
         } else {
             if (!this.isPhaseTwo()) {
-                switch (this.getAttackAnimation()) {
+                switch (this.getState()) {
                     case AIR_COMBUSTION -> state.getController().setAnimation(RawAnimation.begin().then("air_combustion_1", Animation.LoopType.LOOP));
                     case DECIMATE -> state.getController().setAnimation(RawAnimation.begin().then("decimate_1", Animation.LoopType.LOOP));
                     case DAWNBREAKER -> state.getController().setAnimation(RawAnimation.begin().then("dawnbreaker_1", Animation.LoopType.LOOP));
@@ -162,7 +149,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                     default -> state.getController().setAnimation(RawAnimation.begin().then("empty_1", Animation.LoopType.LOOP));
                 }
             } else {
-                switch (this.getAttackAnimation()) {
+                switch (this.getState()) {
                     case AIR_COMBUSTION -> state.getController().setAnimation(RawAnimation.begin().then("air_combustion_2", Animation.LoopType.LOOP));
                     case DECIMATE -> state.getController().setAnimation(RawAnimation.begin().then("decimate_2", Animation.LoopType.LOOP));
                     case DAWNBREAKER -> state.getController().setAnimation(RawAnimation.begin().then("dawnbreaker_2", Animation.LoopType.LOOP));
@@ -216,7 +203,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     @Override
     public void setDeath() {
-        this.setAttackAnimation(Attacks.DEATH);
+        this.setState(States.DEATH);
     }
 
     @Override
@@ -254,7 +241,6 @@ public class DayStalker extends BossEntity implements GeoEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(ATTACKS, 0);
         builder.add(INITIATING_PHASE_2, false);
         builder.add(IS_PHASE_2, false);
         builder.add(PARTNER_UUID, Optional.empty());
@@ -283,11 +269,6 @@ public class DayStalker extends BossEntity implements GeoEntity {
 
     public boolean isPartner(LivingEntity living) {
         return this.getPartnerUuid() != null && living.getUuid() != null && this.getPartnerUuid().equals(living.getUuid());
-    }
-
-    public enum Attacks {
-        IDLE, DEATH, SPAWN, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
-        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH, BLAZE_BARRAGE, SKY_HIGH
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
@@ -392,7 +373,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         if (this.isSpawning()) {
             this.spawnTicks++;
             if (this.spawnTicks >= this.maxSpawnTicks) {
-                this.setAttackAnimation(Attacks.IDLE);
+                this.setState(States.IDLE);
                 NightProwler partner;
                 if (!this.getWorld().isClient && (partner = this.getPartner((ServerWorld) this.getWorld())) != null) {
                     boolean bl = this.getRandom().nextBoolean();
@@ -404,13 +385,13 @@ public class DayStalker extends BossEntity implements GeoEntity {
         this.setRemainingAniTicks(Math.max(this.getRemainingAniTicks() - 1, 0));
         if (this.getRemainingAniTicks() <= 0 && this.shouldWaitAnimation()) {
             this.setWaitAnimation(false);
-            this.setAttackAnimation(Attacks.IDLE);
+            this.setState(States.IDLE);
         }
     }
 
     @Override
     public boolean isSpawning() {
-        return this.getAttackAnimation().equals(Attacks.SPAWN);
+        return this.getState().equals(States.SPAWN);
     }
 
     @Override
@@ -440,7 +421,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
                 this.getWorld().addParticle(ParticleTypes.FLAME, this.getX(), this.getEyeY(), this.getZ(), velX / 10, velY / 10, velZ / 10);
             }
         }
-        if (this.getAttackAnimation().equals(Attacks.FLAMES_EDGE)) {
+        if (this.getState().equals(States.FLAMES_EDGE)) {
             float r = this.getFlamesEdgeRadius();
             for (int theta = 0; theta < 360; theta += this.isPhaseTwo() ? 4 : 8) {
                 double x0 = this.getX();
@@ -543,7 +524,7 @@ public class DayStalker extends BossEntity implements GeoEntity {
         if (source.isOf(DamageTypes.FALL)) {
             return false;
         }
-        if (this.getAttackAnimation().equals(Attacks.OVERHEAT)) {
+        if (this.getState().equals(States.OVERHEAT)) {
             amount = amount * 0.6f;
         }
         if (this.isEmpowered() && source.isIn(DamageTypeTags.IS_PROJECTILE) && !this.isFlying()) {
@@ -579,5 +560,10 @@ public class DayStalker extends BossEntity implements GeoEntity {
     @Override
     protected boolean shouldDropLoot() {
         return this.isPhaseTwo();
+    }
+
+    public enum States {
+        IDLE, DEATH, SPAWN, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
+        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH, BLAZE_BARRAGE, SKY_HIGH
     }
 }

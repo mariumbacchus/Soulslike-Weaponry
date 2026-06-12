@@ -24,6 +24,8 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.mobs.*;
+import net.soulsweaponry.entity.mobs.boss.DayStalker;
+import net.soulsweaponry.entity.mobs.boss.NightProwler;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.NightSkull;
 import net.soulsweaponry.entity.projectile.NoDragWitherSkull;
@@ -103,61 +105,61 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     private void checkAndSetAttack(LivingEntity target) {
         double distanceToEntity = this.boss.squaredDistanceTo(target);
         int rand = this.boss.getRandom().nextInt(NightProwler.ATTACKS_LENGTH);
-        NightProwler.Attacks attack = NightProwler.Attacks.values()[rand];
+        NightProwler.States attack = NightProwler.States.values()[rand];
         switch (attack) {
             case TRINITY -> {
                 if (this.isInRangeToTriggerMeleeAttack(target) || this.boss.isFlying()) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case REAPING_SLASH -> {
                 if (!this.boss.isPhaseTwo() && distanceToEntity < 300D) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case NIGHTS_EMBRACE -> {
                 if (this.boss.isPhaseTwo() ? !this.isSummonsAlive() : this.specialCooldown <= 0) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case RIPPLE_FANG, SOUL_REAPER -> {
                 if (this.isInRangeToTriggerMeleeAttack(target)) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case DARKNESS_RISE -> {
                 if (this.isInRangeToTriggerMeleeAttack(target) && !this.boss.isFlying()) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case BLADES_REACH -> {
                 if (distanceToEntity < 200D) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
-            case DIMINISHING_LIGHT, ENGULF, BLACKFLAME_SNAKE -> this.boss.setAttackAnimation(attack);
+            case DIMINISHING_LIGHT, ENGULF, BLACKFLAME_SNAKE -> this.boss.setState(attack);
             case ECLIPSE -> {
                 if (this.boss.isPhaseTwo() && this.specialCooldown <= 0) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case LUNAR_DISPLACEMENT -> {
                 if (this.boss.isPhaseTwo()) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
             case DEATHBRINGERS_GRASP -> {
                 if (distanceToEntity < 81D) {
-                    this.boss.setAttackAnimation(attack);
+                    this.boss.setState(attack);
                 }
             }
-            default -> this.boss.setAttackAnimation(NightProwler.Attacks.IDLE);
+            default -> this.boss.setState(NightProwler.States.IDLE);
         }
     }
 
     @Override
     public void tick() {
-        if (this.boss.getRemainingAniTicks() > 0 || this.boss.getAttackAnimation().equals(NightProwler.Attacks.SPAWN)) {
+        if (this.boss.getRemainingAniTicks() > 0 || this.boss.getState().equals(NightProwler.States.SPAWN)) {
             return;
         }
         if (this.boss.isInitiatingPhaseTwo()) {
@@ -188,15 +190,15 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         * */
         LivingEntity target = this.boss.getTarget();
         if (target != null) {
-            if (this.boss.isFlying() && !this.boss.getAttackAnimation().equals(NightProwler.Attacks.ECLIPSE)) {
+            if (this.boss.isFlying() && !this.boss.getState().equals(NightProwler.States.ECLIPSE)) {
                 this.moveAboveTarget(target);
             }
             //double distanceToEntity = this.boss.squaredDistanceTo(target);
-            if (this.attackCooldown <= 0 && this.boss.getAttackAnimation().equals(NightProwler.Attacks.IDLE)) {
+            if (this.attackCooldown <= 0 && this.boss.getState().equals(NightProwler.States.IDLE)) {
                 this.checkAndSetAttack(target);
             }
             boolean phase2 = this.boss.isPhaseTwo();
-            switch (this.boss.getAttackAnimation()) {
+            switch (this.boss.getState()) {
                 case TRINITY -> {
                     this.attackLength = phase2 ? 90 : 110;
                     this.trinity();
@@ -262,7 +264,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.boss.lookAtEntity(target, this.boss.getMaxLookYawChange(), this.boss.getMaxLookPitchChange());
         Vec3d vec3d = this.boss.getVelocity().multiply(0.8f, 0.6f, 0.8f);
         double d = vec3d.y;
-        boolean bl = this.boss.getAttackAnimation().equals(NightProwler.Attacks.TRINITY);
+        boolean bl = this.boss.getState().equals(NightProwler.States.TRINITY);
         if (this.boss.getY() < target.getY() || this.boss.getY() < target.getY() + (bl ? 9f : 6f)) {
             d = Math.max(0.0, d);
             d += 0.3 - d * (double)0.6f;
@@ -293,7 +295,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             if (specialCooldown != 0) this.specialCooldown = MathHelper.floor((double)specialCooldown
                     * (this.boss.isPhaseTwo() ? EntityConfig.night_prowler_special_cooldown_modifier_phase_2 : EntityConfig.night_prowler_special_cooldown_modifier_phase_1));
             this.attackLength = 0;
-            this.boss.setAttackAnimation(NightProwler.Attacks.IDLE);
+            this.boss.setState(NightProwler.States.IDLE);
             this.boss.setChaseTarget(true);
             this.hasExploded = false;
             this.boss.setParticleState(0);

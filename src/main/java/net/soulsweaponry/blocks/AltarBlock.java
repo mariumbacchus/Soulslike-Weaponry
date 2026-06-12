@@ -16,9 +16,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.mobs.DraugrBoss;
-import net.soulsweaponry.entity.mobs.Moonknight;
-import net.soulsweaponry.entity.mobs.ReturningKnight;
+import net.soulsweaponry.entity.mobs.boss.DraugrBoss;
+import net.soulsweaponry.entity.mobs.boss.Moonknight;
+import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.registry.*;
 import net.soulsweaponry.util.ModTags;
 
@@ -35,7 +35,7 @@ public class AltarBlock extends SpawnBossBlock {
     public boolean spawnBoss(World world, BlockPos pos, PlayerEntity player, ItemStack itemStack) {
         if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
             ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
-            entity.setSpawning(true);
+            entity.setSpawning();
             return spawnEntity(world, pos, player, entity, EntityConfig.returning_knight_disable_respawn, itemStack, EntityConfig.returning_knight_consume_item_on_summoning);
         } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
             DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
@@ -43,7 +43,7 @@ public class AltarBlock extends SpawnBossBlock {
             return spawnEntity(world, pos, player, entity, EntityConfig.old_champions_remains_disable_respawn, itemStack, EntityConfig.old_champions_remains_consume_item_on_summoning);
         } else if (itemStack.isOf(ItemRegistry.ESSENCE_OF_EVENTIDE)) {
             Moonknight entity = new Moonknight(EntityRegistry.MOONKNIGHT, world);
-            entity.setSpawning(true);
+            entity.setSpawning();
             return spawnEntity(world, pos, player, entity, EntityConfig.fallen_icon_disable_respawn, itemStack, EntityConfig.fallen_icon_consume_item_on_summoning);
         }
         return false;

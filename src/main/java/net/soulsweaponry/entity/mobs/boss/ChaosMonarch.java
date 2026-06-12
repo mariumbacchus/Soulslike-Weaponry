@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
@@ -12,9 +12,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
@@ -25,13 +22,14 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ChaosMonarchGoal;
 import net.soulsweaponry.items.abilities.inventorytick.CorruptGround;
-import net.soulsweaponry.registry.*;
+import net.soulsweaponry.registry.ArmorRegistry;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -40,12 +38,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class ChaosMonarch extends BossEntity implements GeoEntity {
+public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
     private int spawnTicks;
-    private static final TrackedData<Integer> ATTACK = DataTracker.registerData(ChaosMonarch.class, TrackedDataHandlerRegistry.INTEGER);
     public static final CorruptGround CORRUPT_GROUND = new CorruptGround(
             (int) EntityConfig.chaos_monarch_wither_ground_range,
             0, 3, 0,
@@ -53,11 +50,11 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     );
 
     public ChaosMonarch(EntityType<? extends BossEntity> entityType, World world) {
-        super(entityType, world, Color.PURPLE);
+        super(entityType, world, Color.PURPLE, States.class);
     }
 
     private PlayState predicate(AnimationState<?> state) {
-        switch (this.getAttack()) {
+        switch (this.getState()) {
             case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
             case TELEPORT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("teleport"));
             case MELEE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("swing_staff"));
@@ -93,12 +90,6 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        super.initDataTracker(builder);
-        builder.add(ATTACK, 0);
-    }
-
-    @Override
     public int getTicksUntilDeath() {
         return 80;
     }
@@ -110,7 +101,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     @Override
     public void setDeath() {
-        this.setAttack(7);
+        this.setState(States.DEATH);
     }
 
     @Override
@@ -138,7 +129,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_DEATH, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 60) {
-                this.setAttack(0);;
+                this.setState(States.IDLE);
             }
         }
     }
@@ -188,7 +179,7 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
 
     @Override
     public boolean isSpawning() {
-        return this.getAttack() == Attack.SPAWN;
+        return this.getState() == States.SPAWN;
     }
 
     @Override
@@ -221,50 +212,6 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
                 world.addParticle(particle, true, x, y, z, velocityX * sizeModifier, velocityY * sizeModifier, velocityZ * sizeModifier);
             }
         } 
-    }
-
-    /**
-     * Set the attack based on integer as Attack Id
-     * <p>Idle: > 1 || 7 <
-     * <p>Spawn: 1
-     * <p>Teleport: 2
-     * <p>Melee: 3
-     * <p>Lightning: 4
-     * <p>Shoot: 5
-     * <p>Barrage 6
-     * <p>Death: 7
-     */
-    public void setAttack(int attackId) {
-        this.dataTracker.set(ATTACK, attackId);
-    }
-
-    /**
-     * Turns the given integer previously to the datatracker into an enum for switch
-     * statements.
-     * 
-     * <p> Was previously:
-     * public int getAttack() {
-     *      return this.dataTracker.get(ATTACK);
-     * }
-     * <p> Was changed to current function for clarity reasons.
-     */
-    
-    public Attack getAttack() {
-        return Attack.values()[this.dataTracker.get(ATTACK)];
-    }
-
-    public enum Attack {
-        IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE, DEATH
-    }
-
-    public Vec3d getRotationVec(float pitch, float yaw) {
-        float f = pitch * ((float)Math.PI / 180);
-        float g = -yaw * ((float)Math.PI / 180);
-        float h = MathHelper.cos(g);
-        float i = MathHelper.sin(g);
-        float j = MathHelper.cos(f);
-        float k = MathHelper.sin(f);
-        return new Vec3d(i * j, -k, h * j);
     }
     
     @Override
@@ -310,5 +257,9 @@ public class ChaosMonarch extends BossEntity implements GeoEntity {
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_WITHER_DEATH;
+    }
+
+    public enum States {
+        IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE, DEATH
     }
 }

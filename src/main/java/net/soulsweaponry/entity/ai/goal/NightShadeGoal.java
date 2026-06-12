@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.mobs.NightShade;
+import net.soulsweaponry.entity.mobs.boss.NightShade;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
 import net.soulsweaponry.registry.EntityRegistry;
@@ -73,28 +73,28 @@ public class NightShadeGoal extends Goal {
 
     private void randomAttack(LivingEntity target) {
         if (target == null) {
-            this.boss.setAttackState(NightShade.AttackStates.IDLE);
+            this.boss.setState(NightShade.States.IDLE);
             return;
         }
-        int rand = this.boss.getRandom().nextInt(NightShade.AttackStates.values().length);
-        NightShade.AttackStates attack = NightShade.AttackStates.values()[rand];
+        int rand = this.boss.getRandom().nextInt(NightShade.States.values().length);
+        NightShade.States attack = NightShade.States.values()[rand];
         switch (attack) {
             case GENERIC_CHARGE, AOE, BIG_SWIPES -> {
                 this.boss.setCharging(true);
-                this.boss.setAttackState(attack);
+                this.boss.setState(attack);
             }
             case THROW_MOONLIGHT, SHADOW_ORBS -> {
                 if (!this.boss.isInsideWall()) {
                     this.boss.setCharging(true);
-                    this.boss.setAttackState(attack);
+                    this.boss.setState(attack);
                 }
             }
-            default -> this.boss.setAttackState(NightShade.AttackStates.IDLE);
+            default -> this.boss.setState(NightShade.States.IDLE);
         }
     }
 
     public void tick() {
-        if (this.boss.isDead() || this.boss.getAttackState().equals(NightShade.AttackStates.DUPLICATE) || this.boss.isSpawning()) {
+        if (this.boss.isDead() || this.boss.getState().equals(NightShade.States.DUPLICATE) || this.boss.isSpawning()) {
             return;
         }
         attackCooldown--;
@@ -102,14 +102,14 @@ public class NightShadeGoal extends Goal {
         if (target != null) {
             Vec3d vec3d = target.getEyePos();
             if (this.attackCooldown > 0) {
-                this.boss.setAttackState(NightShade.AttackStates.IDLE);
+                this.boss.setState(NightShade.States.IDLE);
                 this.moveRandomSpot(vec3d);
             }
-            if (this.attackCooldown < 0 && this.boss.getAttackState().equals(NightShade.AttackStates.IDLE)) {
+            if (this.attackCooldown < 0 && this.boss.getState().equals(NightShade.States.IDLE)) {
                 this.randomAttack(target);
                 this.boss.getMoveControl().moveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
             }
-            switch (this.boss.getAttackState()) {
+            switch (this.boss.getState()) {
                 case BIG_SWIPES -> this.bigSwipes(target);
                 case GENERIC_CHARGE -> this.genericCharge(target);
                 case AOE -> this.aoe(target);

@@ -3,7 +3,7 @@ package net.soulsweaponry.entity.ai.goal.hitboxes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.collision.RotatableHitbox;
-import net.soulsweaponry.entity.mobs.ReturningKnight;
+import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public class ReturningKnightHitboxes {
 

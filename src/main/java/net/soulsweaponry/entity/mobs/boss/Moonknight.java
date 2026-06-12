@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.mobs;
+package net.soulsweaponry.entity.mobs.boss;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -44,7 +44,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Moonknight extends BossEntity implements GeoEntity {
+public class Moonknight extends BossEntity<Moonknight.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     public int deathTicks;
@@ -57,18 +57,15 @@ public class Moonknight extends BossEntity implements GeoEntity {
     @Environment(EnvType.CLIENT)
     public float renderBeamHeight;
 
-    private static final TrackedData<Boolean> SPAWNING = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> INITIATE_PHASE_2 = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> CAN_BEAM = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_SWORD_CHARGING = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Integer> ATTACK = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<BlockPos> BEAM_LOCATION = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Float> BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.FLOAT);
     private static final TrackedData<Boolean> INITIATED_PHASE_2 = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
-        super(entityType, world, Color.WHITE);
+        super(entityType, world, Color.WHITE, Moonknight.States.class);
     }
 
     public static DefaultAttributeContainer.Builder createBossAttributes() {
@@ -86,21 +83,13 @@ public class Moonknight extends BossEntity implements GeoEntity {
         return fallDistance > 6 ? super.computeFallDamage(fallDistance, damageMultiplier) : 0;
     }
 
-    public void setSpawning(boolean bl) {
-        this.dataTracker.set(SPAWNING, bl);
+    public void setSpawning() {
+        this.setState(States.SPAWN);
     }
 
     @Override
     public boolean isSpawning() {
-        return this.dataTracker.get(SPAWNING);
-    }
-
-    public void initiatePhaseTwo(boolean bl) {
-        this.dataTracker.set(INITIATE_PHASE_2, bl);
-    }
-
-    public boolean isInitiatingPhaseTwo() {
-        return this.dataTracker.get(INITIATE_PHASE_2);
+        return this.isState(States.SPAWN);
     }
 
     public void setPhaseTwo(boolean bl) {
@@ -143,10 +132,16 @@ public class Moonknight extends BossEntity implements GeoEntity {
         return this.dataTracker.get(IS_SWORD_CHARGING);
     }
 
+    /**
+     * Used for the model change during phase two transition.
+     */
     public void setInitiatedPhaseTwo(boolean bl) {
         this.dataTracker.set(INITIATED_PHASE_2, bl);
     }
 
+    /**
+     * Used for the model change during phase two transition.
+     */
     public boolean initiatedPhaseTwo() {
         return this.dataTracker.get(INITIATED_PHASE_2);
     }
@@ -164,35 +159,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
         this.absorbedProjectileDamage.clear();
     }
 
-    public void setPhaseOneAttack(MoonknightPhaseOne phaseOneAttack) {
-        for (int i = 0; i < MoonknightPhaseOne.values().length; i++) {
-            if (MoonknightPhaseOne.values()[i].equals(phaseOneAttack)) {
-                this.dataTracker.set(ATTACK, i);
-                return;
-            }
-        }
-    }
-
-    public MoonknightPhaseOne getPhaseOneAttack() {
-        return MoonknightPhaseOne.values()[this.dataTracker.get(ATTACK)];
-    }
-
-    public void setPhaseTwoAttack(MoonknightPhaseTwo phaseTwoAttack) {
-        for (int i = 0; i < MoonknightPhaseTwo.values().length; i++) {
-            if (MoonknightPhaseTwo.values()[i].equals(phaseTwoAttack)) {
-                this.dataTracker.set(ATTACK, i);
-                return;
-            }
-        }
-    }
-
-    public MoonknightPhaseTwo getPhaseTwoAttack() {
-        return MoonknightPhaseTwo.values()[this.dataTracker.get(ATTACK)];
-    }
-
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATE_PHASE_2)) {
             return false;
         }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
@@ -201,7 +170,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 this.setPlayingMusic(false);
             }
             this.clearStatusEffects();
-            this.initiatePhaseTwo(true);
+            this.setState(States.INITIATE_PHASE_2);
             getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
             return false;
         }
@@ -250,7 +219,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATE_PHASE_2)) {
             this.phaseTransitionTicks++;
             this.tryToPlayBossMusic();
             if (this.phaseTransitionTicks >= 40) {
@@ -271,8 +240,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
             }
             if (this.phaseTransitionTicks >= this.phaseTransitionMaxTicks) {
                 this.setPhaseTwo(true);
-                this.initiatePhaseTwo(false);
-                this.setPhaseTwoAttack(MoonknightPhaseTwo.IDLE);
+                this.setState(States.IDLE);
                 this.setCustomName(Text.translatable("entity.soulsweapons.moonknight_phase_2"));
                 this.bossBar.setColor(Color.BLUE);
             }
@@ -300,11 +268,10 @@ public class Moonknight extends BossEntity implements GeoEntity {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
             if (this.spawnTicks >= 80) {
-                this.setSpawning(false);
-                this.setPhaseOneAttack(MoonknightPhaseOne.IDLE);
+                this.setIdle();
             }
         }
-        if (this.getWorld().isClient && !this.isDead() && this.isPhaseTwo() && this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
+        if (this.getWorld().isClient && !this.isDead() && this.isPhaseTwo() && this.isState(States.CORE_BEAM) && this.getCanBeam() && !this.isPosNullish(this.getBeamLocation())) {
             Vec3d start = this.getPos().add(0, 6f, 0);
             Vec3d end = this.getBeamLocation().toCenterPos().add(0, this.renderBeamHeight, 0);
             Vec3d between = new Vec3d(end.getX() - start.getX(), end.getY() - start.getY(), end.getZ() - start.getZ());
@@ -325,7 +292,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
             }
         }
         if (this.isPhaseTwo() && !this.isDead() && this.isSwordCharging()) {
-            if (this.getPhaseTwoAttack().equals(MoonknightPhaseTwo.IDLE)) this.setChargingSword(false);
+            if (this.isIdle()) {
+                this.setChargingSword(false);
+            }
         }
     }
 
@@ -436,12 +405,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(SPAWNING, false);
         builder.add(PHASE_2, false);
-        builder.add(INITIATE_PHASE_2, false);
         builder.add(CAN_BEAM, false);
         builder.add(IS_SWORD_CHARGING, false);
-        builder.add(ATTACK, 0);
         builder.add(BEAM_LOCATION, BlockPos.ORIGIN);
         builder.add(BEAM_HEIGHT, 0f);
         builder.add(INITIATED_PHASE_2, false);
@@ -453,7 +419,7 @@ public class Moonknight extends BossEntity implements GeoEntity {
     }
 
     private PlayState phase(AnimationState<?> state) {
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATE_PHASE_2)) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
         } else if (this.isPhaseTwo()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("phase_2"));
@@ -473,71 +439,44 @@ public class Moonknight extends BossEntity implements GeoEntity {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
         } else if (this.isSpawning()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn_phase_1"));
-        } else if (this.isInitiatingPhaseTwo()) {
+        } else if (this.isState(States.INITIATE_PHASE_2)) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("initiate_phase_2"));
         } else {
-            if (this.isPhaseTwo()) {
-                switch (this.getPhaseTwoAttack()) {
-                    case BLINDING_LIGHT ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light"));
-                    case CORE_BEAM ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("core_beam_phase_2"));
-                    case IDLE -> {
-                        if (this.isAttacking()) {
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
-                        } else {
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
-                        }
+            switch (this.getState()) {
+                case BLINDING_LIGHT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light"));
+                case CORE_BEAM -> state.getController().setAnimation(RawAnimation.begin().thenPlay("core_beam_phase_2"));
+                case IDLE -> {
+                    if (this.isAttacking()) {
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
+                    } else {
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
                     }
-                    case MOONFALL ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
-                    case MOONVEIL ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("moon_explosion_phase_2"));
-                    case SWORD_OF_LIGHT ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("sword_of_light_phase_2"));
-                    case THRUST -> state.getController().setAnimation(RawAnimation.begin().thenPlay("thrust_phase_2"));
-                    case RUPTURE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_2"));
-                    case HEAVY_SWING -> state.getController().setAnimation(RawAnimation.begin().thenPlay("heavy_swing_phase_2"));
-                    case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
                 }
-            } else {
-                switch (this.getPhaseOneAttack()) {
-                    case BLINDING_LIGHT ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_light"));
-                    case IDLE -> {
-                        if (this.isAttacking()) {
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
-                        } else {
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
-                        }
+                case MOONFALL -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
+                case OBLITERATE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_1"));
+                case MOONVEIL -> state.getController().setAnimation(RawAnimation.begin().thenPlay("moon_explosion_phase_2"));
+                case SWORD_OF_LIGHT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("sword_of_light_phase_2"));
+                case THRUST -> state.getController().setAnimation(RawAnimation.begin().thenPlay("thrust_phase_2"));
+                case RUPTURE -> {
+                    if (this.isPhaseTwo()) {
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_2"));
+                    } else {
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_1"));
                     }
-                    case MACE_OF_SPADES ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_phase_1"));
-                    case OBLITERATE ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_1"));
-                    case RUPTURE ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture_phase_1"));
-                    case SUMMON ->
-                            state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors_phase_1"));
-                    case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
                 }
+                case HEAVY_SWING -> state.getController().setAnimation(RawAnimation.begin().thenPlay("heavy_swing_phase_2"));
+                case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
+                case MACE_OF_SPADES -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_phase_1"));
+                case SUMMON -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors_phase_1"));
             }
         }
         return PlayState.CONTINUE;
     }
 
-    public enum MoonknightPhaseOne {
+    public enum States {
         IDLE,
-        MACE_OF_SPADES,
-        OBLITERATE,
-        SUMMON,
-        RUPTURE,
-        BLINDING_LIGHT,
-        UNBREAKABLE
-    }
-
-    public enum MoonknightPhaseTwo {
-        IDLE,
+        SPAWN,
+        INITIATE_PHASE_2,
         SWORD_OF_LIGHT,
         MOONFALL,
         MOONVEIL,
@@ -546,17 +485,9 @@ public class Moonknight extends BossEntity implements GeoEntity {
         CORE_BEAM,
         RUPTURE,
         HEAVY_SWING,
-        UNBREAKABLE
+        UNBREAKABLE,
+        MACE_OF_SPADES,
+        OBLITERATE,
+        SUMMON,
     }
-    /* 
-     * NB!!! So there was a bug in the Goal class where while using a certain attack, all attacks would stop.
-     * That was because the index of the attack in phase 2 enum and the phase one spawn enum were the same 
-     * (it was SWORD_OF_LIGHT vs SPAWN). So even though they were two different constants, it would
-     * still think that when it attacked, it was spawning, and since the goal stops ticking if it is spawning (to
-     * prevent the boss from attacking early), the boss would simply freeze forever. 
-     * It could have something to do with the fact that the boss passes integers it generates based on the enum value
-     * array index, haven't bothered looking into it. All I know is that in my desperate attempt to make the code better
-     * and more readable, it got worse and just overall chaotic. At least I have learned my lesson.
-     * Will I ever re-do the whole thing again one day? Maybe.
-     */
 }
