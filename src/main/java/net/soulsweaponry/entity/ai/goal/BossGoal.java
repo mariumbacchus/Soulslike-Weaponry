@@ -1,30 +1,40 @@
 package net.soulsweaponry.entity.ai.goal;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.ai.goal.attacks.BossAttack;
+import net.soulsweaponry.entity.ai.goal.events.BossEvent;
 import net.soulsweaponry.entity.mobs.boss.BossEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-public abstract class BossGoal<T extends BossEntity> extends MeleeAttackGoal {
-    public final T boss;
+public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G extends BossGoal<S, B, G>> extends MeleeAttackGoal {
+    public final B boss;
     public final World world;
     public int attackStatus;
     public int specialCooldown;
     public int attackCooldown;
     public int attackLength;
-    private static final List<BossAttack> ATTACKS = new ArrayList<>();
+    /**
+     * Map of states and the attack tied to the state, such as Returning Knight's Obliterate attack
+     */
+    private final Map<S, BossAttack<S, B, G>> attacks = new LinkedHashMap<>();
+    /**
+     * Map of states and the event tied to the state, such as Returning Knight's Unbreakable event
+     * which only happens once when the boss is below 50% health
+     */
+    private final Map<S, BossEvent<S, B, G>> events = new LinkedHashMap<>();
+    @Nullable
+    private BossAttack<S, B, G> currentAttack;
 
-    public BossGoal(T boss, double speed, boolean pauseWhenMobIdle) {
+    public BossGoal(B boss, double speed, boolean pauseWhenMobIdle) {
         super(boss, speed, pauseWhenMobIdle);
         this.boss = boss;
         this.world = boss.getWorld();
@@ -37,6 +47,14 @@ public abstract class BossGoal<T extends BossEntity> extends MeleeAttackGoal {
         this.specialCooldown = 20;
         this.attackStatus = 0;
         this.attackLength = 0;
+        this.resetAttackVariables();
+        this.currentAttack = null;
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        this.boss.setIdle();
     }
 
     @Override
@@ -44,75 +62,114 @@ public abstract class BossGoal<T extends BossEntity> extends MeleeAttackGoal {
 
     @Override
     public void tick() {
-        if (this.boss.isDead()) { //TODO this.boss.isSpawning()
+        if (this.boss.isDead() || this.boss.isSpawning()) {
             return;
         }
         this.attackCooldown = Math.max(this.attackCooldown - 1, 0);
         this.specialCooldown = Math.max(this.specialCooldown - 1, 0);
-        super.tick(); //TODO might need to add other forms for travel method with if statement to prio that over super.tick() like in DayStalker or NightProwler cases with flying
+        super.tick();
+        // Might need to add other forms for travel method with if statement to prio that over super.tick() like in DayStalker or NightProwler cases with flying,
+        // that may need to be its own goal instead though
         LivingEntity target = this.boss.getTarget();
         if (target == null) {
             return;
         }
-        this.boss.setAttacking(true);
-        //TODO passive stuff that should intercept regular attacks and have its own animation, for example unbreakable for returning knight or posture break for draugr boss
-        if (this.isCoolingDown()) { //TODO && !this.boss.isIdle() && !passiveAttack like posture break or unbreakable
-            this.checkAndSetAttack(target);
+        double distanceToTarget = this.boss.squaredDistanceTo(target);
+        // Event logic, will be performed before the attack and only once
+        if (this.canIssueAttack()) {
+            for (Map.Entry<S, BossEvent<S, B, G>> eventEntry : this.events.entrySet()) {
+                S state = eventEntry.getKey();
+                BossEvent<S, B, G> event = eventEntry.getValue();
+                if (!event.hasCompleted() && event.canTrigger(target, distanceToTarget)) {
+                    this.prepareAttack(state, event, target);
+                }
+            }
         }
-        //TODO fetch the current attack and tick it based on what is set by checkAndSetAttack(target), also remember to set attackLength = attack.getAttackLength()
+        // Attack logic, will choose a random attack based on weight and perform it
+        // Got to have this check twice since the attack would override the event animation after the event was triggered so the event would never happen
+        if (this.canIssueAttack()) {
+            if (FabricLoader.getInstance().isDevelopmentEnvironment() && this.getDebugState() != null) {
+                S state = this.getDebugState();
+                BossAttack<S, B, G> attack = this.attacks.get(state);
+                if (attack.canTrigger(target, distanceToTarget)) {
+                    SoulsWeaponry.LOGGER.warn("Debug mode enabled for boss {}, state set to {}", this.boss, state);
+                    this.prepareAttack(state, attack, target);
+                }
+            } else {
+                this.checkAndSetAttack(target);
+            }
+        }
+        // Fetch the current attack and tick it based on what is set by checkAndSetAttack(target)
+        // NB! states that aren't attacks can still be fetched like IDLE and SPAWN
+        S state = this.boss.getState();
+        if (this.isValidState(state) && this.currentAttack != null) {
+            this.currentAttack.tick(target, this.attackStatus, distanceToTarget);
+        }
+    }
+
+    public boolean canIssueAttack() {
+        return !this.isCoolingDown() && this.boss.isIdle();
+    }
+
+    public boolean isValidState(S state) {
+        return this.attacks.containsKey(state) || this.events.containsKey(state);
     }
 
     /**
-     * Sets the next attack for the boss based on randomness and chance for the attack as well as other parameters
-     * based on the attack such as "is target within range" or specialCooldown <= 0
+     * Sets the next attack for the boss, chosen randomly with the weight of the attacks increasing or decreasing the chances
+     * for it to happen.
+     * <p>
+     *     {@link BossAttack#canTrigger(LivingEntity, double)} will be called once the attack is chosen along with checking
+     *     whether the attack is a special attack and the special attack cooldown is still ticking down, if it returns false
+     *     then the attack is canceled and the method tries to pick a new attack again. If attempts go past the
+     *     <b>attempts</b> variable then the method gives up and tries again next tick.
+     * </p>
      */
     public void checkAndSetAttack(LivingEntity target) {
-        //TODO should loop over attacks and choose one randomly based on requirements/predicate for it to trigger and the chance/weight it has
+        double distanceToTarget = this.boss.squaredDistanceTo(target);
+        int totalWeight = this.getTotalAttackWeight();
+        int attempts = this.attacks.size();
+        for (int i = 0; i < attempts; i++) {
+            int randomWeight = this.boss.getRandom().nextInt(totalWeight);
+            for (Map.Entry<S, BossAttack<S, B, G>> entry : this.attacks.entrySet()) {
+                S state = entry.getKey();
+                BossAttack<S, B, G> attack = entry.getValue();
+                randomWeight -= attack.getWeight();
+                if (randomWeight < 0) {
+                    if (!attack.canTrigger(target, distanceToTarget) || (attack.isSpecialAttack() && this.isSpecialCoolingDown())) {
+                        break;
+                    }
+                    this.prepareAttack(state, attack, target);
+                    return;
+                }
+            }
+        }
     }
 
-    //TODO may need to be remade as attacks may have own values themselves?? idk how i will do this yet
-    public void checkAndReset(int attackCooldown, int specialCooldown) {
+    public void prepareAttack(S state, BossAttack<S, B, G> attack, LivingEntity target) {
+        this.attackStatus = 0;
+        this.attackLength = attack.getAttackLength();
+        attack.initiateAttackVariables(target);
+        this.boss.setState(state);
+        this.currentAttack = attack;
+    }
+
+    public void checkAndReset(BossAttack<S, B, G> attack, int attackCooldown, int specialCooldown) {
         if (this.attackStatus > this.attackLength) {
             this.attackStatus = 0;
             this.attackLength = 0;
-            // TODO this.boss.setIdle()
+            this.currentAttack = null;
+            this.boss.setIdle();
             this.attackCooldown = this.getModifiedCooldown(attackCooldown);
             this.specialCooldown = this.getModifiedSpecialCooldown(specialCooldown);
+            attack.resetAttackVariables();
         }
     }
 
-    public boolean damageTarget(LivingEntity target, float damage) {
-        return target.damage(this.world.getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
-    }
-
-    public double getSquaredMaxAttackDistance(LivingEntity target) {
-        float reach = this.boss.getWidth() * 2.0F;
-        return reach * reach + target.getWidth();
-    }
-
-    /**
-     * Check if the target is within melee reach. Set {@param distanceOutMod} to extend the reach,
-     * normal value is 3 for when checking whether the boss should start a melee attack or not.
-     */
-    public boolean isInMeleeRange(LivingEntity target, double distanceOutMod) {
-        double distanceToEntity = this.boss.squaredDistanceTo(target);
-        return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
-    }
-
-    /**
-     * Easily accessible playSound function.
-     * @param pos Position to play sound on, if set to null, will play on the boss' position
-     * @param sound Sound to be played
-     * @param volume Volume
-     * @param pitch Pitch
-     */
-    public void playSound(@Nullable BlockPos pos, SoundEvent sound, float volume, float pitch) {
-        if (pos == null) pos = this.boss.getBlockPos();
-        this.boss.getWorld().playSound(null, pos, sound, SoundCategory.HOSTILE, volume, pitch);
-    }
-
-    public void playSound(SoundEvent sound, float volume) {
-        this.playSound(null, sound, volume, 1f);
+    public void resetAttackVariables() {
+        for (BossAttack<S, B, G> attack : this.attacks.values()) {
+            attack.resetAttackVariables();
+        }
     }
 
     /**
@@ -137,19 +194,56 @@ public abstract class BossGoal<T extends BossEntity> extends MeleeAttackGoal {
     public abstract int getModifiedSpecialCooldown(int specialCooldown);
     public abstract float getModifiedDamage(float damage);
 
-    public void addAttack(BossAttack attack) {
-        ATTACKS.add(attack);
+    public void addAttack(S state, BossAttack<S, B, G> attack) {
+        this.attacks.put(state, attack);
+    }
+
+    public void addEvent(S state, BossEvent<S, B, G> event) {
+        this.events.put(state, event);
     }
 
     public boolean isSpecialCoolingDown() {
-        return this.specialCooldown <= 0;
+        return this.specialCooldown > 0;
     }
 
     public boolean isCoolingDown() {
-        return this.attackCooldown <= 0;
+        return this.attackCooldown > 0;
     }
 
     public void increaseAttackStatus() {
         this.attackStatus++;
+    }
+
+    @SuppressWarnings("unchecked")
+    protected G self() {
+        return (G) this;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public B getBoss() {
+        return boss;
+    }
+
+    public int getTotalAttackWeight() {
+        return this.attacks.values().stream()
+                .mapToInt(BossAttack::getWeight)
+                .sum();
+    }
+
+    @Nullable
+    public BossAttack<S, B, G> getCurrentAttack() {
+        return currentAttack;
+    }
+
+    /**
+     * Returns null by default, if not null then this will override any other attack so the boss
+     * will only do this state/attack. Meant for debugging specific states/attacks.
+     */
+    @Nullable
+    public S getDebugState() {
+        return null;
     }
 }

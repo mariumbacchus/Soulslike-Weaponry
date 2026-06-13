@@ -58,20 +58,64 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static boolean decaying_king_has_inverted_heal_and_harm = true;
     @Entry public static String[] decaying_king_status_effect_blacklist = {};
 
-    @Entry public static boolean returning_knight_disable_respawn = false;
-    @Entry public static boolean returning_knight_consume_item_on_summoning = true;
+
+
+    // Stats
     @Entry(min = 1, max = 1000000D) public static double returning_knight_health = 500D;
     @Entry(min = 1, max = 1000000D) public static double returning_knight_armor = 15D;
-    @Entry(min = 0) public static float returning_knight_attack_cooldown_ticks = 40;
-    @Entry(min = 0) public static float returning_knight_special_cooldown_ticks = 80;
-    @Entry(min = 0) public static float returning_knight_summon_cooldown_ticks = 200;
+
+    // General Cooldowns
+    @Entry(min = 0) public static float returning_knight_attack_cooldown_modifier = 1f;
+    @Entry(min = 0) public static float returning_knight_attack_cooldown_reduction_modifier_per_nearby_foe = 2f;
+    @Entry(min = 0) public static float returning_knight_special_cooldown_modifier = 1f;
+    @Entry(min = 0) public static float returning_knight_special_cooldown_reduction_modifier_per_nearby_foe = 2f;
+
+    // Attacks, Weights & Cooldowns
     @Entry(min = 0) public static float returning_knight_damage_modifier = 1f;
+
+    @Entry(min = 0) public static float returning_knight_blinding_light_damage = 10f;
+    @Entry(min = 0) public static float returning_knight_blinding_light_weight = 10;
+    @Entry(min = 0) public static float returning_knight_blinding_light_cooldown = 30;
+    @Entry(min = 0) public static float returning_knight_blinding_light_special_cooldown = 0;
+
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_min_enemy_count = 2;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_extra_enemy_bound = 3;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_min_healer_count = 1;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_extra_healer_bound = 2;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_weight = 10;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_cooldown = 40;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_special_cooldown = 160;
+
+    @Entry(min = 0) public static float returning_knight_eruption_range_blocks = 18;
+    @Entry(min = 0) public static float returning_knight_eruption_damage = 30;
+    @Entry(min = 0) public static float returning_knight_eruption_weight = 15;
+    @Entry(min = 0) public static float returning_knight_eruption_cooldown = 40;
+    @Entry(min = 0) public static float returning_knight_eruption_special_cooldown = 80;
+
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_swipe_damage= 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_smash_damage= 25;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_weight = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_cooldown = 40;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_special_cooldown = 0;
+
+    @Entry(min = 0) public static float returning_knight_obliterate_damage = 60f;
+    @Entry(min = 0) public static float returning_knight_obliterate_weight = 30;
+    @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 40;
+    @Entry(min = 0) public static float returning_knight_obliterate_special_cooldown = 0;
+
+    // Misc
+    @Entry public static boolean returning_knight_disable_respawn = false;
+    @Entry public static boolean returning_knight_consume_item_on_summoning = true;
     @Entry(min = 0) public static float returning_knight_xp = 500;
     @Entry public static String[] returning_knight_projectile_immunity_whitelist = {};
     @Entry public static boolean returning_knight_disables_shields = true;
     @Entry public static boolean returning_knight_is_fire_immune = true;
     @Entry public static boolean returning_knight_has_inverted_heal_and_harm = true;
     @Entry public static String[] returning_knight_status_effect_blacklist = {"minecraft:poison"};
+
+
+
+
 
     @Entry public static boolean old_champions_remains_disable_respawn = false;
     @Entry public static boolean old_champions_remains_consume_item_on_summoning = false;

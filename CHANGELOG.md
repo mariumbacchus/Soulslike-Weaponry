@@ -48,12 +48,18 @@
   - Duration increased from 4 to 5 seconds of the cloud
   - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
   - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
-- Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
+- Reworked Returning Knight
+  - The boss can now jump up blocks
+  - Added config lines for each attack with damage, weight (chance, more likely to happen the bigger the number), cooldowns, etc.
+    - Attacks with special cooldown above 0 will become special abilities and will only trigger if the special cooldown is also done along with regular attack cooldown, i.e Eruption and Children of the Grave are both special attacks by default so only one of them happen before setting the special cooldown, making both attacks rarer after each-other
+  - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
   - Obliterate attack:
     - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
     - This means that the attack won't land just on the selected target, the hitbox will run along the whole mace as it travels to the ground
     - The attack now also destroys all blocks in the maces path (can be disabled in config with the line `ConfigConstructor.can_bosses_break_blocks` or setting gamerule mob griefing to false)
     - The attack will adjust its hitbox to max 2 blocks downwards if the target is under the boss
+  - Eruption attack:
+    - Now properly only warns entities within range of the attack with the door breaking sound
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack

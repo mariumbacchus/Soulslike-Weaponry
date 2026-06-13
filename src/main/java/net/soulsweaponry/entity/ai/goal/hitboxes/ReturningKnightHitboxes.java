@@ -9,22 +9,23 @@ public class ReturningKnightHitboxes {
 
     public static final Vec3d OBLITERATE_MACE_SIZE = new Vec3d(8, 5, 6);
 
-    public static final int OBLITERATE_DAMAGE_START_TICK = 17;
-    public static final int OBLITERATE_DAMAGE_END_TICK = 20;
+    public static final int OBLITERATE_DAMAGE_START_TICK = 34;
+    public static final int OBLITERATE_DAMAGE_END_TICK = 40;
 
     public static final int OBLITERATE_DEBUG_START_TICK = 1;
-    public static final int OBLITERATE_DEBUG_END_TICK = 32;
+    public static final int OBLITERATE_DEBUG_END_TICK = 64;
 
     private static final BossHitboxHelper.Keyframe[] OBLITERATE_MACE_PATH = new BossHitboxHelper.Keyframe[] {
-            new BossHitboxHelper.Keyframe(1, new Vec3d(-2, 2.0, 0)),
-            new BossHitboxHelper.Keyframe(8, new Vec3d(0, 4.0, 0)),
-            new BossHitboxHelper.Keyframe(13, new Vec3d(2, 4.7, 0)),
-            new BossHitboxHelper.Keyframe(17, new Vec3d(4, 8.0, 0)),
-            new BossHitboxHelper.Keyframe(18, new Vec3d(5.5, 4, 0)),
-            new BossHitboxHelper.Keyframe(19, new Vec3d(5.6, 0, 0)),
-            new BossHitboxHelper.Keyframe(20, new Vec3d(5.6, 0, 0)),
-            new BossHitboxHelper.Keyframe(24, new Vec3d(4.0, 2.5, 0)),
-            new BossHitboxHelper.Keyframe(32, new Vec3d(-1, 3.0, 0))
+            new BossHitboxHelper.Keyframe(2, new Vec3d(-2, 2.0, 0)),
+            new BossHitboxHelper.Keyframe(16, new Vec3d(0, 4.0, 0)),
+            new BossHitboxHelper.Keyframe(26, new Vec3d(2, 4.7, 0)),
+            new BossHitboxHelper.Keyframe(34, new Vec3d(4, 8.0, 0)),
+            new BossHitboxHelper.Keyframe(35, new Vec3d(5.5, 4, 0)),
+            new BossHitboxHelper.Keyframe(36, new Vec3d(5.5, 2, 0)),
+            new BossHitboxHelper.Keyframe(37, new Vec3d(5.6, 0, 0)),
+            new BossHitboxHelper.Keyframe(40, new Vec3d(5.6, 0, 0)),
+            new BossHitboxHelper.Keyframe(48, new Vec3d(4.0, 2.5, 0)),
+            new BossHitboxHelper.Keyframe(64, new Vec3d(-1, 3.0, 0))
     };
 
     public static RotatableHitbox createObliterateMaceHitboxPlaceholder() {

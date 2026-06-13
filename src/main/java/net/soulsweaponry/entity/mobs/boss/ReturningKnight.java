@@ -56,7 +56,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     private static final TrackedData<Long> ATTACK_START_WORLD_TIME = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.LONG);
     
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
-        super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);//TODO returning knight is completely broken now lol but i gotta rework it anyway sooo
+        super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);
     }
 
     private PlayState predicate(AnimationState<?> state) {
@@ -100,7 +100,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
 	protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new ReturningKnightGoal(this));
+        this.goalSelector.add(1, new ReturningKnightGoal(this, 1D, true));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 12.0F));
         this.goalSelector.add(8, new LookAroundGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
@@ -170,9 +170,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         if (startTime < 0L) {
             return 0;
         }
-        // Goal class runs every other tick (10 ticks per second instead of 20) so gotta divide by 2 to not be too fast!
-        // Also add 4 ticks since its behind those ticks when starting to track
-        return (int) ((this.getWorld().getTime() + 4 - startTime) / 2L);
+        return (int) (this.getWorld().getTime() + 2 - startTime);
     }
 
     @Override
