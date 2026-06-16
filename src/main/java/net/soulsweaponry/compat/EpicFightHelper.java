@@ -8,13 +8,10 @@ public class EpicFightHelper {
 
     public static boolean isBusyWithEpicFight(ServerPlayerEntity player) {
         ServerPlayerPatch patch = EpicFightCapabilities.getEntityPatch(player, ServerPlayerPatch.class);
-        if (patch == null) {
+        if (patch == null || !patch.isEpicFightMode()) {
             return false;
         }
-        return patch.isChargingSkill()
-                || patch.getEntityState().inaction()
-                || patch.getEntityState().attacking()
-                || !patch.getEntityState().canUseSkill()
-                || !patch.getEntityState().canBasicAttack();
+
+        return !patch.getEntityState().canSwitchHoldingItem();
     }
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.4.7
+- Required forge version is now at least 47.4.0
+- Required geckolib version is now at least 4.8.3
+- Fixed a bug preventing some mods' custom tooltip to show on items
+- Fixed a bug preventing trickweapons from being used with Epic Fight installed
+- Fixed a bug causing glowmask layers to not render on Mjølnir and Leviathan Axe
+
 # 1.4.6
 - Fixed shield parries not working visually
 

@@ -39,7 +39,7 @@ description="Adds lots of legendary weapons and bosses!"
     # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
     # The version range of the dependency
-    versionRange="[47.3.0,)" #mandatory
+    versionRange="[47.4.0,)" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
@@ -55,7 +55,7 @@ description="Adds lots of legendary weapons and bosses!"
 [[dependencies.soulsweapons]]
     modId="geckolib"
     mandatory=true
-    versionRange="[4.2.1,)"
+    versionRange="[4.8.3,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.soulsweapons]]

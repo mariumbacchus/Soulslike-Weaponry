@@ -80,6 +80,9 @@ dependencies {
 
     modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     implementation("com.eliotlash.mclib:mclib:20")
+    forgeRuntimeLibrary("com.eliotlash.mclib:mclib:20")
+    include("com.eliotlash.mclib:mclib:20")
+
     modImplementation "curse.maven:attributefix-${project.attributefix}"
 
     modImplementation(include("net.fabric_extras:ranged_weapon_api-forge:1.1.4+1.20.1")) // inside libs folder
@@ -92,13 +95,21 @@ dependencies {
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
-    //modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
+    modRuntimeOnly("curse.maven:epic-fight-mod-405076:${project.epicfight_version}")
 
     //modRuntimeOnly("curse.maven:terramity-1084134:6054971")
     //modRuntimeOnly("curse.maven:caelus-api-308989:5281700")
     //modRuntimeOnly("curse.maven:curios-api-309927:6406027")
     //modRuntimeOnly("curse.maven:patchouli-306770:6164575")
     modRuntimeOnly("curse.maven:jade-324717:6106101")
+
+    //modRuntimeOnly("curse.maven:mine-and-slash-306575:7190361")
+    //modRuntimeOnly("curse.maven:obelisks-1186288:7186996")
+    //modRuntimeOnly("curse.maven:curios-api-309927:6418456")
+    //modRuntimeOnly("curse.maven:dungeon-realm-1200770:7190357")
+    //modRuntimeOnly("curse.maven:library-of-exile-398780:7167023")
+    //modRuntimeOnly("curse.maven:harvest-1201731:7186998")
+    //modRuntimeOnly("curse.maven:player-animator-658587:4587214")
 
     // Compile only
     // Controllable mod for controller support
@@ -123,6 +134,10 @@ java {
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
