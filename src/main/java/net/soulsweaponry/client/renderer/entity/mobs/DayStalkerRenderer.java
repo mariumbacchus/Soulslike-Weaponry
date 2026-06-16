@@ -1,25 +1,22 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.model.entity.mobs.DayStalkerModel;
 import net.soulsweaponry.entity.mobs.boss.DayStalker;
-import net.soulsweaponry.util.CustomDeathHandler;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
+import java.awt.*;
 
-    int[] rgbColorOne = {252, 34, 34};
-    int[] rgbColorTwo = {250, 186, 132};
-    int[] rgbColorThree = {72, 63, 98};
-    int[] rgbColorFour = {40, 34, 59};
-    double[] translation = {0, 4, 0};
+public class DayStalkerRenderer extends GeoEntityRendererWithDeathlight<DayStalker> {
+
+    private static final Color COLOR_ONE = new Color(252, 34, 34);
+    private static final Color COLOR_TWO = new Color(250, 186, 132);
+    private static final Color COLOR_THREE = new Color(72, 63, 98);
+    private static final Color COLOR_FOUR = new Color(40, 34, 59);
+    private static final Vec3d DEATH_LIGHT_TRANSLATION = new Vec3d(0, 4, 0);
 
     public DayStalkerRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DayStalkerModel());
@@ -32,26 +29,32 @@ public class DayStalkerRenderer extends GeoEntityRenderer<DayStalker> {
     }
 
     @Override
-    protected float getDeathMaxRotation(DayStalker entityLivingBaseIn) {
-        return 0f;
+    protected int getDeathTicks(DayStalker entity) {
+        return entity.getDeathTicks();
     }
 
-    /* TODO previous implementation
     @Override
-    public void render(DayStalker entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn,
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
+    protected Vec3d getDeathLightTranslation() {
+        return DEATH_LIGHT_TRANSLATION;
     }
-     */
 
     @Override
-    public void postRender(MatrixStack poseStack, DayStalker entity, BakedGeoModel model, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        super.postRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
-        CustomDeathHandler.renderDeathLight(entity, entity.getYaw(), partialTick, poseStack, this.translation, bufferSource, packedLight,
-                entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
-        //TODO test and see if all death animations should use this instead of normal render()
+    protected Color getDeathLightColorOne() {
+        return COLOR_ONE;
+    }
+
+    @Override
+    protected Color getDeathLightColorTwo() {
+        return COLOR_TWO;
+    }
+
+    @Override
+    protected Color getDeathLightColorThree() {
+        return COLOR_THREE;
+    }
+
+    @Override
+    protected Color getDeathLightColorFour() {
+        return COLOR_FOUR;
     }
 }

@@ -1,7 +1,6 @@
 package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
@@ -18,6 +17,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
@@ -30,22 +30,21 @@ import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.DayStalkerGoal;
 import net.soulsweaponry.entity.projectile.noclip.AirCombustion;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public class DayStalker extends BossEntity<DayStalker.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    public int deathTicks;
     public int phaseTwoTicks;
     public int spawnTicks;
     public int phaseTwoMaxTransitionTicks = 120;
@@ -98,7 +97,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
     }
 
     private PlayState idles(AnimationState<?> state) {
-        if (this.isDead() || this.getState().equals(States.DEATH) || this.getDeathTicks() > 0) {
+        if (this.isDead() || this.getDeathTicks() > 0) {
             if (this.isPhaseTwo()) {
                 state.getController().setAnimation(RawAnimation.begin().then("death_2", Animation.LoopType.LOOP));
             } else {
@@ -170,15 +169,10 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
         }
         return PlayState.CONTINUE;
     }
-    
+
     @Override
-    public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
-            this.remove(RemovalReason.KILLED);
-        }
+    public List<ParticleEffect> getDeathParticles() {
+        return List.of(ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
     }
 
     @Override
@@ -194,16 +188,6 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
     @Override
     public int getTicksUntilDeath() {
         return this.isPhaseTwo() ? 140 : 80;
-    }
-
-    @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
-    }
-
-    @Override
-    public void setDeath() {
-        this.setState(States.DEATH);
     }
 
     @Override
@@ -563,7 +547,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
     }
 
     public enum States {
-        IDLE, DEATH, SPAWN, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
+        IDLE, SPAWN, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
         CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH, BLAZE_BARRAGE, SKY_HIGH
     }
 }

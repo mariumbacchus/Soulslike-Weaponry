@@ -1,7 +1,8 @@
 package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -16,6 +17,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.FluidTags;
@@ -31,16 +33,16 @@ import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
-import net.soulsweaponry.registry.*;
-import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.ParticleRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
-import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,7 +50,6 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int openPortalTicks;
-    public int deathTicks;
     public int phaseTwoTicks;
     public int spawnTicks;
     public int phaseTwoMaxTransitionTicks = 120;
@@ -132,7 +133,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
     }
 
     private PlayState idle(AnimationState<?> state) {
-        if (this.isDead() || this.getState().equals(States.DEATH) || this.getDeathTicks() > 0) {
+        if (this.isDead() || this.getDeathTicks() > 0) {
             if (this.isPhaseTwo()) {
                 state.getController().setAnimation(RawAnimation.begin().then("death_2", Animation.LoopType.LOOP));
             } else {
@@ -187,13 +188,8 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
     }
 
     @Override
-    public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks == this.getTicksUntilDeath() && !this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME);
-            this.remove(RemovalReason.KILLED);
-        }
+    public List<ParticleEffect> getDeathParticles() {
+        return List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME);
     }
 
     @Nullable
@@ -280,16 +276,6 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
     @Override
     public int getTicksUntilDeath() {
         return this.isPhaseTwo() ? 140 : 80;
-    }
-
-    @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
-    }
-
-    @Override
-    public void setDeath() {
-        this.setState(States.DEATH);
     }
 
     @Override
@@ -669,7 +655,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
     }
 
     public enum States {
-        IDLE, DEATH, SPAWN, TRINITY, REAPING_SLASH, NIGHTS_EMBRACE, RIPPLE_FANG, BLADES_REACH, SOUL_REAPER,
+        IDLE, SPAWN, TRINITY, REAPING_SLASH, NIGHTS_EMBRACE, RIPPLE_FANG, BLADES_REACH, SOUL_REAPER,
         DIMINISHING_LIGHT, DARKNESS_RISE, ECLIPSE, ENGULF, BLACKFLAME_SNAKE, LUNAR_DISPLACEMENT, DEATHBRINGERS_GRASP
     }
 }

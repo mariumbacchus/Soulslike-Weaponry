@@ -1,6 +1,8 @@
 package net.soulsweaponry.entity.mobs.boss;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -15,6 +17,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -34,15 +37,14 @@ import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
-import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.Objects;
 
 public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    public int deathTicks;
     private int spawnTicks;
     private boolean shouldDisableShield = false;
     private String weaponDamagedById = "none";
@@ -59,7 +61,9 @@ public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEnti
     private static final TrackedData<Integer> SAME_WEAPON_COUNT = DataTracker.registerData(DraugrBoss.class, TrackedDataHandlerRegistry.INTEGER);
 
     private PlayState attackAnimations(AnimationState<?> event) {
-        if (this.isPostureBroken()) {
+        if (this.isDead()) {
+            event.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
+        } else if (this.isPostureBroken()) {
             event.getController().setAnimation(RawAnimation.begin().then("posture_break", Animation.LoopType.HOLD_ON_LAST_FRAME));
         } else {
             switch (this.getState()) {
@@ -79,7 +83,6 @@ public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEnti
                     }
                 }
                 case SPAWN -> event.getController().setAnimation(RawAnimation.begin().then("spawn", Animation.LoopType.HOLD_ON_LAST_FRAME));
-                case DEATH -> event.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
                 case COUNTER -> event.getController().setAnimation(RawAnimation.begin().then("counter", Animation.LoopType.HOLD_ON_LAST_FRAME));
                 case SHIELD_BASH -> event.getController().setAnimation(RawAnimation.begin().then("shield_bash", Animation.LoopType.HOLD_ON_LAST_FRAME));
                 case SHIELD_VAULT -> event.getController().setAnimation(RawAnimation.begin().then("shield_vault", Animation.LoopType.HOLD_ON_LAST_FRAME));
@@ -324,15 +327,9 @@ public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEnti
     }
 
     @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
-    }
-
-    @Override
     public void onDeath(DamageSource source) {
         super.onDeath(source);
-        this.setState(States.DEATH);
-        CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME, ParticleRegistry.BLACK_FLAME);
+        CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.SOUL_FIRE_FLAME, ParticleRegistry.BLACK_FLAME));
         NightShade entity = new NightShade(EntityRegistry.NIGHT_SHADE, getWorld());
         entity.setPos(this.getX(), this.getY() + .1F, this.getZ());
         entity.setVelocity(0, .1f, 0);
@@ -341,16 +338,8 @@ public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEnti
     }
 
     @Override
-    public void setDeath() {
-    }
-
-    @Override
-    public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            this.remove(RemovalReason.KILLED);
-        }
+    public List<ParticleEffect> getDeathParticles() {
+        return List.of();
     }
 
     @Override
@@ -389,7 +378,7 @@ public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEnti
     }
 
     public enum States {
-        IDLE, SPAWN, DEATH, COUNTER, SHIELD_BASH, SHIELD_VAULT, SWIPES, BACKSTEP, HEAVY, GROUND_SLAM,
+        IDLE, SPAWN, COUNTER, SHIELD_BASH, SHIELD_VAULT, SWIPES, BACKSTEP, HEAVY, GROUND_SLAM,
         PARRY, BATTLE_CRY, LEAP, RUN_THRUST
     }
 }

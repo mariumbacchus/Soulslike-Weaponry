@@ -58,11 +58,19 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
     }
 
     @Override
+    public boolean canStart() {
+        if (this.boss.isSpawning()) {
+            return false;
+        }
+        return super.canStart();
+    }
+
+    @Override
     protected void attack(LivingEntity target) {}
 
     @Override
     public void tick() {
-        if (this.boss.isDead() || this.boss.isSpawning()) {
+        if (this.boss.isDead()) {
             return;
         }
         this.attackCooldown = Math.max(this.attackCooldown - 1, 0);

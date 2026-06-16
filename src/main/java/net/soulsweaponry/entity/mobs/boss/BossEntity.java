@@ -4,6 +4,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar.Color;
@@ -17,6 +18,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
@@ -35,9 +37,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
+import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +55,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     private boolean playingMusic = false;
     private int blockBreakingCooldown;
     private final Class<T> stateEnumClass;
+    private int deathTicks;
 
     private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
     // Attack status tick for debugging, do not use in prod due to spamming the server with packets!
@@ -277,7 +281,6 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     @Override
     public void onDeath(DamageSource source) {
         super.onDeath(source);
-        this.setDeath();
         if (this.getBossMusic() != null && this.hasBossMusic() && this.getWorld() instanceof ServerWorld serverWorld) {
             PacketHelper.sendToAllPlayersS2C(serverWorld, this.getBlockPos(), new StopBossMusicS2C(this.getBossMusic().getId()));
         }
@@ -304,16 +307,30 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     }
 
     @Override
-    public abstract void updatePostDeath();
+    public void updatePostDeath() {
+        this.deathTicks++;
+        if (this.deathTicks >= this.getScaledMaxTicks(this.getTicksUntilDeath()) && !this.getWorld().isClient()) {
+            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
+            if (!this.getDeathParticles().isEmpty()) {
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, this.getDeathParticles());
+            }
+            this.remove(RemovalReason.KILLED);
+        }
+    }
+
+    /**
+     * Should return a list of the particles that should be in the spheric explosion upon death & despawn, fetched in {@link #updatePostDeath()}.
+     * <p>Example list: {@code List.of(ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE)}</p>
+     */
+    public abstract List<ParticleEffect> getDeathParticles();
 
     @Override
     public abstract int getTicksUntilDeath();
 
     @Override
-    public abstract int getDeathTicks();
-
-    @Override
-    public abstract void setDeath();
+    public int getDeathTicks() {
+        return this.deathTicks;
+    }
 
     @Override
     public abstract boolean isFireImmune();
@@ -326,8 +343,12 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
 
     public abstract int getXp();
 
-    public int getScaledTicksUntilDeath() {
-        return (int) Math.ceil(this.getTicksUntilDeath() / this.getAnimationSpeed());
+    /**
+     * Scales ticks based on the animation speed, i.e. if animation speed is 0.5
+     * then the input ticks is doubled.
+     */
+    public int getScaledMaxTicks(int ticks) {
+        return (int) Math.ceil(ticks / this.getAnimationSpeed());
     }
 
     /**

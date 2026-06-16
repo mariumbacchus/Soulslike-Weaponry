@@ -8,5 +8,4 @@ public interface IAnimatedDeath {
     void updatePostDeath();
     int getTicksUntilDeath();
     int getDeathTicks();
-    void setDeath();
 }

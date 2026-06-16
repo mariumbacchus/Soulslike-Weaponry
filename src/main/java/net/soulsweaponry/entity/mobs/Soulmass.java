@@ -66,7 +66,7 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     private PlayState predicate(AnimationState<?> state) {
-        if (this.getSacrifice()) {
+        if (this.getSacrifice() || this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("sacrifice"));
         } else if (this.getStartBeam()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("start_beam"));
@@ -195,14 +195,9 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
-    public void setDeath() {
-        this.setSacrifice(true);
-    }
-
-    @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
-        this.setDeath();
+        this.setSacrifice(true);
     }
 
     @Override
@@ -215,7 +210,7 @@ public class Soulmass extends Remnant implements GeoEntity, IAnimatedDeath {
         this.deathTicks++;
         if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.PURPLE_FLAME, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleRegistry.PURPLE_FLAME, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE));
             this.sacrificeEvent();
             this.remove(RemovalReason.KILLED);
         }

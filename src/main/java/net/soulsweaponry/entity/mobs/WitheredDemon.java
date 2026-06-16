@@ -41,7 +41,6 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     public int deathTicks;
 
     private static final TrackedData<Boolean> SWING_ARM = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> DEATH = DataTracker.registerData(WitheredDemon.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public WitheredDemon(EntityType<? extends WitheredDemon> entityType, World world) {
         super(entityType, world);
@@ -50,7 +49,7 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     }
 
     private PlayState predicate(AnimationState<?> state) {
-        if (this.getDeath()) {
+        if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
         } else if (this.getSwingArm()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("attack"));
@@ -67,7 +66,6 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(SWING_ARM, false);
-        builder.add(DEATH, false);
     }
 
     public boolean getSwingArm() {
@@ -76,14 +74,6 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
 
     public void setSwingArm(boolean bl) {
         this.dataTracker.set(SWING_ARM, bl);
-    }
-
-    public boolean getDeath() {
-        return this.dataTracker.get(DEATH);
-    }
-
-    public void setDeath(boolean bl) {
-        this.dataTracker.set(DEATH, bl);
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -147,17 +137,6 @@ public class WitheredDemon extends HostileEntity implements GeoEntity, IAnimated
 
     public boolean isSpawnable() {
         return EntityConfig.can_withered_demon_spawn;
-    }
-
-    @Override
-    public void onDeath(DamageSource damageSource) {
-        super.onDeath(damageSource);
-        this.setDeath();
-    }
-
-    @Override
-    public void setDeath() {
-        this.setDeath(true);
     }
 
     @Override

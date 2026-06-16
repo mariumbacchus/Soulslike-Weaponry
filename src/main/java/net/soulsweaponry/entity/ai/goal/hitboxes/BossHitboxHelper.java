@@ -46,13 +46,18 @@ public class BossHitboxHelper {
         return isTickInRange(animationTick, start, end);
     }
 
-    public static boolean isScaledTickEqual(int attackTick, double animationSpeed, int tick) {
-        int animationTick = getScaledTick(attackTick, animationSpeed);
-        return animationTick == tick;
-    }
-
     public static int getScaledTick(int tick, double animationSpeed) {
         return MathHelper.floor(tick * animationSpeed);
+    }
+
+    public static int getPreviousScaledTick(int attackTick, double animationSpeed) {
+        return MathHelper.floor((attackTick - 1) * animationSpeed);
+    }
+
+    public static boolean didScaledTickPass(int attackTick, double animationSpeed, int targetTick) {
+        int previousTick = getPreviousScaledTick(attackTick, animationSpeed);
+        int currentTick = getScaledTick(attackTick, animationSpeed);
+        return previousTick < targetTick && currentTick >= targetTick;
     }
 
     public static void updateKeyframedLocalHitbox(RotatableHitbox hitbox, Entity owner, float yaw, Vec3d baseSize, double animationSpeed, Keyframe[] keyframes, int attackTick) {

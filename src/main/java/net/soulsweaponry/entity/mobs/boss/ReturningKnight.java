@@ -1,7 +1,6 @@
 package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -17,6 +16,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -30,12 +30,10 @@ import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.collision.RotatableHitboxDebugRegistry;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
-import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.MaceOfSpadesHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -50,7 +48,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
-    public int deathTicks;
     private final List<UUID> healers = new ArrayList<>();
     private final RotatableHitbox debugObliterateMaceHitbox = ObliterateHitbox.createObliterateMaceHitboxPlaceholder();
     private final RotatableHitbox debugMaceOfSpadesHitbox = MaceOfSpadesHitbox.createMaceHitboxPlaceholder();
@@ -62,22 +59,30 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);
     }
 
+    @Override
+    public double getAnimationSpeed() {
+        return EntityConfig.returning_knight_animation_speed;
+    }
+
     private PlayState predicate(AnimationState<?> state) {
         state.getController().setAnimationSpeed(this.getAnimationSpeed());
-        switch (this.getState()) {
-            case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
-            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
-            case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
-            case SUMMON -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
-            case OBLITERATE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
-            case BLIND -> state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_reflection"));
-            case RUPTURE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture"));
-            case MACE_OF_SPADES -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades"));
-            default -> {
-                if (this.isAttacking()) {
-                    state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
-                } else {
-                    state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
+        if (this.isDead()) {
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
+        } else {
+            switch (this.getState()) {
+                case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
+                case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
+                case SUMMON -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
+                case OBLITERATE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
+                case BLIND -> state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_reflection"));
+                case RUPTURE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture"));
+                case MACE_OF_SPADES -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades"));
+                default -> {
+                    if (this.isAttacking()) {
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
+                    } else {
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
+                    }
                 }
             }
         }
@@ -117,26 +122,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         return 70;
     }
 
-    @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
-    }
-
-    @Override
-    public void setDeath() {
-        this.setState(States.DEATH);
-    }
-
-    @Override
-    public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks >= this.getScaledTicksUntilDeath() && !this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE);
-            this.remove(RemovalReason.KILLED);
-        }
-    }
-
     public void setSpawning() {
         this.setState(States.SPAWN);
     }
@@ -144,10 +129,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
     public boolean isSpawning() {
         return this.isState(States.SPAWN);
-    }
-
-    public boolean getDeath() {
-        return this.isState(States.DEATH);
     }
 
     public void setObliterateTarget(BlockPos pos) {
@@ -184,7 +165,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         if (this.isSpawning()) {
             this.spawnTicks++;
             
-            for(int i = 0; i < 50; ++i) {
+            for (int i = 0; i < 50; i++) {
                 Random random = this.getRandom();
                 BlockPos pos = this.getBlockPos();
                 double d = random.nextGaussian() * 0.05D;
@@ -196,16 +177,16 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 getWorld().addParticle(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), newX/2, newY/2, newZ/2);
             }
             
-            if (this.spawnTicks % 10 == 0) {
+            if (this.spawnTicks % this.getScaledMaxTicks(10) == 0) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, SoundCategory.HOSTILE, 1f, 1f);
             }
-            if (this.spawnTicks >= 80) {
+            if (this.spawnTicks >= this.getScaledMaxTicks(80)) {
                 this.setState(States.IDLE);
             }
         }
 
         //Unbreakable particles
-        if (this.getHealth() <= this.getMaxHealth() / 2.0F && !this.getDeath()) {
+        if (this.getHealth() <= this.getMaxHealth() / 2.0F && !this.isDead()) {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 0));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10, this.getAttackingPlayers().size() >= 3 ? 3 : 2));
 
@@ -343,6 +324,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         return false;
     }
 
+    @Override
+    public List<ParticleEffect> getDeathParticles() {
+        return List.of(ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE);
+    }
+
     protected SoundEvent getAmbientSound() {
         return SoundRegistry.DEATH_SCREAMS_EVENT;
     }
@@ -356,6 +342,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     }
 
     public enum States {
-        IDLE, SPAWN, DEATH, OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, MACE_OF_SPADES
+        IDLE, SPAWN, OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, MACE_OF_SPADES
     }
 }

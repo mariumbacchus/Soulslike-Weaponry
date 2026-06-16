@@ -105,7 +105,7 @@ public class AccursedLordGoal extends Goal {
         States attack = States.values()[rand];
         if (specificAttack != null) {
             attack = specificAttack;
-        } else if (attack.equals(States.DEATH) || attack.equals(States.SPAWN) || attack.equals(States.IDLE)) {
+        } else if (attack.equals(States.SPAWN) || attack.equals(States.IDLE)) {
             attack = States.SWORDSLAM;
         }
         double distanceToEntity = this.boss.squaredDistanceTo(target);
@@ -156,7 +156,7 @@ public class AccursedLordGoal extends Goal {
         }
 
         LivingEntity target = this.boss.getTarget();
-        if (target != null && !this.boss.getState().equals(States.SPAWN) && !this.boss.getState().equals(States.DEATH)) {
+        if (target != null && !this.boss.getState().equals(States.SPAWN) && !this.boss.isDead()) {
             this.boss.setAttacking(true);
             this.boss.getLookControl().lookAt(target.getX(), target.getEyeY(), target.getZ());
             boolean entityInSight = this.boss.getVisibilityCache().canSee(target);

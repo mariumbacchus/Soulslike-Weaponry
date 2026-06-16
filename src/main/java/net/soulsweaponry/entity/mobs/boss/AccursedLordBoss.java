@@ -2,7 +2,6 @@ package net.soulsweaponry.entity.mobs.boss;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -17,6 +16,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -30,7 +30,6 @@ import net.soulsweaponry.entity.ai.goal.AccursedLordGoal;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -42,7 +41,6 @@ import java.util.List;
 public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    public int deathTicks;
     private int spawnTicks;
     public ArrayList<BlockPos> lavaPos = new ArrayList<>();
 
@@ -61,20 +59,23 @@ public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implem
     }
 
     private PlayState attackAnimations(AnimationState<?> state) {
-        switch (this.getState()) {
-            case FIREBALLS, WITHERBALLS ->
-                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
-            case HAND_SLAM ->
-                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.groundSlamHand"));
-            case HEATWAVE ->
-                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.explosion"));
-            case PULL -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.pull"));
-            case SPIN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spin"));
-            case SWORDSLAM ->
-                    state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.swordSlam"));
-            case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.death"));
-            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spawn"));
-            default -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.idle"));
+        if (this.isDead()) {
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.death"));
+        } else {
+            switch (this.getState()) {
+                case FIREBALLS, WITHERBALLS ->
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.shootFireMouth"));
+                case HAND_SLAM ->
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.groundSlamHand"));
+                case HEATWAVE ->
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.explosion"));
+                case PULL -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.pull"));
+                case SPIN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spin"));
+                case SWORDSLAM ->
+                        state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.swordSlam"));
+                case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.spawn"));
+                default -> state.getController().setAnimation(RawAnimation.begin().thenPlay("animation.model.idle"));
+            }
         }
         return PlayState.CONTINUE;
     }
@@ -82,11 +83,6 @@ public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implem
     @Override
     public int getTicksUntilDeath() {
         return 150;
-    }
-
-    @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
     }
 
     @Override
@@ -110,13 +106,8 @@ public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implem
     }
 
     @Override
-    public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
-            this.remove(RemovalReason.KILLED);
-        }
+    public List<ParticleEffect> getDeathParticles() {
+        return List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
     }
 
     @Override
@@ -198,9 +189,9 @@ public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implem
     }
 
     @Override
-    public void setDeath() {
-        this.setState(States.DEATH);
+    public void onDeath(DamageSource source) {
         this.removePlacedLava();
+        super.onDeath(source);
     }
 
     @Override
@@ -236,6 +227,6 @@ public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implem
     }
 
     public enum States {
-        IDLE, SWORDSLAM, FIREBALLS, PULL, HEATWAVE, SPIN, WITHERBALLS, HAND_SLAM, SPAWN, DEATH
+        IDLE, SWORDSLAM, FIREBALLS, PULL, HEATWAVE, SPIN, WITHERBALLS, HAND_SLAM, SPAWN
     }
 }

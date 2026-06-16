@@ -7,37 +7,33 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.model.entity.mobs.MoonknightModel;
 import net.soulsweaponry.entity.mobs.boss.Moonknight;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
+import java.awt.Color;
 
-    int[] rgbColorOne = {254, 200, 203};
-    int[] rgbColorTwo = {254, 254, 218};
-    int[] rgbColorThree = {106, 73, 156};
-    int[] rgbColorFour = {176, 253, 252};
-    double[] translation = {0, 4, 0};
+public class MoonknightRenderer extends GeoEntityRendererWithDeathlight<Moonknight> {
+
+    private static final Color COLOR_ONE = new Color(254, 200, 203);
+    private static final Color COLOR_TWO = new Color(254, 254, 218);
+    private static final Color COLOR_THREE = new Color(106, 73, 156);
+    private static final Color COLOR_FOUR = new Color(176, 253, 252);
+    private static final Vec3d DEATH_LIGHT_TRANSLATION = new Vec3d(0, 4, 0);
     public static final Identifier CRYSTAL_BEAM_TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
     private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
     private int currentTick = -1;
     private static final int FULLBRIGHT_LIGHT = 0xF000F0;
-    
+
     public MoonknightRenderer(Context ctx) {
         super(ctx, new MoonknightModel());
         this.shadowRadius = 2.5F;
-    }
-
-    @Override
-    protected float getDeathMaxRotation(Moonknight entityLivingBaseIn) {
-        return 0f;
     }
 
     @Override
@@ -47,11 +43,8 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
 
     @Override
     public void render(Moonknight entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
+                       VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        //TODO find other method
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
 
         BlockPos blockPos = entity.getBeamLocation();
         if (entity.getCanBeam() && blockPos != null && !entity.isDead()) {
@@ -150,5 +143,35 @@ public class MoonknightRenderer extends GeoEntityRenderer<Moonknight> {
             }
         }
         super.renderFinal(poseStack, animatable, model, bufferSource, buffer, partialTick, packedLight, packedOverlay, color);
+    }
+
+    @Override
+    protected int getDeathTicks(Moonknight entity) {
+        return entity.getDeathTicks();
+    }
+
+    @Override
+    protected Vec3d getDeathLightTranslation() {
+        return DEATH_LIGHT_TRANSLATION;
+    }
+
+    @Override
+    protected Color getDeathLightColorOne() {
+        return COLOR_ONE;
+    }
+
+    @Override
+    protected Color getDeathLightColorTwo() {
+        return COLOR_TWO;
+    }
+
+    @Override
+    protected Color getDeathLightColorThree() {
+        return COLOR_THREE;
+    }
+
+    @Override
+    protected Color getDeathLightColorFour() {
+        return COLOR_FOUR;
     }
 }

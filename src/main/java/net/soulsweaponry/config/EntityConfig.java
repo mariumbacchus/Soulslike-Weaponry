@@ -63,6 +63,7 @@ public class EntityConfig extends MidnightConfig {
     // Stats
     @Entry(min = 1, max = 1000000D) public static double returning_knight_health = 500D;
     @Entry(min = 1, max = 1000000D) public static double returning_knight_armor = 15D;
+    @Entry public static double returning_knight_animation_speed = 1D;
 
     // General Cooldowns
     @Entry(min = 0) public static float returning_knight_attack_cooldown_modifier = 1f;

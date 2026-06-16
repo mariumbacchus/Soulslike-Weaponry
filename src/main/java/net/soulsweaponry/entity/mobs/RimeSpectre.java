@@ -385,9 +385,6 @@ public class RimeSpectre extends Remnant implements GeoEntity, IAnimatedDeath {
     }
 
     @Override
-    public void setDeath() {}
-
-    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.ENTITY_WITHER_HURT;
     }

@@ -14,6 +14,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -39,13 +40,13 @@ import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.UUID;
 
 public class NightShade extends BossEntity<NightShade.States> implements GeoEntity, Ownable {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
-    public int deathTicks;
     private boolean healthUpdated = false;
     private boolean hasDuplicated = false;
     private int duplicateTicks;
@@ -130,7 +131,6 @@ public class NightShade extends BossEntity<NightShade.States> implements GeoEnti
             this.experiencePoints = 20;
         }
         if (this.getOwner() != null && !this.getOwner().isAlive()) {
-            this.setDeath();
             this.setHealth(0f);
         }
     }
@@ -166,7 +166,7 @@ public class NightShade extends BossEntity<NightShade.States> implements GeoEnti
             this.setState(States.DUPLICATE);
             this.duplicateTicks++;
             if (this.duplicateTicks == 20) {
-                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, List.of(ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR));
                 this.getNavigation().stop();
                 for (int i = -1; i <= 1; i += 2) {
                     NightShade copy = new NightShade(EntityRegistry.NIGHT_SHADE, this.getWorld());
@@ -200,36 +200,21 @@ public class NightShade extends BossEntity<NightShade.States> implements GeoEnti
     }
 
     @Override
-    public void setDeath() {
-        this.setState(States.DEATH);
-    }
-
-    @Override
     public int getTicksUntilDeath() {
         return 60;
     }
 
     @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
+    public void updatePostDeath() {
+        super.updatePostDeath();
+        if (this.getDeathTicks() % 30 == 0) {
+            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
+        }
     }
 
     @Override
-    public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks % 30 == 0) {
-            this.getWorld().playSound(null, this.getBlockPos(), SoundEvents.ENTITY_WITHER_AMBIENT, SoundCategory.HOSTILE, 1f, 1f);
-        }
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
-            if (this.isCopy()) {
-                this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-                this.remove(RemovalReason.KILLED);
-                return;
-            }
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
-            this.remove(RemovalReason.KILLED);
-        }
+    public List<ParticleEffect> getDeathParticles() {
+        return this.isCopy() ? List.of() : List.of(ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.DARK_STAR);
     }
 
     public boolean getCharging() {
@@ -304,17 +289,17 @@ public class NightShade extends BossEntity<NightShade.States> implements GeoEnti
     private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
-        }
-        switch (this.getState()) {
-            case IDLE -> state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
-            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().then("spawn", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            case DEATH -> state.getController().setAnimation(RawAnimation.begin().then("death", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            case BIG_SWIPES -> state.getController().setAnimation(RawAnimation.begin().then("big_swipes", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            case GENERIC_CHARGE -> state.getController().setAnimation(RawAnimation.begin().then("charge", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            case AOE -> state.getController().setAnimation(RawAnimation.begin().then("aoe", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            case DUPLICATE -> state.getController().setAnimation(RawAnimation.begin().then("duplicate", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            case THROW_MOONLIGHT -> state.getController().setAnimation(RawAnimation.begin().then("throw_moonlight", Animation.LoopType.HOLD_ON_LAST_FRAME));
-            case SHADOW_ORBS -> state.getController().setAnimation(RawAnimation.begin().then("shadow_orbs", Animation.LoopType.HOLD_ON_LAST_FRAME));
+        } else {
+            switch (this.getState()) {
+                case IDLE -> state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+                case SPAWN -> state.getController().setAnimation(RawAnimation.begin().then("spawn", Animation.LoopType.HOLD_ON_LAST_FRAME));
+                case BIG_SWIPES -> state.getController().setAnimation(RawAnimation.begin().then("big_swipes", Animation.LoopType.HOLD_ON_LAST_FRAME));
+                case GENERIC_CHARGE -> state.getController().setAnimation(RawAnimation.begin().then("charge", Animation.LoopType.HOLD_ON_LAST_FRAME));
+                case AOE -> state.getController().setAnimation(RawAnimation.begin().then("aoe", Animation.LoopType.HOLD_ON_LAST_FRAME));
+                case DUPLICATE -> state.getController().setAnimation(RawAnimation.begin().then("duplicate", Animation.LoopType.HOLD_ON_LAST_FRAME));
+                case THROW_MOONLIGHT -> state.getController().setAnimation(RawAnimation.begin().then("throw_moonlight", Animation.LoopType.HOLD_ON_LAST_FRAME));
+                case SHADOW_ORBS -> state.getController().setAnimation(RawAnimation.begin().then("shadow_orbs", Animation.LoopType.HOLD_ON_LAST_FRAME));
+            }
         }
         return PlayState.CONTINUE;
     }
@@ -394,6 +379,6 @@ public class NightShade extends BossEntity<NightShade.States> implements GeoEnti
     }
 
     public enum States {
-        IDLE, SPAWN, DEATH, BIG_SWIPES, GENERIC_CHARGE, AOE, DUPLICATE, THROW_MOONLIGHT, SHADOW_ORBS
+        IDLE, SPAWN, BIG_SWIPES, GENERIC_CHARGE, AOE, DUPLICATE, THROW_MOONLIGHT, SHADOW_ORBS
     }
 }

@@ -3,7 +3,6 @@ package net.soulsweaponry.entity.mobs.boss;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -16,6 +15,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -47,7 +47,6 @@ import java.util.List;
 public class Moonknight extends BossEntity<Moonknight.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    public int deathTicks;
     private int spawnTicks;
     private int phaseTransitionTicks;
     private final int phaseTransitionMaxTicks = 120;
@@ -233,7 +232,7 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
                 }
             }
             if (this.phaseTransitionTicks == 89) {
-                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE));
             }
             if (this.phaseTransitionTicks == 96) {
                 this.setInitiatedPhaseTwo(true);
@@ -323,23 +322,16 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     }
 
     @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
-    }
-
-    @Override
-    public void setDeath() {
-    }
-
-    @Override
     public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks == 40 && this.getBlockPos() != null) this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT, SoundCategory.HOSTILE , 1f, 1f);
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
-            this.remove(RemovalReason.KILLED);
+        super.updatePostDeath();
+        if (this.getDeathTicks() == 40 && this.getBlockPos() != null) {
+            this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_LAUGH_EVENT, SoundCategory.HOSTILE , 1f, 1f);
         }
+    }
+
+    @Override
+    public List<ParticleEffect> getDeathParticles() {
+        return List.of(ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
     }
 
     @Override

@@ -79,7 +79,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return null;//ReturningKnight.States.MACE_OF_SPADES;
+        return null;//ReturningKnight.States.SUMMON;
     }
 
     public UUID summonAllies(Vec3d pos, boolean healer) {

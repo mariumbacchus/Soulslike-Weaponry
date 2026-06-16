@@ -96,12 +96,13 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
      * Helper for returning whether the attack status matches the tick. The attack status is scaled according to
      * the bosses animation speed.
      * <p>
-     *     NOTE: Ticks may be the same based on the animation speed, i.e. if the animation speed is 0.5 then the tick
-     *     may be the same twice so attacks, particles or sounds may trigger twice!
+     *     Will also only tick the attack status once, so i.e. if the animation speed is 0.5, then attack status
+     *     will be the same number twice, which would usually trigger one time events like this twice, this prevents that.
+     *     It also makes it so events that would be skipped still happen if the animation speed was too fast.
      * </p>
      */
     public boolean isTick(int attackStatus, int tick) {
-        return BossHitboxHelper.isScaledTickEqual(attackStatus, this.getBoss().getAnimationSpeed(), tick);
+        return BossHitboxHelper.didScaledTickPass(attackStatus, this.getBoss().getAnimationSpeed(), tick);
     }
 
     /**

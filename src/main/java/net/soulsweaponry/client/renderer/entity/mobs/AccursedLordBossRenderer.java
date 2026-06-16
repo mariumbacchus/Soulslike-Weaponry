@@ -1,38 +1,52 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.model.entity.mobs.AccursedLordBossModel;
 import net.soulsweaponry.entity.mobs.boss.AccursedLordBoss;
-import net.soulsweaponry.util.CustomDeathHandler;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class AccursedLordBossRenderer extends GeoEntityRenderer<AccursedLordBoss> {
+import java.awt.Color;
 
-    int[] rgbColorOne = {247, 94, 94};
-    int[] rgbColorTwo = {140, 1, 1};
-    int[] rgbColorThree = {209, 0, 0};
-    int[] rgbColorFour = {110, 1, 1};
-    double[] translation = {0, 3, 0};
+public class AccursedLordBossRenderer extends GeoEntityRendererWithDeathlight<AccursedLordBoss> {
+
+    private static final Color COLOR_ONE = new Color(247, 94, 94);
+    private static final Color COLOR_TWO = new Color(140, 1, 1);
+    private static final Color COLOR_THREE = new Color(209, 0, 0);
+    private static final Color COLOR_FOUR = new Color(110, 1, 1);
+    private static final Vec3d DEATH_LIGHT_TRANSLATION = new Vec3d(0, 3, 0);
 
     public AccursedLordBossRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new AccursedLordBossModel());
         this.shadowRadius = 0.7F;
     }
-    
+
     @Override
-    protected float getDeathMaxRotation(AccursedLordBoss entityLivingBaseIn) {
-        return 0f;
+    protected int getDeathTicks(AccursedLordBoss entity) {
+        return entity.getDeathTicks();
     }
 
     @Override
-    public void render(AccursedLordBoss entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        //TODO find other method, also just make an abstract class of GeoEntityRenderer<?> that
-        // has the custom death light handling by default instead of calling from every boss renderer
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
+    protected Vec3d getDeathLightTranslation() {
+        return DEATH_LIGHT_TRANSLATION;
+    }
+
+    @Override
+    protected Color getDeathLightColorOne() {
+        return COLOR_ONE;
+    }
+
+    @Override
+    protected Color getDeathLightColorTwo() {
+        return COLOR_TWO;
+    }
+
+    @Override
+    protected Color getDeathLightColorThree() {
+        return COLOR_THREE;
+    }
+
+    @Override
+    protected Color getDeathLightColorFour() {
+        return COLOR_FOUR;
     }
 }

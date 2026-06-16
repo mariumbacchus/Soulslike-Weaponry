@@ -52,6 +52,8 @@
   - The boss can now jump up blocks
   - Added config lines for each attack with damage, weight (chance, more likely to happen the bigger the number), cooldowns, etc.
     - Attacks with special cooldown above 0 will become special abilities and will only trigger if the special cooldown is also done along with regular attack cooldown, i.e Eruption and Children of the Grave are both special attacks by default so only one of them happen before setting the special cooldown, making both attacks rarer after each-other
+  - Added a config line to change the animation speed of the boss
+    - All attacks should match the new animation speed, such as hitbox timings and such, death & spawn timer is also adjusted
   - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
   - Obliterate attack:
     - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
@@ -60,6 +62,9 @@
     - The attack will adjust its hitbox to max 2 blocks downwards if the target is under the boss
   - Eruption attack:
     - Now properly only warns entities within range of the attack with the door breaking sound
+  - Mace of Spades:
+    - Now has a rotatable hitbox just like Obliterate, making the attack more accurate and dodgeable
+    - Adjusted the animation slightly to aim more downwards with the swing
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack

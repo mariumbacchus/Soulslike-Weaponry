@@ -6,39 +6,32 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.SoulsWeaponryClient;
 import net.soulsweaponry.client.model.entity.mobs.NightProwlerModel;
 import net.soulsweaponry.entity.ai.goal.NightProwlerGoal;
 import net.soulsweaponry.entity.mobs.boss.NightProwler;
-import net.soulsweaponry.util.CustomDeathHandler;
 import org.joml.Matrix4f;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
+import java.awt.Color;
 
-    int[] rgbColorOne = {54, 122, 156};
-    int[] rgbColorTwo = {147, 188, 210};
-    int[] rgbColorThree = {221, 255, 254};
-    int[] rgbColorFour = {235, 185, 232};
-    double[] translation = {0, 3, 0};
+public class NightProwlerRenderer extends GeoEntityRendererWithDeathlight<NightProwler> {
+
+    private static final Color COLOR_ONE = new Color(54, 122, 156);
+    private static final Color COLOR_TWO = new Color(147, 188, 210);
+    private static final Color COLOR_THREE = new Color(221, 255, 254);
+    private static final Color COLOR_FOUR = new Color(235, 185, 232);
+    private static final Vec3d DEATH_LIGHT_TRANSLATION = new Vec3d(0, 3, 0);
 
     public NightProwlerRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new NightProwlerModel());
         this.shadowRadius = 1F;
     }
-    
-    @Override
-    protected float getDeathMaxRotation(NightProwler entityLivingBaseIn) {
-        return 0f;
-    }
 
     @Override
     public void render(NightProwler entity, float entityYaw, float partialTicks, MatrixStack stack,
-            VertexConsumerProvider bufferIn, int packedLightIn) {
+                       VertexConsumerProvider bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        //TODO find other method
-        CustomDeathHandler.renderDeathLight(entity, entityYaw, partialTicks, stack, this.translation, bufferIn, packedLightIn, 
-            entity.deathTicks, this.rgbColorOne, this.rgbColorTwo, this.rgbColorThree, this.rgbColorFour);
 
         if (this.shouldRenderPortal(entity)) {
             stack.push();
@@ -144,5 +137,35 @@ public class NightProwlerRenderer extends GeoEntityRenderer<NightProwler> {
 
     private boolean shouldRenderPortal(NightProwler entity) {
         return entity.isState(NightProwler.States.ECLIPSE) && entity.getParticleState() == 4;
+    }
+
+    @Override
+    protected int getDeathTicks(NightProwler entity) {
+        return entity.getDeathTicks();
+    }
+
+    @Override
+    protected Vec3d getDeathLightTranslation() {
+        return DEATH_LIGHT_TRANSLATION;
+    }
+
+    @Override
+    protected Color getDeathLightColorOne() {
+        return COLOR_ONE;
+    }
+
+    @Override
+    protected Color getDeathLightColorTwo() {
+        return COLOR_TWO;
+    }
+
+    @Override
+    protected Color getDeathLightColorThree() {
+        return COLOR_THREE;
+    }
+
+    @Override
+    protected Color getDeathLightColorFour() {
+        return COLOR_FOUR;
     }
 }

@@ -1,6 +1,5 @@
 package net.soulsweaponry.entity.mobs.boss;
 
-import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -29,8 +28,6 @@ import net.soulsweaponry.items.abilities.inventorytick.CorruptGround;
 import net.soulsweaponry.registry.ArmorRegistry;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ParticleRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -41,7 +38,6 @@ import java.util.List;
 public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    public int deathTicks;
     private int spawnTicks;
     public static final CorruptGround CORRUPT_GROUND = new CorruptGround(
             (int) EntityConfig.chaos_monarch_wither_ground_range,
@@ -54,15 +50,18 @@ public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements Geo
     }
 
     private PlayState predicate(AnimationState<?> state) {
-        switch (this.getState()) {
-            case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
-            case TELEPORT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("teleport"));
-            case MELEE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("swing_staff"));
-            case LIGHTNING -> state.getController().setAnimation(RawAnimation.begin().thenPlay("lightning_call"));
-            case SHOOT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("shoot"));
-            case BARRAGE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("barrage"));
-            case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
-            default -> state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
+        if (this.isDead()) {
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
+        } else {
+            switch (this.getState()) {
+                case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
+                case TELEPORT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("teleport"));
+                case MELEE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("swing_staff"));
+                case LIGHTNING -> state.getController().setAnimation(RawAnimation.begin().thenPlay("lightning_call"));
+                case SHOOT -> state.getController().setAnimation(RawAnimation.begin().thenPlay("shoot"));
+                case BARRAGE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("barrage"));
+                default -> state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
+            }
         }
         return PlayState.CONTINUE;
     }
@@ -95,23 +94,8 @@ public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements Geo
     }
 
     @Override
-    public int getDeathTicks() {
-        return this.deathTicks;
-    }
-
-    @Override
-    public void setDeath() {
-        this.setState(States.DEATH);
-    }
-
-    @Override
-    public void updatePostDeath() {
-        this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
-            this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
-            CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME);
-            this.remove(RemovalReason.KILLED);
-        }
+    public List<ParticleEffect> getDeathParticles() {
+        return List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.DRAGON_BREATH, ParticleRegistry.PURPLE_FLAME);
     }
 
     @Override
@@ -133,17 +117,6 @@ public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements Geo
             }
         }
     }
-
-    /* static enum Test {
-        ATTACK,
-        SHOOT,
-        IDLE,
-        DEATH
-    }
-    public static final Test TESTING[] = Test.values();
-    System.out.println(TESTING[MathHelper.floor(this.getHeadYaw() / 90.0 + 0.5) & 3]); */
-    /* & <-- verifies both operands
-    && <-- stops evaluating if the first operand evaluates to false since the result will be false */
 
     @Override
     public boolean damage(DamageSource source, float amount) {
@@ -260,6 +233,6 @@ public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements Geo
     }
 
     public enum States {
-        IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE, DEATH
+        IDLE, SPAWN, TELEPORT, MELEE, LIGHTNING, SHOOT, BARRAGE
     }
 }

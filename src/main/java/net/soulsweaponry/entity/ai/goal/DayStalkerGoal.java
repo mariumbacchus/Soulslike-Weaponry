@@ -709,7 +709,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
             this.playSound(null, SoundRegistry.DAY_STALKER_RADIANCE, 1f, 1f);
         }
         if (this.attackStatus == 80) {
-            CustomDeathHandler.deathExplosionEvent(this.boss.getWorld(), this.boss.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME);
+            CustomDeathHandler.deathExplosionEvent(this.boss.getWorld(), this.boss.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleTypes.LARGE_SMOKE, ParticleTypes.FLAME));
             this.aoe(4D, 60f, 4f);
         }
         this.checkAndReset(40, 140);

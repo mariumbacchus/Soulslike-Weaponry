@@ -68,11 +68,11 @@ public class MaceOfSpades extends ReturningKnightAttack {
                 living.addVelocity(0, 1, 0);
                 this.damageTarget(living, this.damageSmash);
             }
-            if (this.isTick(attackStatus, 43)) {
-                Vec3d effectPos = BossHitboxHelper.findGroundImpactPos(this.getWorld(), this.hitbox.getCenter(), 2);
-                this.playSound(BlockPos.ofFloored(effectPos), SoundRegistry.NIGHTFALL_BONK_EVENT, 2f);
-                ParticleHandler.particleOutburstMap(this.getWorld(), 300, effectPos.x, effectPos.y, effectPos.z, ParticleEvents.OBLITERATE_MAP, 1f);
-            }
+        }
+        if (this.isTick(attackStatus, 43)) {
+            Vec3d effectPos = BossHitboxHelper.findGroundImpactPos(this.getWorld(), this.hitbox.getCenter(), 2);
+            this.playSound(BlockPos.ofFloored(effectPos), SoundRegistry.NIGHTFALL_BONK_EVENT, 2f);
+            ParticleHandler.particleOutburstMap(this.getWorld(), 300, effectPos.x, effectPos.y, effectPos.z, ParticleEvents.OBLITERATE_MAP, 1f);
         }
     }
 
