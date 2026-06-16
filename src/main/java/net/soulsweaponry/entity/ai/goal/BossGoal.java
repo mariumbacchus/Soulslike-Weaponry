@@ -155,7 +155,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
     }
 
     public void checkAndReset(BossAttack<S, B, G> attack, int attackCooldown, int specialCooldown) {
-        if (this.attackStatus > this.attackLength) {
+        if (this.attackStatus > this.getScaledAttackLength()) {
             this.attackStatus = 0;
             this.attackLength = 0;
             this.currentAttack = null;
@@ -164,6 +164,10 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
             this.specialCooldown = this.getModifiedSpecialCooldown(specialCooldown);
             attack.resetAttackVariables();
         }
+    }
+
+    public int getScaledAttackLength() {
+        return (int) Math.ceil(this.attackLength / this.boss.getAnimationSpeed());
     }
 
     public void resetAttackVariables() {

@@ -1,6 +1,7 @@
-package net.soulsweaponry.entity.ai.goal.attacks;
+package net.soulsweaponry.entity.ai.goal.attacks.returningknight;
 
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
+import net.soulsweaponry.entity.ai.goal.attacks.BossAttack;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public abstract class ReturningKnightAttack extends BossAttack<ReturningKnight.States, ReturningKnight, ReturningKnightGoal> {

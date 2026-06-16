@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.ai.goal.attacks;
+package net.soulsweaponry.entity.ai.goal.attacks.returningknight;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -25,7 +25,7 @@ public class ChildrenOfTheGrave extends ReturningKnightAttack {
     @Override
     public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-        if (attackStatus == 59) {
+        if (this.isTick(attackStatus, 59)) {
             int enemyNumber = this.getBoss().getRandom().nextInt(this.enemyBound) + this.minEnemyCount;
             int healerNumber = this.getBoss().getRandom().nextInt(this.healerBound) + this.minHealerCount;
             if (this.getBoss().getHealth() <= this.getBoss().getMaxHealth() / 2.0F) {

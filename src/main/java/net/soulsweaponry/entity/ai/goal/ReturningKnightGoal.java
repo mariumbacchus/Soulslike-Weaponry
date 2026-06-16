@@ -5,7 +5,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.ai.goal.attacks.*;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.*;
 import net.soulsweaponry.entity.ai.goal.events.Unbreakable;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
@@ -79,7 +79,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return null;//ReturningKnight.States.RUPTURE;
+        return null;//ReturningKnight.States.MACE_OF_SPADES;
     }
 
     public UUID summonAllies(Vec3d pos, boolean healer) {

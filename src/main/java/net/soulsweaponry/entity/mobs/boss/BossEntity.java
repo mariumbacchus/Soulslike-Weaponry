@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.mobs.boss;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
@@ -32,7 +33,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
+import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
 import net.soulsweaponry.util.IAnimatedDeath;
@@ -51,6 +54,8 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     private final Class<T> stateEnumClass;
 
     private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    // Attack status tick for debugging, do not use in prod due to spamming the server with packets!
+    private static final TrackedData<Integer> ATTACK_STATUS = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public BossEntity(EntityType<? extends HostileEntity> entityType, World world, Color barColor, Class<T> stateEnumClass) {
         super(entityType, world);
@@ -63,6 +68,37 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(STATES, 0);
+        if (this.isDebugMode()) {
+            SoulsWeaponry.LOGGER.warn("Boss entity attack status data-tracker registered! Should not happen in production!");
+            builder.add(ATTACK_STATUS, 0);
+        }
+    }
+
+    public double getAnimationSpeed() {
+        return 1;
+    }
+
+    /**
+     * Return true if attack status from attacks should be data-tracked to be client side too. WARNING: This will spam the server with packets!
+     */
+    public boolean isDebugMode() {
+        return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    /**
+     * Only set if {@link #isDebugMode()} returns true. Should not be used outside of debugging.
+     */
+    public void setAttackStatus(int attackStatus) {
+        if (this.isDebugMode()) {
+            this.dataTracker.set(ATTACK_STATUS, attackStatus);
+        }
+    }
+
+    /**
+     * Returns only values if {@link #isDebugMode()} returns true. Should not be used outside of debugging.
+     */
+    public int getAttackStatus() {
+        return this.isDebugMode() ? this.dataTracker.get(ATTACK_STATUS) : 0;
     }
 
     /**
@@ -289,6 +325,10 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     public abstract boolean disablesShield();
 
     public abstract int getXp();
+
+    public int getScaledTicksUntilDeath() {
+        return (int) Math.ceil(this.getTicksUntilDeath() / this.getAnimationSpeed());
+    }
 
     /**
      * Should be called during damage method for bosses that are projectile immune to check whether the entity

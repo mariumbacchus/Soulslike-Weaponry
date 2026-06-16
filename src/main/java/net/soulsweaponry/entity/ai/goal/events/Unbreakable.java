@@ -16,7 +16,7 @@ public class Unbreakable extends ReturningKnightEvent {
     @Override
     public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 40));
-        if (attackStatus == 38) {
+        if (this.isTick(attackStatus, 38)) {
             this.playSound(SoundRegistry.NIGHTFALL_SHIELD_EVENT, 0.8f);
         }
     }

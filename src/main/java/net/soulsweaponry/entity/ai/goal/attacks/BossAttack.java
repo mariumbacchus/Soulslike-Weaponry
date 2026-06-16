@@ -8,6 +8,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.soulsweaponry.entity.ai.goal.BossGoal;
+import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.mobs.boss.BossEntity;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +45,9 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
         this.goal.increaseAttackStatus();
         this.tickAttack(target, attackStatus, distanceToTarget);
         this.goal.checkAndReset(this, this.cooldown, this.specialCooldown);
+        if (this.boss.isDebugMode()) {
+            this.boss.setAttackStatus(attackStatus);
+        }
     }
 
     /**
@@ -86,6 +90,18 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
     public double getSquaredMaxAttackDistance(LivingEntity target) {
         float reach = this.boss.getWidth() * 2.0F;
         return reach * reach + target.getWidth();
+    }
+
+    /**
+     * Helper for returning whether the attack status matches the tick. The attack status is scaled according to
+     * the bosses animation speed.
+     * <p>
+     *     NOTE: Ticks may be the same based on the animation speed, i.e. if the animation speed is 0.5 then the tick
+     *     may be the same twice so attacks, particles or sounds may trigger twice!
+     * </p>
+     */
+    public boolean isTick(int attackStatus, int tick) {
+        return BossHitboxHelper.isScaledTickEqual(attackStatus, this.getBoss().getAnimationSpeed(), tick);
     }
 
     /**

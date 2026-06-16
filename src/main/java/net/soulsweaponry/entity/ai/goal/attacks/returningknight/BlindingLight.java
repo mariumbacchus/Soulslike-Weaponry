@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.ai.goal.attacks;
+package net.soulsweaponry.entity.ai.goal.attacks.returningknight;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -21,7 +21,7 @@ public class BlindingLight extends ReturningKnightAttack {
     @Override
     public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-        if (attackStatus == 24 && distanceToTarget < 30) {
+        if (this.isTick(attackStatus, 24) && distanceToTarget < 30) {
             double x = target.getX() - this.getBoss().getX();
             double z = target.getZ() - this.getBoss().getZ();
             this.damageTarget(target, this.damage);

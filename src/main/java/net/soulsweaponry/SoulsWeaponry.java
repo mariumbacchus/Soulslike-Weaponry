@@ -35,7 +35,7 @@ public class SoulsWeaponry implements ModInitializer {
     public static final ArrayList<Item> ITEM_GROUP_LIST = new ArrayList<>();
 
     @Override
-    public void onInitialize() {
+    public void onInitialize() { //TODO add low bleed resistance and stuff to zombies so the stat doesnt go unnoticed
         long start = System.currentTimeMillis();
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_weapon_config", WeaponConfig.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_armor_config", ArmorConfig.class);

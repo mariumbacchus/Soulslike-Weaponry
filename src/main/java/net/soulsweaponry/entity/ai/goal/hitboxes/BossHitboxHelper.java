@@ -37,16 +37,39 @@ public class BossHitboxHelper {
                 new Vec3d(0, 0, 1));
     }
 
-    public static boolean isTickInRange(int tick, int start, int end) {
+    private static boolean isTickInRange(int tick, int start, int end) {
         return tick >= start && tick <= end;
     }
 
-    public static void updateKeyframedLocalHitbox(RotatableHitbox hitbox, Entity owner, float yaw, Vec3d baseSize, Keyframe[] keyframes, int attackTick, double extraDownExtension) {
+    public static boolean isScaledTickInRange(int attackTick, double animationSpeed, int start, int end) {
+        int animationTick = getScaledTick(attackTick, animationSpeed);
+        return isTickInRange(animationTick, start, end);
+    }
+
+    public static boolean isScaledTickEqual(int attackTick, double animationSpeed, int tick) {
+        int animationTick = getScaledTick(attackTick, animationSpeed);
+        return animationTick == tick;
+    }
+
+    public static int getScaledTick(int tick, double animationSpeed) {
+        return MathHelper.floor(tick * animationSpeed);
+    }
+
+    public static void updateKeyframedLocalHitbox(RotatableHitbox hitbox, Entity owner, float yaw, Vec3d baseSize, double animationSpeed, Keyframe[] keyframes, int attackTick) {
+        updateKeyframedLocalHitboxInternal(hitbox, owner, yaw, baseSize, animationSpeed, keyframes, attackTick, 0.0D);
+    }
+
+    public static void updateKeyframedLocalHitbox(RotatableHitbox hitbox, Entity owner, float yaw, Vec3d baseSize, double animationSpeed, Keyframe[] keyframes, int attackTick, double extraDownExtension) {
+        updateKeyframedLocalHitboxInternal(hitbox, owner, yaw, baseSize, animationSpeed, keyframes, attackTick, extraDownExtension);
+    }
+
+    private static void updateKeyframedLocalHitboxInternal(RotatableHitbox hitbox, Entity owner, float yaw, Vec3d baseSize, double animationSpeed, Keyframe[] keyframes, int attackTick, double extraDownExtension) {
         Vec3d forward = getForwardFromYaw(yaw);
         Vec3d up = new Vec3d(0.0, 1.0, 0.0);
         Vec3d right = up.crossProduct(forward).normalize();
 
-        Vec3d localOffset = sampleKeyframes(keyframes, attackTick);
+        double animationTick = attackTick * animationSpeed;
+        Vec3d localOffset = sampleKeyframes(keyframes, animationTick);
         Vec3d adjustedSize = new Vec3d(baseSize.x, baseSize.y + extraDownExtension, baseSize.z);
         Vec3d adjustedLocalOffset = localOffset.add(0.0D, -extraDownExtension / 2.0D, 0.0D);
 
@@ -59,6 +82,10 @@ public class BossHitboxHelper {
     }
 
     public static Vec3d sampleKeyframes(Keyframe[] keyframes, int attackTick) {
+        return sampleKeyframes(keyframes, (double) attackTick);
+    }
+
+    public static Vec3d sampleKeyframes(Keyframe[] keyframes, double attackTick) {
         if (keyframes == null || keyframes.length == 0) {
             return Vec3d.ZERO;
         }
@@ -69,7 +96,7 @@ public class BossHitboxHelper {
             Keyframe a = keyframes[i];
             Keyframe b = keyframes[i + 1];
             if (attackTick <= b.tick()) {
-                double t = (double) (attackTick - a.tick()) / (double) (b.tick() - a.tick());
+                double t = (attackTick - a.tick()) / (double) (b.tick() - a.tick());
                 t = MathHelper.clamp(t, 0.0D, 1.0D);
                 return lerp(a.offset(), b.offset(), t);
             }

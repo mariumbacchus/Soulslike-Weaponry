@@ -1,4 +1,4 @@
-package net.soulsweaponry.entity.ai.goal.attacks;
+package net.soulsweaponry.entity.ai.goal.attacks.returningknight;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -10,7 +10,7 @@ import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
-import net.soulsweaponry.entity.ai.goal.hitboxes.ReturningKnightHitboxes;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -28,7 +28,7 @@ public class Obliterate extends ReturningKnightAttack {
     private final Set<UUID> obliterateHitEntities = new HashSet<>();
     private boolean obliterateImpactDone;
     private BlockPos targetPos;
-    private final RotatableHitbox obliterateMaceHitbox = ReturningKnightHitboxes.createObliterateMaceHitboxPlaceholder();
+    private final RotatableHitbox obliterateMaceHitbox = ObliterateHitbox.createObliterateMaceHitboxPlaceholder();
     private final float damage = EntityConfig.returning_knight_obliterate_damage;
 
     public Obliterate(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
@@ -37,11 +37,12 @@ public class Obliterate extends ReturningKnightAttack {
 
     @Override
     public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
-        ReturningKnightHitboxes.updateObliterateMaceHitbox(this.obliterateMaceHitbox, this.getBoss(), this.targetPos, attackStatus);
+        ObliterateHitbox.updateObliterateMaceHitbox(this.obliterateMaceHitbox, this.getBoss(), this.targetPos, attackStatus);
         this.getBoss().getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
         this.getBoss().getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-        if (ReturningKnightHitboxes.isObliterateDamageTick(attackStatus)) {
+
+        if (ObliterateHitbox.isObliterateDamageTick(this.getBoss(), attackStatus)) {
             List<LivingEntity> entities = this.obliterateMaceHitbox.getIntersectingTargets(this.getWorld(), this.getBoss());
             for (LivingEntity living : entities) {
                 if (!this.obliterateHitEntities.add(living.getUuid())) {
@@ -56,15 +57,15 @@ public class Obliterate extends ReturningKnightAttack {
                     }
                 }
             }
-            if (!this.obliterateImpactDone && attackStatus >= 37) {
+            if (!this.obliterateImpactDone && this.isTick(attackStatus, 37)) {
                 this.obliterateImpactDone = true;
                 Vec3d effectPos = BossHitboxHelper.findGroundImpactPos(this.getWorld(), this.obliterateMaceHitbox.getCenter(), 2);
                 this.getWorld().playSound(null, BlockPos.ofFloored(effectPos), SoundRegistry.NIGHTFALL_BONK_EVENT, SoundCategory.HOSTILE, 3f, 1f);
                 ParticleHandler.particleOutburstMap(this.getWorld(), 300, effectPos.x, effectPos.y, effectPos.z, ParticleEvents.OBLITERATE_MAP, 1f);
             }
         }
-        if (ReturningKnightHitboxes.isObliterateDamageTick(attackStatus)) {
-            BossHitboxHelper.breakBlocksInsideHitbox(this.obliterateMaceHitbox.copy().offsetWorld(0, ReturningKnightHitboxes.OBLITERATE_MACE_SIZE.y / 2.0D, 0), this.getWorld(), this.getBoss(), this.getBoss()::canDestroy, false);
+        if (ObliterateHitbox.isObliterateDamageTick(this.getBoss(), attackStatus)) {
+            BossHitboxHelper.breakBlocksInsideHitbox(this.obliterateMaceHitbox.copy().offsetWorld(0, ObliterateHitbox.OBLITERATE_MACE_SIZE.y / 2.0D, 0), this.getWorld(), this.getBoss(), this.getBoss()::canDestroy, false);
         }
     }
 

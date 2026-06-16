@@ -1,11 +1,12 @@
-package net.soulsweaponry.entity.ai.goal.hitboxes;
+package net.soulsweaponry.entity.ai.goal.hitboxes.returningknight;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.collision.RotatableHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
-public class ReturningKnightHitboxes {
+public class ObliterateHitbox {
 
     public static final Vec3d OBLITERATE_MACE_SIZE = new Vec3d(8, 5, 6);
 
@@ -34,14 +35,14 @@ public class ReturningKnightHitboxes {
 
     public static void updateObliterateMaceHitbox(RotatableHitbox hitbox, ReturningKnight boss, BlockPos targetPos, int attackTick) {
         double downExtension = BossHitboxHelper.getDownExtensionFromTarget(boss, targetPos, 2.0D);
-        BossHitboxHelper.updateKeyframedLocalHitbox(hitbox, boss, boss.bodyYaw, OBLITERATE_MACE_SIZE, OBLITERATE_MACE_PATH, attackTick, downExtension);
+        BossHitboxHelper.updateKeyframedLocalHitbox(hitbox, boss, boss.bodyYaw, OBLITERATE_MACE_SIZE, boss.getAnimationSpeed(), OBLITERATE_MACE_PATH, attackTick, downExtension);
     }
 
-    public static boolean isObliterateDamageTick(int attackTick) {
-        return BossHitboxHelper.isTickInRange(attackTick, OBLITERATE_DAMAGE_START_TICK, OBLITERATE_DAMAGE_END_TICK);
+    public static boolean isObliterateDamageTick(ReturningKnight boss, int attackTick) {
+        return BossHitboxHelper.isScaledTickInRange(attackTick, boss.getAnimationSpeed(), OBLITERATE_DAMAGE_START_TICK, OBLITERATE_DAMAGE_END_TICK);
     }
 
-    public static boolean isObliterateDebugTick(int attackTick) {
-        return BossHitboxHelper.isTickInRange(attackTick, OBLITERATE_DEBUG_START_TICK, OBLITERATE_DEBUG_END_TICK);
+    public static boolean isObliterateDebugTick(ReturningKnight boss, int attackTick) {
+        return BossHitboxHelper.isScaledTickInRange(attackTick, boss.getAnimationSpeed(), OBLITERATE_DEBUG_START_TICK, OBLITERATE_DEBUG_END_TICK);
     }
 }

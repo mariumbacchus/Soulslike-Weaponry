@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.soulsweaponry.entity.mobs.boss.BossEntity;
 import net.soulsweaponry.networking.C2S.packets.KillNearbyEntitiesC2S;
 
 public class KillNearbyEntitiesC2SReceiver {
@@ -18,6 +19,9 @@ public class KillNearbyEntitiesC2SReceiver {
         ServerWorld serverWorld = player.getServerWorld();
         server.execute(() -> {
             for (Entity entity : serverWorld.getOtherEntities(player, player.getBoundingBox().expand(100D))) {
+                if (player.isSneaking() && entity instanceof BossEntity<?>) {
+                    continue;
+                }
                 entity.kill();
             }
         });

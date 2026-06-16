@@ -30,7 +30,9 @@ import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.collision.RotatableHitboxDebugRegistry;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
-import net.soulsweaponry.entity.ai.goal.hitboxes.ReturningKnightHitboxes;
+import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.MaceOfSpadesHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
@@ -50,16 +52,18 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     private int spawnTicks;
     public int deathTicks;
     private final List<UUID> healers = new ArrayList<>();
-    private final RotatableHitbox debugObliterateMaceHitbox = ReturningKnightHitboxes.createObliterateMaceHitboxPlaceholder();
+    private final RotatableHitbox debugObliterateMaceHitbox = ObliterateHitbox.createObliterateMaceHitboxPlaceholder();
+    private final RotatableHitbox debugMaceOfSpadesHitbox = MaceOfSpadesHitbox.createMaceHitboxPlaceholder();
 
     private static final TrackedData<BlockPos> OBLITERATE_TARGET = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Long> ATTACK_START_WORLD_TIME = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.LONG);
-    
+
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);
     }
 
     private PlayState predicate(AnimationState<?> state) {
+        state.getController().setAnimationSpeed(this.getAnimationSpeed());
         switch (this.getState()) {
             case DEATH -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
             case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
@@ -126,7 +130,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
     public void updatePostDeath() {
         this.deathTicks++;
-        if (this.deathTicks >= this.getTicksUntilDeath() && !this.getWorld().isClient()) {
+        if (this.deathTicks >= this.getScaledTicksUntilDeath() && !this.getWorld().isClient()) {
             this.getWorld().sendEntityStatus(this, EntityStatuses.ADD_DEATH_PARTICLES);
             CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE);
             this.remove(RemovalReason.KILLED);
@@ -219,12 +223,24 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         if (this.getWorld().isClient() && this.isState(States.OBLITERATE)) {
             BlockPos targetPos = this.getObliterateTarget();
             int attackTick = this.getSyncedAttackStatusTick();
-            if (!targetPos.equals(BlockPos.ORIGIN) && ReturningKnightHitboxes.isObliterateDebugTick(attackTick)) {
-                ReturningKnightHitboxes.updateObliterateMaceHitbox(this.debugObliterateMaceHitbox, this, targetPos, attackTick);
+            if (!targetPos.equals(BlockPos.ORIGIN) && ObliterateHitbox.isObliterateDebugTick(this, attackTick)) {
+                ObliterateHitbox.updateObliterateMaceHitbox(this.debugObliterateMaceHitbox, this, targetPos, attackTick);
                 RotatableHitboxDebugRegistry.put(
                         this.getWorld(),
                         "returning_knight_obliterate_server_predicted_" + this.getUuidAsString(),
                         this.debugObliterateMaceHitbox
+                );
+            }
+        }
+        if (this.getWorld().isClient() && this.isState(States.MACE_OF_SPADES)) {
+            BlockPos targetPos = this.getObliterateTarget();
+            int attackTick = this.getSyncedAttackStatusTick();
+            if (!targetPos.equals(BlockPos.ORIGIN) && MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
+                MaceOfSpadesHitbox.updateMaceHitbox(this.debugMaceOfSpadesHitbox, this, attackTick);
+                RotatableHitboxDebugRegistry.put(
+                        this.getWorld(),
+                        "returning_knight_mace_of_spades_server_predicted_" + this.getUuidAsString(),
+                        this.debugMaceOfSpadesHitbox
                 );
             }
         }
