@@ -14,7 +14,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -23,7 +22,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.collision.RotatableHitbox;
@@ -32,6 +32,9 @@ import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.MaceOfSpadesHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
+import net.soulsweaponry.entity.projectile.ReturningProjectile;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -229,15 +232,52 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
-           return false;
-        } else {
-            Entity entity = source.getSource();
-            if (entity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
-                return false;
+        Entity attacker = source.getAttacker();
+        Entity sourceEntity = source.getSource();
+        if (sourceEntity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
+            Entity copied = this.reflectProjectileCopy(projectile, attacker);
+            projectile.discard();
+            // Could reuse the UUID after discarding the previous but kinda unsafe and is basically a race condition
+            if (copied != null) {
+                UUID uuid = UUID.randomUUID();
+                copied.setUuid(uuid);
+                if (copied instanceof ReturningProjectile returningProjectile && returningProjectile.getOwner() instanceof PlayerEntity player) {
+                    returningProjectile.saveOnPlayer(player);
+                }
+                this.getWorld().spawnEntity(copied);
+                ParticleHandler.particleSphereList(this.getWorld(), 10, copied.getX(), copied.getY(), copied.getZ(), ParticleEvents.DARK_EXPLOSION_LIST, 0.3f);
+                this.playSound(SoundEvents.ENTITY_BREEZE_SHOOT, 1f, 1f);
             }
-            return super.damage(source, amount);
+            return false;
         }
+        return super.damage(source, amount);
+    }
+
+    private Entity reflectProjectileCopy(ProjectileEntity projectile, Entity target) {
+        if (this.getWorld().isClient()) {
+            return null;
+        }
+        Entity copiedEntity = projectile.getType().create(this.getWorld());
+        if (!(copiedEntity instanceof ProjectileEntity copiedProjectile)) {
+            return null;
+        }
+        copiedProjectile.copyFrom(projectile);
+        Vec3d direction;
+        if (target != null && target != this) {
+            Vec3d start = projectile.getPos();
+            Vec3d targetPos = target.getPos().add(0.0D, target.getHeight() * 0.6D, 0.0D);
+            direction = targetPos.subtract(start).normalize();
+        } else {
+            direction = projectile.getVelocity().multiply(-1.0D).normalize();
+        }
+        double speed = Math.max(projectile.getVelocity().length(), 0.6D);
+        Vec3d spawnPos = projectile.getPos().add(direction.multiply(0.75D));
+        copiedProjectile.setPosition(spawnPos.x, spawnPos.y, spawnPos.z);
+        copiedProjectile.setVelocity(direction.multiply(speed));
+        copiedProjectile.velocityModified = true;
+        copiedProjectile.setYaw((float)(MathHelper.atan2(direction.x, direction.z) * MathHelper.DEGREES_PER_RADIAN));
+        copiedProjectile.setPitch((float)(-(MathHelper.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * MathHelper.DEGREES_PER_RADIAN)));
+        return copiedProjectile;
     }
 
     @Override
@@ -282,15 +322,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
     protected void mobTick() {
         super.mobTick();
-        //Reflect all projectiles
-        //Box chunkBox = new Box(this.getX() - 4, this.getEyeY() - 2, this.getZ() - 4, this.getX() + 4, this.getEyeY() + 2, this.getZ() + 4);
-        Box chunkBox = this.getBoundingBox().expand(3);
-        List<Entity> nearbyEntities = this.getWorld().getOtherEntities(this, chunkBox);
-        for (Entity entity : nearbyEntities) {
-            if (entity instanceof PersistentProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
-                projectile.setVelocity(-projectile.getVelocity().getX(), -projectile.getVelocity().getY(), -projectile.getVelocity().getZ());
-            }
-        }
         this.breakSurroundingBlocks();
     }
 

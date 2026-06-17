@@ -50,6 +50,8 @@
   - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
 - Reworked Returning Knight
   - The boss can now jump up blocks
+  - Improved the reflection of projectiles
+    - The owner of the reflected projectile will NOT be set to the boss so that weird interactions with for example tridents will be avoided
   - Added config lines for each attack with damage, weight (chance, more likely to happen the bigger the number), cooldowns, etc.
     - Attacks with special cooldown above 0 will become special abilities and will only trigger if the special cooldown is also done along with regular attack cooldown, i.e Eruption and Children of the Grave are both special attacks by default so only one of them happen before setting the special cooldown, making both attacks rarer after each-other
   - Added a config line to change the animation speed of the boss
