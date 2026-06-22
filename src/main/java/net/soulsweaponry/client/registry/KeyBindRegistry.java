@@ -9,6 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.items.abilities.HasAbilitiesClientHooks;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.C2S.*;
@@ -85,13 +86,13 @@ public class KeyBindRegistry {
                 ClientPlayerEntity player = client.player;
                 for (ItemStack armorStack : player.getArmorItems()) {
                     if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
-                        abilityItem.useKeybindAbilityClient(client.world, armorStack, player, null);
+                        HasAbilitiesClientHooks.useKeybindAbilityClient(abilityItem, client.world, armorStack, player, null);
                     }
                 }
                 for (Hand hand : Hand.values()) {
                     ItemStack stack = player.getStackInHand(hand);
                     if (stack.getItem() instanceof IHasAbilities abilityItem) {
-                        abilityItem.useKeybindAbilityClient(client.world, stack, player, hand);
+                        HasAbilitiesClientHooks.useKeybindAbilityClient(abilityItem, client.world, stack, player, hand);
                     }
                 }
             }
@@ -123,7 +124,7 @@ public class KeyBindRegistry {
             // Can only attack with main hand
             ItemStack stack = client.player.getStackInHand(Hand.MAIN_HAND);
             if (stack.getItem() instanceof IHasAbilities hasAbilities) {
-                hasAbilities.onAttackClickClient(client.world, stack, client.player);
+                HasAbilitiesClientHooks.onAttackClickClient(hasAbilities, client.world, stack, client.player);
             }
             ModMessages.sendToServer(new AttackClickC2S());
         }

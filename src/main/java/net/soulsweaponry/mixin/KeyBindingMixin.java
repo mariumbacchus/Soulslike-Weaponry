@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraftforge.event.TickEvent;
 import net.soulsweaponry.events.ClientForgeEvents;
+import net.soulsweaponry.items.abilities.HasAbilitiesClientHooks;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.networking.ModMessages;
 import net.soulsweaponry.networking.packets.C2S.AttackClickC2S;
@@ -33,7 +34,7 @@ public class KeyBindingMixin {
                 if (client.player != null) {
                     ItemStack stack = client.player.getStackInHand(Hand.MAIN_HAND);
                     if (stack.getItem() instanceof IHasAbilities hasAbilities) {
-                        hasAbilities.onAttackClickClient(client.world, stack, client.player);
+                        HasAbilitiesClientHooks.onAttackClickClient(hasAbilities, client.world, stack, client.player);
                     }
                     ModMessages.sendToServer(new AttackClickC2S());
                 }

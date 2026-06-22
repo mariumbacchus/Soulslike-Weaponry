@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.4.8
+- Fixed crash on servers with some other mods
+- Fixed bug causing Excalibur to shoot the user
+
 # 1.4.7
 - Required forge version is now at least 47.4.0
 - Required geckolib version is now at least 4.8.3
