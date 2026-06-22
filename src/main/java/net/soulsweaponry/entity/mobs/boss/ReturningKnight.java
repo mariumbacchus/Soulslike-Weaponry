@@ -30,7 +30,8 @@ import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.collision.RotatableHitboxDebugRegistry;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
-import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.MaceOfSpadesHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.SeismicWaveHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.particles.ParticleEvents;
@@ -42,18 +43,18 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ReturningKnight extends BossEntity<ReturningKnight.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
     private final List<UUID> healers = new ArrayList<>();
-    private final RotatableHitbox debugObliterateMaceHitbox = ObliterateHitbox.createObliterateMaceHitboxPlaceholder();
-    private final RotatableHitbox debugMaceOfSpadesHitbox = MaceOfSpadesHitbox.createMaceHitboxPlaceholder();
+    private final RotatableHitbox debugObliterateMaceHitbox = ObliterateHitbox.createObliterateMaceHitboxPlaceholder(); //TODO maybe merge hitboxes into one for debugging
+    private final RotatableHitbox debugMaceOfSpadesHitbox = MaceOfSpadesHitbox.createMaceHitboxPlaceholder(); // TODO start attack should be summon attack, can only be triggered via goal i think, didnt work after spawn at least
+    private final RotatableHitbox debugSeismicWave = SeismicWaveHitbox.createMaceHitboxPlaceholder();
+    private static final Set<States> IGNORE_IDLE = Set.of(States.SPAWN, States.UNBREAKABLE, States.SUMMON, States.OBLITERATE, States.BLIND, States.RUPTURE, States.MACE_OF_SPADES_1);
+    private static final Set<States> MACE_OF_SPADES_ATTACKS = Set.of(States.MACE_OF_SPADES_1, States.MACE_OF_SPADES_2, States.MACE_OF_SPADES_3, States.MACE_OF_SPADES_4_SPIN);
 
     private static final TrackedData<BlockPos> OBLITERATE_TARGET = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Long> ATTACK_START_WORLD_TIME = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.LONG);
@@ -65,6 +66,14 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
     public double getAnimationSpeed() {
         return EntityConfig.returning_knight_animation_speed;
+    }
+
+    private PlayState idle(AnimationState<?> state) {
+        if (this.isDead() || IGNORE_IDLE.contains(this.getState())) {
+            return PlayState.STOP;
+        }
+        state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
+        return PlayState.CONTINUE;
     }
 
     private PlayState predicate(AnimationState<?> state) {
@@ -79,7 +88,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 case OBLITERATE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
                 case BLIND -> state.getController().setAnimation(RawAnimation.begin().thenPlay("blinding_reflection"));
                 case RUPTURE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("rupture"));
-                case MACE_OF_SPADES -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades"));
+                case MACE_OF_SPADES_1 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_1"));
+                case MACE_OF_SPADES_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_2"));
+                case MACE_OF_SPADES_3 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_3"));
+                case MACE_OF_SPADES_4_SPIN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_4"));
+                case SEISMIC_WAVE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("seismic_wave"));
                 default -> {
                     if (this.isAttacking()) {
                         state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
@@ -216,7 +229,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 );
             }
         }
-        if (this.getWorld().isClient() && this.isState(States.MACE_OF_SPADES)) {
+        if (this.getWorld().isClient() && MACE_OF_SPADES_ATTACKS.contains(this.getState())) {
             BlockPos targetPos = this.getObliterateTarget();
             int attackTick = this.getSyncedAttackStatusTick();
             if (!targetPos.equals(BlockPos.ORIGIN) && MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
@@ -225,6 +238,18 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                         this.getWorld(),
                         "returning_knight_mace_of_spades_server_predicted_" + this.getUuidAsString(),
                         this.debugMaceOfSpadesHitbox
+                );
+            }
+        }
+        if (this.getWorld().isClient() && this.isState(States.SEISMIC_WAVE)) {
+            BlockPos targetPos = this.getObliterateTarget();
+            int attackTick = this.getSyncedAttackStatusTick();
+            if (!targetPos.equals(BlockPos.ORIGIN) && SeismicWaveHitbox.isDebugTick(this, attackTick)) {
+                SeismicWaveHitbox.updateMaceHitbox(this.debugSeismicWave, this, attackTick);
+                RotatableHitboxDebugRegistry.put(
+                        this.getWorld(),
+                        "returning_knight_seismic_wave_server_predicted_" + this.getUuidAsString(),
+                        this.debugSeismicWave
                 );
             }
         }
@@ -307,6 +332,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+        controllers.add(new AnimationController<>(this, "idle_controller", 0, this::idle));
     }
 
     @Override
@@ -373,6 +399,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     }
 
     public enum States {
-        IDLE, SPAWN, OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, MACE_OF_SPADES
+        IDLE, SPAWN, OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, MACE_OF_SPADES_1, MACE_OF_SPADES_2, MACE_OF_SPADES_3, MACE_OF_SPADES_4_SPIN, SEISMIC_WAVE
     }
 }

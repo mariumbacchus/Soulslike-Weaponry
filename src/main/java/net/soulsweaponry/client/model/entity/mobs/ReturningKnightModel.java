@@ -14,4 +14,9 @@ public class ReturningKnightModel extends BossGeoEntityModel<ReturningKnight> {
     public String getDebugBoneId() {
         return "hitboxCenter";
     }
+
+    @Override
+    public boolean isDebugAttacking(ReturningKnight boss) {
+        return false;//boss.isState(ReturningKnight.States.SEISMIC_WAVE);
+    }
 }

@@ -95,7 +95,8 @@ public class EntityRegistry {
     public static final EntityType<AirCombustion> AIR_COMBUSTION = registerEntity("air_combustion", EntityType.Builder.<AirCombustion>create(AirCombustion::new, SpawnGroup.MISC).dimensions(1f, 1f).maxTrackingRange(16).trackingTickInterval(20).build());
     public static final EntityType<MoltenMetal> MOLTEN_METAL = registerEntity("molten_metal", EntityType.Builder.<MoltenMetal>create(MoltenMetal::new, SpawnGroup.MISC).dimensions(1f, 0.3f).maxTrackingRange(16).trackingTickInterval(20).build());
     public static final EntityType<MoonveilWave> DRAGONWOUND_WAVE_VERTICAL = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "dragonwound_wave_vertical"), EntityType.Builder.<MoonveilWave>create(MoonveilWave::new, SpawnGroup.MISC).dimensions(1f, 4.0f).maxTrackingRange(4).trackingTickInterval(20).build());
-
+    public static final EntityType<EruptionEntity> ERUPTION = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "eruption_entity"), EntityType.Builder.<EruptionEntity>create(EruptionEntity::new, SpawnGroup.MISC).dimensions(2f, 2f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build());
+    //TODO translation for dragon wound wave and eruption?
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new Item.Settings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new Item.Settings());
     public static final Item DRAUGR_BOSS_SPAWN_EGG = new SpawnEggItem(DRAUGR_BOSS, 10263708, 7694143, new Item.Settings());

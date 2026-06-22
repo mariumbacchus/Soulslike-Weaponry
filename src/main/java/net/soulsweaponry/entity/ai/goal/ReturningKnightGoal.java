@@ -35,11 +35,6 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
                 (int) EntityConfig.returning_knight_obliterate_cooldown,
                 (int) EntityConfig.returning_knight_obliterate_special_cooldown
         );
-        MaceOfSpades maceOfSpades = new MaceOfSpades(this, this.boss, 72,
-                (int) EntityConfig.returning_knight_mace_of_spades_weight,
-                (int) EntityConfig.returning_knight_mace_of_spades_cooldown,
-                (int) EntityConfig.returning_knight_mace_of_spades_special_cooldown
-        );
         BlindingLight blindingLight = new BlindingLight(this, this.boss, 38,
                 (int) EntityConfig.returning_knight_blinding_light_weight,
                 (int) EntityConfig.returning_knight_blinding_light_cooldown,
@@ -50,12 +45,41 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
                 (int) EntityConfig.returning_knight_eruption_cooldown,
                 (int) EntityConfig.returning_knight_eruption_special_cooldown
         );
+        MaceOfSpades1 maceOfSpades1 = new MaceOfSpades1(this, this.boss, 72,
+                (int) EntityConfig.returning_knight_mace_of_spades_1_weight,
+                (int) EntityConfig.returning_knight_mace_of_spades_1_cooldown,
+                (int) EntityConfig.returning_knight_mace_of_spades_1_special_cooldown
+        );
+        MaceOfSpades2 maceOfSpades2 = new MaceOfSpades2(this, this.boss, 95,
+                (int) EntityConfig.returning_knight_mace_of_spades_2_weight,
+                (int) EntityConfig.returning_knight_mace_of_spades_2_cooldown,
+                (int) EntityConfig.returning_knight_mace_of_spades_2_special_cooldown
+        );
+        MaceOfSpades3 maceOfSpades3 = new MaceOfSpades3(this, this.boss, 100,
+                (int) EntityConfig.returning_knight_mace_of_spades_3_weight,
+                (int) EntityConfig.returning_knight_mace_of_spades_3_cooldown,
+                (int) EntityConfig.returning_knight_mace_of_spades_3_special_cooldown
+        );
+        MaceOfSpades4Spin maceOfSpades4 = new MaceOfSpades4Spin(this, this.boss, 103,
+                (int) EntityConfig.returning_knight_mace_of_spades_4_weight,
+                (int) EntityConfig.returning_knight_mace_of_spades_4_cooldown,
+                (int) EntityConfig.returning_knight_mace_of_spades_4_special_cooldown
+        );
+        SeismicWave seismicWave = new SeismicWave(this, this.boss, 112,
+                (int) EntityConfig.returning_knight_seismic_wave_weight,
+                (int) EntityConfig.returning_knight_seismic_wave_cooldown,
+                (int) EntityConfig.returning_knight_seismic_wave_special_cooldown
+        );
 
         this.addAttack(ReturningKnight.States.SUMMON, childrenOfTheGrave);
         this.addAttack(ReturningKnight.States.OBLITERATE, obliterate);
-        this.addAttack(ReturningKnight.States.MACE_OF_SPADES, maceOfSpades);
         this.addAttack(ReturningKnight.States.BLIND, blindingLight);
         this.addAttack(ReturningKnight.States.RUPTURE, eruption);
+        this.addAttack(ReturningKnight.States.MACE_OF_SPADES_1, maceOfSpades1);
+        this.addAttack(ReturningKnight.States.MACE_OF_SPADES_2, maceOfSpades2);
+        this.addAttack(ReturningKnight.States.MACE_OF_SPADES_3, maceOfSpades3);
+        this.addAttack(ReturningKnight.States.MACE_OF_SPADES_4_SPIN, maceOfSpades4);
+        this.addAttack(ReturningKnight.States.SEISMIC_WAVE, seismicWave);
 
         Unbreakable unbreakable = new Unbreakable(this, this.boss, 76);
         this.addEvent(ReturningKnight.States.UNBREAKABLE, unbreakable);
@@ -79,7 +103,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return null;//ReturningKnight.States.SUMMON;
+        return null;//ReturningKnight.States.SEISMIC_WAVE;
     }
 
     public UUID summonAllies(Vec3d pos, boolean healer) {

@@ -55,7 +55,7 @@
   - Added config lines for each attack with damage, weight (chance, more likely to happen the bigger the number), cooldowns, etc.
     - Attacks with special cooldown above 0 will become special abilities and will only trigger if the special cooldown is also done along with regular attack cooldown, i.e Eruption and Children of the Grave are both special attacks by default so only one of them happen before setting the special cooldown, making both attacks rarer after each-other
   - Added a config line to change the animation speed of the boss
-    - All attacks should match the new animation speed, such as hitbox timings and such, death & spawn timer is also adjusted
+    - All attacks should match the new animation speed, such as hitbox/damage timings, and death & spawn timers
   - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
   - Obliterate attack:
     - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
@@ -64,9 +64,21 @@
     - The attack will adjust its hitbox to max 2 blocks downwards if the target is under the boss
   - Eruption attack:
     - Now properly only warns entities within range of the attack with the door breaking sound
-  - Mace of Spades:
+  - Mace of Spades (3 New attacks):
     - Now has a rotatable hitbox just like Obliterate, making the attack more accurate and dodgeable
-    - Adjusted the animation slightly to aim more downwards with the swing
+    - The Obliterate parts of the attack (not the swipes) can also summon Remnants upon killing mobs with it
+    - Added 3 new variations of the attack and changed the first one slightly:
+      - Mace of Spades 1: Original
+        - Adjusted the animation slightly to aim more downwards with the swing
+        - Damage for the Obliterate part of the attack increased 25 -> 30
+      - Mace of Spades 2: Left-and-right
+        - One-handed swipes to the left and right before an Obliterate smash
+      - Mace of Spades 3: Swipes only
+        - One-handed swipes left and right, then two hands to the left again, following up with a more charged swipe back to the right that also knocks targets hit up and slows them
+      - Mace of Spades 4: Spin-and-thrust
+        - One-handed swipe to the left, then spins 360 degrees swiftly around himself before thrusting forwards, knocking targets hit back and crippling them
+  - Seismic Wave (New attack):
+    - Grinds Nightfall along the ground, spawning a wide wave of delayed eruptions down the targets path relative to the boss, then when the boss slams the mace into the ground the eruptions explode
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack

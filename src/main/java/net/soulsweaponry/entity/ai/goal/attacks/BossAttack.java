@@ -106,6 +106,19 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
     }
 
     /**
+     * Helper for returning whether the attack status matches any of the ticks in the given array.
+     * The attack status is scaled according to the bosses animation speed.
+     * <p>
+     *     Will also only tick the attack status once, so i.e. if the animation speed is 0.5, then attack status
+     *     will be the same number twice, which would usually trigger one time events like this twice, this prevents that.
+     *     It also makes it so events that would be skipped still happen if the animation speed was too fast.
+     * </p>
+     */
+    public boolean isAnyTick(int attackStatus, int... ticks) {
+        return BossHitboxHelper.didAnyScaledTickPass(attackStatus, this.getBoss().getAnimationSpeed(), ticks);
+    }
+
+    /**
      * Easily accessible playSound function.
      * @param pos Position to play sound on, if set to null, will play on the boss' position
      * @param sound Sound to be played
@@ -119,6 +132,17 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
 
     public void playSound(BlockPos pos, SoundEvent sound, float volume) {
         this.playSound(pos, sound, volume, 1f);
+    }
+
+    public void playSound(SoundEvent sound, float volume, float pitch) {
+        this.playSound(this.boss.getBlockPos(), sound, volume, pitch);
+    }
+
+    /**
+     * Plays sound with random pitch between the ranges.
+     */
+    public void playSound(SoundEvent sound, float volume, float minPitchRange, float maxPitchRange) {
+        this.playSound(this.boss.getBlockPos(), sound, volume, this.getBoss().getRandom().nextBetween((int) (minPitchRange * 100), (int) (maxPitchRange * 100)) * 0.01f);
     }
 
     public void playSound(SoundEvent sound, float volume) {

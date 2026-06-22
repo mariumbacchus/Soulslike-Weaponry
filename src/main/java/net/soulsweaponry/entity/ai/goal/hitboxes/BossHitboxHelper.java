@@ -60,6 +60,15 @@ public class BossHitboxHelper {
         return previousTick < targetTick && currentTick >= targetTick;
     }
 
+    public static boolean didAnyScaledTickPass(int attackTick, double animationSpeed, int... targetTicks) {
+        for (int targetTick : targetTicks) {
+            if (didScaledTickPass(attackTick, animationSpeed, targetTick)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void updateKeyframedLocalHitbox(RotatableHitbox hitbox, Entity owner, float yaw, Vec3d baseSize, double animationSpeed, Keyframe[] keyframes, int attackTick) {
         updateKeyframedLocalHitboxInternal(hitbox, owner, yaw, baseSize, animationSpeed, keyframes, attackTick, 0.0D);
     }

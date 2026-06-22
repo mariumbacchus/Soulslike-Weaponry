@@ -21,13 +21,13 @@ public class BlackflameExplosionEntity extends DamagingWarmupEntity implements G
         super(entityType, world);
     }
 
+    public BlackflameExplosionEntity(World world) {
+        super(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY, world);
+    }
+
     @Override
     public void handleSoundStatus(byte status) {
         this.getWorld().playSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), this.getSoundCategory(), 1f, 1f, true);
-    }
-
-    public BlackflameExplosionEntity(World world) {
-        super(EntityRegistry.BLACKFLAME_EXPLOSION_ENTITY, world);
     }
 
     @Override

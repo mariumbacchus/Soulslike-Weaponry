@@ -83,26 +83,54 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_extra_enemy_bound = 3;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_min_healer_count = 1;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_extra_healer_bound = 2;
-    @Entry(min = 0) public static float returning_knight_children_of_the_grave_weight = 10;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_weight = 12;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_cooldown = 40;
-    @Entry(min = 0) public static float returning_knight_children_of_the_grave_special_cooldown = 160;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_special_cooldown = 100;
 
     @Entry(min = 0) public static float returning_knight_eruption_range_blocks = 18;
     @Entry(min = 0) public static float returning_knight_eruption_damage = 30;
-    @Entry(min = 0) public static float returning_knight_eruption_weight = 15;
+    @Entry(min = 0) public static float returning_knight_eruption_weight = 10;
     @Entry(min = 0) public static float returning_knight_eruption_cooldown = 40;
     @Entry(min = 0) public static float returning_knight_eruption_special_cooldown = 80;
 
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_swipe_damage= 20;
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_smash_damage= 25;
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_weight = 20;
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_cooldown = 40;
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_special_cooldown = 0;
-
     @Entry(min = 0) public static float returning_knight_obliterate_damage = 60f;
-    @Entry(min = 0) public static float returning_knight_obliterate_weight = 30;
-    @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 40;
+    @Entry(min = 0) public static float returning_knight_obliterate_weight = 15;
+    @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_special_cooldown = 0;
+
+    // Mace of Spades 1
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_swipe_damage = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_smash_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_weight = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_special_cooldown = 0;
+    // Mace of Spades 2
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_swipe_damage = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_smash_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_weight = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_special_cooldown = 0;
+    // Mace of Spades 3
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_one_handed_swipe_damage = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_two_handed_swipe_damage = 25;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_charged_swipe_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_weight = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_special_cooldown = 0;
+    // Mace of Spades 4
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_4_swipe_damage = 18;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_4_spin_damage = 23;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_4_thrust_damage = 28;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_4_weight = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_4_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_4_special_cooldown = 0;
+
+    //Seismic Wave
+    @Entry(min = 0) public static float returning_knight_seismic_wave_swipe_damage = 18;
+    @Entry(min = 0) public static float returning_knight_seismic_wave_eruption_damage = 25;
+    @Entry(min = 0) public static float returning_knight_seismic_wave_weight = 10;
+    @Entry(min = 0) public static float returning_knight_seismic_wave_cooldown = 40;
+    @Entry(min = 0) public static float returning_knight_seismic_wave_special_cooldown = 0;
 
     // Misc
     @Entry public static boolean returning_knight_disable_respawn = false;

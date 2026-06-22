@@ -17,9 +17,13 @@ public class GiveResistanceC2SReceiver {
         ServerPlayerEntity player = ctx.player();
         server.execute(() -> {
             if (player.hasStatusEffect(StatusEffects.RESISTANCE)) {
+                if (player.hasStatusEffect(StatusEffects.SATURATION)) {
+                    player.removeStatusEffect(StatusEffects.SATURATION);
+                }
                 player.removeStatusEffect(StatusEffects.RESISTANCE);
             } else {
                 player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 400000, 30, false, true));
+                player.addStatusEffect(new StatusEffectInstance(StatusEffects.SATURATION, 400000, 30, false, true));
             }
         });
     }
