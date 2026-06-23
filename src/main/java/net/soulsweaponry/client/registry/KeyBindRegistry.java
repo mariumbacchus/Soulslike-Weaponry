@@ -1,23 +1,23 @@
 package net.soulsweaponry.client.registry;
 
 import com.mrcrayfish.controllable.client.binding.ButtonBindings;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import net.soulsweaponry.SoulsWeaponry;
+import net.soulsweaponry.items.abilities.HasAbilitiesClientHooks;
 import net.soulsweaponry.items.abilities.IHasAbilities;
 import net.soulsweaponry.networking.C2S.packets.*;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.ItemRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.lwjgl.glfw.GLFW;
-
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.soulsweaponry.SoulsWeaponry;
 
 public class KeyBindRegistry {
 
@@ -89,13 +89,13 @@ public class KeyBindRegistry {
                     ClientPlayerEntity player = client.player;
                     for (ItemStack armorStack : player.getArmorItems()) {
                         if (armorStack.getItem() instanceof IHasAbilities abilityItem) {
-                            abilityItem.useKeybindAbilityClient(client.world, armorStack, player, null);
+                            HasAbilitiesClientHooks.useKeybindAbilityClient(abilityItem, client.world, armorStack, player, null);
                         }
                     }
                     for (Hand hand : Hand.values()) {
                         ItemStack stack = player.getStackInHand(hand);
                         if (stack.getItem() instanceof IHasAbilities abilityItem) {
-                            abilityItem.useKeybindAbilityClient(client.world, stack, player, hand);
+                            HasAbilitiesClientHooks.useKeybindAbilityClient(abilityItem, client.world, stack, player, hand);
                         }
                     }
                 }
@@ -132,7 +132,7 @@ public class KeyBindRegistry {
                 // Can only attack with main hand
                 ItemStack stack = client.player.getStackInHand(Hand.MAIN_HAND);
                 if (stack.getItem() instanceof IHasAbilities hasAbilities) {
-                    hasAbilities.onAttackClickClient(client.world, stack, client.player);
+                    HasAbilitiesClientHooks.onAttackClickClient(hasAbilities, client.world, stack, client.player);
                 }
                 ClientPlayNetworking.send(new AttackClickC2S());
             }

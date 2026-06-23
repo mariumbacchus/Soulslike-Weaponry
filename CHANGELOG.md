@@ -1,5 +1,18 @@
 # Changelog
 
+# 1.4.8
+- Fixed crash on servers with some other forge mods (if using Sinytra connector)
+- Fixed bug causing Excalibur to shoot the user
+
+# 1.4.7
+- Fixed a bug preventing some mods' custom tooltip to show on items
+
+# 1.4.6 (Only 1.20.1)
+- Fixed shield parries not working visually
+
+# 1.4.5 (Only Forge 1.20.1)
+- Fixed crash due to Ranged Weapon API forge patch not being properly builtin as intended (Forge only)
+
 # 1.4.4
 - Fixed a bug causing Returning Knight and Fallen Icon to destroy indestructible blocks around them
 - Fixed an issue with ability system and mixins regarding compatability with other mods if using Sinytra Connector
