@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.4.8
+- Fixed crash on servers with some other forge mods (if using Sinytra connector)
+- Fixed bug causing Excalibur to shoot the user
+
+# 1.4.7
+- Fixed a bug preventing some mods' custom tooltip to show on items
+
 # 1.4.6
 - Fixed shield parries not working visually
 

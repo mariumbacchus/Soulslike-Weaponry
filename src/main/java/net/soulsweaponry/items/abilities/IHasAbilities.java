@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +13,10 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.MiningToolItem;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.TridentItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -22,7 +24,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.client.registry.KeyBindRegistry;
 import net.soulsweaponry.config.ClientConfig;
-import net.soulsweaponry.config.ConfigConstructor;
 import net.soulsweaponry.mixin.ItemAccessor;
 import net.soulsweaponry.mixin.KeyBindingAccessor;
 import net.soulsweaponry.registry.ItemRegistry;
@@ -128,55 +129,6 @@ public interface IHasAbilities extends IConfigDisable {
         HasAbilitiesHooks.inventoryTick(this, stack, world, entity, slot, selected);
     }
 
-    default void useKeybindAbilityClient(ClientWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
-        if (this.isDisabled(stack)) {
-            this.notifyDisabled(player);
-            return;
-        }
-
-        boolean sneaking = player.isSneaking();
-        boolean offhand = player.getOffHandStack().isOf(stack.getItem());
-
-        List<IAbility> abilities = this.getAbilities();
-
-        // Only look at abilities that actually care about the keybind
-        boolean hasSneakKeybindAbility = abilities.stream()
-                .anyMatch(a -> a.isKeybindAbility() && a.isSneakAbility());
-        boolean hasOffhandKeybindAbility = abilities.stream()
-                .anyMatch(a -> a.isKeybindAbility() && a.isOffhandAbility());
-
-        for (IAbility a : abilities) {
-            if (!a.isKeybindAbility()) {
-                continue; // this ability doesn't care about the keybind at all
-            }
-
-            if (sneaking && hasSneakKeybindAbility) {
-                // Sneaking override mode, only sneaking keybind abilities fire
-                if (a.isSneakAbility()) {
-                    a.sneakingUseKeybindAbilityClient(world, stack, player, hand);
-                }
-                continue;
-            }
-
-            if (offhand && hasOffhandKeybindAbility) {
-                // Offhand override mode, only offhand keybind abilities fire
-                if (a.isOffhandAbility()) {
-                    a.offhandUseKeybindAbilityClient(world, stack, player, hand);
-                }
-                continue;
-            }
-
-            // No sneaking/offhand keybind override in effect, let abilities behave as they are flagged
-            if (sneaking && a.isSneakAbility()) {
-                a.sneakingUseKeybindAbilityClient(world, stack, player, hand);
-            } else if (offhand && a.isOffhandAbility()) {
-                a.offhandUseKeybindAbilityClient(world, stack, player, hand);
-            } else if (!a.isSneakAbility() && !a.isOffhandAbility()) {
-                a.useKeybindAbilityClient(world, stack, player, hand);
-            }
-        }
-    }
-
     default void useKeybindAbilityServer(ServerWorld world, ItemStack stack, PlayerEntity player, @Nullable Hand hand) {
         if (this.isDisabled(stack)) {
             return; // Disabled item notification is given on client side
@@ -218,14 +170,6 @@ public interface IHasAbilities extends IConfigDisable {
                 a.useKeybindAbilityServer(world, stack, player, hand);
             }
         }
-    }
-
-    default void onAttackClickClient(ClientWorld world, ItemStack stack, PlayerEntity player) {
-        if (this.isDisabled(stack)) {
-            return;
-        }
-        // Can add sneaking versions of this later
-        this.getAbilities().forEach(a -> a.onAttackClickClient(world, stack, player));
     }
 
     default void onAttackClickServer(ServerWorld world, ItemStack stack, PlayerEntity player) {

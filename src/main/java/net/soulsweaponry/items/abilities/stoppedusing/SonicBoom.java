@@ -43,7 +43,7 @@ public record SonicBoom(
         float queryRadius = Math.max(searchRange, maxRange);
         Box queryBox = user.getBoundingBox().expand(queryRadius);
 
-        Predicate<LivingEntity> nonTeammate = e -> !e.isTeammate(user) && !(e instanceof ArmorStandEntity);
+        Predicate<LivingEntity> nonTeammate = e -> !e.isTeammate(user) && !(e instanceof ArmorStandEntity) && !e.equals(user);
         TargetPredicate targetPredicate = TargetPredicate.createNonAttackable()
                 .setBaseMaxDistance(searchRange)
                 .ignoreVisibility()
