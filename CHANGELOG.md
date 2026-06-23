@@ -12,73 +12,73 @@
 
 ## Additions
 - Added the Large Sword of Moonlight (from Demon's Souls)
-  - It deals purely magic damage, therefore bypassing regular armor
-  - Attacks will go through shields
-  - Deal bonus damage against undead mobs
-  - Attacks apply Magic Frailty, a new effect that increases the magic damage taken for the entity that has it
-  - Use to block just like a shield, additionally reduce magic damage taken while blocking by 80%
+    - It deals purely magic damage, therefore bypassing regular armor
+    - Attacks will go through shields
+    - Deal bonus damage against undead mobs
+    - Attacks apply Magic Frailty, a new effect that increases the magic damage taken for the entity that has it
+    - Use to block just like a shield, additionally reduce magic damage taken while blocking by 80%
 - Added the Dragon-Hunter's Great Katana (from Elden Ring: Shadow of the Erdtree)
-  - Being a great katana the attack speed is lower than a traditional one with it being 1.2
-  - Will apply bleed
-  - Great katanas have a unique moveset with Better Combat based on the moveset in Elden Ring
-  - Deal increased damage against dragon mobs
-  - Use to slice the air, shooting out a wave that goes through walls, particles left behind by the slash explode after a short delay
+    - Being a great katana the attack speed is lower than a traditional one with it being 1.2
+    - Will apply bleed
+    - Great katanas have a unique moveset with Better Combat based on the moveset in Elden Ring
+    - Deal increased damage against dragon mobs
+    - Use to slice the air, shooting out a wave that goes through walls, particles left behind by the slash explode after a short delay
 - Added system for Oriented Bounding Boxes (rotatable hitboxes) for future boss and weapon attacks
-  - More of a technical addition that should make boss attacks more accurate and interesting
-  - Can be seen by pressing F3 + B for those bosses that have it like Returning Knight
+    - More of a technical addition that should make boss attacks more accurate and interesting
+    - Can be seen by pressing F3 + B for those bosses that have it like Returning Knight
 
 ## Changes
 ### Weapons
 - Dragonbane bonus damage against dragons per level 5 -> 6
 - Reworked the Forlorn Scythe
-  - It now shoots Night Skulls instead of Wither Skulls, with the amount increased by 2 for every 3rd level (will shoot 3 at lvl 3-5, 5 at lvl 6 but config needs to be changed for that since max level is 5)
-  - Every 3rd shot makes the middle skull charged
-  - Night Skulls always despawn after 30 ticks
-  - Explosions no longer destroy blocks, this can be enabled in the config again
-  - Explosion power increased from 1 to 2, charged skulls have 3
-  - Charged skulls also leave behind a cloud of Decay, but it will not affect the user or teammates of the user
-  - Night Skulls have no drag unlike the Wither Skulls, therefore using it while other skulls are in the air will **no longer** detonate those previous skulls
-  - Config lines have been renamed to include night_skull instead of wither_skull, lines for damage and velocity has also been added
+    - It now shoots Night Skulls instead of Wither Skulls, with the amount increased by 2 for every 3rd level (will shoot 3 at lvl 3-5, 5 at lvl 6 but config needs to be changed for that since max level is 5)
+    - Every 3rd shot makes the middle skull charged
+    - Night Skulls always despawn after 30 ticks
+    - Explosions no longer destroy blocks, this can be enabled in the config again
+    - Explosion power increased from 1 to 2, charged skulls have 3
+    - Charged skulls also leave behind a cloud of Decay, but it will not affect the user or teammates of the user
+    - Night Skulls have no drag unlike the Wither Skulls, therefore using it while other skulls are in the air will **no longer** detonate those previous skulls
+    - Config lines have been renamed to include night_skull instead of wither_skull, lines for damage and velocity has also been added
 
 ### Bosses
 - Tripled the range for Day Stalker and Night Prowler melee attacks to trigger (only trigger, not the range to deal damage)
 - Night Prowler's Night Skulls during the Eclipse attack now shoot charged skulls every 3rd wave, only these will spawn clouds of Decay and will deal more damage
-  - Damage is 10 for regular, 14 for charged
-  - Explosion power is 2 for regular, 4 for charged
-  - Duration increased from 4 to 5 seconds of the cloud
-  - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
-  - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
+    - Damage is 10 for regular, 14 for charged
+    - Explosion power is 2 for regular, 4 for charged
+    - Duration increased from 4 to 5 seconds of the cloud
+    - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
+    - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
 - Reworked Returning Knight
-  - The boss can now jump up blocks
-  - Improved the reflection of projectiles
-    - The owner of the reflected projectile will NOT be set to the boss so that weird interactions with for example tridents will be avoided
-  - Added config lines for each attack with damage, weight (chance, more likely to happen the bigger the number), cooldowns, etc.
-    - Attacks with special cooldown above 0 will become special abilities and will only trigger if the special cooldown is also done along with regular attack cooldown, i.e Eruption and Children of the Grave are both special attacks by default so only one of them happen before setting the special cooldown, making both attacks rarer after each-other
-  - Added a config line to change the animation speed of the boss
-    - All attacks should match the new animation speed, such as hitbox/damage timings, and death & spawn timers
-  - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
-  - Obliterate attack:
-    - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
-    - This means that the attack won't land just on the selected target, the hitbox will run along the whole mace as it travels to the ground
-    - The attack now also destroys all blocks in the maces path (can be disabled in config with the line `ConfigConstructor.can_bosses_break_blocks` or setting gamerule mob griefing to false)
-    - The attack will adjust its hitbox to max 2 blocks downwards if the target is under the boss
-  - Eruption attack:
-    - Now properly only warns entities within range of the attack with the door breaking sound
-  - Mace of Spades (3 New attacks):
-    - Now has a rotatable hitbox just like Obliterate, making the attack more accurate and dodgeable
-    - The Obliterate parts of the attack (not the swipes) can also summon Remnants upon killing mobs with it
-    - Added 3 new variations of the attack and changed the first one slightly:
-      - Mace of Spades 1: Original
-        - Adjusted the animation slightly to aim more downwards with the swing
-        - Damage for the Obliterate part of the attack increased 25 -> 30
-      - Mace of Spades 2: Left-and-right
-        - One-handed swipes to the left and right before an Obliterate smash
-      - Mace of Spades 3: Swipes only
-        - One-handed swipes left and right, then two hands to the left again, following up with a more charged swipe back to the right that also knocks targets hit up and slows them
-      - Mace of Spades 4: Spin-and-thrust
-        - One-handed swipe to the left, then spins 360 degrees swiftly around himself before thrusting forwards, knocking targets hit back and crippling them
-  - Seismic Wave (New attack):
-    - Grinds Nightfall along the ground, spawning a wide wave of delayed eruptions down the targets path relative to the boss, then when the boss slams the mace into the ground the eruptions explode
+    - The boss can now jump up blocks
+    - Improved the reflection of projectiles
+        - The owner of the reflected projectile will NOT be set to the boss so that weird interactions with for example tridents will be avoided
+    - Added config lines for each attack with damage, weight (chance, more likely to happen the bigger the number), cooldowns, etc.
+        - Attacks with special cooldown above 0 will become special abilities and will only trigger if the special cooldown is also done along with regular attack cooldown, i.e Eruption and Children of the Grave are both special attacks by default so only one of them happen before setting the special cooldown, making both attacks rarer after each-other
+    - Added a config line to change the animation speed of the boss
+        - All attacks should match the new animation speed, such as hitbox/damage timings, and death & spawn timers
+    - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
+    - Obliterate attack:
+        - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
+        - This means that the attack won't land just on the selected target, the hitbox will run along the whole mace as it travels to the ground
+        - The attack now also destroys all blocks in the maces path (can be disabled in config with the line `ConfigConstructor.can_bosses_break_blocks` or setting gamerule mob griefing to false)
+        - The attack will adjust its hitbox to max 2 blocks downwards if the target is under the boss
+    - Eruption attack:
+        - Now properly only warns entities within range of the attack with the door breaking sound
+    - Mace of Spades (3 New attacks):
+        - Now has a rotatable hitbox just like Obliterate, making the attack more accurate and dodgeable
+        - The Obliterate parts of the attack (not the swipes) can also summon Remnants upon killing mobs with it
+        - Added 3 new variations of the attack and changed the first one slightly:
+            - Mace of Spades 1: Original
+                - Adjusted the animation slightly to aim more downwards with the swing
+                - Damage for the Obliterate part of the attack increased 25 -> 30
+            - Mace of Spades 2: Left-and-right
+                - One-handed swipes to the left and right before an Obliterate smash
+            - Mace of Spades 3: Swipes only
+                - One-handed swipes left and right, then two hands to the left again, following up with a more charged swipe back to the right that also knocks targets hit up and slows them
+            - Mace of Spades 4: Spin-and-thrust
+                - One-handed swipe to the left, then spins 360 degrees swiftly around himself before thrusting forwards, knocking targets hit back and crippling them
+    - Seismic Wave (New attack):
+        - Grinds Nightfall along the ground, spawning a wide wave of delayed eruptions down the targets path relative to the boss, then when the boss slams the mace into the ground the eruptions explode
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack
@@ -87,6 +87,20 @@
 - Fixed a bug where Night Shade copies would still display the death-light when they weren't supposed to, and they (the copies) would not kill themselves if the real one died
 
 ---------------
+
+
+# 1.4.8
+- Fixed crash on servers with some other forge mods (if using Sinytra connector)
+- Fixed bug causing Excalibur to shoot the user
+
+# 1.4.7
+- Fixed a bug preventing some mods' custom tooltip to show on items
+
+# 1.4.6 (Only 1.20.1)
+- Fixed shield parries not working visually
+
+# 1.4.5 (Only Forge 1.20.1)
+- Fixed crash due to Ranged Weapon API forge patch not being properly builtin as intended (Forge only)
 
 # 1.4.4
 - Fixed a bug causing Returning Knight and Fallen Icon to destroy indestructible blocks around them
