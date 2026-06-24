@@ -106,6 +106,11 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         return null;//ReturningKnight.States.SEISMIC_WAVE;
     }
 
+    @Override
+    public @Nullable ReturningKnight.States getFirstAggroAttack() {
+        return ReturningKnight.States.SUMMON;
+    }
+
     public UUID summonAllies(Vec3d pos, boolean healer) {
         MobEntity entity = healer ? new DarkSorcerer(EntityRegistry.DARK_SORCERER, this.getWorld()) : new Remnant(EntityRegistry.REMNANT, this.getWorld());
         entity.setPosition(pos);

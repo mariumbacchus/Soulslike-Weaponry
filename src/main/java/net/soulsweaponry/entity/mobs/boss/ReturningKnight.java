@@ -30,9 +30,10 @@ import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.collision.RotatableHitboxDebugRegistry;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
+import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.SeismicWaveHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
-import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -50,9 +51,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
     private final List<UUID> healers = new ArrayList<>();
-    private final RotatableHitbox debugObliterateMaceHitbox = ObliterateHitbox.createObliterateMaceHitboxPlaceholder(); //TODO maybe merge hitboxes into one for debugging
-    private final RotatableHitbox debugMaceOfSpadesHitbox = MaceOfSpadesHitbox.createMaceHitboxPlaceholder(); // TODO start attack should be summon attack, can only be triggered via goal i think, didnt work after spawn at least
-    private final RotatableHitbox debugSeismicWave = SeismicWaveHitbox.createMaceHitboxPlaceholder();
+    private final RotatableHitbox debugMaceHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(7, 5, 6));
     private static final Set<States> IGNORE_IDLE = Set.of(States.SPAWN, States.UNBREAKABLE, States.SUMMON, States.OBLITERATE, States.BLIND, States.RUPTURE, States.MACE_OF_SPADES_1);
     private static final Set<States> MACE_OF_SPADES_ATTACKS = Set.of(States.MACE_OF_SPADES_1, States.MACE_OF_SPADES_2, States.MACE_OF_SPADES_3, States.MACE_OF_SPADES_4_SPIN);
 
@@ -116,7 +115,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
         .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.returning_knight_health)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.15D)
+        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.17D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
         .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.returning_knight_armor);
@@ -216,42 +215,28 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
             }
         }
 
-        // Debug hitbox during obliterate attack
-        if (this.getWorld().isClient() && this.isState(States.OBLITERATE)) {
-            BlockPos targetPos = this.getObliterateTarget();
-            int attackTick = this.getSyncedAttackStatusTick();
-            if (!targetPos.equals(BlockPos.ORIGIN) && ObliterateHitbox.isObliterateDebugTick(this, attackTick)) {
-                ObliterateHitbox.updateObliterateMaceHitbox(this.debugObliterateMaceHitbox, this, targetPos, attackTick);
-                RotatableHitboxDebugRegistry.put(
-                        this.getWorld(),
-                        "returning_knight_obliterate_server_predicted_" + this.getUuidAsString(),
-                        this.debugObliterateMaceHitbox
-                );
-            }
+        this.updateDebugMaceHitbox();
+    }
+
+    private void updateDebugMaceHitbox() {
+        if (!this.getWorld().isClient()) {
+            return;
         }
-        if (this.getWorld().isClient() && MACE_OF_SPADES_ATTACKS.contains(this.getState())) {
-            BlockPos targetPos = this.getObliterateTarget();
-            int attackTick = this.getSyncedAttackStatusTick();
-            if (!targetPos.equals(BlockPos.ORIGIN) && MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
-                MaceOfSpadesHitbox.updateMaceHitbox(this.debugMaceOfSpadesHitbox, this, attackTick);
-                RotatableHitboxDebugRegistry.put(
-                        this.getWorld(),
-                        "returning_knight_mace_of_spades_server_predicted_" + this.getUuidAsString(),
-                        this.debugMaceOfSpadesHitbox
-                );
-            }
+        BlockPos targetPos = this.getObliterateTarget();
+        if (targetPos.equals(BlockPos.ORIGIN)) {
+            return;
         }
-        if (this.getWorld().isClient() && this.isState(States.SEISMIC_WAVE)) {
-            BlockPos targetPos = this.getObliterateTarget();
-            int attackTick = this.getSyncedAttackStatusTick();
-            if (!targetPos.equals(BlockPos.ORIGIN) && SeismicWaveHitbox.isDebugTick(this, attackTick)) {
-                SeismicWaveHitbox.updateMaceHitbox(this.debugSeismicWave, this, attackTick);
-                RotatableHitboxDebugRegistry.put(
-                        this.getWorld(),
-                        "returning_knight_seismic_wave_server_predicted_" + this.getUuidAsString(),
-                        this.debugSeismicWave
-                );
-            }
+        int attackTick = this.getSyncedAttackStatusTick();
+        String id = "returning_knight_mace_server_predicted_" + this.getUuidAsString();
+        if (this.isState(States.OBLITERATE) && ObliterateHitbox.isObliterateDebugTick(this, attackTick)) {
+            ObliterateHitbox.updateObliterateMaceHitbox(this.debugMaceHitbox, this, targetPos, attackTick);
+            RotatableHitboxDebugRegistry.put(this.getWorld(), id, this.debugMaceHitbox);
+        } else if (MACE_OF_SPADES_ATTACKS.contains(this.getState()) && MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
+            MaceOfSpadesHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
+            RotatableHitboxDebugRegistry.put(this.getWorld(), id, this.debugMaceHitbox);
+        } else if (this.isState(States.SEISMIC_WAVE) && SeismicWaveHitbox.isDebugTick(this, attackTick)) {
+            SeismicWaveHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
+            RotatableHitboxDebugRegistry.put(this.getWorld(), id, this.debugMaceHitbox);
         }
     }
 

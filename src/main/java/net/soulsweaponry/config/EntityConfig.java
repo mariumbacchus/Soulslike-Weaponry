@@ -74,27 +74,31 @@ public class EntityConfig extends MidnightConfig {
     // Attacks, Weights & Cooldowns
     @Entry(min = 0) public static float returning_knight_damage_modifier = 1f;
 
+    // Blinding Light
     @Entry(min = 0) public static float returning_knight_blinding_light_damage = 10f;
     @Entry(min = 0) public static float returning_knight_blinding_light_weight = 10;
     @Entry(min = 0) public static float returning_knight_blinding_light_cooldown = 30;
     @Entry(min = 0) public static float returning_knight_blinding_light_special_cooldown = 0;
 
+    // Children of the grave
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_min_enemy_count = 2;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_extra_enemy_bound = 3;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_min_healer_count = 1;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_extra_healer_bound = 2;
-    @Entry(min = 0) public static float returning_knight_children_of_the_grave_weight = 12;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_weight = 15;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_cooldown = 40;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_special_cooldown = 100;
 
+    // Eruption
     @Entry(min = 0) public static float returning_knight_eruption_range_blocks = 18;
     @Entry(min = 0) public static float returning_knight_eruption_damage = 30;
     @Entry(min = 0) public static float returning_knight_eruption_weight = 10;
     @Entry(min = 0) public static float returning_knight_eruption_cooldown = 40;
     @Entry(min = 0) public static float returning_knight_eruption_special_cooldown = 80;
 
+    // Obliterate
     @Entry(min = 0) public static float returning_knight_obliterate_damage = 60f;
-    @Entry(min = 0) public static float returning_knight_obliterate_weight = 15;
+    @Entry(min = 0) public static float returning_knight_obliterate_weight = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_special_cooldown = 0;
 
@@ -130,7 +134,7 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_seismic_wave_eruption_damage = 25;
     @Entry(min = 0) public static float returning_knight_seismic_wave_weight = 10;
     @Entry(min = 0) public static float returning_knight_seismic_wave_cooldown = 40;
-    @Entry(min = 0) public static float returning_knight_seismic_wave_special_cooldown = 0;
+    @Entry(min = 0) public static float returning_knight_seismic_wave_special_cooldown = 60;
 
     // Misc
     @Entry public static boolean returning_knight_disable_respawn = false;

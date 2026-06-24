@@ -56,6 +56,7 @@
         - Attacks with special cooldown above 0 will become special abilities and will only trigger if the special cooldown is also done along with regular attack cooldown, i.e Eruption and Children of the Grave are both special attacks by default so only one of them happen before setting the special cooldown, making both attacks rarer after each-other
     - Added a config line to change the animation speed of the boss
         - All attacks should match the new animation speed, such as hitbox/damage timings, and death & spawn timers
+    - First time aggro will always trigger Children of the Grave attack
     - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
     - Obliterate attack:
         - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!

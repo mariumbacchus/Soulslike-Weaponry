@@ -33,6 +33,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
     private final Map<S, BossEvent<S, B, G>> events = new LinkedHashMap<>();
     @Nullable
     private BossAttack<S, B, G> currentAttack;
+    private boolean firstAttackDone;
 
     public BossGoal(B boss, double speed, boolean pauseWhenMobIdle) {
         super(boss, speed, pauseWhenMobIdle);
@@ -49,6 +50,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
         this.attackLength = 0;
         this.resetAttackVariables();
         this.currentAttack = null;
+        this.firstAttackDone = false;
     }
 
     @Override
@@ -127,6 +129,11 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
      * Sets the next attack for the boss, chosen randomly with the weight of the attacks increasing or decreasing the chances
      * for it to happen.
      * <p>
+     *     If {@link #getFirstAggroAttack()} returns not null and {@link #firstAttackDone} is false, then
+     *     the attack/state in {@link #getFirstAggroAttack()} will trigger if {@link BossAttack#canTrigger(LivingEntity, double)}
+     *     returns true.
+     * </p>
+     * <p>
      *     {@link BossAttack#canTrigger(LivingEntity, double)} will be called once the attack is chosen along with checking
      *     whether the attack is a special attack and the special attack cooldown is still ticking down, if it returns false
      *     then the attack is canceled and the method tries to pick a new attack again. If attempts go past the
@@ -134,7 +141,19 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
      * </p>
      */
     public void checkAndSetAttack(LivingEntity target) {
+        if (this.shouldPrintStateChances()) {
+            SoulsWeaponry.LOGGER.info("\n{}", this.getAttackWeightChances());
+        }
         double distanceToTarget = this.boss.squaredDistanceTo(target);
+        if (!this.firstAttackDone && this.getFirstAggroAttack() != null) {
+            this.firstAttackDone = true;
+            S state = this.getFirstAggroAttack();
+            BossAttack<S, B, G> attack = this.attacks.get(state);
+            if (attack.canTrigger(target, distanceToTarget)) {
+                this.prepareAttack(this.getFirstAggroAttack(), this.attacks.get(this.getFirstAggroAttack()), target);
+                return;
+            }
+        }
         int totalWeight = this.getTotalAttackWeight();
         int attempts = this.attacks.size();
         for (int i = 0; i < attempts; i++) {
@@ -202,6 +221,28 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
         return false;
     }
 
+    /**
+     * Returns a string of all attacks along with the weight and chance for them to happen.
+     * <p>
+     *     Example usage: {@code SoulsWeaponry.LOGGER.info("\n{}", this.getAttackWeightChances());}
+     * </p>
+     */
+    public String getAttackWeightChances() {
+        int totalWeight = this.getTotalAttackWeight();
+        if (totalWeight <= 0) {
+            return "No attacks registered";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<S, BossAttack<S, B, G>> entry : this.attacks.entrySet()) {
+            S state = entry.getKey();
+            BossAttack<S, B, G> attack = entry.getValue();
+            double chance = (attack.getWeight() / (double) totalWeight) * 100.0D;
+            builder.append(state.toString()).append(": ").append(String.format(java.util.Locale.ROOT, "%.2f", chance)).append("%").append(" weight=").append(attack.getWeight()).append("\n");
+        }
+        return builder.toString();
+    }
+
     public abstract int getModifiedCooldown(int cooldown);
     public abstract int getModifiedSpecialCooldown(int specialCooldown);
     public abstract float getModifiedDamage(float damage);
@@ -257,5 +298,29 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
     @Nullable
     public S getDebugState() {
         return null;
+    }
+
+    /**
+     * Returns true if the first aggro attack has been performed. When the boss stops the goal,
+     * the variable returns to false so the first attack can be performed again.
+     */
+    public boolean isFirstAttackDone() {
+        return firstAttackDone;
+    }
+
+    /**
+     * Returns null by default, if not null then the boss will always perform this attack first
+     * when aggroing a new target.
+     */
+    @Nullable
+    public S getFirstAggroAttack() {
+        return null;
+    }
+
+    /**
+     * Return true to print chances for each attack to trigger each call for {@link #checkAndSetAttack(LivingEntity)}.
+     */
+    public boolean shouldPrintStateChances() {
+        return false;
     }
 }
