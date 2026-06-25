@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.4.9
+- Fixed startup crash (Fabric 1.20.1 only), added the fix for Forge just in-case
+
 # 1.4.8
 - Fixed crash on servers with some other mods
 - Fixed bug causing Excalibur to shoot the user

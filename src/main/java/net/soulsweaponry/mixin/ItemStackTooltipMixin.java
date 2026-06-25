@@ -31,7 +31,7 @@ public abstract class ItemStackTooltipMixin {
             ),
             index = 0
     )
-    private Formatting soulsweapons$recolorEqualsAttribute(Formatting original, @Local(name = "attributemodifier") EntityAttributeModifier modifier) {
+    private Formatting soulsweapons$recolorEqualsAttribute(Formatting original, @Local EntityAttributeModifier modifier) {
         return soulsweapons$getUpgradeFormatting(original, modifier);
     }
 
@@ -50,7 +50,7 @@ public abstract class ItemStackTooltipMixin {
             ),
             index = 0
     )
-    private Formatting soulsweapons$recolorPositiveAttribute(Formatting original, @Local(name = "attributemodifier") EntityAttributeModifier modifier) {
+    private Formatting soulsweapons$recolorPositiveAttribute(Formatting original, @Local EntityAttributeModifier modifier) {
         return soulsweapons$getUpgradeFormatting(original, modifier);
     }
 
