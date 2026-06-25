@@ -29,9 +29,10 @@ public abstract class ItemStackTooltipMixin {
                     target = "Lnet/minecraft/text/MutableText;formatted(Lnet/minecraft/util/Formatting;)Lnet/minecraft/text/MutableText;",
                     ordinal = 1
             ),
-            index = 0
+            index = 0,
+            require = 0
     )
-    private Formatting soulsweapons$recolorEqualsAttribute(Formatting original, @Local(name = "entityAttributeModifier") EntityAttributeModifier modifier) {
+    private Formatting soulsweapons$recolorEqualsAttribute(Formatting original, @Local EntityAttributeModifier modifier) {
         return soulsweapons$getUpgradeFormatting(original, modifier);
     }
 
@@ -50,7 +51,7 @@ public abstract class ItemStackTooltipMixin {
             ),
             index = 0
     )
-    private Formatting soulsweapons$recolorPositiveAttribute(Formatting original, @Local(name = "entityAttributeModifier") EntityAttributeModifier modifier) {
+    private Formatting soulsweapons$recolorPositiveAttribute(Formatting original, @Local EntityAttributeModifier modifier) {
         return soulsweapons$getUpgradeFormatting(original, modifier);
     }
 

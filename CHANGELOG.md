@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.4.9
+- Fixed startup crash
+
 # 1.4.8
 - Fixed crash on servers with some other forge mods (if using Sinytra connector)
 - Fixed bug causing Excalibur to shoot the user
