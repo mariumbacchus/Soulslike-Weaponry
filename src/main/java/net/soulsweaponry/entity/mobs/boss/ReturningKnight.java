@@ -51,6 +51,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
     private final List<UUID> healers = new ArrayList<>();
+
     private final RotatableHitbox debugMaceHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(7, 5, 6));
     private static final Set<States> IGNORE_IDLE = Set.of(States.SPAWN, States.UNBREAKABLE, States.SUMMON, States.OBLITERATE, States.BLIND, States.RUPTURE, States.MACE_OF_SPADES_1);
     private static final Set<States> MACE_OF_SPADES_ATTACKS = Set.of(States.MACE_OF_SPADES_1, States.MACE_OF_SPADES_2, States.MACE_OF_SPADES_3, States.MACE_OF_SPADES_4_SPIN);
@@ -67,7 +68,10 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         return EntityConfig.returning_knight_animation_speed;
     }
 
+    // TODO properly implement phase 2 and phase 1 animations (check blockbench file)
     private PlayState idle(AnimationState<?> state) {
+        // Some animations have idle animations baked into them due to them being made with old geckolib rules
+        // Just ignore them so one idle doesn't mess with the other baked-in idle
         if (this.isDead() || IGNORE_IDLE.contains(this.getState())) {
             return PlayState.STOP;
         }

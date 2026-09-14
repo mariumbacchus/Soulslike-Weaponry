@@ -162,7 +162,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (this.boss.getRemainingAniTicks() > 0 || this.boss.getState().equals(NightProwler.States.SPAWN)) {
             return;
         }
-        if (this.boss.isInitiatingPhaseTwo()) {
+        if (this.boss.isState(NightProwler.States.INITIATING_PHASE_2)) {
             this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 255));
             return;
         }

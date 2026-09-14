@@ -63,6 +63,11 @@ public abstract class ModPersistentProjectile extends PersistentProjectileEntity
     }
 
     @Override
+    protected ItemStack getDefaultItemStack() {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(WIDTH, 1.85f);

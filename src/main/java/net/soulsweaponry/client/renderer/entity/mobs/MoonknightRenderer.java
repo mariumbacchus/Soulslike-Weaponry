@@ -26,10 +26,9 @@ public class MoonknightRenderer extends GeoEntityRendererWithDeathlight<Moonknig
     private static final Color COLOR_THREE = new Color(106, 73, 156);
     private static final Color COLOR_FOUR = new Color(176, 253, 252);
     private static final Vec3d DEATH_LIGHT_TRANSLATION = new Vec3d(0, 4, 0);
-    public static final Identifier CRYSTAL_BEAM_TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/core_beam.png");
-    private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntitySmoothCutout(CRYSTAL_BEAM_TEXTURE);
+    public static final Identifier CRYSTAL_BEAM_TEXTURE = Identifier.of(SoulsWeaponry.ModId, "textures/entity/moonknight/core_beam.png");
+    private static final RenderLayer CRYSTAL_BEAM_LAYER = RenderLayer.getEntityTranslucentEmissive(CRYSTAL_BEAM_TEXTURE);
     private int currentTick = -1;
-    private static final int FULLBRIGHT_LIGHT = 0xF000F0;
 
     public MoonknightRenderer(Context ctx) {
         super(ctx, new MoonknightModel());
@@ -41,15 +40,14 @@ public class MoonknightRenderer extends GeoEntityRendererWithDeathlight<Moonknig
         return entity.getCanBeam() || super.shouldRender(entity, frustum, x, y, z);
     }
 
+    // TODO would be nice to re-do the beam when improving the core beam attack, maybe shoot up into sky or smth
     @Override
-    public void render(Moonknight entity, float entityYaw, float partialTicks, MatrixStack stack,
-                       VertexConsumerProvider bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-
+    public void postRender(MatrixStack poseStack, Moonknight entity, BakedGeoModel model, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
+        super.postRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
         BlockPos blockPos = entity.getBeamLocation();
         if (entity.getCanBeam() && blockPos != null && !entity.isDead()) {
             float yOffset = 6f;
-            float exactTarget = MathHelper.lerp(partialTicks, entity.prevBeamHeight, entity.getBeamHeight());
+            float exactTarget = MathHelper.lerp(partialTick, entity.prevBeamHeight, entity.getBeamHeight());
             if (exactTarget < entity.renderBeamHeight) {
                 entity.renderBeamHeight = exactTarget;
             }
@@ -61,8 +59,8 @@ public class MoonknightRenderer extends GeoEntityRendererWithDeathlight<Moonknig
             float p = (float)((double)m - entity.getX());
             float q = (float)((double)n - entity.getY());
             float r = (float)((double)o - entity.getZ());
-            stack.translate(p, q, r);
-            renderCoreBeam(-p, -q + yOffset, -r, partialTicks, entity.age, stack, bufferIn, packedLightIn);
+            poseStack.translate(p, q, r);
+            renderCoreBeam(-p, -q + yOffset, -r, partialTick, entity.age, poseStack, bufferSource, packedLight);
         }
     }
 
@@ -90,19 +88,19 @@ public class MoonknightRenderer extends GeoEntityRendererWithDeathlight<Moonknig
             float cy = MathHelper.cos(theta) * 0.75f * radiusScale;
             float u = (float)i / 8F;
             vb.vertex(matrices.peek().getPositionMatrix(), prevX*radiusScale, prevY*radiusScale, 0)
-                    .color(r, g, b, a).texture(prevU, vMin).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .color(r, g, b, a).texture(prevU, vMin).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                     .normal(matrices.peek(), 0, -1, 0);
 
             vb.vertex(matrices.peek().getPositionMatrix(), prevX, prevY, vecLen)
-                    .color(r, g, b, a).texture(prevU, vMax).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .color(r, g, b, a).texture(prevU, vMax).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                     .normal(matrices.peek(), 0, -1, 0);
 
             vb.vertex(matrices.peek().getPositionMatrix(), cx, cy, vecLen)
-                    .color(r, g, b, a).texture(u, vMax).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .color(r, g, b, a).texture(u, vMax).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                     .normal(matrices.peek(), 0, -1, 0);
 
             vb.vertex(matrices.peek().getPositionMatrix(), cx*radiusScale, cy*radiusScale, 0)
-                    .color(r, g, b, a).texture(u, vMin).overlay(OverlayTexture.DEFAULT_UV).light(FULLBRIGHT_LIGHT)
+                    .color(r, g, b, a).texture(u, vMin).overlay(OverlayTexture.DEFAULT_UV).light(LightmapTextureManager.MAX_LIGHT_COORDINATE)
                     .normal(matrices.peek(), 0, -1, 0);
 
             prevX = cx; prevY = cy; prevU = u;

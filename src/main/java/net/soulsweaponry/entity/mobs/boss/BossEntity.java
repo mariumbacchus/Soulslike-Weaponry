@@ -58,6 +58,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     private int deathTicks;
 
     private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     // Attack status tick for debugging, do not use in prod due to spamming the server with packets!
     private static final TrackedData<Integer> ATTACK_STATUS = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -72,6 +73,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(STATES, 0);
+        builder.add(PHASE_2, false);
         if (this.isDebugMode()) {
             SoulsWeaponry.LOGGER.warn("Boss entity attack status data-tracker registered! Should not happen in production!");
             builder.add(ATTACK_STATUS, 0);
@@ -147,6 +149,22 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
      */
     public void setIdle() {
         this.dataTracker.set(STATES, 0);
+    }
+
+    /**
+     * Set whether the boss is phase 2 or not, will naturally only
+     * affect those that has phase 2 model and attacks.
+     */
+    public void setPhaseTwo(boolean bl) {
+        this.dataTracker.set(PHASE_2, bl);
+    }
+
+    /**
+     * Gets whether the boss is phase 2 or not, doesn't affect
+     * bosses that doesn't do anything with this method.
+     */
+    public boolean isPhaseTwo() {
+        return this.dataTracker.get(PHASE_2);
     }
 
     public abstract boolean isSpawning();

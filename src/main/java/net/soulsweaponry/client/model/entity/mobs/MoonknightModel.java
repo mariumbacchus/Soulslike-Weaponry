@@ -12,7 +12,7 @@ public class MoonknightModel extends BossGeoEntityModel<Moonknight> {
 
     @Override
     public Identifier getTextureResource(Moonknight object) {
-        String phase = object.isPhaseTwo() || object.initiatedPhaseTwo() ? "phase_2" : "phase_1";
+        String phase = object.isPhaseTwo() ? "phase_2" : "phase_1";
         return Identifier.of(SoulsWeaponry.ModId, "textures/entity/moonknight/moonknight_" + phase + ".png");
     }
 }

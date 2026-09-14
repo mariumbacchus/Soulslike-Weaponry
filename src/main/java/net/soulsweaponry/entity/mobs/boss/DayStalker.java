@@ -51,8 +51,6 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
     public int maxSpawnTicks = 50;
     public int flightTimer = 0;
     public static final int ATTACKS_LENGTH = States.values().length;
-    private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> IS_PHASE_2 = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Optional<UUID>> PARTNER_UUID = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     private static final TrackedData<Integer> REMAINING_ANI_TICKS = DataTracker.registerData(DayStalker.class, TrackedDataHandlerRegistry.INTEGER);
@@ -77,16 +75,8 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
-    public boolean isInitiatingPhaseTwo() {
-        return this.dataTracker.get(INITIATING_PHASE_2);
-    }
-
-    public void setInitiatePhaseTwo(boolean bl) {
-        this.dataTracker.set(INITIATING_PHASE_2, bl);
-    }
-
     private PlayState chains(AnimationState<?> state) {
-        if (!this.isInitiatingPhaseTwo() && this.isPhaseTwo()) {
+        if (!this.isState(States.INITIATING_PHASE_2) && this.isPhaseTwo()) {
             if (this.getState().equals(States.FLAMES_REACH)) {
                 return PlayState.STOP;
             } else {
@@ -104,7 +94,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
                 state.getController().setAnimation(RawAnimation.begin().then("death_1", Animation.LoopType.LOOP));
             }
         } else {
-            if (!this.isInitiatingPhaseTwo()) {
+            if (!this.isState(States.INITIATING_PHASE_2)) {
                 if (this.isPhaseTwo()) {
                     if (!this.getState().equals(States.FLAMES_REACH)) {
                         state.getController().setAnimation(RawAnimation.begin().then("idle_2", Animation.LoopType.LOOP));
@@ -129,7 +119,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
 
     private PlayState attacks(AnimationState<?> state) {
         if (this.isDead()) return PlayState.STOP;
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATING_PHASE_2)) {
             state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
         } else if (this.isSpawning()) {
             state.getController().setAnimation(RawAnimation.begin().then("spawn_1", Animation.LoopType.PLAY_ONCE));
@@ -225,8 +215,6 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(INITIATING_PHASE_2, false);
-        builder.add(IS_PHASE_2, false);
         builder.add(PARTNER_UUID, Optional.empty());
         builder.add(REMAINING_ANI_TICKS, 0);
         builder.add(IS_FLYING, false);
@@ -324,7 +312,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
             LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
                 this.clearStatusEffects();
-                this.setInitiatePhaseTwo(true);
+                this.setState(States.INITIATING_PHASE_2);
                 this.setFlying(false);
             }
         }
@@ -332,7 +320,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1, false, false));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1, false, false));
         }
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATING_PHASE_2)) {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
             this.phaseTwoTicks++;
             this.setFlying(false);
@@ -351,7 +339,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
             }
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
-                this.setInitiatePhaseTwo(false);
+                this.setIdle();
             }
         }
         if (this.isSpawning()) {
@@ -452,14 +440,6 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
         return this.dataTracker.get(REMAINING_ANI_TICKS);
     }
 
-    public void setPhaseTwo(boolean bl) {
-        this.dataTracker.set(IS_PHASE_2, bl);
-    }
-
-    public boolean isPhaseTwo() {
-        return this.dataTracker.get(IS_PHASE_2);
-    }
-
     public void setFlying(boolean bl) {
         this.dataTracker.set(IS_FLYING, bl);
     }
@@ -502,7 +482,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATING_PHASE_2)) {
             return false;
         }
         if (source.isOf(DamageTypes.FALL)) {
@@ -548,6 +528,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
 
     public enum States {
         IDLE, SPAWN, AIR_COMBUSTION, DECIMATE, DAWNBREAKER, CHAOS_STORM, FLAMETHROWER, SUNFIRE_RUSH,
-        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH, BLAZE_BARRAGE, SKY_HIGH
+        CONFLAGRATION, FLAMES_EDGE, RADIANCE, WARMTH, OVERHEAT, INFERNO, FLAMES_REACH, BLAZE_BARRAGE, SKY_HIGH,
+        INITIATING_PHASE_2
     }
 }

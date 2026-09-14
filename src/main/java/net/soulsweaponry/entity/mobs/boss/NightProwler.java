@@ -56,8 +56,6 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
     public int maxSpawnTicks = 50;
     private int[] aliveSummons = new int[0];
     public static final int ATTACKS_LENGTH = States.values().length;
-    private static final TrackedData<Boolean> INITIATING_PHASE_2 = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<Boolean> IS_PHASE_2 = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_FLYING = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Optional<UUID>> PARTNER_UUID = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.OPTIONAL_UUID);
     private static final TrackedData<Integer> REMAINING_ANI_TICKS = DataTracker.registerData(NightProwler.class, TrackedDataHandlerRegistry.INTEGER);
@@ -80,17 +78,9 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
     }
 
-    public boolean isInitiatingPhaseTwo() {
-        return this.dataTracker.get(INITIATING_PHASE_2);
-    }
-
-    public void setInitiatePhaseTwo(boolean bl) {
-        this.dataTracker.set(INITIATING_PHASE_2, bl);
-    }
-
     private PlayState attacks(AnimationState<?> state) {
         if (this.isDead()) return PlayState.STOP;
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATING_PHASE_2)) {
             state.getController().setAnimation(RawAnimation.begin().then("start_phase_2", Animation.LoopType.PLAY_ONCE));
             return PlayState.CONTINUE;
         } else if (this.isSpawning()) {
@@ -140,7 +130,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
                 state.getController().setAnimation(RawAnimation.begin().then("death_1", Animation.LoopType.LOOP));
             }
         } else {
-            if (this.isInitiatingPhaseTwo()) {
+            if (this.isState(States.INITIATING_PHASE_2)) {
                 return PlayState.STOP;
             } else {
                 if (this.isPhaseTwo()) {
@@ -154,7 +144,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
     }
 
     private PlayState cape(AnimationState<?> state) {
-        if (!this.isInitiatingPhaseTwo() && this.isPhaseTwo()) {
+        if (!this.isState(States.INITIATING_PHASE_2) && this.isPhaseTwo()) {
             state.getController().setAnimation(RawAnimation.begin().then("cape_2", Animation.LoopType.LOOP));
         }
         return PlayState.CONTINUE;
@@ -176,8 +166,6 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(INITIATING_PHASE_2, false);
-        builder.add(IS_PHASE_2, false);
         builder.add(PARTNER_UUID, Optional.empty());
         builder.add(REMAINING_ANI_TICKS, 0);
         builder.add(IS_FLYING, false);
@@ -329,11 +317,11 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
             LivingEntity partner = this.getPartner((ServerWorld) this.getWorld());
             if (!this.isPhaseTwo() && (partner == null || partner.isDead())) {
                 this.clearStatusEffects();
-                this.setInitiatePhaseTwo(true);
+                this.setState(States.INITIATING_PHASE_2);
                 this.setFlying(false);
             }
         }
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATING_PHASE_2)) {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
             this.phaseTwoTicks++;
             this.setFlying(false);
@@ -353,7 +341,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
             }
             if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
                 this.setPhaseTwo(true);
-                this.setInitiatePhaseTwo(false);
+                this.setIdle();
             }
         }
         if (this.isSpawning()) {
@@ -387,7 +375,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
 
     @Override
     public boolean damage(DamageSource source, float amount) {
-        if (this.isInitiatingPhaseTwo()) {
+        if (this.isState(States.INITIATING_PHASE_2)) {
             return false;
         }
         if (source.isOf(DamageTypes.FALL)) {
@@ -464,14 +452,6 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
 
     public int getRemainingAniTicks() {
         return this.dataTracker.get(REMAINING_ANI_TICKS);
-    }
-
-    public void setPhaseTwo(boolean bl) {
-        this.dataTracker.set(IS_PHASE_2, bl);
-    }
-
-    public boolean isPhaseTwo() {
-        return this.dataTracker.get(IS_PHASE_2);
     }
 
     public void setFlying(boolean bl) {
@@ -656,6 +636,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
 
     public enum States {
         IDLE, SPAWN, TRINITY, REAPING_SLASH, NIGHTS_EMBRACE, RIPPLE_FANG, BLADES_REACH, SOUL_REAPER,
-        DIMINISHING_LIGHT, DARKNESS_RISE, ECLIPSE, ENGULF, BLACKFLAME_SNAKE, LUNAR_DISPLACEMENT, DEATHBRINGERS_GRASP
+        DIMINISHING_LIGHT, DARKNESS_RISE, ECLIPSE, ENGULF, BLACKFLAME_SNAKE, LUNAR_DISPLACEMENT, DEATHBRINGERS_GRASP,
+        INITIATING_PHASE_2
     }
 }

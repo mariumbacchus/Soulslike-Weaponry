@@ -56,12 +56,10 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     @Environment(EnvType.CLIENT)
     public float renderBeamHeight;
 
-    private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> CAN_BEAM = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> IS_SWORD_CHARGING = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<BlockPos> BEAM_LOCATION = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Float> BEAM_HEIGHT = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.FLOAT);
-    private static final TrackedData<Boolean> INITIATED_PHASE_2 = DataTracker.registerData(Moonknight.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public Moonknight(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world, Color.WHITE, Moonknight.States.class);
@@ -89,14 +87,6 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     @Override
     public boolean isSpawning() {
         return this.isState(States.SPAWN);
-    }
-
-    public void setPhaseTwo(boolean bl) {
-        this.dataTracker.set(PHASE_2, bl);
-    }
-
-    public boolean isPhaseTwo() {
-        return this.dataTracker.get(PHASE_2);
     }
 
     public void setCanBeam(boolean bl) {
@@ -129,20 +119,6 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
 
     public boolean isSwordCharging() {
         return this.dataTracker.get(IS_SWORD_CHARGING);
-    }
-
-    /**
-     * Used for the model change during phase two transition.
-     */
-    public void setInitiatedPhaseTwo(boolean bl) {
-        this.dataTracker.set(INITIATED_PHASE_2, bl);
-    }
-
-    /**
-     * Used for the model change during phase two transition.
-     */
-    public boolean initiatedPhaseTwo() {
-        return this.dataTracker.get(INITIATED_PHASE_2);
     }
 
     public List<EntityType<?>> getAbsorbedProjectileTypes() {
@@ -235,10 +211,9 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
                 CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE));
             }
             if (this.phaseTransitionTicks == 96) {
-                this.setInitiatedPhaseTwo(true);
+                this.setPhaseTwo(true);
             }
             if (this.phaseTransitionTicks >= this.phaseTransitionMaxTicks) {
-                this.setPhaseTwo(true);
                 this.setState(States.IDLE);
                 this.setCustomName(Text.translatable("entity.soulsweapons.moonknight_phase_2"));
                 this.bossBar.setColor(Color.BLUE);
@@ -397,12 +372,10 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(PHASE_2, false);
         builder.add(CAN_BEAM, false);
         builder.add(IS_SWORD_CHARGING, false);
         builder.add(BEAM_LOCATION, BlockPos.ORIGIN);
         builder.add(BEAM_HEIGHT, 0f);
-        builder.add(INITIATED_PHASE_2, false);
     }
 
     private PlayState heart(AnimationState<?> state) {
