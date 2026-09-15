@@ -84,8 +84,9 @@
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack
 - Fixed a bug causing Edges of Night swords to have much smaller hitbox than intended
-- Fixed a crash due to item stacks not being set on some projectiles
+- Fixed a crash due to item stacks not being set on some projectiles and entities like the "death spirals" that Night Prowler spawns
 - Fixed a bug where Night Shade copies would still display the death-light when they weren't supposed to, and they (the copies) would not kill themselves if the real one died
+- Bosses now ignore camera frustum culling so that geckolib animations are more synced, this means bosses are rendered even when not looking at them, so the fights might be slightly more costly performance wise
 
 ---------------
 

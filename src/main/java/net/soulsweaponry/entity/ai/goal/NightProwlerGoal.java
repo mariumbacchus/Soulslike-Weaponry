@@ -977,7 +977,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
 
         @Override
         protected ItemStack getDefaultItemStack() {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 }

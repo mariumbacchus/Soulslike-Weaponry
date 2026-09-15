@@ -15,6 +15,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -56,6 +57,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     private int blockBreakingCooldown;
     private final Class<T> stateEnumClass;
     private int deathTicks;
+    public int phaseTransitionTicks;
 
     private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -67,6 +69,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         this.bossBar = (ServerBossBar)(new ServerBossBar(this.getDisplayName(), barColor, Style.NOTCHED_10)).setDarkenSky(true);
         this.experiencePoints = this.getXp();
         this.stateEnumClass = stateEnumClass;
+        this.ignoreCameraFrustum = true;
     }
 
     @Override
@@ -177,6 +180,31 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         }
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
     }
+
+    /**
+     * Basic re-usable initiate phase 2 method to be used inside {@link #mobTick()} that heals the entity to
+     * full after a delay and sets the phase 2 datatracked value to true when modelChangeTick value is reached.
+     * <p>
+     *     NB! Remember to call this.isState(INITIATE_PHASE_2) in an if statement so this doesn't
+     *     trigger all the time!
+     * </p>
+     */
+    public void initiatePhaseTwo(int maxTicks, int modelChangeTick, int delayTicks) {
+        this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
+        this.phaseTransitionTicks++;
+        if (this.phaseTransitionTicks >= delayTicks) {
+            int maxHealTicks = maxTicks - delayTicks;
+            float healPerTick = this.getMaxHealth() / maxHealTicks;
+            this.heal(healPerTick);
+        }
+        if (this.phaseTransitionTicks == modelChangeTick) {
+            this.setPhaseTwo(true);
+        }
+        if (this.phaseTransitionTicks >= maxTicks) {
+            this.setIdle();
+        }
+    }
+
     //TODO stop music if players are far enough away & stop minecraft music if playing
     public void tryToPlayBossMusic() {
         if (this.hasBossMusic() && !this.getWorld().isClient && !playingMusic) {
@@ -184,8 +212,6 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
             this.playingMusic = true;
         }
     }
-
-    //TODO always render as long as not in idle? (meaning always render when doing attack so no desync happens)
 
     @Override
     public void tick() {
@@ -265,6 +291,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("HasUpdatedHealth", this.hasUpdatedHealth);
+        nbt.putBoolean("PhaseTwo", this.isPhaseTwo());
     }
 
     @Override
@@ -275,6 +302,9 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         }
         if (nbt.contains("HasUpdatedHealth")) {
             this.hasUpdatedHealth = nbt.getBoolean("HasUpdatedHealth");
+        }
+        if (nbt.contains("PhaseTwo")) {
+            this.setPhaseTwo(nbt.getBoolean("PhaseTwo"));
         }
     }
 

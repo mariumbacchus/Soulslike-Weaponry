@@ -12,8 +12,6 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -50,9 +48,7 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int openPortalTicks;
-    public int phaseTwoTicks;
     public int spawnTicks;
-    public int phaseTwoMaxTransitionTicks = 120;
     public int maxSpawnTicks = 50;
     private int[] aliveSummons = new int[0];
     public static final int ATTACKS_LENGTH = States.values().length;
@@ -322,26 +318,19 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
             }
         }
         if (this.isState(States.INITIATING_PHASE_2)) {
-            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
-            this.phaseTwoTicks++;
+            this.initiatePhaseTwo(120, 96, 40);
+
             this.setFlying(false);
-            int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
-            float healPerTick = this.getMaxHealth() / maxHealTicks;
-            this.heal(healPerTick);
-            if (this.phaseTwoTicks == 78) {
+            if (this.phaseTransitionTicks == 78) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.PARTNER_DIES, SoundCategory.HOSTILE, 1f, 1f);
             }
-            if (this.phaseTwoTicks == 81) {
+            if (this.phaseTransitionTicks == 81) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAWNBREAKER_EVENT, SoundCategory.HOSTILE, 1f, 1f);
                 if (!getWorld().isClient) {
                     ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 NightProwlerGoal placeHolder = new NightProwlerGoal(this, 1D, true);
                 placeHolder.aoe(this.getBoundingBox().expand(4D), 50f, 4f, true);
-            }
-            if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
-                this.setPhaseTwo(true);
-                this.setIdle();
             }
         }
         if (this.isSpawning()) {

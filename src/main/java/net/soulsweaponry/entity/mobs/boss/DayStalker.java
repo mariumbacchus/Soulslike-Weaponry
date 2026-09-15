@@ -45,9 +45,7 @@ import java.util.UUID;
 public class DayStalker extends BossEntity<DayStalker.States> implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    public int phaseTwoTicks;
     public int spawnTicks;
-    public int phaseTwoMaxTransitionTicks = 120;
     public int maxSpawnTicks = 50;
     public int flightTimer = 0;
     public static final int ATTACKS_LENGTH = States.values().length;
@@ -321,25 +319,18 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1, false, false));
         }
         if (this.isState(States.INITIATING_PHASE_2)) {
-            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 20, 30));
-            this.phaseTwoTicks++;
+            this.initiatePhaseTwo(120, 96, 40);
+
             this.setFlying(false);
-            int maxHealTicks = this.phaseTwoMaxTransitionTicks - 40;
-            float healPerTick = this.getMaxHealth() / maxHealTicks;
-            this.heal(healPerTick);
-            if (this.phaseTwoTicks == 76) {
+            if (this.phaseTransitionTicks == 76) {
                 this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.DAY_STALKER_RADIANCE, SoundCategory.HOSTILE, 1f, 1f);
             }
-            if (this.phaseTwoTicks == 81) {
+            if (this.phaseTransitionTicks == 81) {
                 if (!getWorld().isClient) {
                     ParticleHandler.particleSphereList(this.getWorld(), 1000, this.getX(), this.getY(), this.getZ(), 1f, ParticleTypes.FLAME, ParticleTypes.LARGE_SMOKE);
                 }
                 DayStalkerGoal placeHolder = new DayStalkerGoal(this, 1D, true);
                 placeHolder.aoe(4D, 50f, 4f);
-            }
-            if (this.phaseTwoTicks >= phaseTwoMaxTransitionTicks) {
-                this.setPhaseTwo(true);
-                this.setIdle();
             }
         }
         if (this.isSpawning()) {

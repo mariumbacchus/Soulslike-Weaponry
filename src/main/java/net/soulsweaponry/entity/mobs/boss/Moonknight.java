@@ -48,8 +48,6 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
-    private int phaseTransitionTicks;
-    private final int phaseTransitionMaxTicks = 120;
     private final List<EntityType<?>> absorbedProjectileTypes = new ArrayList<>();
     private final List<Float> absorbedProjectileDamage = new ArrayList<>();
     public float prevBeamHeight;
@@ -195,26 +193,18 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     protected void mobTick() {
         super.mobTick();
         if (this.isState(States.INITIATE_PHASE_2)) {
-            this.phaseTransitionTicks++;
+            this.initiatePhaseTwo(120, 96, 40);
+
             this.tryToPlayBossMusic();
-            if (this.phaseTransitionTicks >= 40) {
-                int maxHealTicks = this.phaseTransitionMaxTicks - 40;
-                float healPerTick = this.getMaxHealth() / maxHealTicks;
-                this.heal(healPerTick);
-                if (this.phaseTransitionTicks <= 92) {
-                    if (!this.getWorld().isClient) {
-                        ParticleHandler.particleOutburstMap(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
-                    }
+            if (this.phaseTransitionTicks >= 40 && this.phaseTransitionTicks <= 92) {
+                if (!this.getWorld().isClient) {
+                    ParticleHandler.particleOutburstMap(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
             }
             if (this.phaseTransitionTicks == 89) {
                 CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleRegistry.NIGHTFALL_PARTICLE, ParticleTypes.SOUL_FIRE_FLAME, ParticleTypes.LARGE_SMOKE));
             }
-            if (this.phaseTransitionTicks == 96) {
-                this.setPhaseTwo(true);
-            }
-            if (this.phaseTransitionTicks >= this.phaseTransitionMaxTicks) {
-                this.setState(States.IDLE);
+            if (this.phaseTransitionTicks >= 120) {
                 this.setCustomName(Text.translatable("entity.soulsweapons.moonknight_phase_2"));
                 this.bossBar.setColor(Color.BLUE);
             }

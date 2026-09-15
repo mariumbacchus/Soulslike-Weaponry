@@ -21,6 +21,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -39,6 +40,7 @@ import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.ParticleRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.CustomDeathHandler;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
@@ -54,6 +56,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     private final RotatableHitbox debugMaceHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(7, 5, 6));
     private static final Set<States> IGNORE_IDLE = Set.of(States.SPAWN, States.UNBREAKABLE, States.SUMMON, States.OBLITERATE, States.BLIND, States.RUPTURE, States.MACE_OF_SPADES_1);
+    private static final Set<States> IGNORE_ANIMATION_SPEED = Set.of(States.SPAWN, States.INITIATE_PHASE_2);
     private static final Set<States> MACE_OF_SPADES_ATTACKS = Set.of(States.MACE_OF_SPADES_1, States.MACE_OF_SPADES_2, States.MACE_OF_SPADES_3, States.MACE_OF_SPADES_4_SPIN);
 
     private static final TrackedData<BlockPos> OBLITERATE_TARGET = DataTracker.registerData(ReturningKnight.class, TrackedDataHandlerRegistry.BLOCK_POS);
@@ -65,10 +68,12 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     @Override
     public double getAnimationSpeed() {
+        if (IGNORE_ANIMATION_SPEED.contains(this.getState()) || this.isDead()) {
+            return 1D;
+        }
         return EntityConfig.returning_knight_animation_speed;
     }
 
-    // TODO properly implement phase 2 and phase 1 animations (check blockbench file)
     private PlayState idle(AnimationState<?> state) {
         // Some animations have idle animations baked into them due to them being made with old geckolib rules
         // Just ignore them so one idle doesn't mess with the other baked-in idle
@@ -79,13 +84,25 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         return PlayState.CONTINUE;
     }
 
+    private PlayState phase(AnimationState<?> state) {
+        if (this.isPhaseTwo()) {
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("phase_2"));
+        } else {
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("phase_1"));
+        }
+        return PlayState.CONTINUE;
+    }
+
     private PlayState predicate(AnimationState<?> state) {
+        // TODO animation speed changes shouldnt affect death and phase transition timings, check that it works out! (see getAnimationSpeed)
         state.getController().setAnimationSpeed(this.getAnimationSpeed());
         if (this.isDead()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
         } else {
             switch (this.getState()) {
                 case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
+                case INITIATE_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2_transition"));
+
                 case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
                 case SUMMON -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
                 case OBLITERATE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate"));
@@ -96,6 +113,18 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 case MACE_OF_SPADES_3 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_3"));
                 case MACE_OF_SPADES_4_SPIN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_4"));
                 case SEISMIC_WAVE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("seismic_wave"));
+
+                case OBLITERATE_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
+                case MACE_OF_SPADES_1_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_1_phase_2"));
+                case MACE_OF_SPADES_2_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_2_phase_2"));
+                case MACE_OF_SPADES_3_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_3_phase_2"));
+                case SUMMON_RUPTURE_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_rupture_phase_2"));
+                case SHADOW_ORBS -> state.getController().setAnimation(RawAnimation.begin().thenPlay("shadow_orb_phase_2"));
+                case BULLET_HELL_START -> state.getController().setAnimation(RawAnimation.begin().thenPlay("bullet_hell_start_phase_2"));
+                //TODO idk if this needs .thenLoop or not
+                case BULLET_HELL_TICK -> state.getController().setAnimation(RawAnimation.begin().thenPlay("bullet_hell_tick_phase_2"));
+                case BULLET_HELL_END -> state.getController().setAnimation(RawAnimation.begin().thenPlay("bullet_hell_end_phase_2"));
+
                 default -> {
                     if (this.isAttacking()) {
                         state.getController().setAnimation(RawAnimation.begin().thenPlay("walk"));
@@ -138,7 +167,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     @Override
     public int getTicksUntilDeath() {
-        return 70;
+        return 120;
     }
 
     public void setSpawning() {
@@ -246,6 +275,16 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     @Override
     public boolean damage(DamageSource source, float amount) {
+        if (this.isState(States.INITIATE_PHASE_2)) {
+            return false;
+        }
+        if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
+            this.clearStatusEffects();
+            this.setState(States.INITIATE_PHASE_2);
+            getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+            return false;
+        }
+
         Entity attacker = source.getAttacker();
         Entity sourceEntity = source.getSource();
         if (sourceEntity instanceof ProjectileEntity projectile && !this.isProjectileWhitelisted(projectile)) {
@@ -322,6 +361,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
         controllers.add(new AnimationController<>(this, "idle_controller", 0, this::idle));
+        controllers.add(new AnimationController<>(this, "phase_controller", 0, this::phase));
     }
 
     @Override
@@ -337,6 +377,23 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
     protected void mobTick() {
         super.mobTick();
+        if (this.isState(States.INITIATE_PHASE_2)) {
+            this.initiatePhaseTwo(171, 120, 90);
+
+            if (this.phaseTransitionTicks >= 90 && this.phaseTransitionTicks <= 130) {
+                if (!this.getWorld().isClient) {
+                    ParticleHandler.particleOutburstMap(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
+                }
+            }
+            if (this.phaseTransitionTicks == 120) {
+                //TODO play vordt (ds3) scream sound effect
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.PURPLE_FLAME, ParticleTypes.LARGE_SMOKE));
+            }
+            if (this.phaseTransitionTicks >= 171) {
+                this.setCustomName(Text.translatable("entity.soulsweapons.returning_knight_phase_2"));
+                this.bossBar.setColor(BossBar.Color.PURPLE); //TODO remove when adding custom bossbar
+            }
+        }
         this.breakSurroundingBlocks();
     }
 
@@ -372,7 +429,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     @Override
     public List<ParticleEffect> getDeathParticles() {
-        return List.of(ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE);
+        return List.of(ParticleTypes.LARGE_SMOKE, ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.PURPLE_FLAME);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -388,6 +445,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     }
 
     public enum States {
-        IDLE, SPAWN, OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, MACE_OF_SPADES_1, MACE_OF_SPADES_2, MACE_OF_SPADES_3, MACE_OF_SPADES_4_SPIN, SEISMIC_WAVE
+        IDLE, SPAWN, INITIATE_PHASE_2,
+        OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, SEISMIC_WAVE,
+        MACE_OF_SPADES_1, MACE_OF_SPADES_2, MACE_OF_SPADES_3, MACE_OF_SPADES_4_SPIN,
+
+        OBLITERATE_PHASE_2, MACE_OF_SPADES_1_PHASE_2, MACE_OF_SPADES_2_PHASE_2, MACE_OF_SPADES_3_PHASE_2,
+        SUMMON_RUPTURE_PHASE_2, SHADOW_ORBS, BULLET_HELL_START, BULLET_HELL_TICK, BULLET_HELL_END
     }
 }

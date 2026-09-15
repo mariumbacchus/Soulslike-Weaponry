@@ -1,11 +1,14 @@
 package net.soulsweaponry.client.renderer.entity.mobs;
 
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory.Context;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.client.model.entity.mobs.ReturningKnightModel;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ReturningKnightRenderer extends GeoEntityRendererWithDeathlight<ReturningKnight> {
 
@@ -18,6 +21,11 @@ public class ReturningKnightRenderer extends GeoEntityRendererWithDeathlight<Ret
     public ReturningKnightRenderer(Context ctx) {
         super(ctx, new ReturningKnightModel());
         this.shadowRadius = 2.5F;
+    }
+
+    @Override
+    public RenderLayer getRenderType(ReturningKnight animatable, Identifier texture, VertexConsumerProvider bufferSource, float partialTick) {
+        return RenderLayer.getEntityTranslucent(this.getTexture(animatable));
     }
 
     @Override
