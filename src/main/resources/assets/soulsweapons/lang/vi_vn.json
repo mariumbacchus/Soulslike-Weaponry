@@ -407,6 +407,10 @@
   "subtitles.soulsweapons.shoot_firewave": "Shoot firewave",
   "subtitles.soulsweapons.setup_heavy_attack_slam": "Heavy attack setup into slam",
   "subtitles.soulsweapons.deep_explosion": "Explosion lingers",
+  "subtitles.soulsweapons.rah": "RAAAAAAH",
+  "subtitles.soulsweapons.returning_knight_scream": "A dark being screams",
+  "subtitles.soulsweapons.returning_knight_death": "A dark being dies",
+  "subtitles.soulsweapons.returning_knight_phase_2_idle": "Twisted souls churns",
 
   "tooltip.soulsweapons.show_item_info": "Giữ [%s] để xem thông tin",
   "tooltip.soulsweapons.show_item_lore": "Giữ [%s] để xem truyền thuyết",

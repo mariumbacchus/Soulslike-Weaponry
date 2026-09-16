@@ -488,5 +488,33 @@
         "sounds": [
             "soulsweapons:deep_explosion"
         ]
+    },
+
+    "returning_knight_scream": {
+        "subtitle": "subtitles.soulsweapons.returning_knight_scream",
+        "sounds": [
+            "soulsweapons:returning_knight/returning_knight_scream"
+        ]
+    },
+    "returning_knight_death": {
+        "subtitle": "subtitles.soulsweapons.returning_knight_death",
+        "sounds": [
+            "soulsweapons:returning_knight/returning_knight_death"
+        ]
+    },
+    "returning_knight_phase_2_idle": {
+        "subtitle": "subtitles.soulsweapons.returning_knight_phase_2_idle",
+        "sounds": [
+            "soulsweapons:returning_knight/returning_knight_phase_2_idle_1",
+            "soulsweapons:returning_knight/returning_knight_phase_2_idle_2",
+            "soulsweapons:returning_knight/returning_knight_phase_2_idle_3"
+        ]
+    },
+
+    "rah": {
+        "subtitle": "subtitles.soulsweapons.rah",
+        "sounds": [
+            "soulsweapons:draugr_boss/rah"
+        ]
     }
 }

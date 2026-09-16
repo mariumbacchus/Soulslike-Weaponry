@@ -282,7 +282,9 @@ public class DraugrBossGoal extends MeleeAttackGoal {
     private void aoe(int maxTicks, int frame, float damage, float knockback, List<RegistryEntry<StatusEffect>> effects, double boxSize, boolean shieldUpWhenDone) {
         this.attackStatus++;
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20, false, true));
-        if (!effects.isEmpty() && (attackStatus == 12 || attackStatus == 20)) this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.SWORD_HIT_SHIELD_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        if (!effects.isEmpty() && this.attackStatus == 12) {
+            this.boss.getWorld().playSound(null, this.boss.getBlockPos(), SoundRegistry.RAAAAAH, SoundCategory.HOSTILE, 10f, 1f);
+        }
         if (attackStatus == frame) {
             if (damage > 0) {
                 if (!this.boss.getWorld().isClient) {

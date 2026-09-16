@@ -82,6 +82,12 @@ public class SoundRegistry {
     public static SoundEvent SETUP_HEAVY_ATTACK_SLAM = registerSound("setup_heavy_attack_slam");
     public static SoundEvent DEEP_EXPLOSION = registerSound("deep_explosion"); // Firebomb sound effect from ds3 if I remember correctly
 
+    public static SoundEvent RAAAAAH = registerSound("rah");
+
+    public static SoundEvent RETURNING_KNIGHT_PHASE_2_SCREAM = registerSound("returning_knight_scream");
+    public static SoundEvent RETURNING_KNIGHT_PHASE_2_DEATH = registerSound("returning_knight_death");
+    public static SoundEvent RETURNING_KNIGHT_PHASE_2_IDLE = registerSound("returning_knight_phase_2_idle");
+
     public static SoundEvent BIG_CHUNGUS_SONG_EVENT = registerSound("big_chungus_song");
     public static RegistryKey<JukeboxSong> BIG_CHUNGUS_SONG_EVENT_KEY = registerJukeboxSong("big_chungus_song");
 

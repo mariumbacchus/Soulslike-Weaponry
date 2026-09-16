@@ -378,18 +378,18 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     protected void mobTick() {
         super.mobTick();
         if (this.isState(States.INITIATE_PHASE_2)) {
-            this.initiatePhaseTwo(171, 120, 90);
+            this.initiatePhaseTwo(200, 120, 90);
 
             if (this.phaseTransitionTicks >= 90 && this.phaseTransitionTicks <= 130) {
                 if (!this.getWorld().isClient) {
                     ParticleHandler.particleOutburstMap(this.getWorld(), 30, this.getX(), this.getY(), this.getZ(), ParticleEvents.OBLITERATE_MAP, 1f);
                 }
             }
-            if (this.phaseTransitionTicks == 120) {
-                //TODO play vordt (ds3) scream sound effect
-                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.PURPLE_FLAME, ParticleTypes.LARGE_SMOKE));
+            if (this.phaseTransitionTicks == 115) {
+                this.getWorld().playSound(null, this.getBlockPos(), SoundRegistry.RETURNING_KNIGHT_PHASE_2_SCREAM, SoundCategory.HOSTILE, 10f, 1f);
             }
-            if (this.phaseTransitionTicks >= 171) {
+            if (this.phaseTransitionTicks == 120) {
+                CustomDeathHandler.deathExplosionEvent(this.getWorld(), this.getPos(), SoundRegistry.DAWNBREAKER_EVENT, List.of(ParticleRegistry.NIGHTFALL_PARTICLE, ParticleRegistry.PURPLE_FLAME, ParticleTypes.LARGE_SMOKE));
                 this.setCustomName(Text.translatable("entity.soulsweapons.returning_knight_phase_2"));
                 this.bossBar.setColor(BossBar.Color.PURPLE); //TODO remove when adding custom bossbar
             }
@@ -433,7 +433,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundRegistry.DEATH_SCREAMS_EVENT;
+        return this.isPhaseTwo() ? SoundRegistry.RETURNING_KNIGHT_PHASE_2_IDLE : SoundRegistry.DEATH_SCREAMS_EVENT;
     }
 
     protected SoundEvent getHurtSound(DamageSource source) {
@@ -441,7 +441,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundRegistry.KNIGHT_DEATH_EVENT;
+        return SoundRegistry.RETURNING_KNIGHT_PHASE_2_DEATH;
     }
 
     public enum States {
