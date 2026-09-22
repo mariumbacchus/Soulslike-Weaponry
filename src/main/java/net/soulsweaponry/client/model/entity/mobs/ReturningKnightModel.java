@@ -18,7 +18,7 @@ public class ReturningKnightModel extends BossGeoEntityModel<ReturningKnight> {
 
     @Override
     public boolean isDebugAttacking(ReturningKnight boss) {
-        return false;//boss.isState(ReturningKnight.States.SEISMIC_WAVE);
+        return false;//boss.isState(ReturningKnight.States.OBLITERATE_PHASE_2);//TODO
     }
 
     @Override

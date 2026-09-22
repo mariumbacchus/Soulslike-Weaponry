@@ -1,8 +1,9 @@
-package net.soulsweaponry.entity.ai.goal.attacks.returningknight;
+package net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1;
 
 import net.minecraft.entity.LivingEntity;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.MaceAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.registry.SoundRegistry;

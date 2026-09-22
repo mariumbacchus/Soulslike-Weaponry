@@ -101,6 +101,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
             if (FabricLoader.getInstance().isDevelopmentEnvironment() && this.getDebugState() != null) {
                 S state = this.getDebugState();
                 BossAttack<S, B, G> attack = this.attacks.get(state);
+                System.out.println(attack.canTrigger(target, distanceToTarget));//TODO
                 if (attack.canTrigger(target, distanceToTarget)) {
                     SoulsWeaponry.LOGGER.warn("Debug mode enabled for boss {}, state set to {}", this.boss, state);
                     this.prepareAttack(state, attack, target);

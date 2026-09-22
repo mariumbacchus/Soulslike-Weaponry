@@ -23,6 +23,6 @@ public class Unbreakable extends ReturningKnightEvent {
 
     @Override
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return this.getBoss().getHealth() <= this.getBoss().getMaxHealth() / 2.0F;
+        return this.getBoss().getHealth() <= this.getBoss().getMaxHealth() / 2.0F && !this.getBoss().isPhaseTwo();
     }
 }

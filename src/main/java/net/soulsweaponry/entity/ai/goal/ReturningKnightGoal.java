@@ -5,7 +5,8 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.EntityConfig;
-import net.soulsweaponry.entity.ai.goal.attacks.returningknight.*;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1.*;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.ObliterateShadow;
 import net.soulsweaponry.entity.ai.goal.events.Unbreakable;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
@@ -71,6 +72,11 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
                 (int) EntityConfig.returning_knight_seismic_wave_special_cooldown
         );
 
+        ObliterateShadow obliterateShadow = new ObliterateShadow(this ,this.boss, 69,
+                10, 10, 0 //TODO proper config values
+        );
+
+        // Phase 1
         this.addAttack(ReturningKnight.States.SUMMON, childrenOfTheGrave);
         this.addAttack(ReturningKnight.States.OBLITERATE, obliterate);
         this.addAttack(ReturningKnight.States.BLIND, blindingLight);
@@ -80,6 +86,9 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         this.addAttack(ReturningKnight.States.MACE_OF_SPADES_3, maceOfSpades3);
         this.addAttack(ReturningKnight.States.MACE_OF_SPADES_4_SPIN, maceOfSpades4);
         this.addAttack(ReturningKnight.States.SEISMIC_WAVE, seismicWave);
+
+        // Phase 2
+        this.addAttack(ReturningKnight.States.OBLITERATE_PHASE_2, obliterateShadow);
 
         Unbreakable unbreakable = new Unbreakable(this, this.boss, 76);
         this.addEvent(ReturningKnight.States.UNBREAKABLE, unbreakable);
@@ -103,7 +112,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return null;//ReturningKnight.States.SEISMIC_WAVE;
+        return ReturningKnight.States.OBLITERATE_PHASE_2;//TODO
     }
 
     @Override
