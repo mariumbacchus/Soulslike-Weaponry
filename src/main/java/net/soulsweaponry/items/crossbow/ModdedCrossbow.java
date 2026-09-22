@@ -2,6 +2,7 @@ package net.soulsweaponry.items.crossbow;
 
 import net.fabric_extras.ranged_weapon.api.CustomCrossbow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
+import net.fabric_extras.ranged_weapon.api.RangedWeaponConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -23,15 +24,16 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbili
 
     protected final List<IAbility> abilities = new ArrayList<>();
 
-    public ModdedCrossbow(Settings settings, RangedConfig rangedConfig, Supplier<Ingredient> repairIngredientSupplier) {
+    public ModdedCrossbow(Settings settings, RangedWeaponConfig rangedConfig, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, rangedConfig, repairIngredientSupplier);
         List<Text> list = new ArrayList<>();
         BasicInfoAbility pullSpeedAbility = new BasicInfoAbility(list);
-        String pullBonus = String.format("%.2f", rangedConfig.pull_time_bonus());
-        if (rangedConfig.pull_time_bonus() > 0) {
+        float diffSeconds = Math.abs(rangedConfig.pull_time() - 20f) / 20f;
+        String pullBonus = String.format("%.2f", diffSeconds);
+        if (rangedConfig.pull_time() > 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", pullBonus).formatted(Formatting.GRAY));
-        } else if (rangedConfig.pull_time_bonus() < 0) {
+        } else if (rangedConfig.pull_time() < 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", pullBonus).formatted(Formatting.GRAY));
         }
@@ -52,7 +54,7 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbili
         return super.use(world, user, hand);
     }
 
-    public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
+    public static RangedWeaponConfig createConfig(float pullTime, float damage, float bonusVelocity) {
         return ModdedBow.createConfig(pullTime, damage, bonusVelocity);
     }
 }

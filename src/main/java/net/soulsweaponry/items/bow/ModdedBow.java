@@ -2,6 +2,7 @@ package net.soulsweaponry.items.bow;
 
 import net.fabric_extras.ranged_weapon.api.CustomBow;
 import net.fabric_extras.ranged_weapon.api.RangedConfig;
+import net.fabric_extras.ranged_weapon.api.RangedWeaponConfig;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
@@ -23,15 +24,16 @@ public abstract class ModdedBow extends CustomBow implements IHasAbilities {
 
     protected final List<IAbility> abilities = new ArrayList<>();
 
-    public ModdedBow(Settings settings, RangedConfig config, Supplier<Ingredient> repairIngredientSupplier) {
+    public ModdedBow(Settings settings, RangedWeaponConfig config, Supplier<Ingredient> repairIngredientSupplier) {
         super(settings, config, repairIngredientSupplier);
         List<Text> list = new ArrayList<>();
         BasicInfoAbility pullSpeedAbility = new BasicInfoAbility(list);
-        String pullBonus = String.format("%.2f", config.pull_time_bonus());
-        if (config.pull_time_bonus() > 0) {
+        float diffSeconds = Math.abs(config.pull_time() - 20f) / 20f;
+        String pullBonus = String.format("%.2f", diffSeconds);
+        if (config.pull_time() > 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", pullBonus).formatted(Formatting.GRAY));
-        } else if (config.pull_time_bonus() < 0) {
+        } else if (config.pull_time() < 20f) {
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", pullBonus).formatted(Formatting.GRAY));
         }
@@ -52,7 +54,7 @@ public abstract class ModdedBow extends CustomBow implements IHasAbilities {
         return super.use(world, user, hand);
     }
 
-    public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
-        return new RangedConfig(damage, (float) (pullTime - BowItem.TICKS_PER_SECOND) / BowItem.TICKS_PER_SECOND, bonusVelocity);
+    public static RangedWeaponConfig createConfig(float pullTime, float damage, float bonusVelocity) {
+        return new RangedWeaponConfig(damage, pullTime, bonusVelocity, null);
     }
 }

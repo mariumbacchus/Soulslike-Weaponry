@@ -10,6 +10,10 @@
     - `soulsweapons_enchantment_config.json` contains lines for enchantments, even for guns and weapons (even though most enchant stuff is handled by datapacks in 1.21.1 and up)
     - `soulsweapons_entity_stats_config.json` will contain config lines for entity stats values such as frost/bleed/posture buildup, damage, reduction, max values, etc.
 
+## Updated dependencies
+- Ranged Weapon API requirement has gone from version 2.1.1 -> 3.0.0
+- Fabric loader version has gone from 0.16.14 -> 0.19.5
+
 ## Additions
 - Added the Large Sword of Moonlight (from Demon's Souls)
     - It deals purely magic damage, therefore bypassing regular armor
