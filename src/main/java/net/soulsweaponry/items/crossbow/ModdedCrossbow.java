@@ -21,19 +21,21 @@ import java.util.function.Supplier;
 
 public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbilities {
 
+    /** Speed of a bolt shot from a vanilla crossbow, the baseline {@link RangedConfig#velocity_bonus()} is added to. */
+    public static final float BASELINE_VELOCITY = 3.15f;
+
     protected final List<IAbility> abilities = new ArrayList<>();
 
     public ModdedCrossbow(Settings settings, RangedConfig rangedConfig, Supplier<Ingredient> repairIngredientSupplier) {
-        super(settings, repairIngredientSupplier);
-        this.configure(rangedConfig);
+        super(settings, rangedConfig, repairIngredientSupplier);
         List<Text> list = new ArrayList<>();
         BasicInfoAbility pullSpeedAbility = new BasicInfoAbility(list);
-        float diffSeconds = Math.abs(rangedConfig.pull_time() - 20f) / 20f;
+        float diffSeconds = Math.abs(rangedConfig.pull_time_bonus());
         String pullTimeSeconds = String.format("%.2f", diffSeconds);
-        if (rangedConfig.pull_time() > 20f) {
+        if (rangedConfig.pull_time_bonus() > 0f) {
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull").formatted(Formatting.RED));
             list.add(Text.translatable("tooltip.soulsweapons.slow_pull.1", pullTimeSeconds).formatted(Formatting.GRAY));
-        } else if (rangedConfig.pull_time() < 20f) {
+        } else if (rangedConfig.pull_time_bonus() < 0f) {
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull").formatted(Formatting.WHITE));
             list.add(Text.translatable("tooltip.soulsweapons.fast_pull.1", pullTimeSeconds).formatted(Formatting.GRAY));
         }
@@ -54,7 +56,8 @@ public abstract class ModdedCrossbow extends CustomCrossbow implements IHasAbili
         return super.use(world, user, hand);
     }
 
-    public static RangedConfig createConfig(int pullTime, float damage, float bonusVelocity) {
-        return ModdedBow.createConfig(pullTime, damage, bonusVelocity);
+    /** As {@link ModdedBow#createConfig(int, float, float)}, but against the crossbow's faster baseline speed. */
+    public static RangedConfig createConfig(int pullTime, float damage, float velocity) {
+        return ModdedBow.createConfig(pullTime, damage, velocity, BASELINE_VELOCITY);
     }
 }
