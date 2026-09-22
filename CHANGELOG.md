@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.4.10
+- Fixed crash and updated Ranged Weapon API
+    - Credit to ZsoltMolnarrr (Daedelus)
+
 # 1.4.9
 - Fixed startup crash (Fabric 1.20.1 only), added the fix for Forge just in-case
 

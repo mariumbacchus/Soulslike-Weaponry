@@ -1,5 +1,5 @@
 plugins {
-    id 'dev.architectury.loom' version '1.7-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.17-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -84,8 +84,7 @@ dependencies {
     include("com.eliotlash.mclib:mclib:20")
 
     modImplementation "curse.maven:attributefix-${project.attributefix}"
-
-    modImplementation(include("net.fabric_extras:ranged_weapon_api-forge:1.1.4+1.20.1")) // inside libs folder
+    modImplementation "maven.modrinth:ranged-weapon-api:${project.ranged_weapon_api_version}"
 
     // Mixin extras
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))

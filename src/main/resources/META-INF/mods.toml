@@ -64,3 +64,9 @@ description="Adds lots of legendary weapons and bosses!"
     versionRange="[21.0.4,)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.soulsweapons]]
+    modId="ranged_weapon_api"
+    mandatory=true
+    versionRange="[2.3.4,)"
+    ordering="NONE"
+    side="BOTH"
