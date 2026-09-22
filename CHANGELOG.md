@@ -1,5 +1,9 @@
 # Changelog
 
+# 1.4.10
+- Updated Ranged Weapon API
+  - Credit to ZsoltMolnarrr (Daedelus)
+
 # 1.4.9
 - Fixed startup crash
 
