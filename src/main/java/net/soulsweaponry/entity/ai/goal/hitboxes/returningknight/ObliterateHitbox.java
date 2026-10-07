@@ -10,8 +10,8 @@ public class ObliterateHitbox {
 
     public static final Vec3d OBLITERATE_MACE_SIZE = new Vec3d(8, 5, 6);
 
-    public static final int OBLITERATE_DAMAGE_START_TICK = 34;
-    public static final int OBLITERATE_DAMAGE_END_TICK = 40;
+    public static final int OBLITERATE_DAMAGE_START_TICK = 34; // 1.7
+    public static final int OBLITERATE_DAMAGE_END_TICK = 40; // 2 => 6 ticks
 
     public static final int OBLITERATE_DEBUG_START_TICK = 1;
     public static final int OBLITERATE_DEBUG_END_TICK = 64;

@@ -261,7 +261,7 @@ public class WeaponUtil {
 
     /**
      * Spawn/run something in a series of concentric circles around the start point,
-     * rippling outwards. Ground‐detection is done using your doConsumerOnPoint logic.
+     * rippling outwards. Ground‐detection is done using doConsumerOnPoint logic.
      * @param world        world
      * @param yaw          players yaw in degrees
      * @param startPos     center point

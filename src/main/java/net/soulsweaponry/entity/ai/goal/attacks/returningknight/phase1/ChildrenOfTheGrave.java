@@ -49,4 +49,9 @@ public class ChildrenOfTheGrave extends ReturningKnightAttack {
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
         return !this.getBoss().hasHealersAlive();
     }
+
+    @Override
+    public boolean isAvailable() {
+        return !this.getBoss().isPhaseTwo();
+    }
 }

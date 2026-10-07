@@ -33,4 +33,9 @@ public class Obliterate extends MaceAttack {
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
         return distanceToTarget <= 100D && target.getBlockPos() != null && !this.cordsRegistered;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return !this.getBoss().isPhaseTwo();
+    }
 }

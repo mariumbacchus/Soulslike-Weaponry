@@ -15,6 +15,7 @@ import java.util.function.BiConsumer;
 public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
 
     private boolean startedAttack;
+    private boolean finishedEmerge;
     private int ticksLeft = 20;
     private static final TrackedData<Boolean> EMERGE = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Float> PARTICLE_MOD = DataTracker.registerData(DamagingWarmupEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -32,7 +33,7 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
         if (!this.getWorld().isClient) {
             this.reduceWarmup(1);
             if (this.getWarmup() < 0) {
-                if (this.getWarmup() == -7) {
+                if (this.getWarmup() <= -7 && !this.finishedEmerge) {
                     this.setEmerge(true);
                     List<LivingEntity> list = this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(0.2D));
                     for (LivingEntity livingEntity : list) {
@@ -53,6 +54,7 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
                         this.applyDamageEffects(wasHit, livingEntity);
                     }
                     this.onTrigger();
+                    this.finishedEmerge = true;
                 }
                 if (!this.startedAttack) {
                     this.getWorld().sendEntityStatus(this, EntityStatuses.PLAY_ATTACK_SOUND);

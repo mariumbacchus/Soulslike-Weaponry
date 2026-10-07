@@ -72,7 +72,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
                 (int) EntityConfig.returning_knight_seismic_wave_special_cooldown
         );
 
-        ObliterateShadow obliterateShadow = new ObliterateShadow(this ,this.boss, 69,
+        ObliterateShadow obliterateShadow = new ObliterateShadow(this ,this.boss, 72,
                 10, 10, 0 //TODO proper config values
         );
 
@@ -112,12 +112,17 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return ReturningKnight.States.OBLITERATE_PHASE_2;//TODO
+        return null;//ReturningKnight.States.OBLITERATE_PHASE_2;//TODO
     }
 
     @Override
     public @Nullable ReturningKnight.States getFirstAggroAttack() {
         return ReturningKnight.States.SUMMON;
+    }
+
+    @Override
+    public boolean shouldPrintStateChances() {
+        return true;//TODO
     }
 
     public UUID summonAllies(Vec3d pos, boolean healer) {

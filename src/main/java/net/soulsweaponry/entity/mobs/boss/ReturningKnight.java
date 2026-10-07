@@ -100,10 +100,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         state.getController().setAnimationSpeed(this.getAnimationSpeed());
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
+        } else if (this.isState(States.INITIATE_PHASE_2)) {
+            state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2_transition"));
         } else {
             switch (this.getState()) {
                 case SPAWN -> state.getController().setAnimation(RawAnimation.begin().thenPlay("spawn"));
-                case INITIATE_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2_transition"));
 
                 case UNBREAKABLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("unbreakable"));
                 case SUMMON -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_warriors"));
@@ -166,6 +167,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         this.targetSelector.add(5, (new RevengeGoal(this)).setGroupRevenge());
 		super.initGoals();
 	}
+
+    @Override
+    public boolean shouldNotTickAttack() {
+        return super.shouldNotTickAttack() || this.isState(States.INITIATE_PHASE_2);
+    }
 
     @Override
     public int getTicksUntilDeath() {
@@ -262,30 +268,35 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
             return;
         }
         int attackTick = this.getSyncedAttackStatusTick();
-        String id = "returning_knight_mace_server_predicted_" + this.getUuidAsString();
+        String mainId = "returning_knight_mace_" + this.getUuidAsString();
+        String shadowId = "returning_knight_shadow_mace_" + this.getUuidAsString();
         switch (this.getState()) {
             case OBLITERATE -> {
                 if (ObliterateHitbox.isObliterateDebugTick(this, attackTick)) {
                     ObliterateHitbox.updateObliterateMaceHitbox(this.debugMaceHitbox, this, targetPos, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), id, this.debugMaceHitbox);
+                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
             case MACE_OF_SPADES_1, MACE_OF_SPADES_2, MACE_OF_SPADES_3, MACE_OF_SPADES_4_SPIN -> {
                 if (MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
                     MaceOfSpadesHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), id, this.debugMaceHitbox);
+                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
             case SEISMIC_WAVE -> {
                 if (SeismicWaveHitbox.isDebugTick(this, attackTick)) {
                     SeismicWaveHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), id, this.debugMaceHitbox);
+                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
             case OBLITERATE_PHASE_2 -> {
                 if (ObliterateShadowHitbox.isObliterateShadowDebugTick(this, attackTick)) {
                     ObliterateShadowHitbox.updateObliterateShadowMaceHitbox(this.debugShadowMaceHitbox, this, targetPos, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), id, this.debugShadowMaceHitbox);
+                    RotatableHitboxDebugRegistry.put(this.getWorld(), shadowId, this.debugShadowMaceHitbox);
+                }
+                if (ObliterateHitbox.isObliterateDebugTick(this, attackTick)) {
+                    ObliterateHitbox.updateObliterateMaceHitbox(this.debugMaceHitbox, this, targetPos, attackTick);
+                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
         }

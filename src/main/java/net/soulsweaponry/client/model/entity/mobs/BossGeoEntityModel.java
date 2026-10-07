@@ -121,7 +121,7 @@ public class BossGeoEntityModel<T extends BossEntity<?> & GeoEntity> extends Def
         System.out.println("  SERVER KEYFRAME (decimal fix) = " + roundedKeyframe.trim());
     }
 
-    private void printKeyframes() {
+    /*private void printKeyframes() {
         System.out.println();
         System.out.println("========== ATTACK KEYFRAMES ==========");
         System.out.println("private static final BossHitboxHelper.Keyframe[] PATH = new BossHitboxHelper.Keyframe[] {");
@@ -133,5 +133,18 @@ public class BossGeoEntityModel<T extends BossEntity<?> & GeoEntity> extends Def
         System.out.println("};");
         System.out.println("==============================================");
         System.out.println();
+    }*/
+
+    private void printKeyframes() {
+        StringBuilder output = new StringBuilder("\n")
+                .append("private static final BossHitboxHelper.Keyframe[] PATH = new BossHitboxHelper.Keyframe[] {\n");
+
+        for (String keyframe : this.keyframes) {
+            output.append(keyframe).append('\n');
+        }
+
+        output.append("};");
+
+        System.out.println(output);
     }
 }

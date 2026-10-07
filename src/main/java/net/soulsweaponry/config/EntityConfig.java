@@ -99,6 +99,9 @@ public class EntityConfig extends MidnightConfig {
     // Obliterate
     @Entry(min = 0) public static float returning_knight_obliterate_damage = 60f;
     @Entry(min = 0) public static float returning_knight_obliterate_shadow_damage = 50f;
+    @Entry(min = 0) public static float returning_knight_obliterate_shadow_pillar_radius = 2f;
+    @Entry(min = 0) public static float returning_knight_obliterate_shadow_pillar_damage = 30f;
+    @Entry(min = 0) public static float returning_knight_obliterate_shadow_pillar_ripple_amount = 5;
     @Entry(min = 0) public static float returning_knight_obliterate_weight = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_special_cooldown = 0;

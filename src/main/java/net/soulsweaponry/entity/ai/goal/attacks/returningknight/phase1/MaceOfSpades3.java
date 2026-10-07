@@ -58,4 +58,9 @@ public class MaceOfSpades3 extends MaceAttack {
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
         return distanceToTarget <= 80 && target.getBlockPos() != null && !this.cordsRegistered;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return !this.getBoss().isPhaseTwo();
+    }
 }

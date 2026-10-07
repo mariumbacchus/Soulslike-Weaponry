@@ -40,4 +40,9 @@ public class BlindingLight extends ReturningKnightAttack {
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
         return distanceToTarget <= 40D;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return !this.getBoss().isPhaseTwo();
+    }
 }

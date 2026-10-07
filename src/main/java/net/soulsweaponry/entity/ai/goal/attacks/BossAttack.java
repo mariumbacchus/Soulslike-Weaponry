@@ -71,6 +71,24 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
     public abstract boolean canTrigger(LivingEntity target, double distanceToTarget);
 
     /**
+     * Override to disable this attacks availability, meaning it won't get chosen
+     * by checkAndSetAttack method in BossGoal. This is for disabling attacks
+     * that shouldn't trigger phases other than phase 1 or 2 for example.
+     * <p>
+     *     Another example is for Returning Knight, the regular Obliterate and
+     *     Mace of Spades attacks should not be considered as an option in
+     *     phase 2, so this should return something like
+     *     {@code !this.getBoss().isPhaseTwo()} in those attack classes.
+     * </p>
+     * <p>
+     *     This attack is enabled by default.
+     * </p>
+     */
+    public boolean isAvailable() {
+        return true;
+    }
+
+    /**
      * Check if the target is within melee reach. Set {@param distanceOutMod} to extend the reach,
      * normal value is 3 for when checking whether the boss should start a melee attack or not.
      */

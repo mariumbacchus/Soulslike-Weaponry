@@ -172,6 +172,15 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
 
     public abstract boolean isSpawning();
 
+    /**
+     * Meant to be used within the goal/ai class for returning out of
+     * the tick() method early in situations where for example the
+     * boss is dead or is initiating phase 2.
+     */
+    public boolean shouldNotTickAttack() {
+        return this.isDead();
+    }
+
     @Override
     protected void mobTick() {
         if (!this.hasUpdatedHealth) {

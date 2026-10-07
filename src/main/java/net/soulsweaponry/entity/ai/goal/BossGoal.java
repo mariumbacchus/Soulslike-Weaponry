@@ -72,7 +72,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
 
     @Override
     public void tick() {
-        if (this.boss.isDead()) {
+        if (this.boss.shouldNotTickAttack()) {
             return;
         }
         this.attackCooldown = Math.max(this.attackCooldown - 1, 0);
@@ -92,6 +92,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
                 BossEvent<S, B, G> event = eventEntry.getValue();
                 if (!event.hasCompleted() && event.canTrigger(target, distanceToTarget)) {
                     this.prepareAttack(state, event, target);
+                    break;
                 }
             }
         }
@@ -101,7 +102,6 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
             if (FabricLoader.getInstance().isDevelopmentEnvironment() && this.getDebugState() != null) {
                 S state = this.getDebugState();
                 BossAttack<S, B, G> attack = this.attacks.get(state);
-                System.out.println(attack.canTrigger(target, distanceToTarget));//TODO
                 if (attack.canTrigger(target, distanceToTarget)) {
                     SoulsWeaponry.LOGGER.warn("Debug mode enabled for boss {}, state set to {}", this.boss, state);
                     this.prepareAttack(state, attack, target);
@@ -142,36 +142,53 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
      * </p>
      */
     public void checkAndSetAttack(LivingEntity target) {
-        if (this.shouldPrintStateChances()) {
-            SoulsWeaponry.LOGGER.info("\n{}", this.getAttackWeightChances());
-        }
         double distanceToTarget = this.boss.squaredDistanceTo(target);
+        Map<S, BossAttack<S, B, G>> available = this.collectAttacks(target, distanceToTarget);
+        if (this.shouldPrintStateChances()) {
+            SoulsWeaponry.LOGGER.info("\n{}", this.getAttackWeightChances(available));
+        }
+        // Initial attack might not be in the available map at the start so use original one
         if (!this.firstAttackDone && this.getFirstAggroAttack() != null) {
             this.firstAttackDone = true;
             S state = this.getFirstAggroAttack();
             BossAttack<S, B, G> attack = this.attacks.get(state);
-            if (attack.canTrigger(target, distanceToTarget)) {
+            if (attack.isAvailable() && attack.canTrigger(target, distanceToTarget)) {
                 this.prepareAttack(this.getFirstAggroAttack(), this.attacks.get(this.getFirstAggroAttack()), target);
                 return;
             }
         }
-        int totalWeight = this.getTotalAttackWeight();
-        int attempts = this.attacks.size();
+        int totalWeight = this.getTotalAttackWeight(available);
+        int attempts = available.size();
         for (int i = 0; i < attempts; i++) {
             int randomWeight = this.boss.getRandom().nextInt(totalWeight);
-            for (Map.Entry<S, BossAttack<S, B, G>> entry : this.attacks.entrySet()) {
-                S state = entry.getKey();
+            for (Map.Entry<S, BossAttack<S, B, G>> entry : available.entrySet()) {
                 BossAttack<S, B, G> attack = entry.getValue();
                 randomWeight -= attack.getWeight();
                 if (randomWeight < 0) {
-                    if (!attack.canTrigger(target, distanceToTarget) || (attack.isSpecialAttack() && this.isSpecialCoolingDown())) {
-                        break;
-                    }
-                    this.prepareAttack(state, attack, target);
+                    this.prepareAttack(entry.getKey(), attack, target);
                     return;
                 }
             }
         }
+    }
+
+    /**
+     * Collects attacks that can currently be selected instead of considering ones out of reach.
+     * Will now properly ignore attacks that shouldn't be able to be selected if one is for example
+     * only for phase 2.
+     */
+    private Map<S, BossAttack<S, B, G>> collectAttacks(LivingEntity target, double distanceToTarget) {
+        Map<S, BossAttack<S, B, G>> available = new LinkedHashMap<>();
+        for (Map.Entry<S, BossAttack<S, B, G>> entry : this.attacks.entrySet()) {
+            BossAttack<S, B, G> attack = entry.getValue();
+            if (attack.getWeight() > 0
+                    && attack.isAvailable()
+                    && !(attack.isSpecialAttack() && this.isSpecialCoolingDown())
+                    && attack.canTrigger(target, distanceToTarget)) {
+                available.put(entry.getKey(), attack);
+            }
+        }
+        return available;
     }
 
     public void prepareAttack(S state, BossAttack<S, B, G> attack, LivingEntity target) {
@@ -228,18 +245,21 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
      *     Example usage: {@code SoulsWeaponry.LOGGER.info("\n{}", this.getAttackWeightChances());}
      * </p>
      */
-    public String getAttackWeightChances() {
-        int totalWeight = this.getTotalAttackWeight();
+    public String getAttackWeightChances(Map<S, BossAttack<S, B, G>> attacks) {
+        int totalWeight = this.getTotalAttackWeight(attacks);
         if (totalWeight <= 0) {
-            return "No attacks registered";
+            return "No eligible attacks";
         }
-
         StringBuilder builder = new StringBuilder();
-        for (Map.Entry<S, BossAttack<S, B, G>> entry : this.attacks.entrySet()) {
-            S state = entry.getKey();
+        for (Map.Entry<S, BossAttack<S, B, G>> entry : attacks.entrySet()) {
             BossAttack<S, B, G> attack = entry.getValue();
-            double chance = (attack.getWeight() / (double) totalWeight) * 100.0D;
-            builder.append(state.toString()).append(": ").append(String.format(java.util.Locale.ROOT, "%.2f", chance)).append("%").append(" weight=").append(attack.getWeight()).append("\n");
+            double chance = attack.getWeight() / (double) totalWeight * 100.0D;
+            builder.append(entry.getKey())
+                    .append(": ")
+                    .append(String.format(java.util.Locale.ROOT, "%.2f", chance))
+                    .append("% weight=")
+                    .append(attack.getWeight())
+                    .append("\n");
         }
         return builder.toString();
     }
@@ -281,11 +301,12 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
         return boss;
     }
 
-    public int getTotalAttackWeight() {
-        return this.attacks.values().stream()
+    public int getTotalAttackWeight(Map<S, BossAttack<S, B, G>> attacks) {
+        return attacks.values().stream()
                 .mapToInt(BossAttack::getWeight)
                 .sum();
     }
+
 
     @Nullable
     public BossAttack<S, B, G> getCurrentAttack() {

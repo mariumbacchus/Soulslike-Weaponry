@@ -52,4 +52,9 @@ public class Eruption extends ReturningKnightAttack {
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
         return true;
     }
+
+    @Override
+    public boolean isAvailable() {
+        return !this.getBoss().isPhaseTwo();
+    }
 }
