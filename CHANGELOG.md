@@ -62,6 +62,7 @@
     - Added a config line to change the animation speed of the boss
         - All attacks should match the new animation speed, such as hitbox/damage timings, and death & spawn timers
     - First time aggro will always trigger Children of the Grave attack
+    - The boss is more prone to picking ranged attacks if you are far enough away to make it not be able to do melee attacks
     - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
     - Obliterate attack:
         - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
@@ -85,6 +86,34 @@
                 - One-handed swipe to the left, then spins 360 degrees swiftly around himself before thrusting forwards, knocking targets hit back and crippling them
     - Seismic Wave (New attack):
         - Grinds Nightfall along the ground, spawning a wide wave of delayed eruptions down the targets path relative to the boss, then when the boss slams the mace into the ground the eruptions explode
+    - Added a Phase 2 with only these attacks:
+      - Obliterate (Shadow Mace):
+        - The mace of the shadow also lands after a brief delay, having its own hitbox along with summoning dark pillars outward in a circle upon colliding with the ground
+      - Mace of Spades 1 (Original):
+        - The shadow's mace follows the same path of the main mace after a delay, having its own hitbox
+        - Smash attack also summons dark pillars out in a circle
+      - Mace of Spades 2 (Left-and-right):
+        - The shadow's mace follows the same path of the main mace after a delay, having its own hitbox
+        - Smash attack also summons dark pillars out in a plus shape (+)
+      - Mace of Spades 3 (Swipes + Spin):
+        - The main mace follows the original Mace of Spades 3 attack, doing swipes back and forth with a charged at the end
+        - The shadow mace does the Mace of Spades 4 path, doing the spin and ending with the thrust
+        - The spin also shoots out Shadow Orbs from the mace
+      - Children of the Grave + Eruption:
+        - The knight charges up Eruption like before by tapping the mace into the ground 3 times, while the shadow charges up the Children of the Grave summon attack
+        - At the end of the Eruption tapping, both the shadow and the knight trigger at the same time
+        - Powerful Elite Remnants are then summoned around, with dark pillars exploding outward from their spawn location
+          - These Remnants are favored by the knight, having enchantments on their gear and better weapons
+          - They will back-off to try to eat a golden apple if they are close to dying, then re-enter to fight
+          - They are shielded from the knight and shadow's attacks
+          - They also have increased health compared to regular Remnants
+      - Dark Circle (Unbreakable + Blinding Reflection):
+        - The knight slams his chest, preparing to slam the ground
+        - The shadow does a ritual with its mace, spawning giant shadow orbs in a circle many blocks away
+        - Upon the slam of the knight, all nearby entities hit are affected with Slowness and Darkness, and the shadow orbs charge inward towards the knight
+        - Mobs hit by the shadow orbs while having the Darkness effect take increased damage, turning the darkness into Blindness, those that didn't have it are affected with Darkness instead
+      - Bullet Hell:
+        - At 50% health, the boss will enter an invulnerable state, shooting shadow orbs and dark pillars towards nearby targets in different ways
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack

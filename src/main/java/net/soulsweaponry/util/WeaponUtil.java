@@ -263,7 +263,7 @@ public class WeaponUtil {
      * Spawn/run something in a series of concentric circles around the start point,
      * rippling outwards. Ground‐detection is done using doConsumerOnPoint logic.
      * @param world        world
-     * @param yaw          players yaw in degrees
+     * @param yaw          entity yaw in degrees
      * @param startPos     center point
      * @param maxYOffset   max vertical search offset, we look from startPos.y - maxYOffset to startPos.y + maxYOffset
      * @param ripples      how many rings to spawn
@@ -284,6 +284,38 @@ public class WeaponUtil {
                 int warmup = 3 * (wave + 1);
                 float spawnYaw = yaw + angleDeg;
                 doConsumerOnPoint(world, x, z, minY, maxY, warmup, spawnYaw, consumer);
+            }
+        }
+    }
+
+    /**
+     * Spawn/run something in a plus shape (+), rippling outwards from the center.
+     * The plus is rotated using supplied yaw, and ground‐detection is handled
+     * using doConsumerOnPoint logic.
+     * @param world world
+     * @param yaw rotation of plus shape in degrees
+     * @param startPos center pos of the plus shape
+     * @param maxYOffset max vertical search offset
+     * @param armLength number of points generated along each of the four arms
+     * @param spacing distance between points
+     * @param consumer consumer accepting position, warmup delay and arm yaw
+     */
+    public static void doConsumerOnPlus(World world, float yaw, Vec3d startPos, double maxYOffset, int armLength, float spacing, TriConsumer<Vec3d, Integer, Float> consumer) {
+        double minY = startPos.y - maxYOffset;
+        double maxY = startPos.y + maxYOffset;
+        // Center pillar
+        doConsumerOnPoint(world, startPos.x, startPos.z, minY, maxY, 0, yaw, consumer);
+
+        // Four arms
+        for (int arm = 0; arm < 4; arm++) {
+            float armYaw = yaw + arm * 90.0F;
+            float angle = armYaw * MathHelper.RADIANS_PER_DEGREE;
+            for (int i = 0; i < armLength; i++) {
+                double distance = spacing * (i + 1);
+                double x = startPos.x + MathHelper.cos(angle) * distance;
+                double z = startPos.z + MathHelper.sin(angle) * distance;
+                int warmup = 3 * (i + 1);
+                doConsumerOnPoint(world, x, z, minY, maxY, warmup, armYaw, consumer);
             }
         }
     }

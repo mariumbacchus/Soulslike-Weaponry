@@ -8,6 +8,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.EntityEffectParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -34,6 +35,7 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final List<RegistryEntry<StatusEffect>> effects;
+    private float damage = 5f;
     
     public ShadowOrb(EntityType<? extends ShadowOrb> entityType, World world) {
         super(entityType, world);
@@ -45,11 +47,17 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
         this.effects = effects;
     }
 
+    public ShadowOrb(World world, LivingEntity owner, Vec3d velocity, List<RegistryEntry<StatusEffect>> effects, float damage) {
+        super(EntityRegistry.SHADOW_ORB, owner, velocity, world);
+        this.effects = effects;
+        this.damage = damage;
+    }
+
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
-            target.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.SHADOW_ORB, this, this.getOwner()), 5f);
+        if (!this.getWorld().isClient && entity instanceof LivingEntity target && this.getOwner() instanceof LivingEntity) {
+            target.damage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.SHADOW_ORB, this, this.getOwner()), this.damage);
             for (RegistryEntry<StatusEffect> effect : this.effects) {
                 target.addStatusEffect(new StatusEffectInstance(effect, 150, 0));
             }
@@ -108,5 +116,23 @@ public class ShadowOrb extends AbstractFireballEntity implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putFloat("Damage", this.damage);
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (nbt.contains("Damage")) {
+            this.damage = nbt.getFloat("Damage");
+        }
+    }
+
+    public float getDamage() {
+        return damage;
     }
 }

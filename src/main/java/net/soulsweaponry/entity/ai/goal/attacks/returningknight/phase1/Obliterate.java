@@ -21,9 +21,9 @@ public class Obliterate extends MaceAttack {
         super.tickAttack(target, attackStatus, distanceToTarget);
         ObliterateHitbox.updateObliterateMaceHitbox(this.hitbox, this.getBoss(), this.targetPos, attackStatus);
         if (ObliterateHitbox.isObliterateDamageTick(this.getBoss(), attackStatus)) {
-            this.doObliterateDamage(this.damage);
+            this.doObliterateDamage(this.hitbox, this.damage);
             if (this.isTick(attackStatus, 37)) {
-                this.doObliterateParticles();
+                this.doObliterateParticles(this.hitbox);
             }
             BossHitboxHelper.breakBlocksInsideHitbox(this.hitbox.copy().offsetWorld(0, ObliterateHitbox.OBLITERATE_MACE_SIZE.y / 2.0D, 0), this.getWorld(), this.getBoss(), this.getBoss()::canDestroy, false);
         }

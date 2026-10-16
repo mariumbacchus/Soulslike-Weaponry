@@ -31,7 +31,7 @@ public class SeismicWave extends MaceAttack {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         SeismicWaveHitbox.updateMaceHitbox(this.hitbox, this.getBoss(), attackStatus);
         if (SeismicWaveHitbox.isDamageTick(this.getBoss(), attackStatus)) {
-            this.doMaceDamage(this.getWorld().getDamageSources().mobAttack(this.getBoss()), this.swipeDamage, living -> {
+            this.doMaceDamage(this.hitbox, this.getWorld().getDamageSources().mobAttack(this.getBoss()), this.swipeDamage, living -> {
                 target.takeKnockback(0.7f, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
                 target.addVelocity(0, 0.7f, 0);
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
@@ -44,7 +44,7 @@ public class SeismicWave extends MaceAttack {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
         }
         if (this.isTick(attackStatus, 44)) {
-            this.doGroundScrapeParticles();
+            this.doGroundScrapeParticles(this.hitbox);
         }
         if (this.isTick(attackStatus, 48)) {
             this.spawnEruptionLines(target);

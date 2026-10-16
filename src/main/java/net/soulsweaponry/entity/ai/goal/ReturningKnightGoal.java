@@ -6,6 +6,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1.*;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.MaceOfSpades1Shadow;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.MaceOfSpades2Shadow;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.MaceOfSpades3Shadow;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.ObliterateShadow;
 import net.soulsweaponry.entity.ai.goal.events.Unbreakable;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
@@ -75,6 +78,15 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         ObliterateShadow obliterateShadow = new ObliterateShadow(this ,this.boss, 72,
                 10, 10, 0 //TODO proper config values
         );
+        MaceOfSpades1Shadow maceOfSpades1Shadow = new MaceOfSpades1Shadow(this ,this.boss, 81,
+                10, 10, 0 //TODO proper config values
+        );
+        MaceOfSpades2Shadow maceOfSpades2Shadow = new MaceOfSpades2Shadow(this ,this.boss, 105,
+                10, 10, 0 //TODO proper config values
+        );
+        MaceOfSpades3Shadow maceOfSpades3Shadow = new MaceOfSpades3Shadow(this ,this.boss, 116,
+                10, 10, 0 //TODO proper config values
+        );
 
         // Phase 1
         this.addAttack(ReturningKnight.States.SUMMON, childrenOfTheGrave);
@@ -89,6 +101,12 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
         // Phase 2
         this.addAttack(ReturningKnight.States.OBLITERATE_PHASE_2, obliterateShadow);
+        this.addAttack(ReturningKnight.States.MACE_OF_SPADES_1_PHASE_2, maceOfSpades1Shadow);
+        this.addAttack(ReturningKnight.States.MACE_OF_SPADES_2_PHASE_2, maceOfSpades2Shadow);
+        this.addAttack(ReturningKnight.States.MACE_OF_SPADES_3_PHASE_2, maceOfSpades3Shadow);
+        //TODO children of the grave + eruption: the remnants could be smarter maybe, backing off to eat a golden apple and heal
+        // maybe strafe to try to avoid knight hitbox, or just have a shield (rendered on them upon impact) that protects from the slams
+        // maybe just call them "Elite Remnants"
 
         Unbreakable unbreakable = new Unbreakable(this, this.boss, 76);
         this.addEvent(ReturningKnight.States.UNBREAKABLE, unbreakable);
@@ -112,7 +130,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return null;//ReturningKnight.States.OBLITERATE_PHASE_2;//TODO
+        return null;//ReturningKnight.States.MACE_OF_SPADES_2_PHASE_2;//TODO
     }
 
     @Override

@@ -2,7 +2,6 @@ package net.soulsweaponry.client.model.entity.mobs;
 
 import net.minecraft.util.Identifier;
 import net.soulsweaponry.SoulsWeaponry;
-import net.soulsweaponry.entity.mobs.boss.Moonknight;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public class ReturningKnightModel extends BossGeoEntityModel<ReturningKnight> {
@@ -13,12 +12,12 @@ public class ReturningKnightModel extends BossGeoEntityModel<ReturningKnight> {
 
     @Override
     public String getDebugBoneId() {
-        return "hitboxCenter";
+        return "hitboxCenter2"; // phase 1: hitboxCenter, phase 2: hitboxCenter2
     }
 
     @Override
     public boolean isDebugAttacking(ReturningKnight boss) {
-        return false;//boss.isState(ReturningKnight.States.OBLITERATE_PHASE_2);//TODO
+        return false;//boss.isState(ReturningKnight.States.MACE_OF_SPADES_3_PHASE_2);//TODO
     }
 
     @Override

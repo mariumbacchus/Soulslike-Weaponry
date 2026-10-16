@@ -23,7 +23,7 @@ public class MaceOfSpades1 extends MaceAttack {
         MaceOfSpadesHitbox.updateMaceHitbox(this.hitbox, this.getBoss(), attackStatus);
 
         if (MaceOfSpadesHitbox.isDamageTickSwipe(this.getBoss(), attackStatus)) {
-            this.doSwingDamage(this.damageSwipe, 2f);
+            this.doSwingDamage(this.hitbox, this.damageSwipe, 2f);
             if (this.isTick(attackStatus, 14)) {
                 this.playSound(this.targetPos, SoundRegistry.KNIGHT_SWIPE_EVENT, 1f);
             }
@@ -32,10 +32,10 @@ public class MaceOfSpades1 extends MaceAttack {
             this.prepareNextMaceHit(target);
         }
         if (MaceOfSpadesHitbox.isDamageTickSmash(this.getBoss(), attackStatus) && this.targetPos != null) {
-            this.doObliterateDamage(this.damageSmash);
+            this.doObliterateDamage(this.hitbox, this.damageSmash);
         }
         if (this.isTick(attackStatus, 43)) {
-            this.doObliterateParticles();
+            this.doObliterateParticles(this.hitbox);
         }
     }
 

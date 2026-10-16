@@ -26,13 +26,13 @@ public class MaceOfSpades4Spin extends MaceAttack {
         super.tickAttack(target, attackStatus, distanceToTarget);
         MaceOfSpadesHitbox.updateMaceHitbox(this.hitbox, this.getBoss(), attackStatus);
         if (MaceOfSpadesHitbox.isDamageTickSwipe(this.getBoss(), attackStatus)) {
-            this.doSwingDamage(this.swipeDamage, 0.5f);
+            this.doSwingDamage(this.hitbox, this.swipeDamage, 0.5f);
         }
         if (MaceOfSpadesHitbox.isDamageSpin(this.getBoss(), attackStatus)) {
-            this.doSwingDamage(this.spinDamage, 0.6f);
+            this.doSwingDamage(this.hitbox, this.spinDamage, 0.6f);
         }
         if (MaceOfSpadesHitbox.isDamageThrust(this.getBoss(), attackStatus)) {
-            this.doMaceDamage(this.getWorld().getDamageSources().mobAttack(this.getBoss()), this.thrustDamage, living -> {
+            this.doMaceDamage(this.hitbox, this.getWorld().getDamageSources().mobAttack(this.getBoss()), this.thrustDamage, living -> {
                 target.takeKnockback(2f, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 1));
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 100, 1));

@@ -98,23 +98,33 @@ public class EntityConfig extends MidnightConfig {
 
     // Obliterate
     @Entry(min = 0) public static float returning_knight_obliterate_damage = 60f;
-    @Entry(min = 0) public static float returning_knight_obliterate_shadow_damage = 50f;
-    @Entry(min = 0) public static float returning_knight_obliterate_shadow_pillar_radius = 2f;
-    @Entry(min = 0) public static float returning_knight_obliterate_shadow_pillar_damage = 30f;
-    @Entry(min = 0) public static float returning_knight_obliterate_shadow_pillar_ripple_amount = 5;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_damage = 50f;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_pillar_radius = 2f;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_pillar_damage = 30f;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_pillar_ripple_amount = 7;
     @Entry(min = 0) public static float returning_knight_obliterate_weight = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_special_cooldown = 0;
 
     // Mace of Spades 1
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_swipe_damage = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_shadow_swipe_damage = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_smash_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_shadow_smash_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_shadow_pillar_radius = 2f;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_shadow_pillar_damage = 30f;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_shadow_pillar_ripple_amount = 4;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_weight = 10;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_special_cooldown = 0;
     // Mace of Spades 2
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_swipe_damage = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_shadow_swipe_damage = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_smash_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_shadow_smash_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_shadow_pillar_radius = 2f;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_shadow_pillar_damage = 30f;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_shadow_pillar_arm_length = 8;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_weight = 10;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_special_cooldown = 0;
@@ -122,6 +132,12 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_one_handed_swipe_damage = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_two_handed_swipe_damage = 25;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_charged_swipe_damage = 30;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_swipe_damage = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_damage = 25;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_shadow_orb_amount_per_tick = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_shadow_orb_damage = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_shadow_orb_speed = 1f;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_thrust_damage = 30;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_weight = 10;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_special_cooldown = 0;

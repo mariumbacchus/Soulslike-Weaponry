@@ -4,16 +4,22 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
+import net.soulsweaponry.entity.projectile.noclip.BlackflameExplosionEntity;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.DamageSourceRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
+import net.soulsweaponry.util.WeaponUtil;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,12 +47,13 @@ public abstract class MaceAttack extends ReturningKnightAttack {
 
     /**
      * Does damage to all mobs intersecting with the mace hitbox.
+     * @param hitbox the mace hitbox, can be main one or shadow
      * @param damageSource damage source
      * @param damage damage
      * @param targetConsumer consumer to trigger on each target hit, such as applying knockback
      */
-    public void doMaceDamage(DamageSource damageSource, float damage, Consumer<LivingEntity> targetConsumer) {
-        List<LivingEntity> entities = this.hitbox.getIntersectingTargets(this.getWorld(), this.getBoss());
+    public void doMaceDamage(RotatableHitbox hitbox, DamageSource damageSource, float damage, Consumer<LivingEntity> targetConsumer) {
+        List<LivingEntity> entities = hitbox.getIntersectingTargets(this.getWorld(), this.getBoss());
         for (LivingEntity living : entities) {
             if (!this.hitEntities.add(living.getUuid())) {
                 continue;
@@ -60,8 +67,8 @@ public abstract class MaceAttack extends ReturningKnightAttack {
      * Does damage to all mobs intersecting with the mace hitbox, knocking targets hit up in the air
      * and summoning Remnants if the target dies. Damage source will be "OBLITERATED".
      */
-    public void doObliterateDamage(float damage) {
-        this.doMaceDamage(DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.OBLITERATED, this.getBoss()), damage, target -> {
+    public void doObliterateDamage(RotatableHitbox hitbox, float damage) {
+        this.doMaceDamage(hitbox, DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.OBLITERATED, this.getBoss()), damage, target -> {
             target.addVelocity(0, 1, 0);
             if (target.isDead() && this.getGoal().isValidSpawn(target.getBlockPos())) {
                 this.hitEntities.add(this.getGoal().summonAllies(target.getPos(), false));
@@ -76,20 +83,20 @@ public abstract class MaceAttack extends ReturningKnightAttack {
      * Does damage to all mobs intersecting with the mace hitbox, knocking targets
      * back based on the strength parameter.
      */
-    public void doSwingDamage(float damage, float knockbackStrength) {
-        this.doMaceDamage(this.getWorld().getDamageSources().mobAttack(this.getBoss()), damage, target -> {
+    public void doSwingDamage(RotatableHitbox hitbox, float damage, float knockbackStrength) {
+        this.doMaceDamage(hitbox, this.getWorld().getDamageSources().mobAttack(this.getBoss()), damage, target -> {
             target.takeKnockback(knockbackStrength, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
         });
     }
 
-    public void doObliterateParticles() {
-        Vec3d effectPos = BossHitboxHelper.findGroundImpactPos(this.getWorld(), this.hitbox.getCenter(), 2);
+    public void doObliterateParticles(RotatableHitbox hitbox) {
+        Vec3d effectPos = BossHitboxHelper.findGroundImpactPos(this.getWorld(), hitbox.getCenter(), 3);
         this.playSound(BlockPos.ofFloored(effectPos), SoundRegistry.NIGHTFALL_BONK_EVENT, 3f);
         ParticleHandler.particleOutburstMap(this.getWorld(), 300, effectPos.x, effectPos.y, effectPos.z, ParticleEvents.OBLITERATE_MAP, 1f);
     }
 
-    public void doGroundScrapeParticles() {
-        Vec3d center = this.hitbox.getCenter();
+    public void doGroundScrapeParticles(RotatableHitbox hitbox) {
+        Vec3d center = hitbox.getCenter();
         Vec3d effectPos = BossHitboxHelper.findGroundImpactPos(this.getWorld(), center, 2);
         Vec3d forward = BossHitboxHelper.getForwardFromYaw(this.getBoss().bodyYaw);
         Vec3d right = new Vec3d(0.0D, 1.0D, 0.0D).crossProduct(forward).normalize();
@@ -125,5 +132,43 @@ public abstract class MaceAttack extends ReturningKnightAttack {
         this.cordsRegistered = false;
         this.getBoss().setAttackStartWorldTime(-1L);
         this.hitEntities.clear();
+    }
+
+    public void summonDarkPillarsCircle(LivingEntity target, int pillarRippleAmount, float pillarRadius, double pillarDamage, int reducedPillarDelay, RotatableHitbox maceHitbox) {
+        Vec3d maceCenter = BossHitboxHelper.findGroundImpactPos(this.getWorld(), maceHitbox.getCenter(), 2);
+        this.summonDarkPillarsCircle(target, pillarRippleAmount, pillarRadius, pillarDamage, reducedPillarDelay, new Vec2f(1.5f, 1.75f), maceCenter);
+    }
+
+    public void summonDarkPillarsCircle(LivingEntity target, int pillarRippleAmount, float pillarRadius, double pillarDamage, int reducedPillarDelay, Vec2f pillarSize, Vec3d center) {
+        float yawRad = (float) MathHelper.atan2(target.getZ() - this.getBoss().getZ(), target.getX() - this.getBoss().getX());
+        float yawDeg = (float) Math.toDegrees(yawRad);
+        double heightDiff = Math.abs(target.getY() - this.getBoss().getY());
+        double maxYOffset = heightDiff + 3;
+        WeaponUtil.doConsumerOnCircle(this.getBoss().getWorld(), yawDeg, center, maxYOffset, pillarRippleAmount, pillarSize,
+                (pos, delay, yaw) -> this.summonDarkPillar(pos, delay, pillarRadius, pillarDamage, reducedPillarDelay)
+        );
+    }
+
+    public void summonDarkPillarsPlus(LivingEntity target, int armLength, float spacing, float pillarRadius, double pillarDamage, int reducedPillarDelay, RotatableHitbox maceHitbox) {
+        Vec3d center = BossHitboxHelper.findGroundImpactPos(this.getWorld(), maceHitbox.getCenter(), 2);
+        float yaw = (float) Math.toDegrees(MathHelper.atan2(target.getZ() - center.z, target.getX() - center.x));
+        double maxYOffset = Math.abs(target.getY() - center.y) + 3.0D;
+        WeaponUtil.doConsumerOnPlus(this.getWorld(), yaw, center, maxYOffset, armLength, spacing,
+                (pos, delay, pillarYaw) -> this.summonDarkPillar(pos, delay, pillarRadius, pillarDamage, reducedPillarDelay)
+        );
+    }
+
+    public void summonDarkPillar(Vec3d pos, int delay, float pillarRadius, double pillarDamage, int reducedPillarDelay) {
+        BlackflameExplosionEntity entity = new BlackflameExplosionEntity(this.getWorld());
+        entity.setOwner(this.getBoss());
+        entity.setRadius(pillarRadius);
+        entity.setDamage(pillarDamage);
+        entity.setWarmup(Math.max(0, delay - reducedPillarDelay));
+        entity.setPosition(pos);
+        this.getWorld().spawnEntity(entity);
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            // Warning particle
+            serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.x, pos.y, pos.z, 1, 0.01D, 0.01D, 0.01D, 0.0D);
+        }
     }
 }

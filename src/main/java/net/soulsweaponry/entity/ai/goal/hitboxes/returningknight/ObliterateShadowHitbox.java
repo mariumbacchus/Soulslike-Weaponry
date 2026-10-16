@@ -8,7 +8,7 @@ import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public class ObliterateShadowHitbox {
 
-    public static final Vec3d OBLITERATE_SHADOW_MACE_SIZE = new Vec3d(8, 5, 6);
+    public static final Vec3d OBLITERATE_SHADOW_MACE_SIZE = new Vec3d(9, 6, 7);
 
     public static final int OBLITERATE_SHADOW_DAMAGE_START_TICK = 42;
     public static final int OBLITERATE_SHADOW_DAMAGE_END_TICK = 47;

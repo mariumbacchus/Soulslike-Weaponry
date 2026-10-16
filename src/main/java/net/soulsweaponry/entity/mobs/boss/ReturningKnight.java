@@ -36,6 +36,7 @@ import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbo
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateShadowHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.SeismicWaveHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.shadow.MaceOfSpadesShadowHitbox;
 import net.soulsweaponry.entity.projectile.ReturningProjectile;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
@@ -299,6 +300,16 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                     RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
+            case MACE_OF_SPADES_1_PHASE_2, MACE_OF_SPADES_2_PHASE_2, MACE_OF_SPADES_3_PHASE_2 -> {
+                if (MaceOfSpadesShadowHitbox.isDebugTick(this, attackTick)) {
+                    MaceOfSpadesShadowHitbox.updateMaceHitbox(this.debugShadowMaceHitbox, this, attackTick);
+                    RotatableHitboxDebugRegistry.put(this.getWorld(), shadowId, this.debugShadowMaceHitbox);
+                }
+                if (MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
+                    MaceOfSpadesHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
+                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
+                }
+            }
         }
     }
     //TODO gotta make it turn slower, if it starts spinning it looks weird, especially with a giant shadow behind him
@@ -392,6 +403,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
         controllers.add(new AnimationController<>(this, "idle_controller", 0, this::idle));
         controllers.add(new AnimationController<>(this, "phase_controller", 0, this::phase));
+    }
+
+    @Override
+    public double getBoneResetTime() {
+        return 0; // Snap back after animations like rotation so there is no awkward spin after 360 spin attacks finish
     }
 
     @Override

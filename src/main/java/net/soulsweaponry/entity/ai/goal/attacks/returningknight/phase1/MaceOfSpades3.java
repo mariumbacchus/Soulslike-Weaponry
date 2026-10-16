@@ -26,13 +26,13 @@ public class MaceOfSpades3 extends MaceAttack {
         super.tickAttack(target, attackStatus, distanceToTarget);
         MaceOfSpadesHitbox.updateMaceHitbox(this.hitbox, this.getBoss(), attackStatus);
         if (MaceOfSpadesHitbox.isDamageTickSwipe(this.getBoss(), attackStatus)) {
-            this.doSwingDamage(this.oneHandedSwipe, 0.5f);
+            this.doSwingDamage(this.hitbox, this.oneHandedSwipe, 0.5f);
         }
         if (MaceOfSpadesHitbox.isDamageTwoHandedSwipe(this.getBoss(), attackStatus)) {
-            this.doSwingDamage(this.twoHandedSwipe, 0.6f);
+            this.doSwingDamage(this.hitbox, this.twoHandedSwipe, 0.6f);
         }
         if (MaceOfSpadesHitbox.isDamageChargedSwipe(this.getBoss(), attackStatus)) {
-            this.doMaceDamage(this.getWorld().getDamageSources().mobAttack(this.getBoss()), this.chargedTwoHandedSwipe, living -> {
+            this.doMaceDamage(this.hitbox, this.getWorld().getDamageSources().mobAttack(this.getBoss()), this.chargedTwoHandedSwipe, living -> {
                 target.takeKnockback(0.7f, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
                 target.addVelocity(0, 0.7f, 0);
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
@@ -47,7 +47,7 @@ public class MaceOfSpades3 extends MaceAttack {
         if (this.isTick(attackStatus, 74)) {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 3f, 0.5f);
-            this.doGroundScrapeParticles();
+            this.doGroundScrapeParticles(this.hitbox);
         }
         if (this.isAnyTick(attackStatus, 34, 54, 67)) {
             this.hitEntities.clear();
