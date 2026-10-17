@@ -34,10 +34,6 @@ public class MaceOfSpades2Shadow extends MaceOfSpades2 {
         if (this.isTick(attackStatus, 31) || this.isTick(attackStatus, 47)) {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
         }
-        // Make sure to clear after the first swing by the original hammer so shadow one can damage targets again
-        if (this.isAnyTick(attackStatus, 35, 42)) {
-            this.hitEntities.clear();
-        }
 
         if (this.isTick(attackStatus, 80)) {
             this.prepareNextMaceHit(target);

@@ -56,12 +56,14 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
     @Override
     public void start() {
         super.start();
-        this.boss.setIdle();
+        if (!this.boss.shouldNotTickAttack()) {
+            this.boss.setIdle();
+        }
     }
 
     @Override
     public boolean canStart() {
-        if (this.boss.isSpawning()) {
+        if (this.boss.shouldNotTickAttack()) {
             return false;
         }
         return super.canStart();
@@ -73,6 +75,12 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
     @Override
     public void tick() {
         if (this.boss.shouldNotTickAttack()) {
+            if (this.currentAttack != null) {
+                this.currentAttack.resetAttackVariables();
+            }
+            this.currentAttack = null;
+            this.attackStatus = 0;
+            this.attackLength = 0;
             return;
         }
         this.attackCooldown = Math.max(this.attackCooldown - 1, 0);

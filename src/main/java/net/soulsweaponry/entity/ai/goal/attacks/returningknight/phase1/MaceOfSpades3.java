@@ -37,7 +37,7 @@ public class MaceOfSpades3 extends MaceAttack {
                 target.takeKnockback(0.7f, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
                 target.addVelocity(0, 0.7f, 0);
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
-            });
+            }, false);
         }
         if (this.isAnyTick(attackStatus, 21, 37, 58)) {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
@@ -49,9 +49,6 @@ public class MaceOfSpades3 extends MaceAttack {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 3f, 0.5f);
             this.doGroundScrapeParticles(this.hitbox);
-        }
-        if (this.isAnyTick(attackStatus, 34, 54, 67)) {
-            this.hitEntities.clear();
         }
     }
 

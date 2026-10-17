@@ -35,7 +35,7 @@ public class SeismicWave extends MaceAttack {
                 target.takeKnockback(0.7f, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
                 target.addVelocity(0, 0.7f, 0);
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 1));
-            });
+            }, false);
         }
         if (this.isTick(attackStatus, 25)) {
             this.playSound(SoundEvents.BLOCK_GRINDSTONE_USE, 3f, 0.4f);
@@ -67,9 +67,8 @@ public class SeismicWave extends MaceAttack {
         // loop offsets
         for (int i = -spreadCount; i <= spreadCount; i++) {
             Vec3d start = origin.add(rightDir.multiply(i * spacing)); // flip with -i
-            WeaponUtil.doConsumerOnLine(this.getWorld(), yaw, start, maxYOffset, amount, spacing, ((vec3d, warmup, y) -> {
-                this.spawnEruption(vec3d, y);
-            }));
+            WeaponUtil.doConsumerOnLine(this.getWorld(), yaw, start, maxYOffset, amount, spacing,
+                    ((vec3d, warmup, y) -> this.spawnEruption(vec3d, y)));
         }
     }
 
@@ -85,7 +84,10 @@ public class SeismicWave extends MaceAttack {
         this.getWorld().spawnEntity(entity);
         if (this.getWorld() instanceof ServerWorld serverWorld) {
             float spread = 0.01f;
-            serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), 4, this.getBoss().getRandom().nextFloat() * spread - spread / 2f, this.getBoss().getRandom().nextFloat() * spread - spread / 2f, this.getBoss().getRandom().nextFloat() * spread - spread / 2f, 0);
+            serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), 4,
+                    this.getBoss().getRandom().nextFloat() * spread - spread / 2f,
+                    this.getBoss().getRandom().nextFloat() * spread - spread / 2f,
+                    this.getBoss().getRandom().nextFloat() * spread - spread / 2f, 0);
         }
     }
 

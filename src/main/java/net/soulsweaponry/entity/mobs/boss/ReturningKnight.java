@@ -325,6 +325,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
             return false;
         }
         if (!this.isPhaseTwo() && this.getHealth() - amount < 1f) {
+            this.phaseTransitionTicks = 0;
             this.clearStatusEffects();
             this.setState(States.INITIATE_PHASE_2);
             getWorld().playSound(null, this.getBlockPos(), SoundRegistry.KNIGHT_DEATH_EVENT, SoundCategory.HOSTILE, 1f, 1f);

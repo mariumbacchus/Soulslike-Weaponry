@@ -28,9 +28,6 @@ public class MaceOfSpades2 extends MaceAttack {
         if (this.isTick(attackStatus, 21) || this.isTick(attackStatus, 37)) {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
         }
-        if (this.isTick(attackStatus, 26)) {
-            this.hitEntities.clear();
-        }
 
         if (this.isTick(attackStatus, 65)) {
             this.prepareNextMaceHit(target);

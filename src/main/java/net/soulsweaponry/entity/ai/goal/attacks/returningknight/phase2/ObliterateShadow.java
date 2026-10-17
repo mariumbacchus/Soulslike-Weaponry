@@ -34,6 +34,9 @@ public class ObliterateShadow extends Obliterate {
             }
             BossHitboxHelper.breakBlocksInsideHitbox(this.shadowHitbox.copy().offsetWorld(0, ObliterateShadowHitbox.OBLITERATE_SHADOW_MACE_SIZE.y / 2.0D, 0), this.getWorld(), this.getBoss(), this.getBoss()::canDestroy, false);
         }
+        if (this.isAnyTick(attackStatus, 39)) {
+            this.prepareNextMaceHit(target);
+        }
     }
 
     @Override

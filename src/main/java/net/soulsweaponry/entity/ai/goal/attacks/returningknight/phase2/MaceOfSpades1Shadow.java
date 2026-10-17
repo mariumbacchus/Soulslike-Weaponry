@@ -34,10 +34,7 @@ public class MaceOfSpades1Shadow extends MaceOfSpades1 {
                 this.playSound(this.targetPos, SoundRegistry.KNIGHT_SWIPE_EVENT, 1f);
             }
         }
-        if (this.isAnyTick(attackStatus, 18, 30)) {
-            this.hitEntities.clear();
-        }
-        if (this.isTick(attackStatus, 38)) {
+        if (this.isAnyTick(attackStatus, 48)) {
             this.prepareNextMaceHit(target);
         }
         if (MaceOfSpadesShadowHitbox.isDamageTickSmash(this.getBoss(), attackStatus) && this.targetPos != null) {

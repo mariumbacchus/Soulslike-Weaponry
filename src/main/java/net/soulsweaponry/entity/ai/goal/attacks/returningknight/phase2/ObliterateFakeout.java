@@ -23,6 +23,7 @@ public class ObliterateFakeout extends MaceAttack {
     public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
         super.tickAttack(target, attackStatus, distanceToTarget);
         ObliterateFakeoutHitbox.updateObliterateMaceHitbox(this.hitbox, this.getBoss(), this.targetPos, attackStatus);
+        ObliterateFakeoutHitbox.updateShadowMaceHitbox(this.shadowHitbox, this.getBoss(), attackStatus);
         if (ObliterateFakeoutHitbox.isObliterateDamageTick(this.getBoss(), attackStatus)) {
             this.doObliterateDamage(this.hitbox, this.damage);
             if (this.isAnyTick(attackStatus, 45, 77)) {
@@ -36,10 +37,6 @@ public class ObliterateFakeout extends MaceAttack {
         if (ObliterateFakeoutHitbox.isSpinDamageTick(this.getBoss(), attackStatus)) {
             this.doSwingDamage(this.shadowHitbox, this.shadowDamage, 0.6f);
             //TODO shoot stuff
-        }
-        //TODO shadow hitbox along with shooting projectiles when spinning, clear entities hit set often
-        if (this.isAnyTick(65, 70, 72, 73, 74, 75, 76, 77, 78)) {
-
         }
     }
 

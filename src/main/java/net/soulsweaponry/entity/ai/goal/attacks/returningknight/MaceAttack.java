@@ -32,7 +32,8 @@ public abstract class MaceAttack extends ReturningKnightAttack {
     public boolean cordsRegistered = false;
     /**
      * Entities in this list are immune to mace attacks.
-     * Mainly used by Obliterate to ignore summoned Remnants when attacking.
+     * Mainly used by Obliterate to ignore summoned Remnants when attacking and
+     * hitting players multiple times (since that attack especially deals a lot of damage).
      */
     public final Set<UUID> hitEntities = new HashSet<>();
     public BlockPos targetPos;
@@ -56,11 +57,13 @@ public abstract class MaceAttack extends ReturningKnightAttack {
      * @param damageSource damage source
      * @param damage damage
      * @param targetConsumer consumer to trigger on each target hit, such as applying knockback
+     * @param addToEntitiesHitSet whether the entity should be added to the hitEntities set or not,
+     *                            making them immune to next attacks by the hitbox until the set is cleared
      */
-    public void doMaceDamage(RotatableHitbox hitbox, DamageSource damageSource, float damage, Consumer<LivingEntity> targetConsumer) {
+    public void doMaceDamage(RotatableHitbox hitbox, DamageSource damageSource, float damage, Consumer<LivingEntity> targetConsumer, boolean addToEntitiesHitSet) {
         List<LivingEntity> entities = hitbox.getIntersectingTargets(this.getWorld(), this.getBoss());
         for (LivingEntity living : entities) {
-            if (!this.hitEntities.add(living.getUuid())) {
+            if (addToEntitiesHitSet && !this.hitEntities.add(living.getUuid())) {
                 continue;
             }
             living.damage(damageSource, this.getGoal().getModifiedDamage(damage));
@@ -81,7 +84,7 @@ public abstract class MaceAttack extends ReturningKnightAttack {
                     this.hitEntities.add(this.getGoal().summonAllies(target.getPos(), false));
                 }
             }
-        });
+        }, true);
     }
 
     /**
@@ -91,7 +94,7 @@ public abstract class MaceAttack extends ReturningKnightAttack {
     public void doSwingDamage(RotatableHitbox hitbox, float damage, float knockbackStrength) {
         this.doMaceDamage(hitbox, this.getWorld().getDamageSources().mobAttack(this.getBoss()), damage, target -> {
             target.takeKnockback(knockbackStrength, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
-        });
+        }, false);
     }
 
     public void doObliterateParticles(RotatableHitbox hitbox) {

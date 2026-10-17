@@ -178,7 +178,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
      * boss is dead or is initiating phase 2.
      */
     public boolean shouldNotTickAttack() {
-        return this.isDead();
+        return this.isDead() || this.isSpawning();
     }
 
     @Override

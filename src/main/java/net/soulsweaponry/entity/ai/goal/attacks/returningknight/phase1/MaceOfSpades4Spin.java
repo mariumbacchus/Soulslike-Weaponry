@@ -37,7 +37,7 @@ public class MaceOfSpades4Spin extends MaceAttack {
                 target.takeKnockback(2f, -(target.getX() - this.getBoss().getX()), -(target.getZ() - this.getBoss().getZ()));
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 1));
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 100, 1));
-            });
+            }, false);
         }
         if (this.isAnyTick(attackStatus, 21, 42)) {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
@@ -48,9 +48,6 @@ public class MaceOfSpades4Spin extends MaceAttack {
         if (this.isTick(attackStatus, 71)) {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 3f, 0.5f);
-        }
-        if (this.isAnyTick(attackStatus, 32, 44, 54)) {
-            this.hitEntities.clear();
         }
     }
 
