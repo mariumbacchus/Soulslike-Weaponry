@@ -13,7 +13,7 @@ public class Obliterate extends MaceAttack {
     private final float damage = EntityConfig.returning_knight_obliterate_damage;
 
     public Obliterate(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
-        super(goal, boss, attackLength, weight, cooldown, specialCooldown);
+        super(goal, boss, attackLength, weight, cooldown, specialCooldown, ObliterateHitbox.OBLITERATE_MACE_SIZE);
     }
 
     @Override

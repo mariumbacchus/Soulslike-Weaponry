@@ -1,7 +1,6 @@
 package net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
@@ -12,7 +11,7 @@ import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public class ObliterateShadow extends Obliterate {
 
-    public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(6, 5, 6));
+    public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(ObliterateShadowHitbox.OBLITERATE_SHADOW_MACE_SIZE);
     private final float shadowDamage = EntityConfig.returning_knight_obliterate_phase_2_shadow_damage;
     private final float pillarRadius = EntityConfig.returning_knight_obliterate_phase_2_shadow_pillar_radius;
     private final float pillarDamage = EntityConfig.returning_knight_obliterate_phase_2_shadow_pillar_damage;

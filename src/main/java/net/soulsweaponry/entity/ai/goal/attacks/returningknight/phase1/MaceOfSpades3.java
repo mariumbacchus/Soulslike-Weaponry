@@ -8,6 +8,7 @@ import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.MaceAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesTimings;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -18,7 +19,7 @@ public class MaceOfSpades3 extends MaceAttack {
     private final float chargedTwoHandedSwipe = EntityConfig.returning_knight_mace_of_spades_3_charged_swipe_damage;
 
     public MaceOfSpades3(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
-        super(goal, boss, attackLength, weight, cooldown, specialCooldown);
+        super(goal, boss, attackLength, weight, cooldown, specialCooldown, MaceOfSpadesTimings.MACE_SIZE_3);
     }
 
     @Override

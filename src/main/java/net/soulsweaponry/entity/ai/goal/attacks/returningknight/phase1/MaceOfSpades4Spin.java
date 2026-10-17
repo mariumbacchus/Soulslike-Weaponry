@@ -8,6 +8,7 @@ import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.MaceAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesTimings;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.registry.SoundRegistry;
 
@@ -18,7 +19,7 @@ public class MaceOfSpades4Spin extends MaceAttack {
     private final float thrustDamage = EntityConfig.returning_knight_mace_of_spades_4_thrust_damage;
 
     public MaceOfSpades4Spin(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
-        super(goal, boss, attackLength, weight, cooldown, specialCooldown);
+        super(goal, boss, attackLength, weight, cooldown, specialCooldown, MaceOfSpadesTimings.MACE_SIZE_4);
     }
 
     @Override

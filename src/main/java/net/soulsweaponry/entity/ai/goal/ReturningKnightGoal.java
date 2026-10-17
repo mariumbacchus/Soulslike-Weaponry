@@ -6,10 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1.*;
-import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.MaceOfSpades1Shadow;
-import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.MaceOfSpades2Shadow;
-import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.MaceOfSpades3Shadow;
-import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.ObliterateShadow;
+import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.*;
 import net.soulsweaponry.entity.ai.goal.events.Unbreakable;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
@@ -78,6 +75,11 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         ObliterateShadow obliterateShadow = new ObliterateShadow(this ,this.boss, 72,
                 10, 10, 0 //TODO proper config values
         );
+        ObliterateFakeout obliterateFakeout = new ObliterateFakeout(this ,this.boss, 125,
+                (int) EntityConfig.returning_knight_obliterate_fakeout_phase_2_weight,
+                (int) EntityConfig.returning_knight_obliterate_fakeout_phase_2_cooldown,
+                (int) EntityConfig.returning_knight_obliterate_fakeout_phase_2_special_cooldown
+        );
         MaceOfSpades1Shadow maceOfSpades1Shadow = new MaceOfSpades1Shadow(this ,this.boss, 81,
                 10, 10, 0 //TODO proper config values
         );
@@ -101,6 +103,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
         // Phase 2
         this.addAttack(ReturningKnight.States.OBLITERATE_PHASE_2, obliterateShadow);
+        this.addAttack(ReturningKnight.States.OBLITERATE_FAKEOUT_PHASE_2, obliterateFakeout);
         this.addAttack(ReturningKnight.States.MACE_OF_SPADES_1_PHASE_2, maceOfSpades1Shadow);
         this.addAttack(ReturningKnight.States.MACE_OF_SPADES_2_PHASE_2, maceOfSpades2Shadow);
         this.addAttack(ReturningKnight.States.MACE_OF_SPADES_3_PHASE_2, maceOfSpades3Shadow);
@@ -130,7 +133,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return null;//ReturningKnight.States.MACE_OF_SPADES_2_PHASE_2;//TODO
+        return ReturningKnight.States.OBLITERATE_FAKEOUT_PHASE_2;//TODO
     }
 
     @Override

@@ -29,10 +29,6 @@ public class ObliterateHitbox {
             new BossHitboxHelper.Keyframe(64, new Vec3d(-1, 3.0, 0))
     };
 
-    public static RotatableHitbox createObliterateMaceHitboxPlaceholder() {
-        return BossHitboxHelper.createPlaceholder(OBLITERATE_MACE_SIZE);
-    }
-
     public static void updateObliterateMaceHitbox(RotatableHitbox hitbox, ReturningKnight boss, BlockPos targetPos, int attackTick) {
         double downExtension = BossHitboxHelper.getDownExtensionFromTarget(boss, targetPos, 2.0D);
         BossHitboxHelper.updateKeyframedLocalHitbox(hitbox, boss, boss.bodyYaw, OBLITERATE_MACE_SIZE, boss.getAnimationSpeed(), OBLITERATE_MACE_PATH, attackTick, downExtension);

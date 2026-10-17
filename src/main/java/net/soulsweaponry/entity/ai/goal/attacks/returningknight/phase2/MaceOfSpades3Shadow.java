@@ -12,6 +12,7 @@ import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1.MaceOfSpades3;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.shadow.MaceOfSpadesShadowHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.shadow.MaceOfSpadesShadowTimings;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.entity.projectile.ShadowOrb;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class MaceOfSpades3Shadow extends MaceOfSpades3 {
 
-    public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(8, 6, 7));
+    public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(MaceOfSpadesShadowTimings.MACE_SIZE_3);
     private final float swipeDamage = EntityConfig.returning_knight_mace_of_spades_3_phase_2_shadow_swipe_damage;
     private final float spinDamage = EntityConfig.returning_knight_mace_of_spades_3_phase_2_shadow_spin_damage;
     private final float thrustDamage = EntityConfig.returning_knight_mace_of_spades_3_phase_2_shadow_thrust_damage;
@@ -50,6 +51,7 @@ public class MaceOfSpades3Shadow extends MaceOfSpades3 {
                 float centeredIndex = i - (this.shadowOrbAmountPerTick - 1) / 2f;
                 float angle = centeredIndex * spacingDegrees * MathHelper.RADIANS_PER_DEGREE;
                 Vec3d direction = outward.rotateY(angle);
+                // TODO use bigger shadow orbs that go through walls, same ones used for bullet hell phase
                 ShadowOrb orb = new ShadowOrb(this.getWorld(), this.getBoss(), direction, List.of(StatusEffects.SLOWNESS), this.shadowOrbDamage);
                 orb.setPosition(spawnPos.x, spawnPos.y, spawnPos.z);
                 orb.setVelocity(direction.x, 0.0D, direction.z, this.shadowOrbSpeed, 0.0F);

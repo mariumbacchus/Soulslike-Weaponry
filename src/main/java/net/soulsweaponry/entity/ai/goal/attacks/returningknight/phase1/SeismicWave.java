@@ -23,7 +23,7 @@ public class SeismicWave extends MaceAttack {
     private final float eruptionDamage = EntityConfig.returning_knight_seismic_wave_eruption_damage;
 
     public SeismicWave(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
-        super(goal, boss, attackLength, weight, cooldown, specialCooldown);
+        super(goal, boss, attackLength, weight, cooldown, specialCooldown, SeismicWaveHitbox.MACE_SIZE);
     }
 
     @Override

@@ -30,12 +30,17 @@ import java.util.function.Consumer;
 public abstract class MaceAttack extends ReturningKnightAttack {
 
     public boolean cordsRegistered = false;
+    /**
+     * Entities in this list are immune to mace attacks.
+     * Mainly used by Obliterate to ignore summoned Remnants when attacking.
+     */
     public final Set<UUID> hitEntities = new HashSet<>();
     public BlockPos targetPos;
-    public final RotatableHitbox hitbox = BossHitboxHelper.createPlaceholder(new Vec3d(6, 5, 6));
+    public final RotatableHitbox hitbox;
 
-    public MaceAttack(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
+    public MaceAttack(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown, Vec3d hitboxSize) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);
+        this.hitbox = BossHitboxHelper.createPlaceholder(hitboxSize);
     }
 
     @Override

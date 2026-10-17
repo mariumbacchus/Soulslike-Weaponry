@@ -89,6 +89,10 @@
     - Added a Phase 2 with only these attacks:
       - Obliterate (Shadow Mace):
         - The mace of the shadow also lands after a brief delay, having its own hitbox along with summoning dark pillars outward in a circle upon colliding with the ground
+      - Obliterate (Fakeout):
+        - Charges up the mace a bit longer while the shadow prepares for a long spin attack
+        - The knight obliterates the ground, quickly following up with another obliterate right after
+        - The shadow spins the mace around while shooting Shadow Orbs while the knight obliterates away
       - Mace of Spades 1 (Original):
         - The shadow's mace follows the same path of the main mace after a delay, having its own hitbox
         - Smash attack also summons dark pillars out in a circle

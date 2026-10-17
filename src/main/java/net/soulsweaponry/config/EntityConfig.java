@@ -156,6 +156,13 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_seismic_wave_cooldown = 40;
     @Entry(min = 0) public static float returning_knight_seismic_wave_special_cooldown = 60;
 
+    // Obliterate Fakeout (Phase 2)
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_damage = 50f;
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_shadow_spin_damage = 30f;
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_weight = 3;
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_cooldown = 10;
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_special_cooldown = 0;
+
     // Misc
     @Entry public static boolean returning_knight_disable_respawn = false;
     @Entry public static boolean returning_knight_consume_item_on_summoning = true;

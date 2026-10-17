@@ -1,19 +1,19 @@
 package net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1.MaceOfSpades2;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.shadow.MaceOfSpadesShadowHitbox;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.shadow.MaceOfSpadesShadowTimings;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.registry.SoundRegistry;
 
 public class MaceOfSpades2Shadow extends MaceOfSpades2 {
 
-    public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(8, 6, 7));
+    public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(MaceOfSpadesShadowTimings.MACE_SIZE_2);
     private final float damageSwipe = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_swipe_damage;
     private final float damageSmash = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_smash_damage;
     private final float pillarRadius = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_radius;

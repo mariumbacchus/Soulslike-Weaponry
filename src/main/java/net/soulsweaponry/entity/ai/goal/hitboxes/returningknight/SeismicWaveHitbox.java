@@ -7,17 +7,13 @@ import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public class SeismicWaveHitbox {
 
-    public static final Vec3d MACE_SIZE = new Vec3d(7, 5, 6);
+    public static final Vec3d MACE_SIZE = new Vec3d(8, 5, 6);
 
     public static final int SWING_START = 43;
     public static final int SWING_END = 47;
 
     public static final int DEBUG_START = 1;
     public static final int DEBUG_END = 112;
-
-    public static RotatableHitbox createMaceHitboxPlaceholder() {
-        return BossHitboxHelper.createPlaceholder(MACE_SIZE);
-    }
 
     public static void updateMaceHitbox(RotatableHitbox hitbox, ReturningKnight boss, int attackTick) {
         BossHitboxHelper.updateKeyframedLocalHitbox(hitbox, boss, boss.bodyYaw, MACE_SIZE, boss.getAnimationSpeed(), PATH, attackTick);

@@ -32,6 +32,7 @@ import net.soulsweaponry.collision.RotatableHitboxDebugRegistry;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
+import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateFakeoutHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateShadowHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.SeismicWaveHitbox;
@@ -119,6 +120,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 case SEISMIC_WAVE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("seismic_wave"));
 
                 case OBLITERATE_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_phase_2"));
+                case OBLITERATE_FAKEOUT_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("obliterate_fakeout_phase_2"));
                 case MACE_OF_SPADES_1_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_1_phase_2"));
                 case MACE_OF_SPADES_2_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_2_phase_2"));
                 case MACE_OF_SPADES_3_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_3_phase_2"));
@@ -275,42 +277,45 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
             case OBLITERATE -> {
                 if (ObliterateHitbox.isObliterateDebugTick(this, attackTick)) {
                     ObliterateHitbox.updateObliterateMaceHitbox(this.debugMaceHitbox, this, targetPos, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
             case MACE_OF_SPADES_1, MACE_OF_SPADES_2, MACE_OF_SPADES_3, MACE_OF_SPADES_4_SPIN -> {
                 if (MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
                     MaceOfSpadesHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
             case SEISMIC_WAVE -> {
                 if (SeismicWaveHitbox.isDebugTick(this, attackTick)) {
                     SeismicWaveHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
             case OBLITERATE_PHASE_2 -> {
                 if (ObliterateShadowHitbox.isObliterateShadowDebugTick(this, attackTick)) {
                     ObliterateShadowHitbox.updateObliterateShadowMaceHitbox(this.debugShadowMaceHitbox, this, targetPos, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), shadowId, this.debugShadowMaceHitbox);
                 }
                 if (ObliterateHitbox.isObliterateDebugTick(this, attackTick)) {
                     ObliterateHitbox.updateObliterateMaceHitbox(this.debugMaceHitbox, this, targetPos, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
+                }
+            }
+            case OBLITERATE_FAKEOUT_PHASE_2 -> {
+                if (ObliterateFakeoutHitbox.isDebugTick(this, attackTick)) {
+                    ObliterateFakeoutHitbox.updateObliterateMaceHitbox(this.debugMaceHitbox, this, targetPos, attackTick);
+                    ObliterateFakeoutHitbox.updateShadowMaceHitbox(this.debugShadowMaceHitbox, this, attackTick);
                 }
             }
             case MACE_OF_SPADES_1_PHASE_2, MACE_OF_SPADES_2_PHASE_2, MACE_OF_SPADES_3_PHASE_2 -> {
                 if (MaceOfSpadesShadowHitbox.isDebugTick(this, attackTick)) {
                     MaceOfSpadesShadowHitbox.updateMaceHitbox(this.debugShadowMaceHitbox, this, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), shadowId, this.debugShadowMaceHitbox);
                 }
                 if (MaceOfSpadesHitbox.isDebugTick(this, attackTick)) {
                     MaceOfSpadesHitbox.updateMaceHitbox(this.debugMaceHitbox, this, attackTick);
-                    RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
                 }
             }
         }
+        if (this.isPhaseTwo()) {
+            RotatableHitboxDebugRegistry.put(this.getWorld(), shadowId, this.debugShadowMaceHitbox);
+        }
+        RotatableHitboxDebugRegistry.put(this.getWorld(), mainId, this.debugMaceHitbox);
     }
     //TODO gotta make it turn slower, if it starts spinning it looks weird, especially with a giant shadow behind him
 
@@ -495,7 +500,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         OBLITERATE, BLIND, SUMMON, RUPTURE, UNBREAKABLE, SEISMIC_WAVE,
         MACE_OF_SPADES_1, MACE_OF_SPADES_2, MACE_OF_SPADES_3, MACE_OF_SPADES_4_SPIN,
 
-        OBLITERATE_PHASE_2, MACE_OF_SPADES_1_PHASE_2, MACE_OF_SPADES_2_PHASE_2, MACE_OF_SPADES_3_PHASE_2,
+        OBLITERATE_PHASE_2, OBLITERATE_FAKEOUT_PHASE_2, MACE_OF_SPADES_1_PHASE_2, MACE_OF_SPADES_2_PHASE_2, MACE_OF_SPADES_3_PHASE_2,
         SUMMON_RUPTURE_PHASE_2, SHADOW_ORBS, BULLET_HELL_START, BULLET_HELL_TICK, BULLET_HELL_END
     }
 }
