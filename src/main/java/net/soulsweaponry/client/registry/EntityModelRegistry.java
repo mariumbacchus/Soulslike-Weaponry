@@ -80,5 +80,6 @@ public class EntityModelRegistry {
         EntityRendererRegistry.register(EntityRegistry.MOLTEN_METAL, MoltenMetalRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.DRAGONWOUND_WAVE_VERTICAL, DragonwoundWaveRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ERUPTION, EmptyEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.DARKNESS_ORB, DarknessOrbRenderer::new);
     }
 }

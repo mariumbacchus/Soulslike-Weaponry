@@ -134,9 +134,9 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_charged_swipe_damage = 30;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_swipe_damage = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_damage = 25;
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_shadow_orb_amount_per_tick = 10;
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_shadow_orb_damage = 10;
-    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_shadow_orb_speed = 1f;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_darkness_orb_amount_per_tick = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_darkness_orb_damage = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_spin_darkness_orb_speed = 1f;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_shadow_thrust_damage = 30;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_weight = 10;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_cooldown = 20;
@@ -159,6 +159,9 @@ public class EntityConfig extends MidnightConfig {
     // Obliterate Fakeout (Phase 2)
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_damage = 50f;
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_shadow_spin_damage = 30f;
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_shadow_spin_darkness_orb_amount_per_tick = 8;
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_shadow_spin_darkness_orb_damage = 10;
+    @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_shadow_spin_darkness_orb_speed = 1f;
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_weight = 3;
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_cooldown = 10;
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_special_cooldown = 0;

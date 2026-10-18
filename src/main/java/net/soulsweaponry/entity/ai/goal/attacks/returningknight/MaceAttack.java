@@ -6,6 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
@@ -15,6 +16,7 @@ import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.entity.projectile.noclip.BlackflameExplosionEntity;
+import net.soulsweaponry.entity.projectile.noclip.DarknessOrb;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.DamageSourceRegistry;
@@ -178,5 +180,25 @@ public abstract class MaceAttack extends ReturningKnightAttack {
             // Warning particle
             serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.x, pos.y, pos.z, 1, 0.01D, 0.01D, 0.01D, 0.0D);
         }
+    }
+
+    /**
+     * To be used when the boss spins to shoot out orbs.
+     */
+    public void spawnDarknessOrb(Vec3d spawnPos, int darknessOrbAmountPerTick, float darknessOrbDamage, float darknessOrbSpeed) {
+        Vec3d outward = new Vec3d(spawnPos.x - this.getBoss().getX(), 0.0D, spawnPos.z - this.getBoss().getZ()).normalize();
+        float spacingDegrees = 6.0F;
+        for (int i = 0; i < darknessOrbAmountPerTick; i++) {
+            // Add deviation along x/z but ignore y-axis to avoid orbs crashing into ground
+            float centeredIndex = i - (darknessOrbAmountPerTick - 1) / 2f;
+            float angle = centeredIndex * spacingDegrees * MathHelper.RADIANS_PER_DEGREE;
+            Vec3d direction = outward.rotateY(angle);
+            DarknessOrb orb = new DarknessOrb(this.getWorld(), this.getBoss(), 30);
+            orb.setDamage(darknessOrbDamage);
+            orb.setPosition(spawnPos.x, spawnPos.y - 0.5f, spawnPos.z);
+            orb.setVelocity(direction.x, 0.0D, direction.z, darknessOrbSpeed, 0.0F);
+            this.getWorld().spawnEntity(orb);
+        }
+        this.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 3f, 0.5f);
     }
 }
