@@ -25,6 +25,11 @@ public class EntityConfig extends MidnightConfig {
 
     @Entry public static double remnant_health = 20D;
     @Entry public static double remnant_bonus_armor = 0D;
+    @Entry public static double remnant_base_attack_damage = 2;
+
+    @Entry public static double elite_remnant_health = 30D;
+    @Entry public static double elite_remnant_bonus_armor = 0D;
+    @Entry public static double elite_remnant_base_attack_damage = 4;
 
     @Entry public static double rime_spectre_health = 10D;
     @Entry public static double rime_spectre_armor = 0D;

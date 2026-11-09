@@ -102,6 +102,7 @@
     "item.soulsweapons.forlorn_chestplate": "Заброшенный Нагрудник",
     "item.soulsweapons.forlorn_leggings": "Заброшенные Поножи",
     "item.soulsweapons.forlorn_boots": "Заброшенные Ботинки",
+    "item.soulsweapons.elite_soul_ingot_helmet": "Elite Soul Ingot Helmet",
 
     "item.soulsweapons.bloodthirster": "Кровопийца",
     "item.soulsweapons.darkin_blade": "Клинок Даркина",
@@ -192,6 +193,7 @@
     "item.soulsweapons.day_stalker_spawn_egg": "Яйцо призыва Дневного Сталкера",
     "item.soulsweapons.night_prowler_spawn_egg": "Яйцо призыва Ночного Бродяги",
     "item.soulsweapons.warmth_entity_spawn_egg": "Яйцо призыва Сферы Тепла",
+    "item.soulsweapons.elite_remnant_spawn_egg": "Elite Remnant Spawn Egg",
 
     "entity.soulsweapons.big_chungus": "Чунгус Среднего Размера",
     "entity.soulsweapons.withered_demon": "Иссохший Демон",
@@ -211,7 +213,6 @@
     "entity.soulsweapons.moonknight_phase_2": "Предвестник Лунного Света",
     "entity.soulsweapons.day_stalker": "Дневной Сталкер",
     "entity.soulsweapons.night_prowler": "Ночной Бродяга",
-
     "entity.soulsweapons.comet_spear_entity": "Копьё Комета",
     "entity.soulsweapons.swordspear_entity": "Меч-копьё Истребителя Драконов",
     "entity.soulsweapons.big_moonlight_projectile": "Лунный Снаряд",
@@ -229,6 +230,7 @@
     "entity.soulsweapons.frost_giant": "Ледяной Гигант",
     "entity.soulsweapons.rime_spectre": "Призрак Инея",
     "entity.soulsweapons.warmth_entity": "Сфера Тепла",
+    "entity.soulsweapons.elite_remnant": "Elite Remnant",
 
     "entity.soulsweapons.sunlight_projectile_small": "Волна солнечного света",
     "entity.soulsweapons.sunlight_projectile_big": "Солнечное Копье",
@@ -260,6 +262,9 @@
     "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
     "entity.soulsweapons.air_combustion": "Air Combustion",
     "entity.soulsweapons.molten_metal": "Molten Metal",
+    "entity.soulsweapons.dragonwound_wave_vertical": "Dragonwound Wave",
+    "entity.soulsweapons.eruption_entity": "Eruption",
+    "entity.soulsweapons.darkness_orb": "Darkness Orb",
 
     "death.attack.bleed": "%1$s истёк кровью",
     "death.attack.bleed.player": "%1$s истёк кровью",

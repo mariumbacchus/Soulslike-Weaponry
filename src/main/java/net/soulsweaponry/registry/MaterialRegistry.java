@@ -53,6 +53,10 @@ public class MaterialRegistry {
             createMapWithArray(ArmorConfig.forlorn_armor_armor_points),
             8, SoundEvents.ITEM_ARMOR_EQUIP_IRON, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
             List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "forlorn"))), 0, 0));
+    public static final RegistryEntry<ArmorMaterial> ELITE_SOUL_INGOT = registerArmorMaterial("elite_soul_ingot", () -> new ArmorMaterial(
+            createMapWithArray(ArmorConfig.elite_soul_ingot_armor_points),
+            20, SoundEvents.ITEM_ARMOR_EQUIP_IRON, () -> Ingredient.ofItems(ItemRegistry.SOUL_INGOT),
+            List.of(new ArmorMaterial.Layer(Identifier.of(SoulsWeaponry.ModId, "elite_soul_ingot"))), 0, 0));
 
     public static RegistryEntry<ArmorMaterial> registerArmorMaterial(String name, Supplier<ArmorMaterial> material) {
         return Registry.registerReference(Registries.ARMOR_MATERIAL, Identifier.of(SoulsWeaponry.ModId, name), material.get());

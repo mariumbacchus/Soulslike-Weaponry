@@ -72,7 +72,7 @@ public class Remnant extends TameableEntity {
         .add(EntityAttributes.GENERIC_MAX_HEALTH, EntityConfig.remnant_health)
         .add(EntityAttributes.GENERIC_ARMOR, EntityConfig.remnant_bonus_armor)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3000000003D)
-        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 2.0D);
+        .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, EntityConfig.remnant_base_attack_damage);
     }
 
     public void initEquip() {

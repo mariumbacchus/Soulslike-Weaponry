@@ -103,6 +103,7 @@
   "item.soulsweapons.forlorn_chestplate": "Pechera Desolada",
   "item.soulsweapons.forlorn_leggings": "Grebas Desoladas",
   "item.soulsweapons.forlorn_boots": "Botas Desoladas",
+  "item.soulsweapons.elite_soul_ingot_helmet": "Elite Soul Ingot Helmet",
 
   "item.soulsweapons.bloodthirster": "Sediento de Sangre",
   "item.soulsweapons.darkin_blade": "La Hoja Darkin",
@@ -193,6 +194,7 @@
   "item.soulsweapons.day_stalker_spawn_egg": "Generar Cazador de Día",
   "item.soulsweapons.night_prowler_spawn_egg": "Generar Merodeador Nocturno",
   "item.soulsweapons.warmth_entity_spawn_egg": "Generar Esfera de Calor",
+  "item.soulsweapons.elite_remnant_spawn_egg": "Elite Remnant Spawn Egg",
 
   "entity.soulsweapons.big_chungus": "Chungus de Tamaño Moderado",
   "entity.soulsweapons.withered_demon": "Demonio Marchito",
@@ -215,6 +217,7 @@
   "entity.soulsweapons.frost_giant": "Gigante de Escarcha",
   "entity.soulsweapons.rime_spectre": "Espectro de Escarcha",
   "entity.soulsweapons.warmth_entity": "Esfera de Calor",
+  "entity.soulsweapons.elite_remnant": "Elite Remnant",
 
   "entity.soulsweapons.comet_spear_entity": "Lanza de Cometa",
   "entity.soulsweapons.swordspear_entity": "Lanza de Espada Matadragones",
@@ -260,6 +263,9 @@
   "entity.soulsweapons.frozen_lightning": "Relámpago Congelado",
   "entity.soulsweapons.air_combustion": "Air Combustion",
   "entity.soulsweapons.molten_metal": "Molten Metal",
+  "entity.soulsweapons.dragonwound_wave_vertical": "Dragonwound Wave",
+  "entity.soulsweapons.eruption_entity": "Eruption",
+  "entity.soulsweapons.darkness_orb": "Darkness Orb",
 
   "death.attack.bleed": "%1$s se desangró",
   "death.attack.bleed.player": "%1$s se desangró",

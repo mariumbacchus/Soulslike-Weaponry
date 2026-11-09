@@ -27,11 +27,6 @@ public class Forlorn extends Remnant {
         Forlorn.initEquip(this, Collections.emptyMap());
     }
 
-    @Override
-    protected void initGoals() {
-        super.initGoals();
-    }
-
     public static DefaultAttributeContainer.Builder createForlornAttributes() {
         return MobEntity.createMobAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 25D)
@@ -45,6 +40,9 @@ public class Forlorn extends Remnant {
     public int getSoulAmount() {
         return 10;
     }
+
+    @Override
+    public void initEquip() {}
 
     public static void initEquip(LivingEntity entity, Map<RegistryKey<Enchantment>, Integer> enchants) {
         HashMap<EquipmentSlot, ItemStack> equip = new HashMap<>();

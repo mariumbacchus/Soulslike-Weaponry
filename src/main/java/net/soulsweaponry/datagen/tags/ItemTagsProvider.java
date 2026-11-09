@@ -168,7 +168,8 @@ public class ItemTagsProvider extends FabricTagProvider.ItemTagProvider {
                 .add(ArmorRegistry.CHAOS_HELMET)
                 .add(ArmorRegistry.FORLORN_HELMET)
                 .add(ArmorRegistry.SOUL_INGOT_HELMET)
-                .add(ArmorRegistry.SOUL_ROBES_HELMET);
+                .add(ArmorRegistry.SOUL_ROBES_HELMET)
+                .add(ArmorRegistry.ELITE_SOUL_INGOT_HELMET);
 
         this.getOrCreateTagBuilder(ItemTags.CHEST_ARMOR)
                 .add(ArmorRegistry.ARKENPLATE)

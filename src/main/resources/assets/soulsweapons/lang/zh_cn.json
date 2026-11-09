@@ -102,6 +102,7 @@
     "item.soulsweapons.forlorn_chestplate": "被弃者胸甲",
     "item.soulsweapons.forlorn_leggings": "被弃者护腿",
     "item.soulsweapons.forlorn_boots": "被弃者靴子",
+    "item.soulsweapons.elite_soul_ingot_helmet": "Elite Soul Ingot Helmet",
 
     "item.soulsweapons.bloodthirster": "饮血剑",
     "item.soulsweapons.darkin_blade": "暗裔利刃",
@@ -192,6 +193,7 @@
     "item.soulsweapons.day_stalker_spawn_egg": "Day Stalker Spawn Egg",
     "item.soulsweapons.night_prowler_spawn_egg": "Night Prowler Spawn Egg",
     "item.soulsweapons.warmth_entity_spawn_egg": "Sphere of Warmth Spawn Egg",
+    "item.soulsweapons.elite_remnant_spawn_egg": "Elite Remnant Spawn Egg",
 
     "entity.soulsweapons.big_chungus": "中型蠢古斯兔",
     "entity.soulsweapons.withered_demon": "凋零恶魔",
@@ -214,6 +216,7 @@
     "entity.soulsweapons.frost_giant": "Frost Giant",
     "entity.soulsweapons.rime_spectre": "Rime Spectre",
     "entity.soulsweapons.warmth_entity": "Sphere of Warmth",
+    "entity.soulsweapons.elite_remnant": "Elite Remnant",
 
     "entity.soulsweapons.comet_spear_entity": "彗星矛",
     "entity.soulsweapons.swordspear_entity": "猎龙枪",
@@ -259,6 +262,9 @@
     "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
     "entity.soulsweapons.air_combustion": "Air Combustion",
     "entity.soulsweapons.molten_metal": "Molten Metal",
+    "entity.soulsweapons.dragonwound_wave_vertical": "Dragonwound Wave",
+    "entity.soulsweapons.eruption_entity": "Eruption",
+    "entity.soulsweapons.darkness_orb": "Darkness Orb",
 
     "death.attack.bleed": "%1$s流血至死",
     "death.attack.bleed.player": "%1$s流血至死",

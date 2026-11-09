@@ -13,6 +13,17 @@ import net.soulsweaponry.registry.ItemRegistry;
 public class ArmorRecipes {
 
     public static void generateRecipes(RecipeExporter recipeExporter) {
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.ELITE_SOUL_INGOT_HELMET)
+                .input('G', Items.GOLD_INGOT)
+                .input('A', Items.AMETHYST_SHARD)
+                .input('D', Items.DIAMOND)
+                .input('#', ItemRegistry.SOUL_INGOT)
+                .pattern("GAG")
+                .pattern("#D#")
+                .pattern("# #")
+                .criterion("has_item", RecipeProvider.conditionsFromItemPredicates(ItemPredicate.Builder.create()
+                        .items(ItemRegistry.SOUL_INGOT).build()))
+                .offerTo(recipeExporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ArmorRegistry.SOUL_INGOT_HELMET)
                 .input('#', ItemRegistry.SOUL_INGOT)
                 .pattern("###")

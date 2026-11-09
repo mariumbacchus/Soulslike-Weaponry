@@ -102,6 +102,7 @@
     "item.soulsweapons.forlorn_chestplate": "고독한 갑옷",
     "item.soulsweapons.forlorn_leggings": "고독한 바지",
     "item.soulsweapons.forlorn_boots": "고독한 신발",
+    "item.soulsweapons.elite_soul_ingot_helmet": "Elite Soul Ingot Helmet",
 
     "item.soulsweapons.bloodthirster": "피의 갈망자",
     "item.soulsweapons.darkin_blade": "다킨의 검",
@@ -192,6 +193,7 @@
     "item.soulsweapons.day_stalker_spawn_egg": "낮의 추적자 생성 알",
     "item.soulsweapons.night_prowler_spawn_egg": "밤의 잠복자 생성 알",
     "item.soulsweapons.warmth_entity_spawn_egg": "따스한 구체 생성 알",
+    "item.soulsweapons.elite_remnant_spawn_egg": "Elite Remnant Spawn Egg",
 
     "entity.soulsweapons.big_chungus": "중간 크기의 청거스",
     "entity.soulsweapons.withered_demon": "시든 악마",
@@ -214,6 +216,7 @@
     "entity.soulsweapons.frost_giant": "서리 거인",
     "entity.soulsweapons.rime_spectre": "서리 망령",
     "entity.soulsweapons.warmth_entity": "따스한 구체",
+    "entity.soulsweapons.elite_remnant": "Elite Remnant",
 
     "entity.soulsweapons.comet_spear_entity": "유성 창",
     "entity.soulsweapons.swordspear_entity": "용살자의 검창",
@@ -259,6 +262,9 @@
     "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
     "entity.soulsweapons.air_combustion": "Air Combustion",
     "entity.soulsweapons.molten_metal": "Molten Metal",
+    "entity.soulsweapons.dragonwound_wave_vertical": "Dragonwound Wave",
+    "entity.soulsweapons.eruption_entity": "Eruption",
+    "entity.soulsweapons.darkness_orb": "Darkness Orb",
 
     "death.attack.bleed": "%1$s가 출혈로 사망했습니다.",
     "death.attack.bleed.player": "%1$s가 출혈로 사망했습니다.",

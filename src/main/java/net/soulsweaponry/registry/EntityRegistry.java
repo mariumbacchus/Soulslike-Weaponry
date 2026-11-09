@@ -32,20 +32,21 @@ public class EntityRegistry {
     public static final EntityType<DraugrBoss> DRAUGR_BOSS = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "draugr_boss"), EntityType.Builder.create(DraugrBoss::new, SpawnGroup.MONSTER).dimensions(1.5F, 3F).build());
     public static final EntityType<NightShade> NIGHT_SHADE = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "night_shade"), EntityType.Builder.create(NightShade::new, SpawnGroup.MONSTER).dimensions(1.5F, 3.5F).build());
     public static final EntityType<ReturningKnight> RETURNING_KNIGHT = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "returning_knight"), EntityType.Builder.create(ReturningKnight::new, SpawnGroup.MONSTER).dimensions(3.4f, 8.2F).build());
-    public static final EntityType<Remnant> REMNANT = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "remnant"), EntityType.Builder.create(Remnant::new, SpawnGroup.CREATURE).dimensions(0.7f, 1.95F).build()); // 0.6F, 1.95F (zombie hitbox)
-    public static final EntityType<DarkSorcerer> DARK_SORCERER = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "dark_sorcerer"), EntityType.Builder.create(DarkSorcerer::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F).build());
+    public static final EntityType<Remnant> REMNANT = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "remnant"), EntityType.Builder.create(Remnant::new, SpawnGroup.CREATURE).dimensions(0.7f, 1.95F).build()); // 0.6F, 1.95F (zombie hitbox)
+    public static final EntityType<DarkSorcerer> DARK_SORCERER = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "dark_sorcerer"), EntityType.Builder.create(DarkSorcerer::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F).build());
     public static final EntityType<BigChungus> BIG_CHUNGUS = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "big_chungus"), EntityType.Builder.create(BigChungus::new, SpawnGroup.MONSTER).dimensions(0.75f, 1f).build());
-    public static final EntityType<SoulReaperGhost> SOUL_REAPER_GHOST = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "soul_reaper_ghost"), EntityType.Builder.create(SoulReaperGhost::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F).build());
-    public static final EntityType<Forlorn> FORLORN = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "forlorn"), EntityType.Builder.create(Forlorn::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F).build());
-    public static final EntityType<EvilForlorn> EVIL_FORLORN = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "evil_forlorn"), EntityType.Builder.create(EvilForlorn::new, SpawnGroup.MONSTER).dimensions(0.7F, 1.95F).build());
-    public static final EntityType<Soulmass> SOULMASS = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "soulmass"), EntityType.Builder.create(Soulmass::new, SpawnGroup.CREATURE).dimensions(2.7F, 3.5F).build());
-    public static final EntityType<ChaosMonarch> CHAOS_MONARCH = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "chaos_monarch"), EntityType.Builder.create(ChaosMonarch::new, SpawnGroup.MONSTER).dimensions(2.5F, 6F).build());
-    public static final EntityType<Moonknight> MOONKNIGHT = Registry.register(Registries.ENTITY_TYPE ,Identifier.of(ModId, "moonknight"), EntityType.Builder.create(Moonknight::new, SpawnGroup.MONSTER).dimensions(3F, 8F).build());
+    public static final EntityType<SoulReaperGhost> SOUL_REAPER_GHOST = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "soul_reaper_ghost"), EntityType.Builder.create(SoulReaperGhost::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F).build());
+    public static final EntityType<Forlorn> FORLORN = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "forlorn"), EntityType.Builder.create(Forlorn::new, SpawnGroup.CREATURE).dimensions(0.7F, 1.95F).build());
+    public static final EntityType<EvilForlorn> EVIL_FORLORN = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "evil_forlorn"), EntityType.Builder.create(EvilForlorn::new, SpawnGroup.MONSTER).dimensions(0.7F, 1.95F).build());
+    public static final EntityType<Soulmass> SOULMASS = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "soulmass"), EntityType.Builder.create(Soulmass::new, SpawnGroup.CREATURE).dimensions(2.7F, 3.5F).build());
+    public static final EntityType<ChaosMonarch> CHAOS_MONARCH = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "chaos_monarch"), EntityType.Builder.create(ChaosMonarch::new, SpawnGroup.MONSTER).dimensions(2.5F, 6F).build());
+    public static final EntityType<Moonknight> MOONKNIGHT = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "moonknight"), EntityType.Builder.create(Moonknight::new, SpawnGroup.MONSTER).dimensions(3F, 8F).build());
     public static final EntityType<FrostGiant> FROST_GIANT = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "frost_giant"), EntityType.Builder.create(FrostGiant::new, SpawnGroup.MONSTER).dimensions(1.25F, 2.6F).build());
     public static final EntityType<RimeSpectre> RIME_SPECTRE = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "rime_spectre"), EntityType.Builder.create(RimeSpectre::new, SpawnGroup.MONSTER).dimensions(1F, 2F).build());
     public static final EntityType<DayStalker> DAY_STALKER = registerWithSpawnEgg(EntityType.Builder.create(DayStalker::new, SpawnGroup.MONSTER).dimensions(3.5F, 5.5F).build(), "day_stalker", 0x212121, 0xff8000);
     public static final EntityType<NightProwler> NIGHT_PROWLER = registerWithSpawnEgg(EntityType.Builder.create(NightProwler::new, SpawnGroup.MONSTER).dimensions(3.5F, 5.5F).build(), "night_prowler", 0x345385, 0xff177c);
     public static final EntityType<WarmthEntity> WARMTH_ENTITY = registerWithSpawnEgg(EntityType.Builder.create(WarmthEntity::new, SpawnGroup.MONSTER).dimensions(1f, 1f).build(), "warmth_entity", 0xdb8700, 0xfff7eb);
+    public static final EntityType<EliteRemnant> ELITE_REMNANT = registerWithSpawnEgg(EntityType.Builder.create(EliteRemnant::new, SpawnGroup.CREATURE).dimensions(0.7f, 1.95F).build(), "elite_remnant", 0x626363, 0x26a269);
 
     public static final EntityType<MoonlightProjectile> MOONLIGHT_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "moonlight_projectile"), EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).dimensions(1F, 1F).maxTrackingRange(4).trackingTickInterval(20).build());
     public static final EntityType<MoonlightProjectile> MOONLIGHT_BIG_ENTITY_TYPE = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "big_moonlight_projectile"), EntityType.Builder.<MoonlightProjectile>create(MoonlightProjectile::new, SpawnGroup.MISC).dimensions(2F, 1F).maxTrackingRange(4).trackingTickInterval(20).build());
@@ -97,13 +98,13 @@ public class EntityRegistry {
     public static final EntityType<MoonveilWave> DRAGONWOUND_WAVE_VERTICAL = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "dragonwound_wave_vertical"), EntityType.Builder.<MoonveilWave>create(MoonveilWave::new, SpawnGroup.MISC).dimensions(1f, 4.0f).maxTrackingRange(4).trackingTickInterval(20).build());
     public static final EntityType<EruptionEntity> ERUPTION = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "eruption_entity"), EntityType.Builder.<EruptionEntity>create(EruptionEntity::new, SpawnGroup.MISC).dimensions(2f, 2f).makeFireImmune().maxTrackingRange(4).trackingTickInterval(Integer.MAX_VALUE).build());
     public static final EntityType<DarknessOrb> DARKNESS_ORB = Registry.register(Registries.ENTITY_TYPE, Identifier.of(ModId, "darkness_orb"), EntityType.Builder.<DarknessOrb>create(DarknessOrb::new, SpawnGroup.MISC).dimensions(2f, 2f).maxTrackingRange(4).trackingTickInterval(30).build());
-    //TODO translation for dragon wound wave and eruption?
+
     public static final Item WITHERED_DEMON_SPAWN_EGG = new SpawnEggItem(WITHERED_DEMON, 10027008, 0, new Item.Settings());
     public static final Item ACCURSED_LORD_BOSS_SPAWN_EGG = new SpawnEggItem(ACCURSED_LORD_BOSS, 0, 10027008, new Item.Settings());
     public static final Item DRAUGR_BOSS_SPAWN_EGG = new SpawnEggItem(DRAUGR_BOSS, 10263708, 7694143, new Item.Settings());
     public static final Item NIGHT_SHADE_SPAWN_EGG = new SpawnEggItem(NIGHT_SHADE, 398638, 16576575, new Item.Settings());
     public static final Item RETURNING_KNIGHT_SPAWN_EGG = new SpawnEggItem(RETURNING_KNIGHT, 2251096, 6554982, new Item.Settings());
-    public static final Item REMNANT_SPAWN_EGG = new SpawnEggItem(REMNANT, 6447971, 65514, new Item.Settings());
+    public static final Item REMNANT_SPAWN_EGG = new SpawnEggItem(REMNANT, 0x626363, 0x00ffea, new Item.Settings());
     public static final Item DARK_SORCERER_SPAWN_EGG = new SpawnEggItem(DARK_SORCERER, 0, 2572343, new Item.Settings());
     public static final Item BIG_CHUNGUS_SPAWN_EGG = new SpawnEggItem(BIG_CHUNGUS, 12636653, 0, new Item.Settings());
     public static final Item SOUL_REAPER_GHOST_SPAWN_EGG = new SpawnEggItem(SOUL_REAPER_GHOST, 13480150, 13200614, new Item.Settings());
@@ -137,6 +138,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(DAY_STALKER, DayStalker.createBossAttributes());
         FabricDefaultAttributeRegistry.register(NIGHT_PROWLER, NightProwler.createBossAttributes());
         FabricDefaultAttributeRegistry.register(NIGHTS_EDGE, NightsEdge.createAttributes());
+        FabricDefaultAttributeRegistry.register(ELITE_REMNANT, EliteRemnant.createRemnantAttributes());
 
         ItemRegistry.registerItem(WITHERED_DEMON_SPAWN_EGG, "withered_demon_spawn_egg");
         ItemRegistry.registerItem(ACCURSED_LORD_BOSS_SPAWN_EGG, "accursed_lord_boss_spawn_egg");

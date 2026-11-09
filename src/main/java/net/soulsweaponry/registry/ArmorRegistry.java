@@ -16,6 +16,8 @@ public class ArmorRegistry {
     public static final Item ENHANCED_WITHERED_CHEST = new EnhancedHallowheart(MaterialRegistry.ENHANCED_WITHERED_ARMOR, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(70)));
     public static final Item CHAOS_ROBES = new ChaosRobes(MaterialRegistry.CHAOS_SET, ArmorItem.Type.CHESTPLATE, new Item.Settings().rarity(Rarity.EPIC).maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(37)));
 
+    public static final Item ELITE_SOUL_INGOT_HELMET = new EliteSoulIngotArmor(MaterialRegistry.ELITE_SOUL_INGOT, ArmorItem.Type.HELMET, new Item.Settings().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(50)));
+
     public static final Item SOUL_INGOT_HELMET = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.HELMET, new Item.Settings().maxDamage(ArmorItem.Type.HELMET.getMaxDamage(34)));
     public static final Item SOUL_INGOT_CHESTPLATE = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.CHESTPLATE, new Item.Settings().maxDamage(ArmorItem.Type.CHESTPLATE.getMaxDamage(34)));
     public static final Item SOUL_INGOT_LEGGINGS = new SoulIngotArmor(MaterialRegistry.SOUL_INGOT, ArmorItem.Type.LEGGINGS, new Item.Settings().maxDamage(ArmorItem.Type.LEGGINGS.getMaxDamage(34)));
@@ -37,6 +39,8 @@ public class ArmorRegistry {
         ItemRegistry.registerArmorItem(WITHERED_CHEST, "withered_chest", ArmorConfig.disable_recipe_withered_chest, ArmorConfig.is_fireproof_hallowheart);
         ItemRegistry.registerArmorItem(ENHANCED_WITHERED_CHEST, "enhanced_withered_chest", ArmorConfig.disable_recipe_enhanced_withered_chest, ArmorConfig.is_fireproof_hallowheart);
         ItemRegistry.registerItem(CHAOS_ROBES, "chaos_robes", ArmorConfig.is_fireproof_chaos_robes);
+
+        ItemRegistry.registerArmorItem(ELITE_SOUL_INGOT_HELMET, "elite_soul_ingot_helmet", ArmorConfig.disable_recipe_elite_soul_ingot_helmet, ArmorConfig.is_fireproof_elite_soul_ingot_set);
 
         ItemRegistry.registerArmorItem(SOUL_INGOT_HELMET, "soul_ingot_helmet", ArmorConfig.disable_recipe_soul_ingot_helmet, ArmorConfig.is_fireproof_soul_ingot_set);
         ItemRegistry.registerArmorItem(SOUL_INGOT_CHESTPLATE, "soul_ingot_chestplate", ArmorConfig.disable_recipe_soul_ingot_chestplate, ArmorConfig.is_fireproof_soul_ingot_set);

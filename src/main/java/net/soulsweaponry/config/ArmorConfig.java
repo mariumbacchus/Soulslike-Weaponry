@@ -19,6 +19,7 @@ public class ArmorConfig extends MidnightConfig {
     @Entry public static boolean disable_recipe_forlorn_leggings = false;
     @Entry public static boolean disable_recipe_forlorn_boots = false;
     @Entry public static boolean disable_recipe_withered_chest = false;
+    @Entry public static boolean disable_recipe_elite_soul_ingot_helmet = false;
 
     @Entry public static boolean disable_recipe_enhanced_arkenplate = false;
     @Entry public static boolean disable_recipe_enhanced_withered_chest = false;
@@ -32,6 +33,7 @@ public class ArmorConfig extends MidnightConfig {
     @Entry public static boolean disable_use_soul_ingot_armor = false;
     @Entry public static boolean disable_use_soul_robes_armor = false;
     @Entry public static boolean disable_use_forlorn_armor = false;
+    @Entry public static boolean disable_use_elite_soul_ingot_armor = false;
 
     @Entry public static boolean is_fireproof_arkenplate = true;
     @Entry public static boolean is_fireproof_chaos_crown = true;
@@ -42,6 +44,7 @@ public class ArmorConfig extends MidnightConfig {
     @Entry public static boolean is_fireproof_soul_ingot_set = false;
     @Entry public static boolean is_fireproof_soul_robes_set = false;
     @Entry public static boolean is_fireproof_forlorn_set = true;
+    @Entry public static boolean is_fireproof_elite_soul_ingot_set = false;
 
     @Entry public static float[] chaos_armor_armor_points = {4, 7, 10, 5};
     @Entry public static float[] chaos_armor_base_posture_increase = {0, 0, 0, 0};
@@ -66,6 +69,12 @@ public class ArmorConfig extends MidnightConfig {
     @Entry public static float[] soul_ingot_posture_buildup_resistances = {0, 0, 0, 0};
     @Entry public static float[] soul_ingot_bleed_buildup_resistances = {2.5f, 7.5f, 10, 5};
     @Entry public static float[] soul_ingot_bleed_damage_resistances = {2, 4, 6, 3};
+
+    @Entry public static float[] elite_soul_ingot_armor_points = {3, 5, 7, 6};
+    @Entry public static float[] elite_soul_ingot_base_posture_increase = {0, 0, 0, 0};
+    @Entry public static float[] elite_soul_ingot_posture_buildup_resistances = {0, 0, 0, 0};
+    @Entry public static float[] elite_soul_ingot_bleed_buildup_resistances = {2.5f, 7.5f, 10, 10};
+    @Entry public static float[] elite_soul_ingot_bleed_damage_resistances = {2, 4, 6, 6};
 
     @Entry public static float[] soul_robes_armor_points = {2, 3, 4, 3};
     @Entry public static float[] soul_robes_base_posture_increase = {0, 0, 0, 0};
@@ -151,6 +160,10 @@ public class ArmorConfig extends MidnightConfig {
     @Entry public static float soul_ingot_armor_fortified_resistance_duration = 40;
     @Entry public static float soul_ingot_armor_fortified_resistance_amp = 0;
     @Entry public static float soul_ingot_armor_fortified_resistance_amp_per_level = 0.2f;
+
+    @Entry public static float elite_soul_ingot_armor_fortified_resistance_duration = 40;
+    @Entry public static float elite_soul_ingot_armor_fortified_resistance_amp = 0;
+    @Entry public static float elite_soul_ingot_armor_fortified_resistance_amp_per_level = 0.2f;
 
     @Entry public static float soul_robes_armor_fortified_magic_resistance_duration = 40;
     @Entry public static float soul_robes_armor_fortified_magic_resistance_amp = 3;

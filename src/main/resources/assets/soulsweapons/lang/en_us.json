@@ -103,6 +103,7 @@
     "item.soulsweapons.forlorn_chestplate": "Forlorn Chestplate",
     "item.soulsweapons.forlorn_leggings": "Forlorn Leggings",
     "item.soulsweapons.forlorn_boots": "Forlorn Boots",
+    "item.soulsweapons.elite_soul_ingot_helmet": "Elite Soul Ingot Helmet",
 
     "item.soulsweapons.bloodthirster": "Bloodthirster",
     "item.soulsweapons.darkin_blade": "The Darkin Blade",
@@ -193,6 +194,7 @@
     "item.soulsweapons.day_stalker_spawn_egg": "Day Stalker Spawn Egg",
     "item.soulsweapons.night_prowler_spawn_egg": "Night Prowler Spawn Egg",
     "item.soulsweapons.warmth_entity_spawn_egg": "Sphere of Warmth Spawn Egg",
+    "item.soulsweapons.elite_remnant_spawn_egg": "Elite Remnant Spawn Egg",
 
     "entity.soulsweapons.big_chungus": "Moderately Sized Chungus",
     "entity.soulsweapons.withered_demon": "Withered Demon",
@@ -215,6 +217,7 @@
     "entity.soulsweapons.frost_giant": "Frost Giant",
     "entity.soulsweapons.rime_spectre": "Rime Spectre",
     "entity.soulsweapons.warmth_entity": "Sphere of Warmth",
+    "entity.soulsweapons.elite_remnant": "Elite Remnant",
 
     "entity.soulsweapons.comet_spear_entity": "Comet Spear",
     "entity.soulsweapons.swordspear_entity": "Dragonslayer Swordspear",
@@ -260,6 +263,9 @@
     "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
     "entity.soulsweapons.air_combustion": "Air Combustion",
     "entity.soulsweapons.molten_metal": "Molten Metal",
+    "entity.soulsweapons.dragonwound_wave_vertical": "Dragonwound Wave",
+    "entity.soulsweapons.eruption_entity": "Eruption",
+    "entity.soulsweapons.darkness_orb": "Darkness Orb",
 
     "death.attack.bleed": "%1$s bled out",
     "death.attack.bleed.player": "%1$s bled out",

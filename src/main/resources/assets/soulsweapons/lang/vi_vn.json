@@ -103,6 +103,7 @@
   "item.soulsweapons.forlorn_chestplate": "Giáp Bị Lãng Quên",
   "item.soulsweapons.forlorn_leggings": "Quần Bị Lãng Quên",
   "item.soulsweapons.forlorn_boots": "Giày Bị Lãng Quên",
+  "item.soulsweapons.elite_soul_ingot_helmet": "Elite Soul Ingot Helmet",
 
   "item.soulsweapons.bloodthirster": "Huyết Kiếm",
   "item.soulsweapons.darkin_blade": "Lưỡi Kiếm Darkin",
@@ -193,6 +194,7 @@
   "item.soulsweapons.day_stalker_spawn_egg": "Trứng Triệu Hồi Kẻ Săn Ngày",
   "item.soulsweapons.night_prowler_spawn_egg": "Trứng Triệu Hồi Kẻ Rình Đêm",
   "item.soulsweapons.warmth_entity_spawn_egg": "Trứng Triệu Hồi Quả Cầu Ấm Áp",
+  "item.soulsweapons.elite_remnant_spawn_egg": "Elite Remnant Spawn Egg",
 
   "entity.soulsweapons.big_chungus": "Chungus Kích Cỡ Vừa Phải",
   "entity.soulsweapons.withered_demon": "Quỷ Tàn Lụi",
@@ -215,6 +217,7 @@
   "entity.soulsweapons.frost_giant": "Người Khổng Lồ Băng",
   "entity.soulsweapons.rime_spectre": "Ma Sương",
   "entity.soulsweapons.warmth_entity": "Quả Cầu Ấm Áp",
+  "entity.soulsweapons.elite_remnant": "Elite Remnant",
 
   "entity.soulsweapons.comet_spear_entity": "Thương Sao Chổi",
   "entity.soulsweapons.swordspear_entity": "Kiếm Thương Đồ Long",
@@ -260,6 +263,9 @@
   "entity.soulsweapons.frozen_lightning": "Sét Băng Giá",
   "entity.soulsweapons.air_combustion": "Đốt Cháy Không Khí",
   "entity.soulsweapons.molten_metal": "Kim Loại Nóng Chảy",
+  "entity.soulsweapons.dragonwound_wave_vertical": "Dragonwound Wave",
+  "entity.soulsweapons.eruption_entity": "Eruption",
+  "entity.soulsweapons.darkness_orb": "Darkness Orb",
 
   "death.attack.bleed": "%1$s đã chết vì mất máu",
   "death.attack.bleed.player": "%1$s đã chết vì mất máu",

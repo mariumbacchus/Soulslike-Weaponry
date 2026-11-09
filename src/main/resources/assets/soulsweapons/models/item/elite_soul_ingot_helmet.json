@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+      "layer0": "soulsweapons:item/elite_soul_ingot_helmet"
+    }
+}

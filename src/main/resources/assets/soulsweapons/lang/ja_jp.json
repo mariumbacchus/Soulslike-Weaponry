@@ -103,6 +103,7 @@
     "item.soulsweapons.forlorn_chestplate": "孤独な胸当て",
     "item.soulsweapons.forlorn_leggings": "孤独なレギンス",
     "item.soulsweapons.forlorn_boots": "孤独なブーツ",
+    "item.soulsweapons.elite_soul_ingot_helmet": "Elite Soul Ingot Helmet",
 
     "item.soulsweapons.bloodthirster": "血に飢えた者",
     "item.soulsweapons.darkin_blade": "ダーキンブレード",
@@ -193,6 +194,7 @@
     "item.soulsweapons.day_stalker_spawn_egg": "デイストーカーのスポーンエッグ",
     "item.soulsweapons.night_prowler_spawn_egg": "ナイトプロウラーのスポーンエッグ",
     "item.soulsweapons.warmth_entity_spawn_egg": "Sphere of Warmthのスポーンエッグ",
+    "item.soulsweapons.elite_remnant_spawn_egg": "Elite Remnant Spawn Egg",
 
     "entity.soulsweapons.big_chungus": "チャンガス",
     "entity.soulsweapons.withered_demon": "死せる悪魔",
@@ -216,6 +218,7 @@
     "entity.soulsweapons.rime_spectre": "ライム・スペクター",
     "entity.soulsweapons.area_effect_sphere": "Area Effect Sphere",
     "entity.soulsweapons.warmth_entity": "Sphere of Warmth",
+    "entity.soulsweapons.elite_remnant": "Elite Remnant",
 
     "entity.soulsweapons.comet_spear_entity": "コメット・スピア",
     "entity.soulsweapons.swordspear_entity": "竜狩りの剣槍",
@@ -260,6 +263,9 @@
     "entity.soulsweapons.frozen_lightning": "Frozen Lightning",
     "entity.soulsweapons.air_combustion": "Air Combustion",
     "entity.soulsweapons.molten_metal": "Molten Metal",
+    "entity.soulsweapons.dragonwound_wave_vertical": "Dragonwound Wave",
+    "entity.soulsweapons.eruption_entity": "Eruption",
+    "entity.soulsweapons.darkness_orb": "Darkness Orb",
 
     "death.attack.bleed": "%1$s が出血しました",
     "death.attack.bleed.player": "%1$s が出血しました",
