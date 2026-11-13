@@ -45,6 +45,15 @@ public abstract class DamagingNoClipEntity extends NoClipEntity {
                 if (this.isOwner(living) || this.entitiesHit.contains(living.getUuid())) {
                     continue;
                 }
+                if (!living.isAlive() || living.isInvulnerable()) {
+                    continue;
+                }
+                if (this.getOwner() != null && (
+                        this.isOwner(living)
+                                || this.getOwner().isTeammate(living)
+                                || living.isTeammate(this.getOwner()))) {
+                    continue;
+                }
                 if (this.getOwner() instanceof LivingEntity) {
                     source = this.getDamageSources().mobProjectile(this, (LivingEntity) this.getOwner());
                 } else {

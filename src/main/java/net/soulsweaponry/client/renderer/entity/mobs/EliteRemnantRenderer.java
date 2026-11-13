@@ -17,10 +17,11 @@ public class EliteRemnantRenderer extends GhostParentRenderer<EliteRemnant, Elit
                 new EliteRemnantModel(context.getPart(EntityModelLayerModRegistry.REMNANT_INNER_ARMOR)),
                 new EliteRemnantModel(context.getPart(EntityModelLayerModRegistry.REMNANT_OUTER_ARMOR)));
         this.shadowRadius = 0.7F;
+        this.addFeature(new EliteRemnantShieldFeatureRenderer(this));
     }
 
     @Override
-    public Identifier getTexture(EliteRemnant entity) {//TODO
+    public Identifier getTexture(EliteRemnant entity) {//TODO maybe unique texture idk
         return Identifier.of(SoulsWeaponry.ModId, "textures/entity/remnant_merged.png");
     }
 

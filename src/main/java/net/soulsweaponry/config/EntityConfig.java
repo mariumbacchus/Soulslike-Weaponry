@@ -30,6 +30,7 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static double elite_remnant_health = 30D;
     @Entry public static double elite_remnant_bonus_armor = 0D;
     @Entry public static double elite_remnant_base_attack_damage = 4;
+    @Entry public static float elite_remnant_eat_golden_apple_cooldown_ticks = 300;
 
     @Entry public static double rime_spectre_health = 10D;
     @Entry public static double rime_spectre_armor = 0D;
@@ -170,6 +171,16 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_weight = 3;
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_cooldown = 10;
     @Entry(min = 0) public static float returning_knight_obliterate_fakeout_phase_2_special_cooldown = 0;
+
+    // Children of the Grave + Eruption (Phase 2)
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_summon_radius = 10;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_summon_amount = 4;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_eruption_spawn_radius = 16;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_eruption_damage = 30f;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_eruption_amount = 64;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_weight = 20;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_special_cooldown = 0;
 
     // Misc
     @Entry public static boolean returning_knight_disable_respawn = false;

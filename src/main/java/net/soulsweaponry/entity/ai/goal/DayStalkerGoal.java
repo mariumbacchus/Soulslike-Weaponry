@@ -17,24 +17,23 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.entity.mobs.WarmthEntity;
 import net.soulsweaponry.entity.mobs.boss.DayStalker;
 import net.soulsweaponry.entity.mobs.boss.NightProwler;
-import net.soulsweaponry.entity.mobs.WarmthEntity;
 import net.soulsweaponry.entity.projectile.GrowingFireball;
 import net.soulsweaponry.entity.projectile.MoonlightProjectile;
 import net.soulsweaponry.entity.projectile.UntargetableFireball;
 import net.soulsweaponry.entity.projectile.noclip.AirCombustion;
 import net.soulsweaponry.entity.projectile.noclip.DamagingWarmupEntityEvents;
 import net.soulsweaponry.entity.projectile.noclip.FlamePillar;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.CustomDeathHandler;
-import net.soulsweaponry.particles.ParticleEvents;
-import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DayStalkerGoal extends MeleeAttackGoal {
@@ -418,30 +417,23 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 255));
         this.mob.getNavigation().stop();
         boolean phase2 = this.boss.isPhaseTwo();
-        if (this.attackStatus == 18) {
+        if (this.attackStatus == 20) {
             this.playSound(this.boss.getBlockPos(), SoundEvents.ENTITY_GUARDIAN_ATTACK, 1f, 1f);
-            int i = 0;
-            List<BlockPos> list = new ArrayList<>();
-            list.add(new BlockPos(0, 0, 0));
+            int pillarCount = phase2 ? 32 : 16;
             float radius = phase2 ? 2.1f : 1.85f;
-            while (i < (phase2 ? 32 : 16)) {
+            int event = phase2 ? DamagingWarmupEntityEvents.SPAWN_MOLTEN_METAL : DamagingWarmupEntityEvents.SPAWN_FIRE;
+            for (int i = 0; i < pillarCount; i++) {
                 int x = this.boss.getBlockX() + this.boss.getRandom().nextInt(16) - 8;
                 int y = this.boss.getBlockY();
                 int z = this.boss.getBlockZ() + this.boss.getRandom().nextInt(16) - 8;
-                BlockPos pos = new BlockPos(x, y, z);
-                for (BlockPos listPos : list) {
-                    if (listPos != pos) {
-                        FlamePillar pillar = new FlamePillar(this.boss.getWorld(), this.boss, radius, i * 2, this.boss.isPhaseTwo() ? DamagingWarmupEntityEvents.SPAWN_MOLTEN_METAL : DamagingWarmupEntityEvents.SPAWN_FIRE);
-                        pillar.setOtherAttributes(new DamagingWarmupEntityEvents.OtherAttributes(this.getModifiedDamage(6f), 3f));
-                        pillar.setDamage(this.getModifiedDamage(48f));
-                        pillar.setPos(x, y, z);
-                        this.boss.getWorld().spawnEntity(pillar);
-                        i++;
-                    }
-                }
+                FlamePillar pillar = new FlamePillar(this.boss.getWorld(), this.boss, radius, i * 2, event);
+                pillar.setOtherAttributes(new DamagingWarmupEntityEvents.OtherAttributes(this.getModifiedDamage(6f), 3f));
+                pillar.setDamage(this.getModifiedDamage(48f));
+                pillar.setPos(x, y, z);
+                this.boss.getWorld().spawnEntity(pillar);
             }
         }
-        this.checkAndReset(this.boss.isPhaseTwo() ? 10 : 40, this.boss.isPhaseTwo() ? 0 : 60);
+        this.checkAndReset(phase2 ? 10 : 40, phase2 ? 0 : 60);
     }
 
     private void dawnbreaker(LivingEntity target) {

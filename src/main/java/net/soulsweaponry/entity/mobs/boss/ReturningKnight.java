@@ -55,7 +55,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
-    private final List<UUID> healers = new ArrayList<>();
+    private final List<UUID> specialSummons = new ArrayList<>();
 
     private final RotatableHitbox debugMaceHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(7, 5, 6));
     private final RotatableHitbox debugShadowMaceHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(7, 5, 6));
@@ -449,10 +449,10 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         this.breakSurroundingBlocks();
     }
 
-    public boolean hasHealersAlive() {
+    public boolean hasSpecialSummonsAlive() {
         if (this.getWorld() instanceof ServerWorld serverWorld) {
             // Use iterator for safely removing of the uuids of entities that don't exist anymore
-            Iterator<UUID> iterator = this.healers.iterator();
+            Iterator<UUID> iterator = this.specialSummons.iterator();
             while (iterator.hasNext()) {
                 UUID uuid = iterator.next();
                 Entity entity = serverWorld.getEntity(uuid);
@@ -460,13 +460,18 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                     iterator.remove();
                 }
             }
-            return !this.healers.isEmpty();
+            return !this.specialSummons.isEmpty();
         }
         return false;
     }
 
-    public void addHealer(UUID uuid) {
-        this.healers.add(uuid);
+    public void addSpecialSummon(UUID uuid) {
+        this.specialSummons.add(uuid);
+    }
+
+    @Override
+    public boolean isTeammate(Entity other) {
+        return this.specialSummons.contains(other.getUuid()) || super.isTeammate(other);
     }
 
     @Override

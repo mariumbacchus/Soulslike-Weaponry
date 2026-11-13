@@ -5,6 +5,9 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.item.ItemStack;
@@ -15,6 +18,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ItemStackParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
@@ -28,10 +32,19 @@ public class EliteRemnant extends Remnant {
 
     public int goldenAppleCooldownTicks;
     private ItemStack savedOffhand;
-    public static final int GOLDEN_APPLE_COOLDOWN = 300;
+    public static final int GOLDEN_APPLE_COOLDOWN = (int) EntityConfig.elite_remnant_eat_golden_apple_cooldown_ticks;
+
+    private static final float SHIELD_FLASH_DURATION = 20F;
+    private static final TrackedData<Long> SHIELD_FLASH_START = DataTracker.registerData(EliteRemnant.class, TrackedDataHandlerRegistry.LONG);
 
     public EliteRemnant(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Override
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(SHIELD_FLASH_START, -1L);
     }
 
     @Override
@@ -46,6 +59,21 @@ public class EliteRemnant extends Remnant {
         if (this.goldenAppleCooldownTicks > 0) {
             this.goldenAppleCooldownTicks--;
         }
+    }
+
+    public void flashShield() {
+        if (!this.getWorld().isClient) {
+            this.dataTracker.set(SHIELD_FLASH_START, this.getWorld().getTime());
+        }
+    }
+
+    public float getShieldOpacity(float tickDelta) {
+        long start = this.dataTracker.get(SHIELD_FLASH_START);
+        if (start < 0) {
+            return 0F;
+        }
+        float elapsed = (this.getWorld().getTime() - start) + tickDelta;
+        return MathHelper.clamp(1F - elapsed / SHIELD_FLASH_DURATION, 0F, 1F);
     }
 
     public void beginEatingGoldenApple() {

@@ -64,30 +64,10 @@ public class SeismicWave extends MaceAttack {
         Vec3d forward = new Vec3d(Math.cos(rad), 0, Math.sin(rad));
         Vec3d rightDir = forward.crossProduct(new Vec3d(0, 1, 0)).normalize();
 
-        // loop offsets
         for (int i = -spreadCount; i <= spreadCount; i++) {
-            Vec3d start = origin.add(rightDir.multiply(i * spacing)); // flip with -i
+            Vec3d start = origin.add(rightDir.multiply(i * spacing));
             WeaponUtil.doConsumerOnLine(this.getWorld(), yaw, start, maxYOffset, amount, spacing,
-                    ((vec3d, warmup, y) -> this.spawnEruption(vec3d, y)));
-        }
-    }
-
-    private void spawnEruption(Vec3d pos, Float yaw) {
-        EruptionEntity entity = new EruptionEntity(this.getWorld());
-        entity.setYaw(yaw);
-        entity.setOwner(this.getBoss());
-        entity.setRadius(2f);
-        entity.setDamage(this.getGoal().getModifiedDamage(this.eruptionDamage));
-        entity.setWarmup(22);
-        entity.setPosition(pos);
-        entity.setParticleAmountMod(10);
-        this.getWorld().spawnEntity(entity);
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
-            float spread = 0.01f;
-            serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), 4,
-                    this.getBoss().getRandom().nextFloat() * spread - spread / 2f,
-                    this.getBoss().getRandom().nextFloat() * spread - spread / 2f,
-                    this.getBoss().getRandom().nextFloat() * spread - spread / 2f, 0);
+                    ((vec3d, warmup, y) -> this.spawnEruption(vec3d, y, this.eruptionDamage, 22)));
         }
     }
 

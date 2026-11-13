@@ -73,7 +73,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         );
 
         ObliterateShadow obliterateShadow = new ObliterateShadow(this ,this.boss, 72,
-                10, 10, 0 //TODO proper config values
+                10, 20, 0 //TODO proper config values
         );
         ObliterateFakeout obliterateFakeout = new ObliterateFakeout(this ,this.boss, 125,
                 (int) EntityConfig.returning_knight_obliterate_fakeout_phase_2_weight,
@@ -81,13 +81,16 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
                 (int) EntityConfig.returning_knight_obliterate_fakeout_phase_2_special_cooldown
         );
         MaceOfSpades1Shadow maceOfSpades1Shadow = new MaceOfSpades1Shadow(this ,this.boss, 81,
-                10, 10, 0 //TODO proper config values
+                10, 20, 0 //TODO proper config values
         );
         MaceOfSpades2Shadow maceOfSpades2Shadow = new MaceOfSpades2Shadow(this ,this.boss, 105,
-                10, 10, 0 //TODO proper config values
+                10, 20, 0 //TODO proper config values
         );
         MaceOfSpades3Shadow maceOfSpades3Shadow = new MaceOfSpades3Shadow(this ,this.boss, 116,
-                10, 10, 0 //TODO proper config values
+                10, 20, 0 //TODO proper config values
+        );
+        EruptionSummon eruptionSummon = new EruptionSummon(this ,this.boss, 140,
+                10, 20, 100 //TODO proper config values
         );
 
         // Phase 1
@@ -110,8 +113,10 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         //TODO children of the grave + eruption: the remnants could be smarter maybe, backing off to eat a golden apple and heal
         // maybe strafe to try to avoid knight hitbox, or just have a shield (rendered on them upon impact) that protects from the slams
         // maybe just call them "Elite Remnants"
+        this.addAttack(ReturningKnight.States.SUMMON_RUPTURE_PHASE_2, eruptionSummon);
 
         Unbreakable unbreakable = new Unbreakable(this, this.boss, 76);
+        //TODO bullet hell event at 50%
         this.addEvent(ReturningKnight.States.UNBREAKABLE, unbreakable);
     }
 
@@ -133,7 +138,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return ReturningKnight.States.OBLITERATE_FAKEOUT_PHASE_2;//TODO
+        return ReturningKnight.States.SUMMON_RUPTURE_PHASE_2;//TODO
     }
 
     @Override
@@ -146,18 +151,22 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         return true;//TODO
     }
 
-    public UUID summonAllies(Vec3d pos, boolean healer) {
-        MobEntity entity = healer ? new DarkSorcerer(EntityRegistry.DARK_SORCERER, this.getWorld()) : new Remnant(EntityRegistry.REMNANT, this.getWorld());
-        entity.setPosition(pos);
-        this.getWorld().playSound(null, entity.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
-        this.getWorld().spawnEntity(entity);
-        if (healer) {
-            this.getBoss().addHealer(entity.getUuid());
+    public UUID summonAllies(Vec3d pos, MobEntity ally, boolean isSpecialSummon) {
+        ally.setPosition(pos);
+        this.getWorld().playSound(null, ally.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        this.getWorld().spawnEntity(ally);
+        if (isSpecialSummon) {
+            this.getBoss().addSpecialSummon(ally.getUuid());
         }
         if (!this.getWorld().isClient) {
             ParticleHandler.particleOutburstMap(this.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
         }
-        return entity.getUuid();
+        return ally.getUuid();
+    }
+
+    public UUID summonAllies(Vec3d pos, boolean isHealer) {
+        MobEntity entity = isHealer ? new DarkSorcerer(EntityRegistry.DARK_SORCERER, this.getWorld()) : new Remnant(EntityRegistry.REMNANT, this.getWorld());
+        return summonAllies(pos, entity, isHealer);
     }
 
     public boolean isValidSpawn(BlockPos pos) {

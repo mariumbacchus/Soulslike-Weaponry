@@ -86,7 +86,7 @@
                 - One-handed swipe to the left, then spins 360 degrees swiftly around himself before thrusting forwards, knocking targets hit back and crippling them
     - Seismic Wave (New attack):
         - Grinds Nightfall along the ground, spawning a wide wave of delayed eruptions down the targets path relative to the boss, then when the boss slams the mace into the ground the eruptions explode
-    - Added a Phase 2 with only these attacks:
+    - Added a Phase 2 with completely new attacks:
       - Obliterate (Shadow Mace):
         - The mace of the shadow also lands after a brief delay, having its own hitbox along with summoning dark pillars outward in a circle upon colliding with the ground
       - Obliterate (Fakeout):
@@ -104,13 +104,16 @@
         - The shadow mace does the Mace of Spades 4 path, doing the spin and ending with the thrust
         - The spin also shoots out Shadow Orbs from the mace
       - Children of the Grave + Eruption:
-        - The knight charges up Eruption like before by tapping the mace into the ground 3 times, while the shadow charges up the Children of the Grave summon attack
+        - The knight charges up Eruption like before by tapping the mace into the ground 2 times, while the shadow charges up the Children of the Grave summon attack
         - At the end of the Eruption tapping, both the shadow and the knight trigger at the same time
-        - Powerful Elite Remnants are then summoned around, with dark pillars exploding outward from their spawn location
-          - These Remnants are favored by the knight, having enchantments on their gear and better weapons
+        - 4 Powerful Elite Remnants are then summoned around, with tons of eruptions spawning around with a slight delay
+          - These Remnants are favored by the knight, wielding Elite Soul Ingot Helmets as well as the rest of the Soul Ingot armor set
           - They will back-off to try to eat a golden apple if they are close to dying, then re-enter to fight
-          - They are shielded from the knight and shadow's attacks
-          - They also have increased health compared to regular Remnants
+            - Since Remnants are undead, Regeneration has no effect on them, they will instantly heal 50% of their max health instead when done eating
+            - Cooldown for healing is 300 ticks, which is 15 seconds, this can be changed in the config
+          - They will not take damage from the knight and shadow's attacks
+          - They have increased health and base damage compared to regular Remnants
+          - The boss will only do this ability if no Elite Remnant is alive and tied to the boss
       - Dark Circle (Unbreakable + Blinding Reflection):
         - The knight slams his chest, preparing to slam the ground
         - The shadow does a ritual with its mace, spawning giant shadow orbs in a circle many blocks away

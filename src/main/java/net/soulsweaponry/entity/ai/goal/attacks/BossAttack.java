@@ -1,6 +1,7 @@
 package net.soulsweaponry.entity.ai.goal.attacks;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.SoundCategory;
@@ -97,12 +98,16 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
         return distanceToEntity <= this.getSquaredMaxAttackDistance(target);
     }
 
+    public boolean damageTarget(DamageSource source, LivingEntity target, float damage) {
+        return target.damage(source, this.getGoal().getModifiedDamage(damage));
+    }
+
     public boolean damageTarget(LivingEntity target, float damage) {
-        return target.damage(this.world.getDamageSources().mobAttack(this.boss), this.getGoal().getModifiedDamage(damage));
+        return this.damageTarget(this.world.getDamageSources().mobAttack(this.boss), target, damage);
     }
 
     public boolean damageTarget(RegistryKey<DamageType> sourceKey, LivingEntity target, float damage) {
-        return target.damage(DamageSourceRegistry.create(this.getWorld(), sourceKey, this.getBoss()), this.getGoal().getModifiedDamage(damage));
+        return this.damageTarget(DamageSourceRegistry.create(this.getWorld(), sourceKey, this.getBoss()), target, damage);
     }
 
     public double getSquaredMaxAttackDistance(LivingEntity target) {

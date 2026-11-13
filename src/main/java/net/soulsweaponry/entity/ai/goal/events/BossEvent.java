@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.ai.goal.events;
 
+import net.minecraft.entity.LivingEntity;
 import net.soulsweaponry.entity.ai.goal.BossGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.BossAttack;
 import net.soulsweaponry.entity.mobs.boss.BossEntity;
@@ -12,6 +13,10 @@ public abstract class BossEvent<S extends Enum<S>, B extends BossEntity<S>, G ex
      * Events such as Returning Knight's Unbreakable event, they aren't strictly attacks and shouldn't be in
      * the attack map. These should also likely only happen once, so weight is obsolete. When the event
      * is finished, {@link #completed} will be set to true so that this event will no longer trigger again.
+     * <p>
+     *      {@link #isAvailable()} is unused for events, no need to override it,
+     *      use {@link #canTrigger(LivingEntity, double)} instead.
+     * </p>
      * @param goal            parent goal the event is tied to
      * @param boss            the boss the event is tied to
      * @param attackLength    length of the animation/event in ticks

@@ -40,7 +40,10 @@ public abstract class DamagingWarmupEntity extends NoClipWarmupEntity {
                         if (!livingEntity.isAlive() || livingEntity.isInvulnerable()) {
                             continue;
                         }
-                        if (this.getOwner() != null && (livingEntity.isTeammate(this.getOwner()) || this.isOwner(livingEntity))) {
+                        if (this.getOwner() != null && (
+                                this.isOwner(livingEntity)
+                                        || this.getOwner().isTeammate(livingEntity)
+                                        || livingEntity.isTeammate(this.getOwner()))) {
                             continue;
                         }
                         boolean wasHit;
