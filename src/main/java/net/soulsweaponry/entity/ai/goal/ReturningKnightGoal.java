@@ -7,7 +7,6 @@ import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1.*;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2.*;
-import net.soulsweaponry.entity.ai.goal.events.Unbreakable;
 import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
@@ -114,10 +113,6 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
         // maybe strafe to try to avoid knight hitbox, or just have a shield (rendered on them upon impact) that protects from the slams
         // maybe just call them "Elite Remnants"
         this.addAttack(ReturningKnight.States.SUMMON_RUPTURE_PHASE_2, eruptionSummon);
-
-        Unbreakable unbreakable = new Unbreakable(this, this.boss, 76);
-        //TODO bullet hell event at 50%
-        this.addEvent(ReturningKnight.States.UNBREAKABLE, unbreakable);
     }
 
     @Override
@@ -138,7 +133,7 @@ public class ReturningKnightGoal extends BossGoal<ReturningKnight.States, Return
 
     @Override
     public @Nullable ReturningKnight.States getDebugState() {
-        return ReturningKnight.States.SUMMON_RUPTURE_PHASE_2;//TODO
+        return null;//ReturningKnight.States.SUMMON_RUPTURE_PHASE_2;//TODO
     }
 
     @Override

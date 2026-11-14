@@ -1,30 +1,79 @@
 package net.soulsweaponry.entity.ai.goal.events;
 
-import net.minecraft.entity.LivingEntity;
-import net.soulsweaponry.entity.ai.goal.BossGoal;
-import net.soulsweaponry.entity.ai.goal.attacks.BossAttack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.mobs.boss.BossEntity;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class BossEvent<S extends Enum<S>, B extends BossEntity<S>, G extends BossGoal<S, B, G>> extends BossAttack<S, B, G> {
+public abstract class BossEvent<S extends Enum<S>, B extends BossEntity<S>> {
 
+    private final B boss;
+    private final int eventLength;
     private boolean completed;
 
+    public BossEvent(B boss, int eventLength) {
+        this.boss = boss;
+        this.eventLength = eventLength;
+    }
+
     /**
-     * Events such as Returning Knight's Unbreakable event, they aren't strictly attacks and shouldn't be in
-     * the attack map. These should also likely only happen once, so weight is obsolete. When the event
-     * is finished, {@link #completed} will be set to true so that this event will no longer trigger again.
-     * <p>
-     *      {@link #isAvailable()} is unused for events, no need to override it,
-     *      use {@link #canTrigger(LivingEntity, double)} instead.
-     * </p>
-     * @param goal            parent goal the event is tied to
-     * @param boss            the boss the event is tied to
-     * @param attackLength    length of the animation/event in ticks
-     * @param cooldown        cooldown after the event is finished before starting to attack again
-     * @param specialCooldown special cooldown if the event was special, set to 0 if not special
+     * Determines whether this event should start.
+     * Use getBoss().getTarget() if this particular event needs a target.
      */
-    public BossEvent(G goal, B boss, int attackLength, int weight, int cooldown, int specialCooldown) {
-        super(goal, boss, attackLength, weight, cooldown, specialCooldown);
+    public abstract boolean canTrigger();
+
+    /**
+     * Called once when the event starts, after its animation state is set.
+     */
+    public void onStart() {}
+
+    /**
+     * Called every server tick while active, independently of combat goals.
+     * eventTick starts at 1 and is measured in actual server ticks.
+     */
+    public abstract void tickEvent(int eventTick);
+
+    /**
+     * Called after the event finishes normally.
+     */
+    public void onFinish() {}
+
+    /**
+     * Called when interrupted by death, a phase transition, or another state.
+     * Cancellation does not mark the event completed.
+     */
+    public void onCancel() {}
+
+    public boolean isTick(int eventTick, int animationTick) {
+        return BossHitboxHelper.didScaledTickPass(eventTick, this.boss.getAnimationSpeed(), animationTick);
+    }
+
+    public boolean isAnyTick(int eventTick, int... animationTicks) {
+        return BossHitboxHelper.didAnyScaledTickPass(eventTick, this.boss.getAnimationSpeed(), animationTicks);
+    }
+
+    public void playSound(@Nullable BlockPos pos, SoundEvent sound, float volume, float pitch) {
+        this.getWorld().playSound(null, pos == null ? this.boss.getBlockPos() : pos, sound, SoundCategory.HOSTILE, volume, pitch);
+    }
+
+    public void playSound(BlockPos pos, SoundEvent sound, float volume) {
+        this.playSound(pos, sound, volume, 1F);
+    }
+
+    public void playSound(SoundEvent sound, float volume, float pitch) {
+        this.playSound(null, sound, volume, pitch);
+    }
+
+    public void playSound(SoundEvent sound, float volume) {
+        this.playSound(null, sound, volume, 1F);
+    }
+
+    public void playSound(SoundEvent sound, float volume, float minPitch, float maxPitch) {
+        float pitch = this.boss.getRandom().nextBetween((int) (minPitch * 100), (int) (maxPitch * 100)) * 0.01F;
+        this.playSound(null, sound, volume, pitch);
     }
 
     public boolean hasCompleted() {
@@ -35,8 +84,15 @@ public abstract class BossEvent<S extends Enum<S>, B extends BossEntity<S>, G ex
         this.completed = completed;
     }
 
-    @Override
-    public void resetAttackVariables() {
-        this.setCompleted(true);
+    public int getEventLength() {
+        return this.eventLength;
+    }
+
+    public B getBoss() {
+        return this.boss;
+    }
+
+    public World getWorld() {
+        return this.boss.getWorld();
     }
 }

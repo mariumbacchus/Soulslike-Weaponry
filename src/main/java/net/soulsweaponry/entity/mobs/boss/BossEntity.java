@@ -38,6 +38,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.entity.ai.goal.events.BossEvent;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.StopBossMusicS2C;
 import net.soulsweaponry.registry.SoundRegistry;
@@ -45,9 +46,7 @@ import net.soulsweaponry.util.CustomDeathHandler;
 import net.soulsweaponry.util.IAnimatedDeath;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implements IAnimatedDeath {
     
@@ -58,6 +57,16 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     private final Class<T> stateEnumClass;
     private int deathTicks;
     public int phaseTransitionTicks;
+    /**
+     * Map of states and the event tied to the state, such as Returning Knight's Unbreakable event
+     * which only happens once when the boss is below 50% health
+     */
+    private final Map<T, BossEvent<T, ?>> events = new LinkedHashMap<>();
+    @Nullable
+    private BossEvent<T, ?> currentEvent;
+    @Nullable
+    private T currentEventState;
+    private int eventTicks;
 
     private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -172,15 +181,6 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
 
     public abstract boolean isSpawning();
 
-    /**
-     * Meant to be used within the goal/ai class for returning out of
-     * the tick() method early in situations where for example the
-     * boss is dead or is initiating phase 2.
-     */
-    public boolean shouldNotTickAttack() {
-        return this.isDead() || this.isSpawning();
-    }
-
     @Override
     protected void mobTick() {
         if (!this.hasUpdatedHealth) {
@@ -228,6 +228,18 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         if (this.isSpawning()) {
             this.tryToPlayBossMusic();
         }
+        if (!this.getWorld().isClient) {
+            this.tickBossEvents();
+        }
+    }
+
+    /**
+     * Meant to be used within the goal/ai class for returning out of
+     * the tick() method early in situations where for example the
+     * boss is dead or is initiating phase 2.
+     */
+    public boolean shouldNotTickAttack() {
+        return this.isDead() || this.isSpawning() || this.isEventRunning();
     }
 
     @Override
@@ -301,6 +313,13 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("HasUpdatedHealth", this.hasUpdatedHealth);
         nbt.putBoolean("PhaseTwo", this.isPhaseTwo());
+
+        // Store completed events so they don't trigger again
+        NbtCompound completedEvents = new NbtCompound();
+        for (Map.Entry<T, BossEvent<T, ?>> entry : this.events.entrySet()) {
+            completedEvents.putBoolean(entry.getKey().name(), entry.getValue().hasCompleted());
+        }
+        nbt.put("CompletedBossEvents", completedEvents);
     }
 
     @Override
@@ -314,6 +333,10 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         }
         if (nbt.contains("PhaseTwo")) {
             this.setPhaseTwo(nbt.getBoolean("PhaseTwo"));
+        }
+        NbtCompound completedEvents = nbt.getCompound("CompletedBossEvents");
+        for (Map.Entry<T, BossEvent<T, ?>> entry : this.events.entrySet()) {
+            entry.getValue().setCompleted(completedEvents.getBoolean(entry.getKey().name()));
         }
     }
 
@@ -512,5 +535,93 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
 
     public boolean canDestroy(BlockState block, BlockPos pos) {
         return !block.isAir() && !(block.getBlock() instanceof BlockWithEntity) && block.getHardness(this.getWorld(), pos) >= 0.0F && !block.isIn(BlockTags.WITHER_IMMUNE);
+    }
+
+    /**
+     * Add an event that should trigger at a certain point only once.
+     * For example, Returning Knight has the Unbreakable event triggering
+     * once when below 50% health, indicating that it gained increased resistence.
+     * @param state state the event is tied to, for example States.UNBREAKABLE
+     * @param event event object
+     */
+    public void registerEvent(T state, BossEvent<T, ?> event) {
+        this.events.put(state, event);
+    }
+
+    public boolean isEventRunning() {
+        return this.currentEvent != null;
+    }
+
+    /**
+     * Override to exclude additional states, such as a phase transition.
+     * Do not use shouldNotTickAttack() here because it also blocks during events.
+     */
+    protected boolean canRunBossEvents() {
+        return this.isAlive() && !this.isSpawning();
+    }
+
+    private void tickBossEvents() {
+        if (!this.canRunBossEvents()) {
+            this.cancelBossEvent();
+            return;
+        }
+        // Another system changed the state, for example a phase transition
+        if (this.currentEvent != null && !this.isState(this.currentEventState)) {
+            this.cancelBossEvent();
+            return;
+        }
+        if (this.currentEvent == null) {
+            for (Map.Entry<T, BossEvent<T, ?>> entry : this.events.entrySet()) {
+                BossEvent<T, ?> event = entry.getValue();
+                if (event.hasCompleted() || !event.canTrigger()) {
+                    continue;
+                }
+                this.currentEvent = event;
+                this.currentEventState = entry.getKey();
+                this.eventTicks = 0;
+                this.getNavigation().stop();
+                this.setState(entry.getKey());
+                event.onStart();
+                break;
+            }
+        }
+        BossEvent<T, ?> event = this.currentEvent;
+        if (event == null) {
+            return;
+        }
+        event.tickEvent(++this.eventTicks);
+        if (this.isDebugMode()) {
+            this.setAttackStatus(this.eventTicks);
+        }
+        if (this.eventTicks >= this.getScaledMaxTicks(event.getEventLength())) {
+            T finishedState = this.currentEventState;
+            this.currentEvent = null;
+            this.currentEventState = null;
+            this.eventTicks = 0;
+            event.setCompleted(true);
+            event.onFinish();
+
+            // Preserve any different state selected by onFinish().
+            if (this.isState(finishedState)) {
+                this.setIdle();
+            }
+        }
+    }
+
+    public void cancelBossEvent() {
+        BossEvent<T, ?> event = this.currentEvent;
+        if (event == null) {
+            return;
+        }
+        T cancelledState = this.currentEventState;
+        this.currentEvent = null;
+        this.currentEventState = null;
+        this.eventTicks = 0;
+        event.onCancel();
+
+        // Preserve external state changes, such as entering phase two.
+        if (this.isState(cancelledState)) {
+            this.setIdle();
+        }
     }
 }

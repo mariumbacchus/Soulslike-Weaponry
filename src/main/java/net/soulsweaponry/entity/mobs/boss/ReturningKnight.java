@@ -31,6 +31,7 @@ import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.collision.RotatableHitboxDebugRegistry;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
+import net.soulsweaponry.entity.ai.goal.events.Unbreakable;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateFakeoutHitbox;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.ObliterateHitbox;
@@ -68,6 +69,14 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);
+        Unbreakable unbreakable = new Unbreakable(this, 76);
+        //TODO bullet hell event at 50% in phase 2
+        this.registerEvent(ReturningKnight.States.UNBREAKABLE, unbreakable);
+    }
+
+    @Override
+    protected boolean canRunBossEvents() {
+        return super.canRunBossEvents() && !this.isState(States.INITIATE_PHASE_2);
     }
 
     @Override

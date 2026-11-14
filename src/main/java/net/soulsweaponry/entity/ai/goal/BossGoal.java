@@ -8,7 +8,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.entity.ai.goal.attacks.BossAttack;
-import net.soulsweaponry.entity.ai.goal.events.BossEvent;
 import net.soulsweaponry.entity.mobs.boss.BossEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,11 +25,6 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
      * Map of states and the attack tied to the state, such as Returning Knight's Obliterate attack
      */
     private final Map<S, BossAttack<S, B, G>> attacks = new LinkedHashMap<>();
-    /**
-     * Map of states and the event tied to the state, such as Returning Knight's Unbreakable event
-     * which only happens once when the boss is below 50% health
-     */
-    private final Map<S, BossEvent<S, B, G>> events = new LinkedHashMap<>();
     @Nullable
     private BossAttack<S, B, G> currentAttack;
     private boolean firstAttackDone;
@@ -75,12 +69,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
     @Override
     public void tick() {
         if (this.boss.shouldNotTickAttack()) {
-            if (this.currentAttack != null) {
-                this.currentAttack.resetAttackVariables();
-            }
-            this.currentAttack = null;
-            this.attackStatus = 0;
-            this.attackLength = 0;
+            this.cancelCurrentAttack();
             return;
         }
         this.attackCooldown = Math.max(this.attackCooldown - 1, 0);
@@ -93,17 +82,6 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
             return;
         }
         double distanceToTarget = this.boss.squaredDistanceTo(target);
-        // Event logic, will be performed before the attack and only once
-        if (this.canIssueAttack()) {
-            for (Map.Entry<S, BossEvent<S, B, G>> eventEntry : this.events.entrySet()) {
-                S state = eventEntry.getKey();
-                BossEvent<S, B, G> event = eventEntry.getValue();
-                if (!event.hasCompleted() && event.canTrigger(target, distanceToTarget)) {
-                    this.prepareAttack(state, event, target);
-                    break;
-                }
-            }
-        }
         // Attack logic, will choose a random attack based on weight and perform it
         // Got to have this check twice since the attack would override the event animation after the event was triggered so the event would never happen
         if (this.canIssueAttack()) {
@@ -126,12 +104,23 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
         }
     }
 
+    public void cancelCurrentAttack() {
+        BossAttack<S, B, G> attack = this.currentAttack;
+        this.currentAttack = null;
+        this.attackStatus = 0;
+        this.attackLength = 0;
+        if (attack != null) {
+            attack.resetAttackVariables();
+        }
+        this.boss.getNavigation().stop();
+    }
+
     public boolean canIssueAttack() {
         return !this.isCoolingDown() && this.boss.isIdle();
     }
 
     public boolean isValidState(S state) {
-        return this.attacks.containsKey(state) || this.events.containsKey(state);
+        return this.attacks.containsKey(state);
     }
 
     /**
@@ -278,10 +267,6 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
 
     public void addAttack(S state, BossAttack<S, B, G> attack) {
         this.attacks.put(state, attack);
-    }
-
-    public void addEvent(S state, BossEvent<S, B, G> event) {
-        this.events.put(state, event);
     }
 
     public boolean isSpecialCoolingDown() {
