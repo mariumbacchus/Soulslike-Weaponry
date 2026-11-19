@@ -17,10 +17,10 @@ import net.minecraft.util.math.Box;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.mobs.boss.DraugrBoss;
 import net.soulsweaponry.entitydata.BleedData;
-import net.soulsweaponry.registry.EffectRegistry;
-import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.particles.ParticleEvents;
 import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EffectRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -55,7 +55,7 @@ public class DraugrBossGoal extends MeleeAttackGoal {
     }
 
     public boolean applyDamage(LivingEntity target, float baseDamage) {
-        float modified = baseDamage * EntityConfig.old_champions_remains_damage_modifier;
+        float modified = this.boss.getModifiedDamage(baseDamage);
         if (this.boss.hasStatusEffect(StatusEffects.STRENGTH)) {
             modified += 4 + Objects.requireNonNull(this.boss.getStatusEffect(StatusEffects.STRENGTH)).getAmplifier() * 4;
         }

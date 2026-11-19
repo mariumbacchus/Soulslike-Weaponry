@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.sound.SoundEvents;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.MaceAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
@@ -14,9 +14,9 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 public class MaceOfSpades4Spin extends MaceAttack {
 
-    private final float swipeDamage = EntityConfig.returning_knight_mace_of_spades_4_swipe_damage;
-    private final float spinDamage = EntityConfig.returning_knight_mace_of_spades_4_spin_damage;
-    private final float thrustDamage = EntityConfig.returning_knight_mace_of_spades_4_thrust_damage;
+    private final float swipeDamage = ReturningKnightConfig.returning_knight_mace_of_spades_4_swipe_damage;
+    private final float spinDamage = ReturningKnightConfig.returning_knight_mace_of_spades_4_spin_damage;
+    private final float thrustDamage = ReturningKnightConfig.returning_knight_mace_of_spades_4_thrust_damage;
 
     public MaceOfSpades4Spin(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, MaceOfSpadesTimings.MACE_SIZE_4);

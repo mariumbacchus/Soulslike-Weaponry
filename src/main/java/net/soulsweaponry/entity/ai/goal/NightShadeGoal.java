@@ -64,11 +64,7 @@ public class NightShadeGoal extends Goal {
 
     private void damageTarget(LivingEntity target, float damage) {
         if (target instanceof NightShade) return;
-        target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
-    }
-
-    private float getModifiedDamage(float damage) {
-        return damage * EntityConfig.frenzied_shade_damage_modifier * (this.boss.isCopy() ? 0.35f : 1f);
+        target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.boss.getModifiedDamage(damage));
     }
 
     private void randomAttack(LivingEntity target) {
@@ -222,7 +218,7 @@ public class NightShadeGoal extends Goal {
             MoonlightProjectile projectile = new MoonlightProjectile(EntityRegistry.VERTICAL_MOONLIGHT_ENTITY_TYPE, this.boss.getWorld(), this.boss);
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 1.5f, 1f);
-            projectile.setDamage(this.getModifiedDamage(25f));
+            projectile.setDamage(this.boss.getModifiedDamage(25f));
             projectile.setDespawnParticleExpansion(0.5f);
             projectile.setAgeAndPoints(30, 150, (byte) 10);
             this.boss.getWorld().spawnEntity(projectile);
@@ -252,7 +248,7 @@ public class NightShadeGoal extends Goal {
             projectile.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             projectile.setVelocity(e, f, g, 2f, 1f);
             projectile.setAgeAndPoints(30, 75, (byte) 4);
-            projectile.setDamage(this.getModifiedDamage(18f));
+            projectile.setDamage(this.boss.getModifiedDamage(18f));
             this.boss.getWorld().spawnEntity(projectile);
         }
         if (attackStatus >= 25) {

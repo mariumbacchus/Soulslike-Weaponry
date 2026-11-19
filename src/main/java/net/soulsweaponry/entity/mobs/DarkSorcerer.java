@@ -136,7 +136,7 @@ public class DarkSorcerer extends HostileEntity {
                         this.user.setBeaming(true);
                         this.user.setBeamCords(target.getBlockX(), target.getEyeY(), target.getBlockZ());
                         if (target.getHealth() < target.getMaxHealth()) {
-                            target.setHealth(target.getHealth() + .5F + (float) ((ReturningKnight)target).getAttackingPlayers().size()/2f);
+                            target.setHealth(target.getHealth() + .5F + (float) ((ReturningKnight)target).getAttackingPlayersAmount() * 0.5f);
                         }
                     } else {
                         this.user.setBeaming(false);

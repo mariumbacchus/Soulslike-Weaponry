@@ -1,7 +1,7 @@
 package net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1;
 
 import net.minecraft.entity.LivingEntity;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.MaceAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
@@ -10,7 +10,7 @@ import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public class Obliterate extends MaceAttack {
 
-    private final float damage = EntityConfig.returning_knight_obliterate_damage;
+    private final float damage = ReturningKnightConfig.returning_knight_obliterate_damage;
 
     public Obliterate(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, ObliterateHitbox.OBLITERATE_MACE_SIZE);

@@ -71,6 +71,11 @@ public class NightShade extends BossEntity<NightShade.States> implements GeoEnti
     }
 
     @Override
+    public float getModifiedDamage(float damage) {
+        return damage * EntityConfig.frenzied_shade_damage_modifier * (this.isCopy() ? 0.35f : 1f);
+    }
+
+    @Override
 	protected void initGoals() {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));

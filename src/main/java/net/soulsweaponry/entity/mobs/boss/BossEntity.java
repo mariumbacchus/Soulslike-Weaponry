@@ -6,7 +6,6 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.BossBar.Color;
 import net.minecraft.entity.boss.BossBar.Style;
 import net.minecraft.entity.boss.ServerBossBar;
@@ -19,6 +18,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
@@ -31,7 +32,6 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -67,6 +67,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     @Nullable
     private T currentEventState;
     private int eventTicks;
+    private final List<UUID> attackingPlayers = new ArrayList<>();
 
     private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -80,6 +81,12 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         this.stateEnumClass = stateEnumClass;
         this.ignoreCameraFrustum = true;
     }
+
+    /**
+     * To be used when dealing damage or setting the damage a projectile will do.
+     * @return damage * EntityConfig.&lt;boss&gt;_damage_modifier
+     */
+    public abstract float getModifiedDamage(float damage);
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
@@ -147,6 +154,20 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
      */
     public boolean isState(T state) {
         return this.getState() == state;
+    }
+
+    /**
+     * Returns whether the boss is performing any of the states provided.
+     */
+    @SafeVarargs
+    public final boolean isAnyState(T... states) {
+        T currentState = this.getState();
+        for (T state : states) {
+            if (currentState == state) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -250,6 +271,9 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         if (this.blockBreakingCooldown <= 0) {
             this.blockBreakingCooldown = 20;
         }
+        if (!this.getWorld().isClient && source.getAttacker() instanceof PlayerEntity player && !this.attackingPlayers.contains(player.getUuid())) {
+            this.attackingPlayers.add(player.getUuid());
+        }
         return super.damage(source, amount);
     }
 
@@ -265,47 +289,14 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     }
 
     /**
-     * Gets the reduced cooldown in ticks for the boss' next attack based on number of attackers,
-     * increased if the attackers are players. Will make huge raids more interesting.
-     * <p> Returns {@code 5} for each player, and {@code 2} for other entities, such as
-     * summons.
+     * Returns a list of all players that attacked the boss, permanently increasing the boss' difficulty for this fight.
      */
-    public int getReducedCooldownAttackers() {
-        List<LivingEntity> attackers = this.getAttackers();
-        int reduced = 0;
-        for (LivingEntity entity : attackers) {
-            reduced += entity instanceof PlayerEntity ? 5 : 2;
-        }
-        return reduced;
+    public List<UUID> getAttackingPlayersUUIDs() {
+        return this.attackingPlayers;
     }
 
-    /**
-     * Get all the attacking entities within 10 blocks radius from the bounding box of the boss.
-     */
-    public List<LivingEntity> getAttackers() {
-        Box box = this.getBoundingBox().expand(10);
-        List<Entity> entities = this.getWorld().getOtherEntities(this, box);
-        ArrayList<LivingEntity> attackers = new ArrayList<>();
-        for (Entity entity : entities) {
-            if (entity instanceof LivingEntity && ((LivingEntity)entity).getAttacking() == this) {
-                attackers.add((LivingEntity) entity);
-            }
-        }
-        return attackers;
-    }
-
-    /**
-     * Returns a list of all attacking {@code players} only within 10 blocks radius of the boss' bounding box.
-     */
-    public List<PlayerEntity> getAttackingPlayers() {
-        List<LivingEntity> entities = this.getAttackers();
-        ArrayList<PlayerEntity> players = new ArrayList<>();
-        for (LivingEntity entity : entities) {
-            if (entity instanceof PlayerEntity) {
-                players.add((PlayerEntity) entity);
-            }
-        }
-        return players;
+    public int getAttackingPlayersAmount() {
+        return this.attackingPlayers.size();
     }
 
     @Override
@@ -320,6 +311,14 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
             completedEvents.putBoolean(entry.getKey().name(), entry.getValue().hasCompleted());
         }
         nbt.put("CompletedBossEvents", completedEvents);
+
+        NbtList players = new NbtList();
+        for (UUID uuid : this.attackingPlayers) {
+            NbtCompound entry = new NbtCompound();
+            entry.putUuid("UUID", uuid);
+            players.add(entry);
+        }
+        nbt.put("AttackingPlayers", players);
     }
 
     @Override
@@ -337,6 +336,17 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         NbtCompound completedEvents = nbt.getCompound("CompletedBossEvents");
         for (Map.Entry<T, BossEvent<T, ?>> entry : this.events.entrySet()) {
             entry.getValue().setCompleted(completedEvents.getBoolean(entry.getKey().name()));
+        }
+        this.attackingPlayers.clear();
+        NbtList players = nbt.getList("AttackingPlayers", NbtElement.COMPOUND_TYPE);
+        for (int i = 0; i < players.size(); i++) {
+            NbtCompound entry = players.getCompound(i);
+            if (entry.containsUuid("UUID")) {
+                UUID uuid = entry.getUuid("UUID");
+                if (!this.attackingPlayers.contains(uuid)) {
+                    this.attackingPlayers.add(uuid);
+                }
+            }
         }
     }
 
@@ -566,7 +576,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
             return;
         }
         // Another system changed the state, for example a phase transition
-        if (this.currentEvent != null && !this.isState(this.currentEventState)) {
+        if (this.currentEvent != null && !this.currentEvent.ownsState(this.getState(), this.currentEventState)) {
             this.cancelBossEvent();
             return;
         }
@@ -601,8 +611,8 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
             event.setCompleted(true);
             event.onFinish();
 
-            // Preserve any different state selected by onFinish().
-            if (this.isState(finishedState)) {
+            // Preserve any different state selected by onFinish()
+            if (event.ownsState(this.getState(), finishedState)) {
                 this.setIdle();
             }
         }
@@ -619,8 +629,8 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         this.eventTicks = 0;
         event.onCancel();
 
-        // Preserve external state changes, such as entering phase two.
-        if (this.isState(cancelledState)) {
+        // Preserve external state changes, such as entering phase two
+        if (event.ownsState(this.getState(), cancelledState)) {
             this.setIdle();
         }
     }

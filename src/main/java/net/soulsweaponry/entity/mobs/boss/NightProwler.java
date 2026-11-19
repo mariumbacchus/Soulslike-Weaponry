@@ -12,6 +12,7 @@ import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -62,6 +63,11 @@ public class NightProwler extends BossEntity<NightProwler.States> implements Geo
 
     public NightProwler(EntityType<? extends NightProwler> entityType, World world) {
         super(entityType, world, Color.PURPLE, NightProwler.States.class);
+    }
+
+    @Override
+    public float getModifiedDamage(float damage) {
+        return damage * EntityConfig.night_prowler_damage_modifier * (this.isEmpowered() ? 1.25f : 1) * (this.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
     }
 
     @Override

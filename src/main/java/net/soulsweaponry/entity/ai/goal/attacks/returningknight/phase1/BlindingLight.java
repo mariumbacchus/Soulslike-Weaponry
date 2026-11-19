@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.sound.SoundEvents;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.ReturningKnightAttack;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
@@ -13,7 +13,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 
 public class BlindingLight extends ReturningKnightAttack {
 
-    private final float damage = EntityConfig.returning_knight_blinding_light_damage;
+    private final float damage = ReturningKnightConfig.returning_knight_blinding_light_damage;
 
     public BlindingLight(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

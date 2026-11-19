@@ -47,6 +47,8 @@
 ### Bosses
 - Tripled the range for Day Stalker and Night Prowler melee attacks to trigger (only trigger, not the range to deal damage)
 - Old Champion's Remains has a new Battle Cry sound
+- Bosses that previously reduced their cooldowns or increased attributes due to nearby attacking mobs now only increase based on players that has damaged the boss during the fight
+  - This means if your friend attacks the boss once and then leaves or dies, the fight will still be harder as if your friend was in the fight constantly
 - Night Prowler's Night Skulls during the Eclipse attack now shoot charged skulls every 3rd wave, only these will spawn clouds of Decay and will deal more damage
     - Damage is 10 for regular, 14 for charged
     - Explosion power is 2 for regular, 4 for charged

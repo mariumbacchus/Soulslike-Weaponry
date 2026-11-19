@@ -16,6 +16,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.mobs.boss.DraugrBoss;
 import net.soulsweaponry.entity.mobs.boss.Moonknight;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
@@ -36,7 +37,7 @@ public class AltarBlock extends SpawnBossBlock {
         if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
             ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
             entity.setSpawning();
-            return spawnEntity(world, pos, player, entity, EntityConfig.returning_knight_disable_respawn, itemStack, EntityConfig.returning_knight_consume_item_on_summoning);
+            return spawnEntity(world, pos, player, entity, ReturningKnightConfig.returning_knight_disable_respawn, itemStack, ReturningKnightConfig.returning_knight_consume_item_on_summoning);
         } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
             DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
             entity.setSpawning();

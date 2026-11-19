@@ -341,15 +341,11 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         }
     }
 
-    private float getModifiedDamage(float damage) {
-        return damage * EntityConfig.day_stalker_damage_modifier;
-    }
-
     private boolean damageTarget(LivingEntity target, float damage) {
         if (this.boss.isPartner(target) || target instanceof WarmthEntity) {
             return false;
         }
-        if (target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage))) {
+        if (target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.boss.getModifiedDamage(damage))) {
             if (this.boss.isEmpowered()) {
                 target.setOnFireFor(2);
             }
@@ -368,7 +364,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         this.boss.getLookControl().lookAt(this.boss.getTargetPos().toCenterPos());
         if (this.attackStatus == 25) {
             Vec3d pos = Vec3d.ofCenter(this.boss.getTargetPos());
-            AirCombustion airCombustion = new AirCombustion(this.boss.getWorld(), this.boss, this.getModifiedDamage(35f), this.boss.isPhaseTwo() ? 6f : 3.5f, 12);
+            AirCombustion airCombustion = new AirCombustion(this.boss.getWorld(), this.boss, this.boss.getModifiedDamage(35f), this.boss.isPhaseTwo() ? 6f : 3.5f, 12);
             airCombustion.setPos(pos.x, pos.y, pos.z);
             airCombustion.setEmpowered(this.boss.isEmpowered());
             this.boss.getWorld().spawnEntity(airCombustion);
@@ -427,8 +423,8 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 int y = this.boss.getBlockY();
                 int z = this.boss.getBlockZ() + this.boss.getRandom().nextInt(16) - 8;
                 FlamePillar pillar = new FlamePillar(this.boss.getWorld(), this.boss, radius, i * 2, event);
-                pillar.setOtherAttributes(new DamagingWarmupEntityEvents.OtherAttributes(this.getModifiedDamage(6f), 3f));
-                pillar.setDamage(this.getModifiedDamage(48f));
+                pillar.setOtherAttributes(new DamagingWarmupEntityEvents.OtherAttributes(this.boss.getModifiedDamage(6f), 3f));
+                pillar.setDamage(this.boss.getModifiedDamage(48f));
                 pillar.setPos(x, y, z);
                 this.boss.getWorld().spawnEntity(pillar);
             }
@@ -484,7 +480,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
         MoonlightProjectile projectile = new MoonlightProjectile(type, this.boss.getWorld(), this.boss);
         if (this.boss.isEmpowered()) projectile.setAppliedEffectDuration(fireTicksApplied);
         projectile.setAgeAndPoints(maxAge, explosionParticleCount, (byte) trailParticleCount);
-        projectile.setDamage(this.getModifiedDamage(damage));
+        projectile.setDamage(this.boss.getModifiedDamage(damage));
         projectile.setModelRotation(rotationDegrees);
         projectile.setDespawnParticle(ParticleTypes.FLAME);
         projectile.setTrailParticle(ParticleTypes.WAX_ON);
@@ -514,7 +510,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
                 Box box = new Box(targetPos.toCenterPos(), this.boss.getPos()).expand(1D);
                 for (Entity entity : this.boss.getWorld().getOtherEntities(this.boss, box)) {
                     if (entity instanceof LivingEntity living && !this.boss.isPartner(living)) {
-                        living.damage(this.boss.getDamageSources().magic(), this.getModifiedDamage(this.boss.isPhaseTwo() ? 2f : 1f));
+                        living.damage(this.boss.getDamageSources().magic(), this.boss.getModifiedDamage(this.boss.isPhaseTwo() ? 2f : 1f));
                         living.setOnFireFor(3);
                     }
                 }
@@ -908,7 +904,7 @@ public class DayStalkerGoal extends MeleeAttackGoal {
     private void spawnFlamePillar(Vec3d vec, Integer warmup, Float yaw) {
         FlamePillar pillar = new FlamePillar(this.boss.getWorld(), this.boss, 2.5f, warmup, DamagingWarmupEntityEvents.SPAWN_FIRE);
         pillar.setYaw(yaw);
-        pillar.setDamage(this.getModifiedDamage(40f));
+        pillar.setDamage(this.boss.getModifiedDamage(40f));
         pillar.setPos(vec.getX(), vec.getY(), vec.getZ());
         pillar.setParticleAmountMod(1.5f);
         this.boss.getWorld().spawnEntity(pillar);

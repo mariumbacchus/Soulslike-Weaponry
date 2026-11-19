@@ -64,6 +64,11 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
     }
 
     @Override
+    public float getModifiedDamage(float damage) {
+        return damage * EntityConfig.day_stalker_damage_modifier;
+    }
+
+    @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(2, new DayStalkerGoal(this, 0.75D, true));

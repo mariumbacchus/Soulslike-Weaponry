@@ -43,10 +43,6 @@ public class ChaosMonarchGoal extends Goal {
         this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
-    public float getModifiedDamage(float damage) {
-        return damage * EntityConfig.chaos_monarch_damage_modifier;
-    }
-
     @Override
     public boolean canStart() {
         LivingEntity target = this.boss.getTarget();
@@ -193,7 +189,7 @@ public class ChaosMonarchGoal extends Goal {
         List<Entity> intersectingEntities = this.boss.getWorld().getOtherEntities(this.boss, box);
         for (Entity entity : intersectingEntities) {
             if (entity instanceof LivingEntity livingEntity) {
-                livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage));
+                livingEntity.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.boss.getModifiedDamage(damage));
                 livingEntity.takeKnockback(this.boss.getRandom().nextDouble(), this.boss.getX() - livingEntity.getX(), this.boss.getZ() - livingEntity.getZ());
             }
         }
@@ -352,7 +348,7 @@ public class ChaosMonarchGoal extends Goal {
                 double x = closestTarget.getX() - (this.boss.getX());
                 double z = closestTarget.getZ() - this.boss.getZ();
                 closestTarget.takeKnockback(10F, -x, -z);
-                closestTarget.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(30f));
+                closestTarget.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.boss.getModifiedDamage(30f));
             }
         }
 

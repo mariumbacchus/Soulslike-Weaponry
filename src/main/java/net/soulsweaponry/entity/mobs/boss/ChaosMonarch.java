@@ -49,6 +49,11 @@ public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements Geo
         super(entityType, world, Color.PURPLE, States.class);
     }
 
+    @Override
+    public float getModifiedDamage(float damage) {
+        return damage * EntityConfig.chaos_monarch_damage_modifier;
+    }
+
     private PlayState predicate(AnimationState<?> state) {
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death"));
@@ -138,7 +143,7 @@ public class ChaosMonarch extends BossEntity<ChaosMonarch.States> implements Geo
     protected void mobTick() {
         super.mobTick();
         if (this.hasStatusEffect(EffectRegistry.DECAY) && this.age % 10 == 0) {
-            this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayers().size());
+            this.heal(this.getStatusEffect(EffectRegistry.DECAY).getAmplifier() + 1 + this.getAttackingPlayersAmount());
             for (LivingEntity target : this.getWorld().getNonSpectatingEntities(LivingEntity.class, this.getBoundingBox().expand(3D))) {
                 if (!(target instanceof PlayerEntity) && target != this) {
                     target.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 80, 3));

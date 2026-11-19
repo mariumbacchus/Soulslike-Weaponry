@@ -6,7 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvents;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.ReturningKnightAttack;
 import net.soulsweaponry.entity.mobs.EliteRemnant;
@@ -17,11 +17,11 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 public class EruptionSummon extends ReturningKnightAttack {
 
-    private final float summonRadius = EntityConfig.returning_knight_children_of_the_grave_eruption_phase_2_summon_radius;
-    private final float summonAmount = EntityConfig.returning_knight_children_of_the_grave_eruption_phase_2_summon_amount;
-    private final int eruptionSpawnRadius = (int) EntityConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_spawn_radius;
-    private final float eruptionDamage = EntityConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_damage;
-    private final int eruptionAmount = (int) EntityConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_amount;
+    private final float summonRadius = ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_summon_radius;
+    private final float summonAmount = ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_summon_amount;
+    private final int eruptionSpawnRadius = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_spawn_radius;
+    private final float eruptionDamage = ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_damage;
+    private final int eruptionAmount = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_amount;
 
     public EruptionSummon(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

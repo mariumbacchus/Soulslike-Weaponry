@@ -2,7 +2,7 @@ package net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase2;
 
 import net.minecraft.entity.LivingEntity;
 import net.soulsweaponry.collision.RotatableHitbox;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1.MaceOfSpades2;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
@@ -14,11 +14,11 @@ import net.soulsweaponry.registry.SoundRegistry;
 public class MaceOfSpades2Shadow extends MaceOfSpades2 {
 
     public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(MaceOfSpadesShadowTimings.MACE_SIZE_2);
-    private final float damageSwipe = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_swipe_damage;
-    private final float damageSmash = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_smash_damage;
-    private final float pillarRadius = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_radius;
-    private final float pillarDamage = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_damage;
-    private final float pillarRippleAmount = EntityConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_arm_length;
+    private final float damageSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_swipe_damage;
+    private final float damageSmash = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_smash_damage;
+    private final float pillarRadius = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_radius;
+    private final float pillarDamage = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_damage;
+    private final float pillarRippleAmount = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_arm_length;
 
     public MaceOfSpades2Shadow(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);
@@ -43,7 +43,7 @@ public class MaceOfSpades2Shadow extends MaceOfSpades2 {
         }
         if (this.isTick(attackStatus, 88)) {
             this.doObliterateParticles(this.shadowHitbox);
-            this.summonDarkPillarsPlus(target, (int) this.pillarRippleAmount, this.pillarRadius, this.pillarRadius, this.pillarDamage, 10, this.shadowHitbox);
+            this.spawnDarkPillarsPlus(target, (int) this.pillarRippleAmount, this.pillarRadius, this.pillarRadius, this.pillarDamage, 10, this.shadowHitbox);
         }
     }
 

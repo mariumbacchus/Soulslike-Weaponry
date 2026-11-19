@@ -49,6 +49,11 @@ public class AccursedLordBoss extends BossEntity<AccursedLordBoss.States> implem
     }
 
     @Override
+    public float getModifiedDamage(float damage) {
+        return damage * EntityConfig.decaying_king_damage_modifier;
+    }
+
+    @Override
     public boolean isFireImmune() {
         return EntityConfig.decaying_king_is_fire_immune;
     }

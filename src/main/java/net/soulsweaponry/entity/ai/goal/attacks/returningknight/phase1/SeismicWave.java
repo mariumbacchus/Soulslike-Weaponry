@@ -3,24 +3,21 @@ package net.soulsweaponry.entity.ai.goal.attacks.returningknight.phase1;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.MaceAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.SeismicWaveHitbox;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
-import net.soulsweaponry.entity.projectile.noclip.EruptionEntity;
 import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 
 public class SeismicWave extends MaceAttack {
 
-    private final float swipeDamage = EntityConfig.returning_knight_seismic_wave_swipe_damage;
-    private final float eruptionDamage = EntityConfig.returning_knight_seismic_wave_eruption_damage;
+    private final float swipeDamage = ReturningKnightConfig.returning_knight_seismic_wave_swipe_damage;
+    private final float eruptionDamage = ReturningKnightConfig.returning_knight_seismic_wave_eruption_damage;
 
     public SeismicWave(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, SeismicWaveHitbox.MACE_SIZE);

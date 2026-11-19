@@ -43,8 +43,10 @@ public class SoulsWeaponry implements ModInitializer {
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_enchantment_config", EnchantmentConfig.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_entity_config", EntityConfig.class);
         MidnightConfig.init(CONFIG_FOLDER + ModId + "_entity_stats_config", EntityStatsConfig.class);
+
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_entity_config", EntityConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + ModId + "_returning_knight_config", ReturningKnightConfig.class);
         LOGGER.info("Configs initialized!");
 
         AttributeRegistry.init();

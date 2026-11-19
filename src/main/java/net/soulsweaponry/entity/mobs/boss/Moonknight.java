@@ -74,6 +74,11 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     }
 
     @Override
+    public float getModifiedDamage(float damage) {
+        return damage * EntityConfig.fallen_icon_damage_modifier;
+    }
+
+    @Override
     protected int computeFallDamage(float fallDistance, float damageMultiplier) {
         return fallDistance > 6 ? super.computeFallDamage(fallDistance, damageMultiplier) : 0;
     }

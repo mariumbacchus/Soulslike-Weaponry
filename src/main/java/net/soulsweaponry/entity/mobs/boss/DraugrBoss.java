@@ -110,6 +110,11 @@ public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEnti
     }
 
     @Override
+    public float getModifiedDamage(float damage) {
+        return damage * EntityConfig.old_champions_remains_damage_modifier;
+    }
+
+    @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(IS_SHIELDING, Boolean.FALSE);

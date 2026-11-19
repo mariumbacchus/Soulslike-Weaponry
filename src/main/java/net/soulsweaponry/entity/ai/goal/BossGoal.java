@@ -263,7 +263,6 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
 
     public abstract int getModifiedCooldown(int cooldown);
     public abstract int getModifiedSpecialCooldown(int specialCooldown);
-    public abstract float getModifiedDamage(float damage);
 
     public void addAttack(S state, BossAttack<S, B, G> attack) {
         this.attacks.put(state, attack);

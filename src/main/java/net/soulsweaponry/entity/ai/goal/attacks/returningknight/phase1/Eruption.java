@@ -6,7 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.ReturningKnightAttack;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
@@ -17,8 +17,8 @@ import java.util.List;
 
 public class Eruption extends ReturningKnightAttack {
 
-    private final float attackRangeBlocks = EntityConfig.returning_knight_eruption_range_blocks;
-    private final float damage = EntityConfig.returning_knight_eruption_damage;
+    private final float attackRangeBlocks = ReturningKnightConfig.returning_knight_eruption_range_blocks;
+    private final float damage = ReturningKnightConfig.returning_knight_eruption_damage;
 
     public Eruption(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

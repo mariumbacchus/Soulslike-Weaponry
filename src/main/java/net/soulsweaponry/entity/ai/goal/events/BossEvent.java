@@ -47,6 +47,10 @@ public abstract class BossEvent<S extends Enum<S>, B extends BossEntity<S>> {
      */
     public void onCancel() {}
 
+    public boolean ownsState(S state, S registeredState) {
+        return state == registeredState;
+    }
+
     public boolean isTick(int eventTick, int animationTick) {
         return BossHitboxHelper.didScaledTickPass(eventTick, this.boss.getAnimationSpeed(), animationTick);
     }

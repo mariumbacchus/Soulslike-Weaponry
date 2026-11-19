@@ -54,20 +54,18 @@ public class AccursedLordGoal extends Goal {
     public void resetAttackCooldown(float cooldownModifier) {
         this.attackStatus = 0;
         this.cordsRegistered = false;
-        this.attackCooldown = (int) Math.floor(EntityConfig.decaying_king_attack_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers();
+        this.attackCooldown = (int) Math.floor(EntityConfig.decaying_king_attack_cooldown_ticks * cooldownModifier)
+                - this.boss.getAttackingPlayersAmount() * 5;
     }
 
     public void resetSpecialCooldown(float cooldownModifier) {
-        this.specialCooldown = (int) (Math.floor(EntityConfig.decaying_king_special_cooldown_ticks * cooldownModifier) - this.boss.getReducedCooldownAttackers());
-    }
-
-    public float getModifiedDamage(float damage) {
-        return damage * EntityConfig.decaying_king_damage_modifier;
+        this.specialCooldown = (int) (Math.floor(EntityConfig.decaying_king_special_cooldown_ticks * cooldownModifier)
+                - this.boss.getAttackingPlayersAmount() * 5);
     }
 
     private void damageTarget(LivingEntity target, DamageSource source, float amount) {
-        if (target.damage(source, this.getModifiedDamage(amount))) {
-            this.boss.heal(this.getModifiedDamage(amount)/5 + this.boss.getAttackers().size()*2);
+        if (target.damage(source, this.boss.getModifiedDamage(amount))) {
+            this.boss.heal(this.boss.getModifiedDamage(amount) / 5 + this.boss.getAttackingPlayersAmount() * 2);
         }
     }
 

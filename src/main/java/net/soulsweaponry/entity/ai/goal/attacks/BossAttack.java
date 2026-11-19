@@ -99,7 +99,7 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
     }
 
     public boolean damageTarget(DamageSource source, LivingEntity target, float damage) {
-        return target.damage(source, this.getGoal().getModifiedDamage(damage));
+        return target.damage(source, this.getBoss().getModifiedDamage(damage));
     }
 
     public boolean damageTarget(LivingEntity target, float damage) {

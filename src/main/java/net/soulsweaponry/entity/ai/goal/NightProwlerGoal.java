@@ -39,8 +39,7 @@ import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class NightProwlerGoal extends MeleeAttackGoal {
     private final NightProwler boss;
@@ -52,7 +51,6 @@ public class NightProwlerGoal extends MeleeAttackGoal {
     //private int flightTimer; // Testing only.
     private int changeFlightTargetTimer;
     private Vec3d flightPosAdder;
-    private int bonusDmg;
     private int flipCounter;
     public static final float PORTAL_RADIUS = 16f;
     private int chargedSkullCounter = 0;
@@ -97,7 +95,6 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         this.boss.setFlying(false);
         this.changeFlightTargetTimer = 0;
         this.boss.setParticleState(0);
-        this.bonusDmg = 0;
         this.flipCounter = 0;
         this.chargedSkullCounter = 0;
     }
@@ -299,7 +296,6 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             this.boss.setChaseTarget(true);
             this.hasExploded = false;
             this.boss.setParticleState(0);
-            this.bonusDmg = 0;
             this.flipCounter = 0;
             if (this.boss.isPhaseTwo()) {
                 this.boss.setFlying(false);
@@ -308,15 +304,11 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         }
     }
 
-    private float getModifiedDamage(float damage) {
-        return (damage + this.bonusDmg) * EntityConfig.night_prowler_damage_modifier * (this.boss.isEmpowered() ? 1.25f : 1) * (this.boss.hasStatusEffect(StatusEffects.STRENGTH) ? 1.25f : 1);
-    }
-
     private boolean damageTarget(LivingEntity target, float damage) {
         if (this.boss.isPartner(target)) {
             return false;
         }
-        if (target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.getModifiedDamage(damage))) {
+        if (target.damage(this.boss.getWorld().getDamageSources().mobAttack(this.boss), this.boss.getModifiedDamage(damage))) {
             if (this.boss.isEmpowered()) {
                 target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 60, 0));
                 if (target.isDead()) {
@@ -414,7 +406,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             NightWaveEntity wave = new NightWaveEntity(EntityRegistry.NIGHT_WAVE, this.boss.getWorld());
             wave.setPos(x, this.boss.getY(), z);
             wave.setVelocity(this.boss, 0, theta - 90, 0.0f, 1.5f, 0f);
-            wave.setDamage(this.getModifiedDamage(20f));
+            wave.setDamage(this.boss.getModifiedDamage(20f));
             wave.setOwner(this.boss);
             this.boss.getWorld().spawnEntity(wave);
         }
@@ -560,7 +552,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             NightsEdge edge = new NightsEdge(EntityRegistry.NIGHTS_EDGE, this.boss.getWorld());
             edge.setOwner(this.boss);
             edge.setWarmup(warmup);
-            edge.setDamage(this.getModifiedDamage(15.69f));
+            edge.setDamage(this.boss.getModifiedDamage(15.69f));
             edge.setYaw(yaw);
             edge.setPos(position.x, position.y, position.z);
             this.boss.getWorld().spawnEntity(edge);
@@ -611,7 +603,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             Vec3d vec = target.rotateY((float) Math.toRadians(8 * i));
             MoonlightProjectile entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss);
             entity.setAgeAndPoints(30, 150, (byte) 4);
-            entity.setDamage(this.getModifiedDamage(20f));
+            entity.setDamage(this.boss.getModifiedDamage(20f));
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             entity.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
             entity.setOwner(this.boss);
@@ -632,7 +624,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             } else {
                 entity = new MoonlightProjectile(EntityRegistry.MOONLIGHT_BIG_ENTITY_TYPE, this.boss.getWorld(), this.boss);
                 ((MoonlightProjectile) entity).setAgeAndPoints(30, 150, (byte) 4);
-                ((MoonlightProjectile) entity).setDamage(this.getModifiedDamage(20f));
+                ((MoonlightProjectile) entity).setDamage(this.boss.getModifiedDamage(20f));
             }
             entity.setPos(this.boss.getX(), this.boss.getEyeY(), this.boss.getZ());
             entity.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
@@ -652,7 +644,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         Vec3d vec = this.boss.getRotationVector().multiply(4D).add(this.boss.getPos());
         vec = new Vec3d(vec.getX(), target.getY(), vec.getZ());
         this.boss.setTargetPos(BlockPos.ofFloored(vec).withY(this.boss.getBlockY()));
-        HashMap<Integer, Box> map = new HashMap<>();
+        Map<Integer, Box> map = new LinkedHashMap<>();
         if (!phase2) {
             map.put(14, new Box(BlockPos.ofFloored(vec)).expand(2D));
             map.put(29, new Box(BlockPos.ofFloored(vec)).expand(2D));
@@ -668,11 +660,14 @@ public class NightProwlerGoal extends MeleeAttackGoal {
             map.put(109, new Box(BlockPos.ofFloored(vec)).expand(2D));
             map.put(128, new Box(BlockPos.ofFloored(vec)).expand(3D));
         }
+        // TODO the whole bonusDmg thing was kinda broken, when reworking the whole class fix this too so it doesnt use linked hashmap
+        // Do (phase 1: 3, phase 2: 5) more damage after each swing so next deals more
         for (int frame : map.keySet()) {
             if (this.attackStatus == frame) {
+                int index = new ArrayList<>(map.keySet()).indexOf(frame); // TODO god this is ugly but it works for now
+                float damage = 20f + (phase2 ? 3 : 5) * index;
                 this.playSound(null, SoundRegistry.SCYTHE_SWIPE, 1f, (float) this.boss.getRandom().nextBetween(6, 10) / 10f);
-                this.aoe(map.get(frame), 20f, 0.4f, true);
-                this.bonusDmg += phase2 ? 3 : 5;
+                this.aoe(map.get(frame), damage, 0.4f, true);
                 this.boss.setVelocity(vel.multiply(0.1D));
                 if (this.attackStatus == 61) {
                     this.shootSplitSkulls(vel, 3, 1.5f);
@@ -735,7 +730,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 BlackflameExplosionEntity entity = new BlackflameExplosionEntity(this.boss.getWorld());
                 entity.setOwner(this.boss);
                 entity.setRadius(2f);
-                entity.setDamage(this.getModifiedDamage(30f));
+                entity.setDamage(this.boss.getModifiedDamage(30f));
                 entity.setWarmup(delay + 15);
                 entity.setPosition(pos);
                 this.boss.getWorld().spawnEntity(entity);
@@ -771,7 +766,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                         Vec3d spawn = new Vec3d(this.boss.getX() + this.boss.getRandom().nextBetween(-radius, radius),
                                 this.boss.getY() + 8f, this.boss.getZ() + this.boss.getRandom().nextBetween(-radius, radius));
                         Vec3d vec = new Vec3d(target.getX() - spawn.getX(), target.getEyeY() - spawn.getY(), target.getZ() - spawn.getZ());
-                        NightSkull skull = new NightSkull(this.boss.getWorld(), this.boss, this.getModifiedDamage(chargedSkull ? 10f : 14f), chargedSkull, EntityConfig.night_prowler_eclipse_skulls_destroy_blocks,
+                        NightSkull skull = new NightSkull(this.boss.getWorld(), this.boss, this.boss.getModifiedDamage(chargedSkull ? 10f : 14f), chargedSkull, EntityConfig.night_prowler_eclipse_skulls_destroy_blocks,
                             chargedSkull ? EntityConfig.night_prowler_eclipse_skulls_explosion_power_charged : EntityConfig.night_prowler_eclipse_skulls_explosion_power, 100);
                         skull.setPosition(spawn);
                         skull.setVelocity(vec.getX(), vec.getY(), vec.getZ(), 1.75f, 1f);
@@ -838,7 +833,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
         if (!phase2 && this.attackStatus == 31) {
             this.boss.playSound(SoundRegistry.NIGHT_SKULL_DIE, 1f, 0.75f);
             BlackflameSnakeEntity entity = new BlackflameSnakeEntity(EntityRegistry.BLACKFLAME_SNAKE_ENTITY, this.boss.getWorld());
-            entity.setDamage(this.getModifiedDamage(30f));
+            entity.setDamage(this.boss.getModifiedDamage(30f));
             Vec3d vel;
             Vec3d pos;
             DayStalker partner;
@@ -878,7 +873,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                         BlackflameExplosionEntity entity = new BlackflameExplosionEntity(this.boss.getWorld());
                         entity.setOwner(this.boss);
                         entity.setRadius(2f);
-                        entity.setDamage(this.getModifiedDamage(35f));
+                        entity.setDamage(this.boss.getModifiedDamage(35f));
                         entity.setWarmup(i);
                         entity.setPosition(position.get(i));
                         this.boss.getWorld().spawnEntity(entity);
@@ -887,7 +882,7 @@ public class NightProwlerGoal extends MeleeAttackGoal {
                 // Center snake tracking the target
                 BlackflameSnakeEntity entity = new BlackflameSnakeEntity(this.boss.getWorld());
                 entity.setPosition(this.boss.getPos());
-                entity.setDamage(this.getModifiedDamage(30f));
+                entity.setDamage(this.boss.getModifiedDamage(30f));
                 entity.setVelocity(new Vec3d(target.getX() - (this.boss.getX()), target.getY() - this.boss.getY(), target.getZ() - this.boss.getZ()).multiply(0.2f));
                 entity.setTargetUuid(target.getUuid());
                 this.boss.getWorld().spawnEntity(entity);

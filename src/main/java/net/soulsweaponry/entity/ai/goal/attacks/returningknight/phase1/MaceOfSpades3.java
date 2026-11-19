@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.sound.SoundEvents;
-import net.soulsweaponry.config.EntityConfig;
+import net.soulsweaponry.config.ReturningKnightConfig;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.returningknight.MaceAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.returningknight.maceofspades.MaceOfSpadesHitbox;
@@ -14,9 +14,9 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 public class MaceOfSpades3 extends MaceAttack {
 
-    private final float oneHandedSwipe = EntityConfig.returning_knight_mace_of_spades_3_one_handed_swipe_damage;
-    private final float twoHandedSwipe = EntityConfig.returning_knight_mace_of_spades_3_two_handed_swipe_damage;
-    private final float chargedTwoHandedSwipe = EntityConfig.returning_knight_mace_of_spades_3_charged_swipe_damage;
+    private final float oneHandedSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_3_one_handed_swipe_damage;
+    private final float twoHandedSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_3_two_handed_swipe_damage;
+    private final float chargedTwoHandedSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_3_charged_swipe_damage;
 
     public MaceOfSpades3(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, MaceOfSpadesTimings.MACE_SIZE_3);
