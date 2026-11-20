@@ -72,7 +72,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);
         this.registerEvent(States.UNBREAKABLE, new Unbreakable(this, 76));
-        this.registerEvent(States.BULLET_HELL_START, new BulletHell(this, 3000));//TODO can adjust length to whatever since the tick animation loops
+        this.registerEvent(States.BULLET_HELL_START, new BulletHell(this, (int) ReturningKnightConfig.returning_knight_bullet_hell_duration_ticks));
     }
 
     @Override
@@ -259,7 +259,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         }
 
         //Unbreakable particles
-        if (this.getHealth() <= this.getMaxHealth() * ReturningKnightConfig.returning_knight_unbreakable_percent_health_trigger && !this.isDead()) {
+        if (this.getHealth() <= this.getMaxHealth() * ReturningKnightConfig.returning_knight_unbreakable_percent_health_trigger && !this.isDead() && !this.isState(States.INITIATE_PHASE_2)) {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 0));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10,
                     (int) (this.getAttackingPlayersAmount() >= ReturningKnightConfig.returning_knight_unbreakable_attacking_players_needed_to_increase_resistance_amp
@@ -268,7 +268,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
             double d = this.random.nextGaussian() * 0.05D;
             double e = this.random.nextGaussian() * 0.05D;
-            double y = this.getY() + (this.isAnyState(States.BULLET_HELL_TICK, States.BULLET_HELL_START, States.BULLET_HELL_END) ? 2f : 5.5f);
+            double y = this.getY() + (this.isAnyState(States.BULLET_HELL_TICK, States.BULLET_HELL_START, States.BULLET_HELL_END) ? 4 : 5.5f);
             for(int i = 0; i < 2; ++i) {
                 double newX = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + d;
                 double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + e;
@@ -490,6 +490,10 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
     public boolean isTeammate(Entity other) {
         return this.specialSummons.contains(other.getUuid()) || super.isTeammate(other);
+    }
+
+    public boolean isBulletHellActive() {
+        return this.isAnyState(States.BULLET_HELL_START, States.BULLET_HELL_TICK, States.BULLET_HELL_END);
     }
 
     @Override

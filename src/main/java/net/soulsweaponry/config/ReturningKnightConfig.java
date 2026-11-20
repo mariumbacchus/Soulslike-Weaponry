@@ -43,7 +43,7 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_damage = 50f;
     @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_pillar_radius = 2f;
     @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_pillar_damage = 30f;
-    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_pillar_ripple_amount = 7;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_shadow_pillar_ripple_amount = 6;
     @Entry(min = 0) public static float returning_knight_obliterate_weight = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_special_cooldown = 0;
@@ -129,12 +129,20 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry public static float returning_knight_unbreakable_resistance_amp_with_more_players = 3;
     // Bullet hell
     @Entry public static float returning_knight_bullet_hell_percent_health_trigger_phase_2 = 0.5f;
-    @Entry public static float returning_knight_bullet_hell_darkness_orb_spawn_interval_ticks = 2;
-    @Entry public static float returning_knight_bullet_hell_darkness_orb_lifetime_ticks = 60;
+    @Entry public static float returning_knight_bullet_hell_duration_ticks = 400;
+    @Entry public static float returning_knight_bullet_hell_darkness_orb_spawn_interval_ticks = 3;
+    @Entry public static float returning_knight_bullet_hell_darkness_orb_lifetime_ticks = 40;
     @Entry public static float returning_knight_bullet_hell_darkness_orb_damage = 8f;
-    @Entry public static float returning_knight_bullet_hell_darkness_orb_speed = 0.75f;
-    @Entry public static float returning_knight_bullet_hell_darkness_orb_rotations_degrees_per_tick = 4;
+    @Entry public static float returning_knight_bullet_hell_darkness_orb_speed = 1f;
+    @Entry public static double returning_knight_bullet_hell_darkness_orb_rotations_degrees_per_tick = 1.2D;
     @Entry public static float returning_knight_bullet_hell_darkness_orb_vertical_spacing = 3;
+    @Entry public static float returning_knight_bullet_hell_shadow_pillar_star_spawn_interval_ticks = 80;
+    @Entry public static float returning_knight_bullet_hell_shadow_pillar_star_arms_amount = 6;
+    @Entry public static float returning_knight_bullet_hell_shadow_pillars_per_star_arm = 10;
+    @Entry public static double returning_knight_bullet_hell_shadow_pillars_spacing = 2D;
+    @Entry public static float returning_knight_bullet_hell_shadow_pillars_warmup = 20;
+    @Entry public static float returning_knight_bullet_hell_shadow_pillars_radius = 1.25f;
+    @Entry public static float returning_knight_bullet_hell_shadow_pillars_damage = 24f;
 
     // Misc
     @Entry public static boolean returning_knight_disable_respawn = false;

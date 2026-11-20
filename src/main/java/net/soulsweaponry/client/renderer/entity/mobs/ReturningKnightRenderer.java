@@ -21,6 +21,7 @@ public class ReturningKnightRenderer extends GeoEntityRendererWithDeathlight<Ret
     public ReturningKnightRenderer(Context ctx) {
         super(ctx, new ReturningKnightModel());
         this.shadowRadius = 2.5F;
+        this.addRenderLayer(new ReturningKnightShieldLayer(this));
     }
 
     @Override

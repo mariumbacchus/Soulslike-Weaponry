@@ -3,6 +3,8 @@
 # 1.5
 ## Big Config Changes
 - Renamed `soulsweapons_boss_config.json` to `soulsweapons_entity_config.json`, it will now contain all entity related config lines (excluding entity stats such as frost/bleed buildup), moved the rest of entity related config lines (such as spawnweight, can chungus barter, etc.) from the previous main config to this one
+- Added `returning_knight_config.json` which holds all lines regarding the Returning Knight boss fight
+  - Other bosses still have lines in entity config, but future updates will also add configs for the specific bosses just like here for Returning Knight
 - Renamed and split the main config file `soulsweapons.json` into more files for more clarity and easier navigation
     - `soulsweapons_weapon_config.json` contains lines for weapon stats & abilities, disabling of use and recipes and so on regarding weapons and some items, it will still act as "the main" config file so i.e shield parry and chungus tonic lines will still be here
     - `soulsweapons_armor_config.json` contains lines for armor items instead
@@ -56,6 +58,7 @@
     - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
     - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
 - Reworked Returning Knight
+    - All config lines are now in `returning_knight_config.json`
     - The boss can now jump up blocks
     - Improved the reflection of projectiles
         - The owner of the reflected projectile will NOT be set to the boss so that weird interactions with for example tridents will be avoided
@@ -69,7 +72,7 @@
     - Obliterate attack:
         - Now has a rotatable hitbox which should make the attack more accurate and land exactly where the mace currently is, no more inconsistent attacks where the attack lands behind the boss!
         - This means that the attack won't land just on the selected target, the hitbox will run along the whole mace as it travels to the ground
-        - The attack now also destroys all blocks in the maces path (can be disabled in config with the line `ConfigConstructor.can_bosses_break_blocks` or setting gamerule mob griefing to false)
+        - The attack now also destroys all blocks in the maces path (can be disabled in config with the line `EntityConfig.can_bosses_break_blocks` or setting gamerule mob griefing to false)
         - The attack will adjust its hitbox to max 2 blocks downwards if the target is under the boss
     - Eruption attack:
         - Now properly only warns entities within range of the attack with the door breaking sound
@@ -122,7 +125,7 @@
         - Upon the slam of the knight, all nearby entities hit are affected with Slowness and Darkness, and the shadow orbs charge inward towards the knight
         - Mobs hit by the shadow orbs while having the Darkness effect take increased damage, turning the darkness into Blindness, those that didn't have it are affected with Darkness instead
       - Bullet Hell:
-        - At 50% health, the boss will enter an invulnerable state, shooting shadow orbs and dark pillars towards nearby targets in different ways
+        - At 50% health, the boss will enter an invulnerable state, shooting darkness orbs continuously and periodically summoning shadow pillars around itself in a star shape (*) where the pillars follow the arms out
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack
