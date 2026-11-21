@@ -13,6 +13,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.blocks.*;
+import net.soulsweaponry.blocks.entity.AltarBlockEntity;
 import net.soulsweaponry.blocks.entity.CrimsonObsidianBlockEntity;
 
 import java.util.function.ToIntFunction;
@@ -49,6 +50,7 @@ public class BlockRegistry {
     public static final Block CHUNGUS_EMERALD_BLOCK = new Block(AbstractBlock.Settings.create().mapColor(MapColor.EMERALD_GREEN).instrument(NoteBlockInstrument.BIT).requiresTool().strength(5.0F, 6.0F).sounds(BlockSoundGroup.METAL));
 
     public static BlockEntityType<CrimsonObsidianBlockEntity> CRIMSON_OBSIDIAN_BLOCK_ENTITY;
+    public static BlockEntityType<AltarBlockEntity> MOONSTONE_ALTAR_BLOCK_ENTITY;
 
     public static void init() {
         registerBlock(CRIMSON_OBSIDIAN, "crimson_obsidian");
@@ -80,6 +82,11 @@ public class BlockRegistry {
                 Registries.BLOCK_ENTITY_TYPE,
                 Identifier.of(SoulsWeaponry.ModId, "crimson_obsidian_block_entity"),
                 BlockEntityType.Builder.create(CrimsonObsidianBlockEntity::new, BlockRegistry.CRIMSON_OBSIDIAN).build(null)
+        );
+        MOONSTONE_ALTAR_BLOCK_ENTITY = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                Identifier.of(SoulsWeaponry.ModId, "moonstone_altar_block_entity"),
+                BlockEntityType.Builder.create(AltarBlockEntity::new, BlockRegistry.ALTAR_BLOCK).build(null)
         );
     }
 
