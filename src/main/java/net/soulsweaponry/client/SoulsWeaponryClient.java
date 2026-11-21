@@ -5,12 +5,20 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.EndPortalBlockEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
+import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.client.registry.*;
+import net.soulsweaponry.client.renderer.RotatableHitboxDebugRenderer;
+import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.items.abilities.posthit.SwitchPostHit;
 import net.soulsweaponry.networking.PacketReceiverRegistry;
 import net.soulsweaponry.registry.BlockRegistry;
@@ -77,5 +85,35 @@ public class SoulsWeaponryClient implements ClientModInitializer {
             }
             return -1;
         }, WeaponRegistry.NIGHTLORDS_SWORD);
+
+        RotatableHitboxDebugRenderer.register();
+        // Visually testing base hitboxes
+        WorldRenderEvents.AFTER_ENTITIES.register(context -> {
+            MinecraftClient client = MinecraftClient.getInstance();
+            if (!client.getEntityRenderDispatcher().shouldRenderHitboxes() || !FabricLoader.getInstance().isDevelopmentEnvironment()) {
+                return;
+            }
+            MatrixStack matrices = context.matrixStack();
+            VertexConsumerProvider consumers = context.consumers();
+            if (matrices == null || consumers == null) {
+                return;
+            }
+            Vec3d camera = context.camera().getPos();
+            matrices.push();
+            matrices.translate(-camera.x, -camera.y, -camera.z);
+
+            VertexConsumer lines = consumers.getBuffer(RenderLayer.getLines());
+            for (Entity entity : context.world().getEntities()) {
+                if (entity instanceof ReturningKnight boss) {
+                    WorldRenderer.drawBox(
+                            matrices, lines,
+                            boss.getBoundingBox()
+                                    .expand(7, -2, 7)
+                                    .offset(0, -3, 0),
+                            0F, 1F, 0F, 1F);
+                }
+            }
+            matrices.pop();
+        });
     }
 }

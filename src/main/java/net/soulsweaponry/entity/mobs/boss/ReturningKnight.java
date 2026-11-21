@@ -140,7 +140,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 case MACE_OF_SPADES_2_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_2_phase_2"));
                 case MACE_OF_SPADES_3_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("mace_of_spades_3_phase_2"));
                 case SUMMON_RUPTURE_PHASE_2 -> state.getController().setAnimation(RawAnimation.begin().thenPlay("summon_rupture_phase_2"));
-                case SHADOW_ORBS -> state.getController().setAnimation(RawAnimation.begin().thenPlay("shadow_orb_phase_2"));
+                case DARK_CIRCLE -> state.getController().setAnimation(RawAnimation.begin().thenPlay("shadow_orb_phase_2"));
                 case BULLET_HELL_START -> state.getController().setAnimation(RawAnimation.begin().thenPlay("bullet_hell_start_phase_2"));
                 case BULLET_HELL_TICK -> state.getController().setAnimation(RawAnimation.begin().then("bullet_hell_tick_phase_2", Animation.LoopType.HOLD_ON_LAST_FRAME));
                 case BULLET_HELL_END -> state.getController().setAnimation(RawAnimation.begin().thenPlay("bullet_hell_end_phase_2"));
@@ -274,6 +274,22 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 double newZ = this.random.nextDouble() - 0.5D + this.random.nextGaussian() * 0.15D + e;
                 double newY = this.random.nextDouble() - 0.5D + this.random.nextDouble() * 0.5D;
                 this.getWorld().addParticle(ParticleTypes.WAX_OFF, this.getX(), y, this.getZ(), newX*25, newY*18, newZ*25);
+            }
+        }
+        // Particles around the shadow during dark circle attack
+        if (this.getWorld().isClient && this.isState(States.DARK_CIRCLE)) {
+            int particleCount = 4;
+            double horizontalSpread = 2D;
+            double verticalSpread = 4D;
+            for (int i = 0; i < particleCount; i++) {
+                double x = this.getX() + (this.random.nextDouble() * 2D - 1D) * horizontalSpread;
+                double y = this.getY() + 11D + (this.random.nextDouble() * 2D - 1D) * verticalSpread;
+                double z = this.getZ() + (this.random.nextDouble() * 2D - 1D) * horizontalSpread;
+                this.getWorld().addParticle(
+                        ParticleTypes.LARGE_SMOKE, x, y, z,
+                        (this.random.nextDouble() - 0.5D) * 0.08D,
+                        0.02D,
+                        (this.random.nextDouble() - 0.5D) * 0.08D);
             }
         }
 
@@ -529,6 +545,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         MACE_OF_SPADES_1, MACE_OF_SPADES_2, MACE_OF_SPADES_3, MACE_OF_SPADES_4_SPIN,
 
         OBLITERATE_PHASE_2, OBLITERATE_FAKEOUT_PHASE_2, MACE_OF_SPADES_1_PHASE_2, MACE_OF_SPADES_2_PHASE_2, MACE_OF_SPADES_3_PHASE_2,
-        SUMMON_RUPTURE_PHASE_2, SHADOW_ORBS, BULLET_HELL_START, BULLET_HELL_TICK, BULLET_HELL_END
+        SUMMON_RUPTURE_PHASE_2, DARK_CIRCLE, BULLET_HELL_START, BULLET_HELL_TICK, BULLET_HELL_END
     }
 }

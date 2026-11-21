@@ -19,41 +19,45 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class DarknessOrb extends DamagingNoClipEntity implements GeoEntity {
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
-    private static final TrackedData<Boolean> REDUCE_PARTICLES = DataTracker.registerData(DarknessOrb.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> BOOST_DARKNESS = DataTracker.registerData(DarknessOrb.class, TrackedDataHandlerRegistry.BOOLEAN);
 
     public DarknessOrb(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
         this.setAreaParticle(ParticleTypes.LARGE_SMOKE);
         this.setAreaParticleCount((byte) 1);
-        this.setReduceParticles(false);
+        this.setBoostDarkness(false);
     }
 
-    public DarknessOrb(World world, LivingEntity owner, int maxAge, boolean reduceParticles) {
+    public DarknessOrb(World world, LivingEntity owner, int maxAge, boolean boostDarkness) {
         super(EntityRegistry.DARKNESS_ORB, world, owner, maxAge);
         this.setAreaParticle(ParticleTypes.LARGE_SMOKE);
         this.setAreaParticleCount((byte) 1);
-        this.setReduceParticles(reduceParticles);
+        this.setBoostDarkness(boostDarkness);
+    }
+
+    public DarknessOrb(World world, LivingEntity owner, int maxAge) {
+        this(world, owner, maxAge, false);
     }
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(REDUCE_PARTICLES, false);
+        builder.add(BOOST_DARKNESS, false);
     }
 
-    public void setReduceParticles(boolean bl) {
-        this.dataTracker.set(REDUCE_PARTICLES, bl);
+    public void setBoostDarkness(boolean bl) {
+        this.dataTracker.set(BOOST_DARKNESS, bl);
     }
 
-    public boolean getReduceParticles() {
-        return this.dataTracker.get(REDUCE_PARTICLES);
+    public boolean getBoostDarkness() {
+        return this.dataTracker.get(BOOST_DARKNESS);
     }
 
     @Override
     public void tick() {
         super.tick();
         if (this.getWorld().isClient) {
-            if (this.getReduceParticles() && this.age % 10 != 0) {
+            if (this.age % 10 != 0) {
                 return;
             }
             for (int i = 0; i < this.getAreaParticleCount(); ++i) {
@@ -64,7 +68,12 @@ public class DarknessOrb extends DamagingNoClipEntity implements GeoEntity {
 
     @Override
     public void applyDamageEffects(boolean wasHit, LivingEntity target) {
-        target.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 40, 0));
+        if (this.getBoostDarkness() && wasHit && target.hasStatusEffect(StatusEffects.DARKNESS)) {
+            target.removeStatusEffect(StatusEffects.DARKNESS);
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 60, 0));
+        } else {
+            target.addStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 40, 0));
+        }
     }
 
     @Override

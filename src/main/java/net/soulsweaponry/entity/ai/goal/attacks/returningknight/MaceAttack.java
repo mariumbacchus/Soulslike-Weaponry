@@ -73,10 +73,10 @@ public abstract class MaceAttack extends ReturningKnightAttack {
     public void doObliterateDamage(RotatableHitbox hitbox, float damage) {
         this.doMaceDamage(hitbox, DamageSourceRegistry.create(this.getWorld(), DamageSourceRegistry.OBLITERATED, this.getBoss()), damage, target -> {
             target.addVelocity(0, 1, 0);
-            if (target.isDead() && this.getGoal().isValidSpawn(target.getBlockPos())) {
-                this.hitEntities.add(this.getGoal().summonAllies(target.getPos(), false));
+            if (target.isDead() && this.isValidSpawn(target.getBlockPos())) {
+                this.hitEntities.add(this.summonAllies(target.getPos(), false));
                 if (this.getBoss().getHealth() <= this.getBoss().getMaxHealth() / 2.0F) {
-                    this.hitEntities.add(this.getGoal().summonAllies(target.getPos(), false));
+                    this.hitEntities.add(this.summonAllies(target.getPos(), false));
                 }
             }
         }, true);

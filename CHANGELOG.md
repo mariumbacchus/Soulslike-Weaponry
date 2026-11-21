@@ -57,8 +57,9 @@
     - Duration increased from 4 to 5 seconds of the cloud
     - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
     - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
-- Reworked Returning Knight
+- Reworked the Returning Knight boss fight
     - All config lines are now in `returning_knight_config.json`
+      - All lines no longer start with `returning_knigh_` since they are in that file and no longer needs specification
     - The boss can now jump up blocks
     - Improved the reflection of projectiles
         - The owner of the reflected projectile will NOT be set to the boss so that weird interactions with for example tridents will be avoided
@@ -121,11 +122,11 @@
           - The boss will only do this ability if no Elite Remnant is alive and tied to the boss
       - Dark Circle (Unbreakable + Blinding Reflection):
         - The knight slams his chest, preparing to slam the ground
-        - The shadow does a ritual with its mace, spawning giant shadow orbs in a circle many blocks away
-        - Upon the slam of the knight, all nearby entities hit are affected with Slowness and Darkness, and the shadow orbs charge inward towards the knight
+        - The shadow does a ritual with its mace, spawning Darkness Orbs in a circle many blocks away
+        - Upon the slam of the knight, all nearby entities hit are affected with Slowness and Darkness, and the Darkness Orbs charge inward towards the knight
         - Mobs hit by the shadow orbs while having the Darkness effect take increased damage, turning the darkness into Blindness, those that didn't have it are affected with Darkness instead
       - Bullet Hell:
-        - At 50% health, the boss will enter an invulnerable state, shooting darkness orbs continuously and periodically summoning shadow pillars around itself in a star shape (*) where the pillars follow the arms out
+        - At 50% health, the boss will enter an invulnerable state, shooting Darkness Orbs continuously and periodically summoning shadow pillars around itself in a star shape (*) where the pillars follow the arms out
 
 ## Bugfixes
 - Fixed a bug preventing Night Prowler from using the Trinity attack

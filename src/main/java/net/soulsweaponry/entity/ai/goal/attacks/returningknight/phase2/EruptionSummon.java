@@ -39,7 +39,7 @@ public class EruptionSummon extends ReturningKnightAttack {
             RandomSummonPos remnants = new RandomSummonPos(this.getWorld(), this.getBoss().getRandom(), (int) this.summonAmount, 10,
                     this.getBoss().getBlockPos(), (int) this.summonRadius, 8, 5,
                     (pos) -> {
-                        this.getGoal().summonAllies(pos, new EliteRemnant(EntityRegistry.ELITE_REMNANT, this.getWorld()), true);
+                        this.summonAllies(pos, new EliteRemnant(EntityRegistry.ELITE_REMNANT, this.getWorld()), true);
                         // This was a bit brutal so maybe just have random eruptions around instead
                         // this.summonDarkPillarsCircle(target, (int) this.pillarRippleAmount, this.pillarRadius, this.pillarDamage, 1, new Vec2f(1.5f, 1.75f), pos);
                     });
@@ -57,7 +57,7 @@ public class EruptionSummon extends ReturningKnightAttack {
 
     @Override
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return !this.getBoss().hasSpecialSummonsAlive();
+        return !this.getBoss().hasSpecialSummonsAlive() && distanceToTarget <= 150;
     }
 
     @Override

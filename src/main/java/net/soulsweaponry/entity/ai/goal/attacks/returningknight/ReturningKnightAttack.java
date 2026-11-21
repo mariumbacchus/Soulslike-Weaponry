@@ -2,7 +2,10 @@ package net.soulsweaponry.entity.ai.goal.attacks.returningknight;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
@@ -10,9 +13,17 @@ import net.soulsweaponry.collision.RotatableHitbox;
 import net.soulsweaponry.entity.ai.goal.ReturningKnightGoal;
 import net.soulsweaponry.entity.ai.goal.attacks.BossAttack;
 import net.soulsweaponry.entity.ai.goal.hitboxes.BossHitboxHelper;
+import net.soulsweaponry.entity.mobs.DarkSorcerer;
 import net.soulsweaponry.entity.mobs.EliteRemnant;
+import net.soulsweaponry.entity.mobs.Remnant;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
+import net.soulsweaponry.particles.ParticleEvents;
+import net.soulsweaponry.particles.ParticleHandler;
+import net.soulsweaponry.registry.EntityRegistry;
+import net.soulsweaponry.registry.SoundRegistry;
 import net.soulsweaponry.util.WeaponUtil;
+
+import java.util.UUID;
 
 public abstract class ReturningKnightAttack extends BossAttack<ReturningKnight.States, ReturningKnight, ReturningKnightGoal> {
 
@@ -70,12 +81,34 @@ public abstract class ReturningKnightAttack extends BossAttack<ReturningKnight.S
             float centeredIndex = i - (darknessOrbAmountPerTick - 1) / 2f;
             float angle = centeredIndex * spacingDegrees * MathHelper.RADIANS_PER_DEGREE;
             Vec3d direction = outward.rotateY(angle);
-            ReturningKnightProjectiles.spawnDarknessOrb(this.getBoss(), spawnPos.add(0, -0.5D, 0), direction, darknessOrbDamage, darknessOrbSpeed, 30, false);
+            ReturningKnightProjectiles.spawnDarknessOrb(this.getBoss(), spawnPos.add(0, -0.5D, 0), direction, darknessOrbDamage, darknessOrbSpeed, 30);
         }
         this.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 3f, 0.5f);
     }
 
     public void spawnEruption(Vec3d pos, float yaw, float damage, int warmup) {
         ReturningKnightProjectiles.spawnEruption(this.getBoss(), pos, yaw, damage, warmup);
+    }
+
+    public UUID summonAllies(Vec3d pos, MobEntity ally, boolean isSpecialSummon) {
+        ally.setPosition(pos);
+        this.getWorld().playSound(null, ally.getBlockPos(), SoundRegistry.NIGHTFALL_SPAWN_EVENT, SoundCategory.HOSTILE, 1f, 1f);
+        this.getWorld().spawnEntity(ally);
+        if (isSpecialSummon) {
+            this.getBoss().addSpecialSummon(ally.getUuid());
+        }
+        if (!this.getWorld().isClient) {
+            ParticleHandler.particleOutburstMap(this.getWorld(), 100, pos.getX(), pos.getY(), pos.getZ(), ParticleEvents.SOUL_RUPTURE_MAP, 1f);
+        }
+        return ally.getUuid();
+    }
+
+    public UUID summonAllies(Vec3d pos, boolean isHealer) {
+        MobEntity entity = isHealer ? new DarkSorcerer(EntityRegistry.DARK_SORCERER, this.getWorld()) : new Remnant(EntityRegistry.REMNANT, this.getWorld());
+        return summonAllies(pos, entity, isHealer);
+    }
+
+    public boolean isValidSpawn(BlockPos pos) {
+        return this.getWorld().getBlockState(pos).isAir() && !this.getWorld().getBlockState(pos.down()).isAir();
     }
 }

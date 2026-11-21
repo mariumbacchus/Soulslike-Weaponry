@@ -24,8 +24,8 @@ public final class ReturningKnightProjectiles {
         }
     }
 
-    public static void spawnDarknessOrb(ReturningKnight boss, Vec3d pos, Vec3d direction, float damage, float speed, int lifetime, boolean reduceParticles) {
-        DarknessOrb orb = new DarknessOrb(boss.getWorld(), boss, lifetime, reduceParticles);
+    public static void spawnDarknessOrb(ReturningKnight boss, Vec3d pos, Vec3d direction, float damage, float speed, int lifetime) {
+        DarknessOrb orb = new DarknessOrb(boss.getWorld(), boss, lifetime);
         orb.setDamage(boss.getModifiedDamage(damage));
         orb.setPosition(pos);
         orb.setVelocity(direction.x, direction.y, direction.z, speed, 0F);

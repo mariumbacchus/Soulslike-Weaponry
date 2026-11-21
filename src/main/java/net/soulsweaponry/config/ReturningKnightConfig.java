@@ -47,6 +47,9 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_obliterate_weight = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_obliterate_special_cooldown = 0;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_weight = 20;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_obliterate_phase_2_special_cooldown = 0;
 
     // Mace of Spades 1
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_swipe_damage = 20;
@@ -59,6 +62,9 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_weight = 10;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_1_special_cooldown = 0;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_weight = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_1_phase_2_special_cooldown = 0;
 
     // Mace of Spades 2
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_swipe_damage = 20;
@@ -71,6 +77,9 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_weight = 10;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_2_special_cooldown = 0;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_weight = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_2_phase_2_special_cooldown = 0;
 
     // Mace of Spades 3
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_one_handed_swipe_damage = 20;
@@ -85,6 +94,9 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_weight = 10;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_mace_of_spades_3_special_cooldown = 0;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_weight = 10;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_cooldown = 20;
+    @Entry(min = 0) public static float returning_knight_mace_of_spades_3_phase_2_special_cooldown = 0;
 
     // Mace of Spades 4
     @Entry(min = 0) public static float returning_knight_mace_of_spades_4_swipe_damage = 18;
@@ -117,9 +129,25 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_eruption_spawn_radius = 16;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_eruption_damage = 30f;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_eruption_amount = 64;
-    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_weight = 20;
+    @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_weight = 10;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_cooldown = 20;
     @Entry(min = 0) public static float returning_knight_children_of_the_grave_eruption_phase_2_special_cooldown = 0;
+
+    // Dark Circle (Unbreakable + Blinding Reflection) (Phase 2)
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_slam_damage = 20;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_slam_radius_horizontal = 7;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_slam_slowness_amp = 0;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_slam_slowness_duration = 100;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_slam_darkness_duration = 100;
+    @Entry(min = 0) public static boolean returning_knight_dark_circle_phase_2_darkness_orb_turns_darkness_into_blindness = true;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_darkness_orb_count = 48;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_darkness_orb_ring_radius = 24;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_darkness_orb_damage = 14;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_darkness_orb_speed = 0.8f;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_darkness_orb_lifetime_ticks = 35;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_weight = 20;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_cooldown = 30;
+    @Entry(min = 0) public static float returning_knight_dark_circle_phase_2_special_cooldown = 100;
 
     // Events
     // Unbreakable

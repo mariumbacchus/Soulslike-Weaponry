@@ -33,8 +33,8 @@ public class ChildrenOfTheGrave extends ReturningKnightAttack {
                 enemyNumber += healerNumber;
                 healerNumber = 0;
             }
-            RandomSummonPos remnants = new RandomSummonPos(this.getWorld(), this.getBoss().getRandom(), enemyNumber, 10, this.getBoss().getBlockPos(), 10, 8, 5, (pos) -> this.getGoal().summonAllies(pos, false));
-            RandomSummonPos healers = new RandomSummonPos(this.getWorld(), this.getBoss().getRandom(), healerNumber, 10, this.getBoss().getBlockPos(), 10, 8, 5, (pos) -> this.getGoal().summonAllies(pos, true));
+            RandomSummonPos remnants = new RandomSummonPos(this.getWorld(), this.getBoss().getRandom(), enemyNumber, 10, this.getBoss().getBlockPos(), 10, 8, 5, (pos) -> this.summonAllies(pos, false));
+            RandomSummonPos healers = new RandomSummonPos(this.getWorld(), this.getBoss().getRandom(), healerNumber, 10, this.getBoss().getBlockPos(), 10, 8, 5, (pos) -> this.summonAllies(pos, true));
             remnants.applySummonSpawns();
             healers.applySummonSpawns();
             if (!this.getWorld().isClient) {

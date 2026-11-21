@@ -79,7 +79,7 @@ public class BulletHell extends ReturningKnightEvent {
             Vec3d direction = new Vec3d(Math.cos(angle), 0D, Math.sin(angle));
             for (int row = -1; row <= 1; row++) {
                 Vec3d spawnPos = center.add(0D, row * ORB_VERTICAL_SPACING, 0D);
-                ReturningKnightProjectiles.spawnDarknessOrb(boss, spawnPos, direction, damage, ORB_SPEED, ORB_LIFETIME, true);
+                ReturningKnightProjectiles.spawnDarknessOrb(boss, spawnPos, direction, damage, ORB_SPEED, ORB_LIFETIME);
             }
         }
     }
