@@ -72,12 +72,12 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     public ReturningKnight(EntityType<? extends ReturningKnight> entityType, World world) {
         super(entityType, world, BossBar.Color.BLUE, ReturningKnight.States.class);
         this.registerEvent(States.UNBREAKABLE, new Unbreakable(this, 76));
-        this.registerEvent(States.BULLET_HELL_START, new BulletHell(this, (int) ReturningKnightConfig.returning_knight_bullet_hell_duration_ticks));
+        this.registerEvent(States.BULLET_HELL_START, new BulletHell(this, (int) ReturningKnightConfig.bullet_hell_duration_ticks));
     }
 
     @Override
     public float getModifiedDamage(float damage) {
-        return damage * ReturningKnightConfig.returning_knight_damage_modifier;
+        return damage * ReturningKnightConfig.damage_modifier;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         if (IGNORE_ANIMATION_SPEED.contains(this.getState()) || this.isDead()) {
             return 1D;
         }
-        return ReturningKnightConfig.returning_knight_animation_speed;
+        return ReturningKnightConfig.animation_speed;
     }
 
     private PlayState idle(AnimationState<?> state) {
@@ -167,11 +167,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     public static DefaultAttributeContainer.Builder createBossAttributes() {
         return HostileEntity.createHostileAttributes()
         .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 50D)
-        .add(EntityAttributes.GENERIC_MAX_HEALTH, ReturningKnightConfig.returning_knight_health)
+        .add(EntityAttributes.GENERIC_MAX_HEALTH, ReturningKnightConfig.health)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.17D)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0D)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0D)
-        .add(EntityAttributes.GENERIC_ARMOR, ReturningKnightConfig.returning_knight_armor);
+        .add(EntityAttributes.GENERIC_ARMOR, ReturningKnightConfig.armor);
     }
 
     @Override
@@ -259,12 +259,12 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
         }
 
         //Unbreakable particles
-        if (this.getHealth() <= this.getMaxHealth() * ReturningKnightConfig.returning_knight_unbreakable_percent_health_trigger && !this.isDead() && !this.isState(States.INITIATE_PHASE_2)) {
+        if (this.getHealth() <= this.getMaxHealth() * ReturningKnightConfig.unbreakable_percent_health_trigger && !this.isDead() && !this.isState(States.INITIATE_PHASE_2)) {
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10, 0));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10,
-                    (int) (this.getAttackingPlayersAmount() >= ReturningKnightConfig.returning_knight_unbreakable_attacking_players_needed_to_increase_resistance_amp
-                                                ? ReturningKnightConfig.returning_knight_unbreakable_resistance_amp_with_more_players
-                                                : ReturningKnightConfig.returning_knight_unbreakable_resistance_amp)));
+                    (int) (this.getAttackingPlayersAmount() >= ReturningKnightConfig.unbreakable_attacking_players_needed_to_increase_resistance_amp
+                                                ? ReturningKnightConfig.unbreakable_resistance_amp_with_more_players
+                                                : ReturningKnightConfig.unbreakable_resistance_amp)));
 
             double d = this.random.nextGaussian() * 0.05D;
             double e = this.random.nextGaussian() * 0.05D;
@@ -416,27 +416,27 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     @Override
     public String[] getWhitelistedProjectiles() {
-        return ReturningKnightConfig.returning_knight_projectile_immunity_whitelist;
+        return ReturningKnightConfig.projectile_immunity_whitelist;
     }
 
     @Override
     public String[] getBlacklistedStatusEffects() {
-        return ReturningKnightConfig.returning_knight_status_effect_blacklist;
+        return ReturningKnightConfig.status_effect_blacklist;
     }
 
     @Override
     public boolean disablesShield() {
-        return ReturningKnightConfig.returning_knight_disables_shields;
+        return ReturningKnightConfig.disables_shields;
     }
 
     @Override
     public boolean hasInvertedHealingAndHarm() {
-        return ReturningKnightConfig.returning_knight_has_inverted_heal_and_harm;
+        return ReturningKnightConfig.has_inverted_heal_and_harm;
     }
 
     @Override
     public boolean isFireImmune() {
-        return ReturningKnightConfig.returning_knight_is_fire_immune;
+        return ReturningKnightConfig.is_fire_immune;
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -457,7 +457,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     @Override
     public int getXp() {
-        return (int) ReturningKnightConfig.returning_knight_xp;
+        return (int) ReturningKnightConfig.xp;
     }
 
     @Override

@@ -14,20 +14,20 @@ public class BulletHell extends ReturningKnightEvent {
     private static final int START_TICKS = 51;
     private static final int END_TICKS = 40;
 
-    private static final int ORB_INTERVAL = (int) ReturningKnightConfig.returning_knight_bullet_hell_darkness_orb_spawn_interval_ticks;
-    private static final int ORB_LIFETIME = (int) ReturningKnightConfig.returning_knight_bullet_hell_darkness_orb_lifetime_ticks;
-    private static final float ORB_DAMAGE = ReturningKnightConfig.returning_knight_bullet_hell_darkness_orb_damage;
-    private static final float ORB_SPEED = ReturningKnightConfig.returning_knight_bullet_hell_darkness_orb_speed;
-    private static final double ROTATION_PER_TICK = ReturningKnightConfig.returning_knight_bullet_hell_darkness_orb_rotations_degrees_per_tick;
-    private static final double ORB_VERTICAL_SPACING = ReturningKnightConfig.returning_knight_bullet_hell_darkness_orb_vertical_spacing;
+    private static final int ORB_INTERVAL = (int) ReturningKnightConfig.bullet_hell_darkness_orb_spawn_interval_ticks;
+    private static final int ORB_LIFETIME = (int) ReturningKnightConfig.bullet_hell_darkness_orb_lifetime_ticks;
+    private static final float ORB_DAMAGE = ReturningKnightConfig.bullet_hell_darkness_orb_damage;
+    private static final float ORB_SPEED = ReturningKnightConfig.bullet_hell_darkness_orb_speed;
+    private static final double ROTATION_PER_TICK = ReturningKnightConfig.bullet_hell_darkness_orb_rotations_degrees_per_tick;
+    private static final double ORB_VERTICAL_SPACING = ReturningKnightConfig.bullet_hell_darkness_orb_vertical_spacing;
 
-    private static final int STAR_INTERVAL = (int) ReturningKnightConfig.returning_knight_bullet_hell_shadow_pillar_star_spawn_interval_ticks;
-    private static final int STAR_ARMS = (int) ReturningKnightConfig.returning_knight_bullet_hell_shadow_pillar_star_arms_amount;
-    private static final int PILLARS_PER_ARM = (int) ReturningKnightConfig.returning_knight_bullet_hell_shadow_pillars_per_star_arm;
-    private static final double PILLAR_SPACING = ReturningKnightConfig.returning_knight_bullet_hell_shadow_pillars_spacing;
-    private static final int PILLAR_WARMUP = (int) ReturningKnightConfig.returning_knight_bullet_hell_shadow_pillars_warmup;
-    private static final float PILLAR_RADIUS = ReturningKnightConfig.returning_knight_bullet_hell_shadow_pillars_radius;
-    private static final float PILLAR_DAMAGE = ReturningKnightConfig.returning_knight_bullet_hell_shadow_pillars_damage;
+    private static final int STAR_INTERVAL = (int) ReturningKnightConfig.bullet_hell_shadow_pillar_star_spawn_interval_ticks;
+    private static final int STAR_ARMS = (int) ReturningKnightConfig.bullet_hell_shadow_pillar_star_arms_amount;
+    private static final int PILLARS_PER_ARM = (int) ReturningKnightConfig.bullet_hell_shadow_pillars_per_star_arm;
+    private static final double PILLAR_SPACING = ReturningKnightConfig.bullet_hell_shadow_pillars_spacing;
+    private static final int PILLAR_WARMUP = (int) ReturningKnightConfig.bullet_hell_shadow_pillars_warmup;
+    private static final float PILLAR_RADIUS = ReturningKnightConfig.bullet_hell_shadow_pillars_radius;
+    private static final float PILLAR_DAMAGE = ReturningKnightConfig.bullet_hell_shadow_pillars_damage;
 
     private final int shootingTicksDuration;
 
@@ -72,7 +72,7 @@ public class BulletHell extends ReturningKnightEvent {
 
     private void spawnRotatingCross(double rotationRadians) {
         ReturningKnight boss = this.getBoss();
-        float damage = ORB_DAMAGE * ReturningKnightConfig.returning_knight_damage_modifier;
+        float damage = ORB_DAMAGE * ReturningKnightConfig.damage_modifier;
         Vec3d center = boss.getPos();
         for (int arm = 0; arm < 4; arm++) {
             double angle = rotationRadians + arm * Math.PI / 2D;
@@ -86,7 +86,7 @@ public class BulletHell extends ReturningKnightEvent {
 
     private void spawnPillarStar(double rotation) {
         ReturningKnight boss = this.getBoss();
-        float damage = PILLAR_DAMAGE * ReturningKnightConfig.returning_knight_damage_modifier;
+        float damage = PILLAR_DAMAGE * ReturningKnightConfig.damage_modifier;
         Vec3d center = boss.getPos();
         for (int arm = 0; arm < STAR_ARMS; arm++) {
             double angle = rotation + arm * Math.PI * 2D / STAR_ARMS;
@@ -107,6 +107,6 @@ public class BulletHell extends ReturningKnightEvent {
 
     @Override
     public boolean canTrigger() {
-        return this.getBoss().isPhaseTwo() && this.getBoss().getHealth() <= this.getBoss().getMaxHealth() * ReturningKnightConfig.returning_knight_bullet_hell_percent_health_trigger_phase_2;
+        return this.getBoss().isPhaseTwo() && this.getBoss().getHealth() <= this.getBoss().getMaxHealth() * ReturningKnightConfig.bullet_hell_percent_health_trigger_phase_2;
     }
 }

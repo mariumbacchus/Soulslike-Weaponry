@@ -14,9 +14,9 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 public class MaceOfSpades3 extends MaceAttack {
 
-    private final float oneHandedSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_3_one_handed_swipe_damage;
-    private final float twoHandedSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_3_two_handed_swipe_damage;
-    private final float chargedTwoHandedSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_3_charged_swipe_damage;
+    private final float oneHandedSwipe = ReturningKnightConfig.mace_of_spades_3_one_handed_swipe_damage;
+    private final float twoHandedSwipe = ReturningKnightConfig.mace_of_spades_3_two_handed_swipe_damage;
+    private final float chargedTwoHandedSwipe = ReturningKnightConfig.mace_of_spades_3_charged_swipe_damage;
 
     public MaceOfSpades3(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, MaceOfSpadesTimings.MACE_SIZE_3);

@@ -14,11 +14,11 @@ import net.soulsweaponry.registry.SoundRegistry;
 public class MaceOfSpades2Shadow extends MaceOfSpades2 {
 
     public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(MaceOfSpadesShadowTimings.MACE_SIZE_2);
-    private final float damageSwipe = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_swipe_damage;
-    private final float damageSmash = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_smash_damage;
-    private final float pillarRadius = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_radius;
-    private final float pillarDamage = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_damage;
-    private final float pillarRippleAmount = ReturningKnightConfig.returning_knight_mace_of_spades_2_phase_2_shadow_pillar_arm_length;
+    private final float damageSwipe = ReturningKnightConfig.mace_of_spades_2_phase_2_shadow_swipe_damage;
+    private final float damageSmash = ReturningKnightConfig.mace_of_spades_2_phase_2_shadow_smash_damage;
+    private final float pillarRadius = ReturningKnightConfig.mace_of_spades_2_phase_2_shadow_pillar_radius;
+    private final float pillarDamage = ReturningKnightConfig.mace_of_spades_2_phase_2_shadow_pillar_damage;
+    private final float pillarRippleAmount = ReturningKnightConfig.mace_of_spades_2_phase_2_shadow_pillar_arm_length;
 
     public MaceOfSpades2Shadow(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

@@ -17,11 +17,11 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 public class EruptionSummon extends ReturningKnightAttack {
 
-    private final float summonRadius = ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_summon_radius;
-    private final float summonAmount = ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_summon_amount;
-    private final int eruptionSpawnRadius = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_spawn_radius;
-    private final float eruptionDamage = ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_damage;
-    private final int eruptionAmount = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_eruption_phase_2_eruption_amount;
+    private final float summonRadius = ReturningKnightConfig.children_of_the_grave_eruption_phase_2_summon_radius;
+    private final float summonAmount = ReturningKnightConfig.children_of_the_grave_eruption_phase_2_summon_amount;
+    private final int eruptionSpawnRadius = (int) ReturningKnightConfig.children_of_the_grave_eruption_phase_2_eruption_spawn_radius;
+    private final float eruptionDamage = ReturningKnightConfig.children_of_the_grave_eruption_phase_2_eruption_damage;
+    private final int eruptionAmount = (int) ReturningKnightConfig.children_of_the_grave_eruption_phase_2_eruption_amount;
 
     public EruptionSummon(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

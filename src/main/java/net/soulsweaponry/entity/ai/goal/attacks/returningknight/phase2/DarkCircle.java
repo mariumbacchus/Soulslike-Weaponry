@@ -19,21 +19,21 @@ import java.util.List;
 
 public class DarkCircle extends ReturningKnightAttack {
 
-    private static final float SLAM_DAMAGE = ReturningKnightConfig.returning_knight_dark_circle_phase_2_slam_damage;
-    private static final float SLAM_RADIUS_HORIZONTAL = ReturningKnightConfig.returning_knight_dark_circle_phase_2_slam_radius_horizontal;
-    private static final int SLAM_SLOWNESS_AMP = (int) ReturningKnightConfig.returning_knight_dark_circle_phase_2_slam_slowness_amp;
-    private static final int SLAM_SLOWNESS_DURATION = (int) ReturningKnightConfig.returning_knight_dark_circle_phase_2_slam_slowness_duration;
-    private static final int SLAM_DARKNESS_DURATION = (int) ReturningKnightConfig.returning_knight_dark_circle_phase_2_slam_darkness_duration;
+    private static final float SLAM_DAMAGE = ReturningKnightConfig.dark_circle_phase_2_slam_damage;
+    private static final float SLAM_RADIUS_HORIZONTAL = ReturningKnightConfig.dark_circle_phase_2_slam_radius_horizontal;
+    private static final int SLAM_SLOWNESS_AMP = (int) ReturningKnightConfig.dark_circle_phase_2_slam_slowness_amp;
+    private static final int SLAM_SLOWNESS_DURATION = (int) ReturningKnightConfig.dark_circle_phase_2_slam_slowness_duration;
+    private static final int SLAM_DARKNESS_DURATION = (int) ReturningKnightConfig.dark_circle_phase_2_slam_darkness_duration;
 
     private static final int ORB_SPAWN_TICK = 28;
     private static final int ORB_RELEASE_TICK = 98;
 
-    private static final boolean BOOST_DARKNESS = ReturningKnightConfig.returning_knight_dark_circle_phase_2_darkness_orb_turns_darkness_into_blindness;
-    private static final int ORB_COUNT = (int) ReturningKnightConfig.returning_knight_dark_circle_phase_2_darkness_orb_count;
-    private static final float ORB_RING_RADIUS = ReturningKnightConfig.returning_knight_dark_circle_phase_2_darkness_orb_ring_radius;
-    private static final float ORB_DAMAGE = ReturningKnightConfig.returning_knight_dark_circle_phase_2_darkness_orb_damage;
-    private static final float ORB_SPEED = ReturningKnightConfig.returning_knight_dark_circle_phase_2_darkness_orb_speed;
-    private static final int ORB_FLIGHT_TICKS = (int) ReturningKnightConfig.returning_knight_dark_circle_phase_2_darkness_orb_lifetime_ticks;
+    private static final boolean BOOST_DARKNESS = ReturningKnightConfig.dark_circle_phase_2_darkness_orb_turns_darkness_into_blindness;
+    private static final int ORB_COUNT = (int) ReturningKnightConfig.dark_circle_phase_2_darkness_orb_count;
+    private static final float ORB_RING_RADIUS = ReturningKnightConfig.dark_circle_phase_2_darkness_orb_ring_radius;
+    private static final float ORB_DAMAGE = ReturningKnightConfig.dark_circle_phase_2_darkness_orb_damage;
+    private static final float ORB_SPEED = ReturningKnightConfig.dark_circle_phase_2_darkness_orb_speed;
+    private static final int ORB_FLIGHT_TICKS = (int) ReturningKnightConfig.dark_circle_phase_2_darkness_orb_lifetime_ticks;
 
     private final List<DarknessOrb> waitingOrbs = new ArrayList<>();
 

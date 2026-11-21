@@ -14,10 +14,10 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 public class ChildrenOfTheGrave extends ReturningKnightAttack {
 
-    private final int enemyBound = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_extra_enemy_bound;
-    private final int minEnemyCount = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_min_enemy_count;
-    private final int healerBound = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_extra_healer_bound;
-    private final int minHealerCount = (int) ReturningKnightConfig.returning_knight_children_of_the_grave_min_healer_count;
+    private final int enemyBound = (int) ReturningKnightConfig.children_of_the_grave_extra_enemy_bound;
+    private final int minEnemyCount = (int) ReturningKnightConfig.children_of_the_grave_min_enemy_count;
+    private final int healerBound = (int) ReturningKnightConfig.children_of_the_grave_extra_healer_bound;
+    private final int minHealerCount = (int) ReturningKnightConfig.children_of_the_grave_min_healer_count;
 
     public ChildrenOfTheGrave(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

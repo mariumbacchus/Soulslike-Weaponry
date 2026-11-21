@@ -13,7 +13,7 @@ import net.soulsweaponry.particles.ParticleHandler;
 
 public class BlindingLight extends ReturningKnightAttack {
 
-    private final float damage = ReturningKnightConfig.returning_knight_blinding_light_damage;
+    private final float damage = ReturningKnightConfig.blinding_light_damage;
 
     public BlindingLight(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

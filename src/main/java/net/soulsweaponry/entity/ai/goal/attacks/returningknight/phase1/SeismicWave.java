@@ -16,8 +16,8 @@ import net.soulsweaponry.util.WeaponUtil;
 
 public class SeismicWave extends MaceAttack {
 
-    private final float swipeDamage = ReturningKnightConfig.returning_knight_seismic_wave_swipe_damage;
-    private final float eruptionDamage = ReturningKnightConfig.returning_knight_seismic_wave_eruption_damage;
+    private final float swipeDamage = ReturningKnightConfig.seismic_wave_swipe_damage;
+    private final float eruptionDamage = ReturningKnightConfig.seismic_wave_eruption_damage;
 
     public SeismicWave(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, SeismicWaveHitbox.MACE_SIZE);

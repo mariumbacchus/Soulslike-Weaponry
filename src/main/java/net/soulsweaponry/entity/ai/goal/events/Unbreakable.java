@@ -22,6 +22,6 @@ public class Unbreakable extends ReturningKnightEvent {
 
     @Override
     public boolean canTrigger() {
-        return !this.getBoss().isPhaseTwo() && this.getBoss().getHealth() <= this.getBoss().getMaxHealth() * ReturningKnightConfig.returning_knight_unbreakable_percent_health_trigger;
+        return !this.getBoss().isPhaseTwo() && this.getBoss().getHealth() <= this.getBoss().getMaxHealth() * ReturningKnightConfig.unbreakable_percent_health_trigger;
     }
 }

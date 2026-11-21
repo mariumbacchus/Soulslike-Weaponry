@@ -17,8 +17,8 @@ import java.util.List;
 
 public class Eruption extends ReturningKnightAttack {
 
-    private final float attackRangeBlocks = ReturningKnightConfig.returning_knight_eruption_range_blocks;
-    private final float damage = ReturningKnightConfig.returning_knight_eruption_damage;
+    private final float attackRangeBlocks = ReturningKnightConfig.eruption_range_blocks;
+    private final float damage = ReturningKnightConfig.eruption_damage;
 
     public Eruption(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

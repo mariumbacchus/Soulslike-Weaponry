@@ -10,7 +10,7 @@ import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 
 public class Obliterate extends MaceAttack {
 
-    private final float damage = ReturningKnightConfig.returning_knight_obliterate_damage;
+    private final float damage = ReturningKnightConfig.obliterate_damage;
 
     public Obliterate(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, ObliterateHitbox.OBLITERATE_MACE_SIZE);

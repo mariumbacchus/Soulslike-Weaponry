@@ -18,12 +18,12 @@ import net.soulsweaponry.registry.SoundRegistry;
 public class MaceOfSpades3Shadow extends MaceOfSpades3 {
 
     public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(MaceOfSpadesShadowTimings.MACE_SIZE_3);
-    private final float swipeDamage = ReturningKnightConfig.returning_knight_mace_of_spades_3_phase_2_shadow_swipe_damage;
-    private final float spinDamage = ReturningKnightConfig.returning_knight_mace_of_spades_3_phase_2_shadow_spin_damage;
-    private final float thrustDamage = ReturningKnightConfig.returning_knight_mace_of_spades_3_phase_2_shadow_thrust_damage;
-    private final int darknessOrbAmountPerTick = (int) ReturningKnightConfig.returning_knight_mace_of_spades_3_phase_2_shadow_spin_darkness_orb_amount_per_tick;
-    private final float darknessOrbDamage = ReturningKnightConfig.returning_knight_mace_of_spades_3_phase_2_shadow_spin_darkness_orb_damage;
-    private final float darknessOrbSpeed = ReturningKnightConfig.returning_knight_mace_of_spades_3_phase_2_shadow_spin_darkness_orb_speed;
+    private final float swipeDamage = ReturningKnightConfig.mace_of_spades_3_phase_2_shadow_swipe_damage;
+    private final float spinDamage = ReturningKnightConfig.mace_of_spades_3_phase_2_shadow_spin_damage;
+    private final float thrustDamage = ReturningKnightConfig.mace_of_spades_3_phase_2_shadow_thrust_damage;
+    private final int darknessOrbAmountPerTick = (int) ReturningKnightConfig.mace_of_spades_3_phase_2_shadow_spin_darkness_orb_amount_per_tick;
+    private final float darknessOrbDamage = ReturningKnightConfig.mace_of_spades_3_phase_2_shadow_spin_darkness_orb_damage;
+    private final float darknessOrbSpeed = ReturningKnightConfig.mace_of_spades_3_phase_2_shadow_spin_darkness_orb_speed;
 
     public MaceOfSpades3Shadow(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

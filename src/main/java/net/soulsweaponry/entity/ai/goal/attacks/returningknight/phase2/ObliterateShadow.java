@@ -12,10 +12,10 @@ import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 public class ObliterateShadow extends Obliterate {
 
     public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(ObliterateShadowHitbox.OBLITERATE_SHADOW_MACE_SIZE);
-    private final float shadowDamage = ReturningKnightConfig.returning_knight_obliterate_phase_2_shadow_damage;
-    private final float pillarRadius = ReturningKnightConfig.returning_knight_obliterate_phase_2_shadow_pillar_radius;
-    private final float pillarDamage = ReturningKnightConfig.returning_knight_obliterate_phase_2_shadow_pillar_damage;
-    private final float pillarRippleAmount = ReturningKnightConfig.returning_knight_obliterate_phase_2_shadow_pillar_ripple_amount;
+    private final float shadowDamage = ReturningKnightConfig.obliterate_phase_2_shadow_damage;
+    private final float pillarRadius = ReturningKnightConfig.obliterate_phase_2_shadow_pillar_radius;
+    private final float pillarDamage = ReturningKnightConfig.obliterate_phase_2_shadow_pillar_damage;
+    private final float pillarRippleAmount = ReturningKnightConfig.obliterate_phase_2_shadow_pillar_ripple_amount;
 
     public ObliterateShadow(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown);

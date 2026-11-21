@@ -37,7 +37,7 @@ public class AltarBlock extends SpawnBossBlock {
         if (itemStack.isIn(ModTags.Items.LOST_SOUL)) {
             ReturningKnight entity = new ReturningKnight(EntityRegistry.RETURNING_KNIGHT, world);
             entity.setSpawning();
-            return spawnEntity(world, pos, player, entity, ReturningKnightConfig.returning_knight_disable_respawn, itemStack, ReturningKnightConfig.returning_knight_consume_item_on_summoning);
+            return spawnEntity(world, pos, player, entity, ReturningKnightConfig.disable_respawn, itemStack, ReturningKnightConfig.consume_item_on_summoning);
         } else if (itemStack.isOf(WeaponRegistry.DRAUGR)) {
             DraugrBoss entity = new DraugrBoss(EntityRegistry.DRAUGR_BOSS, world);
             entity.setSpawning();

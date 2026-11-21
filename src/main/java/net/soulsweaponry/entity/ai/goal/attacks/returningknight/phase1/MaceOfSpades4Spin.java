@@ -14,9 +14,9 @@ import net.soulsweaponry.registry.SoundRegistry;
 
 public class MaceOfSpades4Spin extends MaceAttack {
 
-    private final float swipeDamage = ReturningKnightConfig.returning_knight_mace_of_spades_4_swipe_damage;
-    private final float spinDamage = ReturningKnightConfig.returning_knight_mace_of_spades_4_spin_damage;
-    private final float thrustDamage = ReturningKnightConfig.returning_knight_mace_of_spades_4_thrust_damage;
+    private final float swipeDamage = ReturningKnightConfig.mace_of_spades_4_swipe_damage;
+    private final float spinDamage = ReturningKnightConfig.mace_of_spades_4_spin_damage;
+    private final float thrustDamage = ReturningKnightConfig.mace_of_spades_4_thrust_damage;
 
     public MaceOfSpades4Spin(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, MaceOfSpadesTimings.MACE_SIZE_4);

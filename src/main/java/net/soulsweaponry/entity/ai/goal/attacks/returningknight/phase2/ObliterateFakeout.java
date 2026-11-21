@@ -13,11 +13,11 @@ import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 public class ObliterateFakeout extends MaceAttack {
 
     public final RotatableHitbox shadowHitbox = BossHitboxHelper.createPlaceholder(ObliterateFakeoutHitbox.SHADOW_MACE_SIZE);
-    private final float damage = ReturningKnightConfig.returning_knight_obliterate_fakeout_phase_2_damage;
-    private final float shadowDamage = ReturningKnightConfig.returning_knight_obliterate_fakeout_phase_2_shadow_spin_damage;
-    private final int darknessOrbAmountPerTick = (int) ReturningKnightConfig.returning_knight_obliterate_fakeout_phase_2_shadow_spin_darkness_orb_amount_per_tick;
-    private final float darknessOrbDamage = ReturningKnightConfig.returning_knight_obliterate_fakeout_phase_2_shadow_spin_darkness_orb_damage;
-    private final float darknessOrbSpeed = ReturningKnightConfig.returning_knight_obliterate_fakeout_phase_2_shadow_spin_darkness_orb_speed;
+    private final float damage = ReturningKnightConfig.obliterate_fakeout_phase_2_damage;
+    private final float shadowDamage = ReturningKnightConfig.obliterate_fakeout_phase_2_shadow_spin_damage;
+    private final int darknessOrbAmountPerTick = (int) ReturningKnightConfig.obliterate_fakeout_phase_2_shadow_spin_darkness_orb_amount_per_tick;
+    private final float darknessOrbDamage = ReturningKnightConfig.obliterate_fakeout_phase_2_shadow_spin_darkness_orb_damage;
+    private final float darknessOrbSpeed = ReturningKnightConfig.obliterate_fakeout_phase_2_shadow_spin_darkness_orb_speed;
 
     public ObliterateFakeout(ReturningKnightGoal goal, ReturningKnight boss, int attackLength, int weight, int cooldown, int specialCooldown) {
         super(goal, boss, attackLength, weight, cooldown, specialCooldown, ObliterateFakeoutHitbox.MACE_SIZE);
