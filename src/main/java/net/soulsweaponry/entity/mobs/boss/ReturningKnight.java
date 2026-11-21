@@ -117,7 +117,6 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     }
 
     private PlayState predicate(AnimationState<?> state) {
-        // TODO animation speed changes shouldnt affect death and phase transition timings, check that it works out! (see getAnimationSpeed)
         state.getController().setAnimationSpeed(this.getAnimationSpeed());
         if (this.isDead()) {
             state.getController().setAnimation(RawAnimation.begin().thenPlay("death_phase_2"));
