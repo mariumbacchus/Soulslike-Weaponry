@@ -57,7 +57,11 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
+
     private final List<UUID> specialSummons = new ArrayList<>();
+    private int summonCooldownTicks;
+    private boolean hadSpecialSummons;
+    private static final int SUMMON_COOLDOWN_TICKS = (int) ReturningKnightConfig.children_of_the_grave_eruption_phase_2_cooldown_until_next_summon_after_last_kill;
 
     private final RotatableHitbox debugMaceHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(7, 5, 6));
     private final RotatableHitbox debugShadowMaceHitbox = BossHitboxHelper.createPlaceholder(new Vec3d(7, 5, 6));
@@ -480,7 +484,25 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
                 this.bossBar.setColor(BossBar.Color.PURPLE); //TODO remove when adding custom bossbar
             }
         }
+        // Cooldown for spawning summons for EruptionSummon (phase 2)
+        if (this.summonCooldownTicks > 0) {
+            this.summonCooldownTicks--;
+        }
+        boolean summonsAlive = this.hasSpecialSummonsAlive();
+        if (this.hadSpecialSummons && !summonsAlive) {
+            this.summonCooldownTicks = SUMMON_COOLDOWN_TICKS;
+        }
+        this.hadSpecialSummons = summonsAlive;
+
         this.breakSurroundingBlocks();
+    }
+
+    /**
+     * @return Whether the cooldown for summoning is 0, mainly to be used during phase 2 EruptionSummon attack
+     * since it's annoying that as soon as you kill the Elite Remnants they instantly spawn again
+     */
+    public boolean canSummonAgain() {
+        return this.summonCooldownTicks == 0;
     }
 
     public boolean hasSpecialSummonsAlive() {

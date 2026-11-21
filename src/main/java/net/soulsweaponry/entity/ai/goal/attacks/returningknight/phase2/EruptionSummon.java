@@ -57,7 +57,7 @@ public class EruptionSummon extends ReturningKnightAttack {
 
     @Override
     public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return !this.getBoss().hasSpecialSummonsAlive() && distanceToTarget <= 150;
+        return this.getBoss().canSummonAgain() && !this.getBoss().hasSpecialSummonsAlive() && distanceToTarget <= 150;
     }
 
     @Override

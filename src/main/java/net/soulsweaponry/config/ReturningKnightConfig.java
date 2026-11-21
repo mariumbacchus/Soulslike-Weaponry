@@ -132,6 +132,7 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float children_of_the_grave_eruption_phase_2_weight = 10;
     @Entry(min = 0) public static float children_of_the_grave_eruption_phase_2_cooldown = 20;
     @Entry(min = 0) public static float children_of_the_grave_eruption_phase_2_special_cooldown = 0;
+    @Entry(min = 0) public static float children_of_the_grave_eruption_phase_2_cooldown_until_next_summon_after_last_kill = 300;
 
     // Dark Circle (Unbreakable + Blinding Reflection) (Phase 2)
     @Entry(min = 0) public static float dark_circle_phase_2_slam_damage = 20;

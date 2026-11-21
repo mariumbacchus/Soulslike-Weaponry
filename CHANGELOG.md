@@ -120,6 +120,7 @@
           - They will not take damage from the knight and shadow's attacks
           - They have increased health and base damage compared to regular Remnants
           - The boss will only do this ability if no Elite Remnant is alive and tied to the boss
+        - This attack will go on a separate cooldown after the last Elite Remnant is killed for 300 ticks so that the boss doesn't instantly summon new ones right after you finish off the last
       - Dark Circle (Unbreakable + Blinding Reflection):
         - The knight slams his chest, preparing to slam the ground
         - The shadow does a ritual with its mace, spawning Darkness Orbs in a circle many blocks away
