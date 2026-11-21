@@ -60,6 +60,7 @@
 - Reworked the Returning Knight boss fight
     - All config lines are now in `returning_knight_config.json`
       - All lines no longer start with `returning_knigh_` since they are in that file and no longer needs specification
+    - To summon the boss you now need to use 4 Lost Souls on the Old Moon Altar, which now only spawns particles when lost souls are loaded in it, the 4th one will spawn the boss
     - The boss can now jump up blocks
     - Improved the reflection of projectiles
         - The owner of the reflected projectile will NOT be set to the boss so that weird interactions with for example tridents will be avoided
