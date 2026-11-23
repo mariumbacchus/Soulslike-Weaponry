@@ -252,10 +252,8 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
                                         && this.mob.getOwnerUuid().equals(other.getOwnerUuid())) {
                                     continue;
                                 }
-
                                 if (this.mob.tryAttack(living)) {
-                                    living.addStatusEffect(new StatusEffectInstance(
-                                            EffectRegistry.FREEZING, 60, 0));
+                                    living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 60, 0));
                                 }
                             }
                         }

@@ -181,8 +181,7 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             }
             return;
         }
-        var d = CollisionEffect.PARTICLES;//this.getCollisionEffectType(user);
-        switch (d) {
+        switch (this.getCollisionEffectType(user)) {
             case BATS -> {
                 for (int i = 0; i < power * 2; i++) {
                     BatEntity bat = new BatEntity(EntityType.BAT, getWorld());
