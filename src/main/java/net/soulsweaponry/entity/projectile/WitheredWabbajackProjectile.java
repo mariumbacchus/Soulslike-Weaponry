@@ -25,10 +25,10 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
+import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.registry.EffectRegistry;
 import net.soulsweaponry.registry.EntityRegistry;
 import net.soulsweaponry.registry.SoundRegistry;
-import net.soulsweaponry.particles.ParticleHandler;
 import net.soulsweaponry.util.LuckChosenObject;
 import net.soulsweaponry.util.WeaponUtil;
 
@@ -181,7 +181,8 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
             }
             return;
         }
-        switch (this.getCollisionEffectType(user)) {
+        var d = CollisionEffect.PARTICLES;//this.getCollisionEffectType(user);
+        switch (d) {
             case BATS -> {
                 for (int i = 0; i < power * 2; i++) {
                     BatEntity bat = new BatEntity(EntityType.BAT, getWorld());
@@ -226,15 +227,16 @@ public class WitheredWabbajackProjectile extends WitherSkullEntity {
     }
 
     private ParticleEffect getRandomParticle() {
-        Random number = new Random();
-        ArrayList<ParticleEffect> arr = new ArrayList<>();
-        Registries.PARTICLE_TYPE.stream().forEach(p -> {
-            if (p instanceof ParticleEffect d) {
-                arr.add(d);
-            }
-        });
-        int rng = number.nextInt(arr.size());
-        return arr.get(rng);
+        List<ParticleEffect> particles = Registries.PARTICLE_TYPE.stream()
+                .filter(p -> {
+                    String namespace = Registries.PARTICLE_TYPE.getId(p).getNamespace();
+                    // Game crashes if the wrong particle from another mod is used so just use stuff from minecraft and sw
+                    return namespace.equals("minecraft") || namespace.equals("soulsweapons");
+                })
+                .filter(p -> p instanceof ParticleEffect)
+                .map(p -> (ParticleEffect) p)
+                .toList();
+        return particles.get(new Random().nextInt(particles.size()));
     }
 
     private void summonSpecificEntity(LivingEntity user, int power) {

@@ -93,10 +93,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
         super.initDataTracker(builder);
         builder.add(STATES, 0);
         builder.add(PHASE_2, false);
-        if (this.isDebugMode()) {
-            SoulsWeaponry.LOGGER.warn("Boss entity attack status data-tracker registered! Should not happen in production!");
-            builder.add(ATTACK_STATUS, 0);
-        }
+        builder.add(ATTACK_STATUS, 0);
     }
 
     public double getAnimationSpeed() {
@@ -115,6 +112,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
      */
     public void setAttackStatus(int attackStatus) {
         if (this.isDebugMode()) {
+            // SoulsWeaponry.LOGGER.warn("Boss entity attack status data-tracker registered! Should not happen in production!");
             this.dataTracker.set(ATTACK_STATUS, attackStatus);
         }
     }

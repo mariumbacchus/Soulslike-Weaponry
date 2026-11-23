@@ -247,8 +247,16 @@ public class FrostGiant extends Remnant implements GeoEntity, IAnimatedDeath {
                     this.mob.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, 20));
                     if (this.attackStatus == 32) {
                         for (Entity entity : this.mob.getWorld().getOtherEntities(this.mob, this.mob.getBoundingBox().expand(3.5D))) {
-                            if (entity instanceof LivingEntity living && !this.isOwner(living)) {
-                                if (this.mob.tryAttack(living)) living.addStatusEffect(new StatusEffectInstance(EffectRegistry.FREEZING, 60, 0));
+                            if (entity instanceof LivingEntity living && !this.isOwner(living) && !this.mob.isTeammate(living)) {
+                                if (living instanceof TameableEntity other && this.mob.getOwnerUuid() != null
+                                        && this.mob.getOwnerUuid().equals(other.getOwnerUuid())) {
+                                    continue;
+                                }
+
+                                if (this.mob.tryAttack(living)) {
+                                    living.addStatusEffect(new StatusEffectInstance(
+                                            EffectRegistry.FREEZING, 60, 0));
+                                }
                             }
                         }
                         if (!this.mob.getWorld().isClient) {

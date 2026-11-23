@@ -249,7 +249,7 @@
 			"bones": {
 				"greatsword": {
 					"scale": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					}
 				}
 			}
@@ -259,7 +259,7 @@
 			"bones": {
 				"nightfall": {
 					"scale": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					}
 				}
 			}
@@ -9549,7 +9549,7 @@
 						}
 					},
 					"position": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					}
 				},
 				"right2": {
@@ -10039,7 +10039,7 @@
 						}
 					},
 					"scale": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					}
 				},
 				"left_arm": {
@@ -10136,10 +10136,10 @@
 				},
 				"main_thigh2": {
 					"rotation": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					},
 					"position": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					}
 				},
 				"hand": {
@@ -10156,10 +10156,10 @@
 				},
 				"main_thigh": {
 					"rotation": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					},
 					"position": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					}
 				},
 				"leg2": {
@@ -10495,7 +10495,7 @@
 				},
 				"greatsword": {
 					"scale": {
-						"vector": ["linear", "linear", "linear"]
+						"vector": [0, 0, 0]
 					}
 				}
 			}

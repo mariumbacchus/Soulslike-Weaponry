@@ -379,13 +379,10 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     }
 
     private PlayState phase(AnimationState<?> state) {
-        if (this.isState(States.INITIATE_PHASE_2)) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("idle"));
-        } else if (this.isPhaseTwo()) {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("phase_2"));
-        } else {
-            state.getController().setAnimation(RawAnimation.begin().thenPlay("phase_1"));
-        }
+        String animation = this.isState(States.INITIATE_PHASE_2)
+                ? "idle"
+                : this.isPhaseTwo() ? "phase_2" : "phase_1";
+        state.getController().setAnimation(RawAnimation.begin().thenLoop(animation));
         return PlayState.CONTINUE;
     }
 

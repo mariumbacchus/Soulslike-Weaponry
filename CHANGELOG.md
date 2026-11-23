@@ -136,6 +136,8 @@
 - Fixed a crash due to item stacks not being set on some projectiles and entities like the "death spirals" that Night Prowler spawns
 - Fixed a bug where Night Shade copies would still display the death-light when they weren't supposed to, and they (the copies) would not kill themselves if the real one died
 - Bosses now ignore camera frustum culling so that geckolib animations are more synced, this means bosses are rendered even when not looking at them, so the fights might be slightly more costly performance wise
+- Frost Giants' AOE smash attack no longer damages teammates
+- Fixed crash due to Withered Wabbajack projectile trying to use particles from other mods which the game didn't like
 
 ---------------
 
