@@ -10,6 +10,8 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
@@ -62,6 +64,7 @@ public class AltarBlock extends SpawnBossBlock implements BlockEntityProvider {
                 if (!player.getAbilities().creativeMode && ReturningKnightConfig.consume_item_on_summoning) {
                     itemStack.decrement(1);
                 }
+                world.playSound(null, pos, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1f, 1f);
                 return true;
             }
             // Three offerings stored, fourth offering summons the boss
