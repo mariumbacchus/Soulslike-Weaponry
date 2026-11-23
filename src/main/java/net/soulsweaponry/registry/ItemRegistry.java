@@ -85,7 +85,10 @@ public class ItemRegistry {
     public static final Item DRAUGR_BOSS_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.DRAUGR_BOSS_SONG_MONO_KEY).maxCount(1));
     //public static final Item FRENZIED_SHADE_DISC = new Item(new Item.Settings().jukeboxPlayable(SoundRegistry.FRENZIED_SHADE_SONG_MONO_KEY).maxCount(1));
 
-    public static final Item TEST_ITEM = new TestItem(new Item.Settings());
+    public static final Item TEST_ITEM =
+            FabricLoader.getInstance().isDevelopmentEnvironment() && !DatagenUtil.isDatagenRunning()
+                    ? new TestItem(new Item.Settings())
+                    : null;
 
     public static void init() {
         registerItem(LORD_SOUL_RED, "lord_soul_red");
@@ -132,7 +135,7 @@ public class ItemRegistry {
         registerItem(DRAUGR_BOSS_DISC, "draugr_boss_disc");
         //registerItem(FRENZIED_SHADE_DISC, "frenzied_shade_disc");
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment() && !DatagenUtil.isDatagenRunning()) {
+        if (TEST_ITEM != null) {
             registerItem(TEST_ITEM, "test_item");
         }
     }
