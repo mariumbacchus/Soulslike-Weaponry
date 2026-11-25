@@ -17,8 +17,8 @@ public class Obliterate extends MaceAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
-        super.tickAttack(target, attackStatus, distanceToTarget);
+    public void tickAttack(LivingEntity target, int attackStatus) {
+        super.tickAttack(target, attackStatus);
         ObliterateHitbox.updateObliterateMaceHitbox(this.hitbox, this.getBoss(), this.targetPos, attackStatus);
         if (ObliterateHitbox.isObliterateDamageTick(this.getBoss(), attackStatus)) {
             this.doObliterateDamage(this.hitbox, this.damage);
@@ -30,8 +30,8 @@ public class Obliterate extends MaceAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return distanceToTarget <= 100D && target.getBlockPos() != null && !this.cordsRegistered;
+    public double getTriggerReachBlocks() {
+        return 11;
     }
 
     @Override

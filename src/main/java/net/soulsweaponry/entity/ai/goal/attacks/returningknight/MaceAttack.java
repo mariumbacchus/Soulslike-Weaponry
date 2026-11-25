@@ -39,7 +39,7 @@ public abstract class MaceAttack extends ReturningKnightAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tickAttack(LivingEntity target, int attackStatus) {
         this.getBoss().getLookControl().lookAt(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ());
         this.getBoss().getNavigation().startMovingTo(this.targetPos.getX(), this.targetPos.getY(), this.targetPos.getZ(), 0.0D);
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
@@ -135,5 +135,17 @@ public abstract class MaceAttack extends ReturningKnightAttack {
         this.cordsRegistered = false;
         this.getBoss().setAttackStartWorldTime(-1L);
         this.hitEntities.clear();
+    }
+
+    /**
+     * @return distance in blocks the target must be within to start the attack
+     */
+    public double getTriggerReachBlocks() {
+        return 10;
+    }
+
+    @Override
+    public boolean canTrigger(LivingEntity target) {
+        return this.isWithinDistance(target, this.getTriggerReachBlocks()) && target.getBlockPos() != null && !this.cordsRegistered;
     }
 }

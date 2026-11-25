@@ -24,8 +24,8 @@ public class ObliterateFakeout extends MaceAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
-        super.tickAttack(target, attackStatus, distanceToTarget);
+    public void tickAttack(LivingEntity target, int attackStatus) {
+        super.tickAttack(target, attackStatus);
         ObliterateFakeoutHitbox.updateObliterateMaceHitbox(this.hitbox, this.getBoss(), this.targetPos, attackStatus);
         ObliterateFakeoutHitbox.updateShadowMaceHitbox(this.shadowHitbox, this.getBoss(), attackStatus);
         if (ObliterateFakeoutHitbox.isObliterateDamageTick(this.getBoss(), attackStatus)) {
@@ -48,8 +48,8 @@ public class ObliterateFakeout extends MaceAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return distanceToTarget <= 100D && target.getBlockPos() != null && !this.cordsRegistered;
+    public double getTriggerReachBlocks() {
+        return 15;
     }
 
     @Override

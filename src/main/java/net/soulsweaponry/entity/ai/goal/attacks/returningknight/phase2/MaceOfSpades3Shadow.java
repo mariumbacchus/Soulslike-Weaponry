@@ -30,8 +30,8 @@ public class MaceOfSpades3Shadow extends MaceOfSpades3 {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
-        super.tickAttack(target, attackStatus, distanceToTarget);
+    public void tickAttack(LivingEntity target, int attackStatus) {
+        super.tickAttack(target, attackStatus);
         MaceOfSpadesShadowHitbox.updateMaceHitbox(this.shadowHitbox, this.getBoss(), attackStatus);
         if (MaceOfSpadesShadowHitbox.isDamageTickSwipe(this.getBoss(), attackStatus)) {
             this.doSwingDamage(this.shadowHitbox, this.swipeDamage, 0.5f);
@@ -59,6 +59,11 @@ public class MaceOfSpades3Shadow extends MaceOfSpades3 {
             this.playSound(SoundRegistry.KNIGHT_SWIPE_EVENT, 3f, 0.75f, 1f);
             this.playSound(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 3f, 0.5f);
         }
+    }
+
+    @Override
+    public double getTriggerReachBlocks() {
+        return 13;
     }
 
     @Override

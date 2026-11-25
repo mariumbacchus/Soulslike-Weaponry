@@ -23,8 +23,8 @@ public class ObliterateShadow extends Obliterate {
 
     // Extends original Obliterate attack to still perform the main one along with the shadow one here
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
-        super.tickAttack(target, attackStatus, distanceToTarget);
+    public void tickAttack(LivingEntity target, int attackStatus) {
+        super.tickAttack(target, attackStatus);
         ObliterateShadowHitbox.updateObliterateShadowMaceHitbox(this.shadowHitbox, this.getBoss(), this.targetPos, attackStatus);
         if (ObliterateShadowHitbox.isObliterateShadowDamageTick(this.getBoss(), attackStatus)) {
             this.doObliterateDamage(this.shadowHitbox, this.shadowDamage);
@@ -37,6 +37,11 @@ public class ObliterateShadow extends Obliterate {
         if (this.isAnyTick(attackStatus, 39)) {
             this.prepareNextMaceHit(target);
         }
+    }
+
+    @Override
+    public double getTriggerReachBlocks() {
+        return 15;
     }
 
     @Override

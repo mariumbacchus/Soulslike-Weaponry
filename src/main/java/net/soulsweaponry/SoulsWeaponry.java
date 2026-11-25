@@ -37,15 +37,15 @@ public class SoulsWeaponry implements ModInitializer {
     @Override
     public void onInitialize() { //TODO add low bleed resistance and stuff to zombies so the stat doesnt go unnoticed
         long start = System.currentTimeMillis();
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_weapon_config", WeaponConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_armor_config", ArmorConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_gun_config", GunConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_enchantment_config", EnchantmentConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_chungus_tonic_whitelist", ChungusTonicWhitelist.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_client", ClientConfig.class);
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_entity_stats_config", EntityStatsConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + "weapon_config", WeaponConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + "armor_config", ArmorConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + "gun_config", GunConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + "enchantment_config", EnchantmentConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + "chungus_tonic_whitelist", ChungusTonicWhitelist.class);
+        MidnightConfig.init(CONFIG_FOLDER + "client_config", ClientConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + "entity_stats_config", EntityStatsConfig.class);
 
-        MidnightConfig.init(CONFIG_FOLDER + ModId + "_entity_config", EntityConfig.class);
+        MidnightConfig.init(CONFIG_FOLDER + "entity_config", EntityConfig.class);
         MidnightConfig.init(CONFIG_FOLDER + "returning_knight_config", ReturningKnightConfig.class);
         LOGGER.info("Configs initialized!");
 

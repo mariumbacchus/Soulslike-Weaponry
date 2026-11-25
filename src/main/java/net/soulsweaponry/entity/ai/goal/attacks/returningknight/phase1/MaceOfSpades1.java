@@ -19,8 +19,8 @@ public class MaceOfSpades1 extends MaceAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
-        super.tickAttack(target, attackStatus, distanceToTarget);
+    public void tickAttack(LivingEntity target, int attackStatus) {
+        super.tickAttack(target, attackStatus);
         MaceOfSpadesHitbox.updateMaceHitbox(this.hitbox, this.getBoss(), attackStatus);
 
         if (MaceOfSpadesHitbox.isDamageTickSwipe(this.getBoss(), attackStatus)) {
@@ -38,11 +38,6 @@ public class MaceOfSpades1 extends MaceAttack {
         if (this.isTick(attackStatus, 43)) {
             this.doObliterateParticles(this.hitbox);
         }
-    }
-
-    @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return distanceToTarget <= 80 && target.getBlockPos() != null && !this.cordsRegistered;
     }
 
     @Override

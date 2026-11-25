@@ -632,4 +632,18 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
             this.setIdle();
         }
     }
+
+    /**
+     * Returns the distance to an entity in blocks.
+     */
+    public double distanceToTargetBlocks(Entity target) {
+        return Math.sqrt(this.squaredDistanceTo(target));
+    }
+
+    /**
+     * Checks whether an entity is within the given distance in blocks.
+     */
+    public boolean isWithinDistance(Entity target, double blocks) {
+        return this.squaredDistanceTo(target) <= blocks * blocks;
+    }
 }

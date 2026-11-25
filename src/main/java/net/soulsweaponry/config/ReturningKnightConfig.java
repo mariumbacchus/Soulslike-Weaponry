@@ -39,7 +39,7 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float eruption_special_cooldown = 80;
 
     // Obliterate
-    @Entry(min = 0) public static float obliterate_damage = 60f;
+    @Entry(min = 0) public static float obliterate_damage = 50f;
     @Entry(min = 0) public static float obliterate_phase_2_shadow_damage = 50f;
     @Entry(min = 0) public static float obliterate_phase_2_shadow_pillar_radius = 2f;
     @Entry(min = 0) public static float obliterate_phase_2_shadow_pillar_damage = 30f;
@@ -114,8 +114,8 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry(min = 0) public static float seismic_wave_special_cooldown = 60;
 
     // Obliterate Fakeout (Phase 2)
-    @Entry(min = 0) public static float obliterate_fakeout_phase_2_damage = 50f;
-    @Entry(min = 0) public static float obliterate_fakeout_phase_2_shadow_spin_damage = 30f;
+    @Entry(min = 0) public static float obliterate_fakeout_phase_2_damage = 40f;
+    @Entry(min = 0) public static float obliterate_fakeout_phase_2_shadow_spin_damage = 20f;
     @Entry(min = 0) public static float obliterate_fakeout_phase_2_shadow_spin_darkness_orb_amount_per_tick = 8;
     @Entry(min = 0) public static float obliterate_fakeout_phase_2_shadow_spin_darkness_orb_damage = 10;
     @Entry(min = 0) public static float obliterate_fakeout_phase_2_shadow_spin_darkness_orb_speed = 1f;
@@ -163,7 +163,7 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry public static float bullet_hell_darkness_orb_lifetime_ticks = 40;
     @Entry public static float bullet_hell_darkness_orb_damage = 8f;
     @Entry public static float bullet_hell_darkness_orb_speed = 1f;
-    @Entry public static double bullet_hell_darkness_orb_rotations_degrees_per_tick = 1.2D;
+    @Entry public static double bullet_hell_darkness_orb_rotations_degrees_per_tick = 1.6D;
     @Entry public static float bullet_hell_darkness_orb_vertical_spacing = 3;
     @Entry public static float bullet_hell_shadow_pillar_star_spawn_interval_ticks = 80;
     @Entry public static float bullet_hell_shadow_pillar_star_arms_amount = 6;

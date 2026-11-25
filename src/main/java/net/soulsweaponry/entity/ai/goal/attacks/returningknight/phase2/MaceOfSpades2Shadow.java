@@ -25,8 +25,8 @@ public class MaceOfSpades2Shadow extends MaceOfSpades2 {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
-        super.tickAttack(target, attackStatus, distanceToTarget);
+    public void tickAttack(LivingEntity target, int attackStatus) {
+        super.tickAttack(target, attackStatus);
         MaceOfSpadesShadowHitbox.updateMaceHitbox(this.shadowHitbox, this.getBoss(), attackStatus);
         if (MaceOfSpadesShadowHitbox.isDamageTickSwipe(this.getBoss(), attackStatus)) {
             this.doSwingDamage(this.shadowHitbox, this.damageSwipe, 0.5f);
@@ -45,6 +45,11 @@ public class MaceOfSpades2Shadow extends MaceOfSpades2 {
             this.doObliterateParticles(this.shadowHitbox);
             this.spawnDarkPillarsPlus(target, (int) this.pillarRippleAmount, this.pillarRadius, this.pillarRadius, this.pillarDamage, 10, this.shadowHitbox);
         }
+    }
+
+    @Override
+    public double getTriggerReachBlocks() {
+        return 13;
     }
 
     @Override

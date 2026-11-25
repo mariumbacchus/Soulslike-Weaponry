@@ -42,7 +42,7 @@ public class DarkCircle extends ReturningKnightAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tickAttack(LivingEntity target, int attackStatus) {
         this.getBoss().getNavigation().stop();
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 40));
         if (this.isTick(attackStatus, 28)) {
@@ -122,8 +122,8 @@ public class DarkCircle extends ReturningKnightAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return distanceToTarget <= 450;
+    public boolean canTrigger(LivingEntity target) {
+        return this.isWithinDistance(target, 20);
     }
 
     @Override

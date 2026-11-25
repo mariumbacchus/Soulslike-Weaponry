@@ -2,15 +2,18 @@
 
 # 1.5
 ## Big Config Changes
-- Renamed `soulsweapons_boss_config.json` to `soulsweapons_entity_config.json`, it will now contain all entity related config lines (excluding entity stats such as frost/bleed buildup), moved the rest of entity related config lines (such as spawnweight, can chungus barter, etc.) from the previous main config to this one
-- Added `returning_knight_config.json` which holds all lines regarding the Returning Knight boss fight
-  - Other bosses still have lines in entity config, but future updates will also add configs for the specific bosses just like here for Returning Knight
 - Renamed and split the main config file `soulsweapons.json` into more files for more clarity and easier navigation
-    - `soulsweapons_weapon_config.json` contains lines for weapon stats & abilities, disabling of use and recipes and so on regarding weapons and some items, it will still act as "the main" config file so i.e shield parry and chungus tonic lines will still be here
-    - `soulsweapons_armor_config.json` contains lines for armor items instead
-    - `soulsweapons_gun_config.json` contains lines for gun items and silver bullets
-    - `soulsweapons_enchantment_config.json` contains lines for enchantments, even for guns and weapons (even though most enchant stuff is handled by datapacks in 1.21.1 and up)
-    - `soulsweapons_entity_stats_config.json` will contain config lines for entity stats values such as frost/bleed/posture buildup, damage, reduction, max values, etc.
+    - Everything is in the `soulsweapons` folder
+    - `weapon_config.json` contains lines for weapon stats & abilities, disabling of use and recipes and so on regarding weapons and some items, it will still act as "the main" config file so i.e shield parry and chungus tonic lines will still be here
+    - `armor_config.json` contains lines for armor items instead
+    - `gun_config.json` contains lines for gun items and silver bullets
+    - `enchantment_config.json` contains lines for enchantments, even for guns and weapons (even though most enchant stuff is handled by datapacks in 1.21.1 and up)
+    - `entity_stats_config.json` will contain config lines for entity stats values such as frost/bleed/posture buildup, damage, reduction, max values, etc.
+    - Renamed `soulsweapons_boss_config.json` into `entity_config`, it will now contain all entity related config lines (excluding entity stats such as frost/bleed buildup), moved the rest of entity related config lines (such as spawnweight, can chungus barter, etc.) from the previous main config to this one
+    - Added `returning_knight_config.json` which holds all lines regarding the Returning Knight boss fight
+      - Other bosses still have lines in entity config, but future updates will also add configs for the specific bosses just like here for Returning Knight
+    - `client_config` still holds client related lines like turning huds on and off
+    - `chungus_tonic_whitelist` still holds the list of entities the Chungus Tonic may turn other entities into
 
 ## Updated dependencies
 - Ranged Weapon API requirement has gone from version 2.1.1 -> 3.0.0

@@ -20,9 +20,9 @@ public class BlindingLight extends ReturningKnightAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tickAttack(LivingEntity target, int attackStatus) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
-        if (this.isTick(attackStatus, 24) && distanceToTarget < 30) {
+        if (this.isTick(attackStatus, 24) && this.isWithinDistance(target, 6)) {
             double x = target.getX() - this.getBoss().getX();
             double z = target.getZ() - this.getBoss().getZ();
             this.damageTarget(target, this.damage);
@@ -37,8 +37,8 @@ public class BlindingLight extends ReturningKnightAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return distanceToTarget <= 40D;
+    public boolean canTrigger(LivingEntity target) {
+        return this.isWithinDistance(target, 6.5);
     }
 
     @Override

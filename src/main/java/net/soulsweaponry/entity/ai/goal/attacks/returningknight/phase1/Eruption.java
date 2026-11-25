@@ -25,7 +25,7 @@ public class Eruption extends ReturningKnightAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tickAttack(LivingEntity target, int attackStatus) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         Box aoe = new Box(this.getBoss().getX() - this.attackRangeBlocks, this.getBoss().getY() - this.attackRangeBlocks/2, this.getBoss().getZ() - this.attackRangeBlocks, this.getBoss().getX() + this.attackRangeBlocks, this.getBoss().getY() + this.attackRangeBlocks/2, this.getBoss().getZ() + this.attackRangeBlocks);
         List<Entity> entities = this.getBoss().getWorld().getOtherEntities(this.getBoss(), aoe);
@@ -49,7 +49,7 @@ public class Eruption extends ReturningKnightAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
+    public boolean canTrigger(LivingEntity target) {
         return true;
     }
 

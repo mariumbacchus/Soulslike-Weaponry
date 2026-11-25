@@ -24,7 +24,7 @@ public class ChildrenOfTheGrave extends ReturningKnightAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tickAttack(LivingEntity target, int attackStatus) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         if (this.isTick(attackStatus, 59)) {
             int enemyNumber = this.getBoss().getRandom().nextInt(this.enemyBound) + this.minEnemyCount;
@@ -46,7 +46,7 @@ public class ChildrenOfTheGrave extends ReturningKnightAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
+    public boolean canTrigger(LivingEntity target) {
         return !this.getBoss().hasSpecialSummonsAlive();
     }
 

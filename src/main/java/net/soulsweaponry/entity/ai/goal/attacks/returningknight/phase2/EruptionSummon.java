@@ -28,7 +28,7 @@ public class EruptionSummon extends ReturningKnightAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tickAttack(LivingEntity target, int attackStatus) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         if (this.isTick(attackStatus, 42) || this.isTick(attackStatus, 66)) {
             for (Entity entity : this.getWorld().getEntitiesByClass(PlayerEntity.class, this.getBoss().getBoundingBox().expand(20), p -> true)) {
@@ -56,8 +56,8 @@ public class EruptionSummon extends ReturningKnightAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return this.getBoss().canSummonAgain() && !this.getBoss().hasSpecialSummonsAlive() && distanceToTarget <= 150;
+    public boolean canTrigger(LivingEntity target) {
+        return this.getBoss().canSummonAgain() && !this.getBoss().hasSpecialSummonsAlive() && this.isWithinDistance(target, 15);
     }
 
     @Override

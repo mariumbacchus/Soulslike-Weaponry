@@ -24,7 +24,7 @@ public class SeismicWave extends MaceAttack {
     }
 
     @Override
-    public void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tickAttack(LivingEntity target, int attackStatus) {
         this.getBoss().addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 5, 20));
         SeismicWaveHitbox.updateMaceHitbox(this.hitbox, this.getBoss(), attackStatus);
         if (SeismicWaveHitbox.isDamageTick(this.getBoss(), attackStatus)) {
@@ -69,8 +69,8 @@ public class SeismicWave extends MaceAttack {
     }
 
     @Override
-    public boolean canTrigger(LivingEntity target, double distanceToTarget) {
-        return distanceToTarget <= 200;
+    public boolean canTrigger(LivingEntity target) {
+        return this.isWithinDistance(target, 15);
     }
 
     @Override

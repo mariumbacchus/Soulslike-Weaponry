@@ -81,14 +81,13 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
         if (target == null) {
             return;
         }
-        double distanceToTarget = this.boss.squaredDistanceTo(target);
         // Attack logic, will choose a random attack based on weight and perform it
         // Got to have this check twice since the attack would override the event animation after the event was triggered so the event would never happen
         if (this.canIssueAttack()) {
             if (FabricLoader.getInstance().isDevelopmentEnvironment() && this.getDebugState() != null) {
                 S state = this.getDebugState();
                 BossAttack<S, B, G> attack = this.attacks.get(state);
-                if (attack.canTrigger(target, distanceToTarget)) {
+                if (attack.canTrigger(target)) {
                     SoulsWeaponry.LOGGER.warn("Debug mode enabled for boss {}, state set to {}", this.boss, state);
                     this.prepareAttack(state, attack, target);
                 }
@@ -100,7 +99,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
         // NB! states that aren't attacks can still be fetched like IDLE and SPAWN
         S state = this.boss.getState();
         if (this.isValidState(state) && this.currentAttack != null) {
-            this.currentAttack.tick(target, this.attackStatus, distanceToTarget);
+            this.currentAttack.tick(target, this.attackStatus);
         }
     }
 
@@ -128,19 +127,18 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
      * for it to happen.
      * <p>
      *     If {@link #getFirstAggroAttack()} returns not null and {@link #firstAttackDone} is false, then
-     *     the attack/state in {@link #getFirstAggroAttack()} will trigger if {@link BossAttack#canTrigger(LivingEntity, double)}
+     *     the attack/state in {@link #getFirstAggroAttack()} will trigger if {@link BossAttack#canTrigger(LivingEntity)}
      *     returns true.
      * </p>
      * <p>
-     *     {@link BossAttack#canTrigger(LivingEntity, double)} will be called once the attack is chosen along with checking
+     *     {@link BossAttack#canTrigger(LivingEntity)} will be called once the attack is chosen along with checking
      *     whether the attack is a special attack and the special attack cooldown is still ticking down, if it returns false
      *     then the attack is canceled and the method tries to pick a new attack again. If attempts go past the
      *     <b>attempts</b> variable then the method gives up and tries again next tick.
      * </p>
      */
     public void checkAndSetAttack(LivingEntity target) {
-        double distanceToTarget = this.boss.squaredDistanceTo(target);
-        Map<S, BossAttack<S, B, G>> available = this.collectAttacks(target, distanceToTarget);
+        Map<S, BossAttack<S, B, G>> available = this.collectAttacks(target);
         if (this.shouldPrintStateChances()) {
             SoulsWeaponry.LOGGER.info("\n{}", this.getAttackWeightChances(available));
         }
@@ -149,7 +147,7 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
             this.firstAttackDone = true;
             S state = this.getFirstAggroAttack();
             BossAttack<S, B, G> attack = this.attacks.get(state);
-            if (attack.isAvailable() && attack.canTrigger(target, distanceToTarget)) {
+            if (attack.isAvailable() && attack.canTrigger(target)) {
                 this.prepareAttack(this.getFirstAggroAttack(), this.attacks.get(this.getFirstAggroAttack()), target);
                 return;
             }
@@ -174,14 +172,14 @@ public abstract class BossGoal<S extends Enum<S>, B extends BossEntity<S>, G ext
      * Will now properly ignore attacks that shouldn't be able to be selected if one is for example
      * only for phase 2.
      */
-    private Map<S, BossAttack<S, B, G>> collectAttacks(LivingEntity target, double distanceToTarget) {
+    private Map<S, BossAttack<S, B, G>> collectAttacks(LivingEntity target) {
         Map<S, BossAttack<S, B, G>> available = new LinkedHashMap<>();
         for (Map.Entry<S, BossAttack<S, B, G>> entry : this.attacks.entrySet()) {
             BossAttack<S, B, G> attack = entry.getValue();
             if (attack.getWeight() > 0
                     && attack.isAvailable()
                     && !(attack.isSpecialAttack() && this.isSpecialCoolingDown())
-                    && attack.canTrigger(target, distanceToTarget)) {
+                    && attack.canTrigger(target)) {
                 available.put(entry.getKey(), attack);
             }
         }

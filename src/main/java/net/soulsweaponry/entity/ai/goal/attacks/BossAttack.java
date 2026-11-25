@@ -1,5 +1,6 @@
 package net.soulsweaponry.entity.ai.goal.attacks;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
@@ -42,9 +43,9 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
         this.specialCooldown = specialCooldown;
     }
 
-    public void tick(LivingEntity target, int attackStatus, double distanceToTarget) {
+    public void tick(LivingEntity target, int attackStatus) {
         this.goal.increaseAttackStatus();
-        this.tickAttack(target, attackStatus, distanceToTarget);
+        this.tickAttack(target, attackStatus);
         this.goal.checkAndReset(this, this.cooldown, this.specialCooldown);
         if (this.boss.isDebugMode()) {
             this.boss.setAttackStatus(attackStatus);
@@ -57,7 +58,7 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
      */
     public void initiateAttackVariables(LivingEntity target) {}
 
-    public abstract void tickAttack(LivingEntity target, int attackStatus, double distanceToTarget);
+    public abstract void tickAttack(LivingEntity target, int attackStatus);
 
     /**
      * Called when the attack is finished to reset values, happens at the same time as boss state is set to IDLE,
@@ -69,7 +70,7 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
      * Called for whether the attack can be chosen and triggered.
      * Example of implementation include returning goal.isSpecialCoolingDown();
      */
-    public abstract boolean canTrigger(LivingEntity target, double distanceToTarget);
+    public abstract boolean canTrigger(LivingEntity target);
 
     /**
      * Override to disable this attacks availability, meaning it won't get chosen
@@ -113,6 +114,20 @@ public abstract class BossAttack<S extends Enum<S>, B extends BossEntity<S>, G e
     public double getSquaredMaxAttackDistance(LivingEntity target) {
         float reach = this.boss.getWidth() * 2.0F;
         return reach * reach + target.getWidth();
+    }
+
+    /**
+     * Returns the distance to an entity in blocks.
+     */
+    public double distanceToTargetBlocks(Entity target) {
+        return this.getBoss().distanceToTargetBlocks(target);
+    }
+
+    /**
+     * Checks whether an entity is within the given distance in blocks.
+     */
+    public boolean isWithinDistance(Entity target, double blocks) {
+        return this.getBoss().isWithinDistance(target, blocks);
     }
 
     /**
