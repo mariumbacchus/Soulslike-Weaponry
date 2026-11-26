@@ -322,6 +322,24 @@ public class DraugrBoss extends BossEntity<DraugrBoss.States> implements GeoEnti
     }
 
     @Override
+    protected boolean shouldPersistState(States state) {
+        return false;
+    }
+
+    @Override
+    protected void onPersistentStateLoaded(States state) {}
+
+    @Override
+    protected PassiveHealingConfig getPassiveHealingConfig() {
+        return new PassiveHealingConfig(
+                EntityConfig.old_champions_remains_can_passively_heal_when_idle_and_no_players_around,
+                (int) EntityConfig.old_champions_remains_delay_until_healing_when_idle_and_no_players_around,
+                EntityConfig.old_champions_remains_range_in_blocks_players_must_be_within_to_stop_healing_when_idle,
+                EntityConfig.old_champions_remains_percent_max_health_to_heal_when_idle_and_no_players_around
+        );
+    }
+
+    @Override
     public boolean isFireImmune() {
         return EntityConfig.old_champions_remains_is_fire_immune;
     }

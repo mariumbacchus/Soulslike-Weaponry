@@ -11,6 +11,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.state.StateManager.Builder;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -29,7 +30,10 @@ public class WitheredTallFlower extends WitheredTallGrass {
 
     private final RegistryEntry<StatusEffect> effect;
     public static final BooleanProperty CANNOT_TURN = BooleanProperty.of("can_turn");
-    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registries.BLOCK.stream().filter((block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))).toList(); //NOTE: unsure if this works on servers (it should tho, right?)
+    private static final Supplier<List<Block>> TALL_FLOWERS = () -> Registries.BLOCK.stream()
+                    .filter(block -> block.getDefaultState().isIn(BlockTags.TALL_FLOWERS))
+                    .filter(block -> block.getDefaultState().contains(Properties.DOUBLE_BLOCK_HALF))
+                    .toList();
 
     public WitheredTallFlower(Settings settings, Block replacedBlock, RegistryEntry<StatusEffect> effect) {
         super(settings, replacedBlock);

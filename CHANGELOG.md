@@ -54,12 +54,18 @@
 - Old Champion's Remains has a new Battle Cry sound
 - Bosses that previously reduced their cooldowns or increased attributes due to nearby attacking mobs now only increase based on players that has damaged the boss during the fight
   - This means if your friend attacks the boss once and then leaves or dies, the fight will still be harder as if your friend was in the fight constantly
+- Bosses now preserve phase transitions across loading
+  - This means that if you die to the boss that is in phase 2, quit the world or just deload it in any way, it will no longer revert back to phase 1
+- Bosses now heal when idle and there are no players within 48 blocks after a short delay
+  - They will still calculate how much healing they would receive when not loaded, so upon loading them they will heal that amount again
+  - This functionality and values can be changed in config, naturally
 - Night Prowler's Night Skulls during the Eclipse attack now shoot charged skulls every 3rd wave, only these will spawn clouds of Decay and will deal more damage
-    - Damage is 10 for regular, 14 for charged
-    - Explosion power is 2 for regular, 4 for charged
-    - Duration increased from 4 to 5 seconds of the cloud
-    - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
-    - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
+  - Damage is 10 for regular, 14 for charged
+  - Explosion power is 2 for regular, 4 for charged
+  - Duration increased from 4 to 5 seconds of the cloud
+  - Added config line `night_prowler_eclipse_skulls_destroy_blocks` to `soulsweapons_boss_config.json` which is true by default
+  - Added config lines for changing amount of waves before skulls are charged, damage and explosion power
+- Bosses with phase 2 now preserve this phase even when quitting out or if all players died instead of reverting to phase 1
 - Reworked the Returning Knight boss fight
     - All config lines are now in `returning_knight_config.json`
       - All lines no longer start with `returning_knigh_` since they are in that file and no longer needs specification
@@ -141,7 +147,9 @@
 - Bosses now ignore camera frustum culling so that geckolib animations are more synced, this means bosses are rendered even when not looking at them, so the fights might be slightly more costly performance wise
 - Frost Giants' AOE smash attack no longer damages teammates
 - Fixed crash due to Withered Wabbajack projectile trying to use particles from other mods which the game didn't like
-
+- Fixed crash due to Withered Tall Flowers trying to turn into other tall flowers from other mods that didn't have a "second block part" which the withered tall flower assumed
+- Fixed issues where the withered ground would break tall grass and flowers instead of replacing them properly, making a loud breaking noise and possibly duplicating the flowers
+- Bosses with phase 2 transitions now properly resume them if interrupted due to deloading like player dies or quits the world
 ---------------
 
 

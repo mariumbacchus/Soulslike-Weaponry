@@ -182,4 +182,10 @@ public class ReturningKnightConfig extends MidnightConfig {
     @Entry public static boolean is_fire_immune = true;
     @Entry public static boolean has_inverted_heal_and_harm = true;
     @Entry public static String[] status_effect_blacklist = {"minecraft:poison"};
+
+    // Passive healing
+    @Entry public static boolean can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 }

@@ -63,6 +63,10 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static boolean decaying_king_is_fire_immune = true;
     @Entry public static boolean decaying_king_has_inverted_heal_and_harm = true;
     @Entry public static String[] decaying_king_status_effect_blacklist = {};
+    @Entry public static boolean decaying_king_can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float decaying_king_delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float decaying_king_range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float decaying_king_percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 
     @Entry public static boolean old_champions_remains_disable_respawn = false;
     @Entry public static boolean old_champions_remains_consume_item_on_summoning = false;
@@ -80,6 +84,10 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static boolean old_champions_remains_is_fire_immune = true;
     @Entry public static boolean old_champions_remains_has_inverted_heal_and_harm = true;
     @Entry public static String[] old_champions_remains_status_effect_blacklist = {"soulsweapons:bleed"};
+    @Entry public static boolean old_champions_remains_can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float old_champions_remains_delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float old_champions_remains_range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float old_champions_remains_percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 
     @Entry(min = 1, max = 1000000D) public static double frenzied_shade_health = 150D;
     @Entry(min = 1, max = 1000000D) public static double frenzied_shade_armor = 2D;
@@ -90,6 +98,10 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static boolean frenzied_shade_is_fire_immune = true;
     @Entry public static boolean frenzied_shade_has_inverted_heal_and_harm = true;
     @Entry public static String[] frenzied_shade_status_effect_blacklist = {};
+    @Entry public static boolean frenzied_shade_can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float frenzied_shade_delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float frenzied_shade_range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float frenzied_shade_percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 
     @Entry public static boolean chaos_monarch_disable_respawn = false;
     @Entry public static boolean chaos_monarch_consume_item_on_summoning = true;
@@ -104,6 +116,10 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static boolean chaos_monarch_is_fire_immune = true;
     @Entry public static boolean chaos_monarch_has_inverted_heal_and_harm = true;
     @Entry public static String[] chaos_monarch_status_effect_blacklist = {"soulsweapons:bleed", "minecraft:levitation", "minecraft:wither"};
+    @Entry public static boolean chaos_monarch_can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float chaos_monarch_delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float chaos_monarch_range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float chaos_monarch_percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 
     @Entry public static boolean fallen_icon_disable_respawn = false;
     @Entry public static boolean fallen_icon_consume_item_on_summoning = true;
@@ -119,6 +135,10 @@ public class EntityConfig extends MidnightConfig {
     @Entry public static boolean fallen_icon_is_fire_immune = true;
     @Entry public static boolean fallen_icon_has_inverted_heal_and_harm = false;
     @Entry public static String[] fallen_icon_status_effect_blacklist = {"minecraft:poison"};
+    @Entry public static boolean fallen_icon_can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float fallen_icon_delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float fallen_icon_range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float fallen_icon_percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 
     @Entry(min = 1, max = 1000000D) public static double day_stalker_health = 600D;
     @Entry(min = 1, max = 1000000D) public static double day_stalker_armor = 15D;
@@ -135,6 +155,10 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static double day_stalker_cooldown_modifier_phase_2 = 1D;
     @Entry(min = 0) public static double day_stalker_special_cooldown_modifier_phase_1 = 1D;
     @Entry(min = 0) public static double day_stalker_special_cooldown_modifier_phase_2 = 1D;
+    @Entry public static boolean day_stalker_can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float day_stalker_delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float day_stalker_range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float day_stalker_percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 
     @Entry(min = 0) public static float duo_fight_time_before_switch = 400;
 
@@ -160,4 +184,8 @@ public class EntityConfig extends MidnightConfig {
     @Entry(min = 0) public static double night_prowler_cooldown_modifier_phase_2 = 1D;
     @Entry(min = 0) public static double night_prowler_special_cooldown_modifier_phase_1 = 1D;
     @Entry(min = 0) public static double night_prowler_special_cooldown_modifier_phase_2 = 1D;
+    @Entry public static boolean night_prowler_can_passively_heal_when_idle_and_no_players_around = true;
+    @Entry public static float night_prowler_delay_until_healing_when_idle_and_no_players_around = 200;
+    @Entry public static float night_prowler_range_in_blocks_players_must_be_within_to_stop_healing_when_idle = 48;
+    @Entry public static float night_prowler_percent_max_health_to_heal_when_idle_and_no_players_around = 0.01f;
 }

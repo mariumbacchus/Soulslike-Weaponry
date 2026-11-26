@@ -15,7 +15,6 @@ public interface Withered {
     boolean canTurn(BlockView world, BlockPos pos, int maxNeighbors);
 
     default void turnBack(World world, BlockPos pos) {
-        world.setBlockState(pos, this.getBlockToReturnAs().getDefaultState());
-        world.updateNeighbor(pos, this.getBlockToReturnAs(), pos);
+        world.setBlockState(pos, this.getBlockToReturnAs().getDefaultState(), Block.NOTIFY_ALL);
     }
 }

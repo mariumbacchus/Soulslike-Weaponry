@@ -90,6 +90,29 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     }
 
     @Override
+    protected boolean shouldPersistState(States state) {
+        return state == States.INITIATE_PHASE_2;
+    }
+
+    @Override
+    protected void onPersistentStateLoaded(States state) {
+        if (state == States.INITIATE_PHASE_2) {
+            this.phaseTransitionTicks = 0;
+            this.setPhaseTwo(false);
+        }
+    }
+
+    @Override
+    protected PassiveHealingConfig getPassiveHealingConfig() {
+        return new PassiveHealingConfig(
+                ReturningKnightConfig.can_passively_heal_when_idle_and_no_players_around,
+                (int) ReturningKnightConfig.delay_until_healing_when_idle_and_no_players_around,
+                ReturningKnightConfig.range_in_blocks_players_must_be_within_to_stop_healing_when_idle,
+                ReturningKnightConfig.percent_max_health_to_heal_when_idle_and_no_players_around
+        );
+    }
+
+    @Override
     public double getAnimationSpeed() {
         if (IGNORE_ANIMATION_SPEED.contains(this.getState()) || this.isDead()) {
             return 1D;
@@ -466,7 +489,7 @@ public class ReturningKnight extends BossEntity<ReturningKnight.States> implemen
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (this.isState(States.INITIATE_PHASE_2)) {
+        if (this.isState(States.INITIATE_PHASE_2) && this.canTickPersistentState()) {
             this.initiatePhaseTwo(200, 120, 90);
 
             if (this.phaseTransitionTicks >= 90 && this.phaseTransitionTicks <= 130) {

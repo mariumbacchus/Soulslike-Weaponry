@@ -199,6 +199,29 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
     }
 
     @Override
+    protected boolean shouldPersistState(States state) {
+        return state == States.INITIATING_PHASE_2;
+    }
+
+    @Override
+    protected void onPersistentStateLoaded(States state) {
+        if (state == States.INITIATING_PHASE_2) {
+            this.phaseTransitionTicks = 0;
+            this.setPhaseTwo(false);
+        }
+    }
+
+    @Override
+    protected PassiveHealingConfig getPassiveHealingConfig() {
+        return new PassiveHealingConfig(
+                EntityConfig.day_stalker_can_passively_heal_when_idle_and_no_players_around,
+                (int) EntityConfig.day_stalker_delay_until_healing_when_idle_and_no_players_around,
+                EntityConfig.day_stalker_range_in_blocks_players_must_be_within_to_stop_healing_when_idle,
+                EntityConfig.day_stalker_percent_max_health_to_heal_when_idle_and_no_players_around
+        );
+    }
+
+    @Override
     public boolean disablesShield() {
         return EntityConfig.day_stalker_disables_shields;
     }
@@ -323,7 +346,7 @@ public class DayStalker extends BossEntity<DayStalker.States> implements GeoEnti
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 40, 1, false, false));
             this.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 40, 1, false, false));
         }
-        if (this.isState(States.INITIATING_PHASE_2)) {
+        if (this.isState(States.INITIATING_PHASE_2) && this.canTickPersistentState()) {
             this.initiatePhaseTwo(120, 96, 40);
 
             this.setFlying(false);

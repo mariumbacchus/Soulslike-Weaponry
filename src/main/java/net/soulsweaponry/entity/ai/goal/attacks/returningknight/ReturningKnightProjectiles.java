@@ -19,7 +19,7 @@ public final class ReturningKnightProjectiles {
         pillar.setPosition(pos);
         boss.getWorld().spawnEntity(pillar);
         if (boss.getWorld() instanceof ServerWorld serverWorld) {
-            // Warning particles
+            // Warning particles //TODO different warning particle?
             serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.x, pos.y, pos.z, 1, 0.01D, 0.01D, 0.01D, 0D);
         }
     }

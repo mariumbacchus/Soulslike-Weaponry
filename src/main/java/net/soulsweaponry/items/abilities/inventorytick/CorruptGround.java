@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.TallPlantBlock;
+import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -82,20 +84,35 @@ public record CorruptGround(
                 for (Block turnBlock : TURNABLE_BLOCKS.keySet()) {
                     if (world.getBlockState(blockPos2).getBlock() == turnBlock) {
                         BlockState blockState = TURNABLE_BLOCKS.get(turnBlock).getDefaultState();
-                        if (!blockPos2.isWithinDistance(entity.getPos(), range)) continue;
+                        if (!blockPos2.isWithinDistance(entity.getPos(), range)) {
+                            continue;
+                        }
                         mutable.set(blockPos2.getX(), blockPos2.getY() + 1, blockPos2.getZ());
                         BlockState blockState2 = world.getBlockState(mutable);
-                        if (blockState2.isIn(BlockTags.SMALL_FLOWERS)) world.setBlockState(mutable, BlockRegistry.HYDRANGEA.getDefaultState().with(WitheredFlower.CANNOT_TURN, false));
-                        for (Block turnGrass : TURNABLE_GRASS.keySet()) if (blockState2.isOf(turnGrass)) world.setBlockState(mutable, TURNABLE_GRASS.get(turnGrass).getDefaultState());
-                        for (Block turnTallPlant : TURNABLE_TALL_PLANT.keySet()) if (blockState2.isOf(turnTallPlant)) {
-                            world.removeBlock(mutable, false);
-                            TallPlantBlock.placeAt(world, TURNABLE_TALL_PLANT.get(turnTallPlant).getDefaultState(), mutable, 2);
+
+                        // Replace the ground first, without notifying neighboring blocks yet
+                        world.setBlockState(blockPos2, blockState, Block.NOTIFY_LISTENERS);
+                        int flags = Block.NOTIFY_LISTENERS | Block.FORCE_STATE | Block.SKIP_DROPS;
+                        if (blockState2.isIn(BlockTags.SMALL_FLOWERS)) {
+                            world.setBlockState(mutable, BlockRegistry.HYDRANGEA.getDefaultState()
+                                    .with(WitheredFlower.CANNOT_TURN, false), flags);
                         }
-                        if (blockState2.isIn(BlockTags.TALL_FLOWERS)) {
-                            world.removeBlock(mutable, false);
-                            TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.getDefaultState().with(WitheredTallFlower.CANNOT_TURN, false), mutable, 2);
+                        for (Block turnGrass : TURNABLE_GRASS.keySet()) {
+                            if (blockState2.isOf(turnGrass)) {
+                                world.setBlockState(mutable, TURNABLE_GRASS.get(turnGrass).getDefaultState(), flags);
+                            }
                         }
-                        world.setBlockState(blockPos2, blockState);
+                        for (Block turnTallPlant : TURNABLE_TALL_PLANT.keySet()) {
+                            if (blockState2.isOf(turnTallPlant)) {
+                                TallPlantBlock.placeAt(world, TURNABLE_TALL_PLANT.get(turnTallPlant).getDefaultState(), mutable, flags);
+                            }
+                        }
+                        if (blockState2.isIn(BlockTags.TALL_FLOWERS)
+                                && blockState2.contains(Properties.DOUBLE_BLOCK_HALF)
+                                && blockState2.get(Properties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.LOWER) {
+                            TallPlantBlock.placeAt(world, BlockRegistry.OLEANDER.getDefaultState()
+                                    .with(WitheredTallFlower.CANNOT_TURN, false), mutable, flags);
+                        }
                         world.scheduleBlockTick(blockPos2, TURNABLE_BLOCKS.get(turnBlock), MathHelper.nextInt(entity.getRandom(), 50, 90));
                     } else if (world.getBlockState(blockPos2).getBlock() == TURNABLE_BLOCKS.get(turnBlock)) {
                         WitheredBlock block = (WitheredBlock) world.getBlockState(blockPos2).getBlock();

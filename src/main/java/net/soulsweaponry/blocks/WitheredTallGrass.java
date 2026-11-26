@@ -4,7 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.TallPlantBlock;
-import net.minecraft.server.network.DebugInfoSender;
+import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -37,16 +38,21 @@ public class WitheredTallGrass extends TallPlantBlock implements Withered {
     }
 
     @Override
-    public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
-        if (this.canTurn(world, pos, 2)) {
+    public void neighborUpdate(BlockState state, World world, BlockPos pos,
+                               Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        if (!world.isClient && state.get(Properties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.LOWER && this.canTurn(world, pos, 2)) {
             this.turnBack(world, pos);
         }
-        DebugInfoSender.sendNeighborUpdate(world, pos);
     }
 
     @Override
     public void turnBack(World world, BlockPos pos) {
-        TallPlantBlock.placeAt(world, this.getBlockToReturnAs().getDefaultState(), pos, 2);
+        BlockState state = this.getBlockToReturnAs().getDefaultState();
+        if (!state.contains(Properties.DOUBLE_BLOCK_HALF)) {
+            state = Blocks.TALL_GRASS.getDefaultState();
+        }
+        int flags = Block.NOTIFY_LISTENERS | Block.FORCE_STATE | Block.SKIP_DROPS;
+        TallPlantBlock.placeAt(world, state, pos, flags);
     }
 
     @Override

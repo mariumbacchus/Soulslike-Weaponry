@@ -36,7 +36,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEvents;
-import net.soulsweaponry.SoulsWeaponry;
 import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.entity.ai.goal.events.BossEvent;
 import net.soulsweaponry.networking.PacketHelper;
@@ -68,6 +67,10 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     private T currentEventState;
     private int eventTicks;
     private final List<UUID> attackingPlayers = new ArrayList<>();
+    private long ticksWithoutPlayers;
+    private long lastSavedWorldTime;
+    private boolean checkOfflineHealing;
+    private final Set<UUID> trackingPlayers = new HashSet<>();
 
     private static final TrackedData<Integer> STATES = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> PHASE_2 = DataTracker.registerData(BossEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -207,6 +210,7 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
             this.hasUpdatedHealth = true;
         }
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
+        this.tickPassiveHealing();
     }
 
     /**
@@ -317,6 +321,17 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
             players.add(entry);
         }
         nbt.put("AttackingPlayers", players);
+
+        // Save one persistent state if it should be saved, such as INITIATE_PHASE_2 for some bosses
+        T state = this.getState();
+        if (this.shouldPersistState(state)) {
+            nbt.putString("PersistentBossState", state.name());
+            nbt.putInt("PhaseTransitionTicks", this.phaseTransitionTicks);
+        }
+
+        // Save world time and ticks since not being around players to calculate healing when no player is around
+        nbt.putLong("TicksWithoutPlayers", this.ticksWithoutPlayers);
+        nbt.putLong("LastSavedWorldTime", this.getWorld().getTime());
     }
 
     @Override
@@ -346,6 +361,22 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
                 }
             }
         }
+        // Try to save the persistent state such as INITIATE_PHASE_2
+        if (nbt.contains("PersistentBossState")) {
+            try {
+                T state = Enum.valueOf(this.stateEnumClass, nbt.getString("PersistentBossState"));
+                if (this.shouldPersistState(state)) {
+                    this.setState(state);
+                    this.onPersistentStateLoaded(state);
+                }
+            } catch (Exception ignored) {}
+        }
+        // Load values to check if no player has been around and if it should heal for time being away from players
+        if (nbt.contains("LastSavedWorldTime")) {
+            this.ticksWithoutPlayers = nbt.getLong("TicksWithoutPlayers");
+            this.lastSavedWorldTime = nbt.getLong("LastSavedWorldTime");
+            this.checkOfflineHealing = true;
+        }
     }
 
     @Override
@@ -358,12 +389,17 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     public void onStartedTrackingBy(ServerPlayerEntity player) {
         super.onStartedTrackingBy(player);
         this.bossBar.addPlayer(player);
+        this.trackingPlayers.add(player.getUuid());
     }
 
     @Override
     public void onStoppedTrackingBy(ServerPlayerEntity player) {
         super.onStoppedTrackingBy(player);
         this.bossBar.removePlayer(player);
+        this.trackingPlayers.remove(player.getUuid());
+        if (this.trackingPlayers.isEmpty() && this.shouldPersistState(this.getState())) {
+            this.onPersistentStateLoaded(this.getState());
+        }
     }
 
     @Override
@@ -646,4 +682,83 @@ public abstract class BossEntity<T extends Enum<T>> extends HostileEntity implem
     public boolean isWithinDistance(Entity target, double blocks) {
         return this.squaredDistanceTo(target) <= blocks * blocks;
     }
+
+    /**
+     * Override to specify states that should persist after unloading, such as INITIATE_PHASE_2.
+     */
+    protected abstract boolean shouldPersistState(T state);
+
+    /**
+     * Override to set values upon the persisted state is loaded, such as resetting
+     * phaseTransitionTicks to 0 and setting back to phase 1 during INITIATE_PHASE_2
+     * reload.
+     */
+    protected abstract void onPersistentStateLoaded(T state);
+
+    /**
+     * Returns whether a persistent state should continue ticking, such as INITIATE_PHASE_2.
+     * Meant for re-syncing states after de-loading the boss and reloading it again
+     * like entering its chunk after dying while its transitioning phases.
+     */
+    protected boolean canTickPersistentState() {
+        return !this.trackingPlayers.isEmpty();
+    }
+
+    /**
+     * Heal the boss when no player is within a certain range and the boss is idle.
+     * Meant to combat cheesing so one can't just do damage, die, respawn, repeat.
+     */
+    protected void tickPassiveHealing() {
+        final PassiveHealingConfig config = this.getPassiveHealingConfig();
+        if (!config.canPassivelyHeal() || !(this.getWorld() instanceof ServerWorld world) || this.isDead()) {
+            return;
+        }
+        if (this.checkOfflineHealing) {
+            this.checkOfflineHealing = false;
+            long elapsed = Math.max(0, world.getTime() - this.lastSavedWorldTime);
+            if (this.isIdle()) {
+                long previous = this.ticksWithoutPlayers;
+                this.ticksWithoutPlayers += elapsed;
+                this.healForElapsedTicks(previous, this.ticksWithoutPlayers);
+            }
+        }
+        boolean playersNearby = world.getPlayers().stream().anyMatch(player -> !player.isSpectator()
+                && this.isWithinDistance(player, config.healRange));
+        if (playersNearby) {
+            this.ticksWithoutPlayers = 0;
+            return;
+        }
+        if (this.isIdle()) {
+            long previous = this.ticksWithoutPlayers++;
+            this.healForElapsedTicks(previous, this.ticksWithoutPlayers);
+        } else {
+            this.ticksWithoutPlayers = 0;
+        }
+    }
+
+    private void healForElapsedTicks(long previous, long current) {
+        final PassiveHealingConfig config = this.getPassiveHealingConfig();
+        long before = Math.max(0, previous / 20 - (config.healDelay - 1) / 20);
+        long after = Math.max(0, current / 20 - (config.healDelay - 1) / 20);
+        long healingTicks = after - before;
+        if (healingTicks > 0) {
+            this.heal(this.getMaxHealth() * config.healPercent * healingTicks);
+        }
+    }
+
+    /**
+     * Returns the config values to determine if, when and how much the boss can heal
+     * if players have not been around it for a while.
+     */
+    protected abstract PassiveHealingConfig getPassiveHealingConfig();
+
+    /**
+     * Build values for passive healing. if the boss can heal, delay until it can heal, range players need to be within
+     * to stop healing and how much to heal.
+     * @param canPassivelyHeal if the boss can heal passively while not around players
+     * @param healDelay delay until the healing can start
+     * @param healRange range in blocks players must be within to stop the healing
+     * @param healPercent percent of max health to heal
+     */
+    public record PassiveHealingConfig(boolean canPassivelyHeal, int healDelay, float healRange, float healPercent) {}
 }

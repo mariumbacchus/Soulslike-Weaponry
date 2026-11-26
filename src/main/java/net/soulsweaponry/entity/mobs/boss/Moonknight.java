@@ -184,6 +184,29 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     }
 
     @Override
+    protected boolean shouldPersistState(States state) {
+        return state == States.INITIATE_PHASE_2;
+    }
+
+    @Override
+    protected void onPersistentStateLoaded(States state) {
+        if (state == States.INITIATE_PHASE_2) {
+            this.phaseTransitionTicks = 0;
+            this.setPhaseTwo(false);
+        }
+    }
+
+    @Override
+    protected PassiveHealingConfig getPassiveHealingConfig() {
+        return new PassiveHealingConfig(
+                EntityConfig.fallen_icon_can_passively_heal_when_idle_and_no_players_around,
+                (int) EntityConfig.fallen_icon_delay_until_healing_when_idle_and_no_players_around,
+                EntityConfig.fallen_icon_range_in_blocks_players_must_be_within_to_stop_healing_when_idle,
+                EntityConfig.fallen_icon_percent_max_health_to_heal_when_idle_and_no_players_around
+        );
+    }
+
+    @Override
     public int getXp() {
         return (int) EntityConfig.fallen_icon_xp;
     }
@@ -197,7 +220,7 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
     @Override
     protected void mobTick() {
         super.mobTick();
-        if (this.isState(States.INITIATE_PHASE_2)) {
+        if (this.isState(States.INITIATE_PHASE_2) && this.canTickPersistentState()) {
             this.initiatePhaseTwo(120, 96, 40);
 
             this.tryToPlayBossMusic();
