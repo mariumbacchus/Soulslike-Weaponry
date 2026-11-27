@@ -9,8 +9,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.soulsweaponry.config.EntityConfig;
 import net.soulsweaponry.networking.PacketHelper;
 import net.soulsweaponry.networking.S2C.packets.*;
+import net.soulsweaponry.registry.ParticleRegistry;
 import org.joml.Vector3f;
 
 import java.util.*;
@@ -146,6 +148,16 @@ public class ParticleHandler {
             ParticleSphereS2C pkt = new ParticleSphereS2C(particle, x, y, z, amount, sizeMod);
             PacketHelper.sendToAllPlayersS2C((ServerWorld) world, BlockPos.ofFloored(x, y, z), pkt);
         }
+    }
+
+    /**
+     * Helper to spawn a "!" particle on the given position to indicate an attack is coming.
+     */
+    public static void warningParticle(ServerWorld serverWorld, Vec3d pos) {
+        if (!EntityConfig.can_bosses_spawn_warning_particles) {
+            return;
+        }
+        serverWorld.spawnParticles(ParticleRegistry.WARNING_PARTICLE, pos.x, pos.y + .5f, pos.z, 1, 0, 0, 0, 0D);
     }
 
     public static void flashParticle(World world, double x, double y, double z, int color, float expansion) {

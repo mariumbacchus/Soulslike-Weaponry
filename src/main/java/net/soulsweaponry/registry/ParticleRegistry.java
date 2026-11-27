@@ -22,6 +22,7 @@ public class ParticleRegistry {
     public static final SimpleParticleType ECHO_SWEEP_ATTACK = FabricParticleTypes.simple();
     public static final SimpleParticleType CRIMSON_PARTICLE = FabricParticleTypes.simple();
     public static final SimpleParticleType DRAGONWOUND_FLAME = FabricParticleTypes.simple();
+    public static final SimpleParticleType WARNING_PARTICLE = FabricParticleTypes.simple();
 
     public static void init() {
         registerParticle(NIGHTFALL_PARTICLE, "nightfall_particle");
@@ -37,6 +38,7 @@ public class ParticleRegistry {
         registerParticle(ECHO_SWEEP_ATTACK, "echo_sweep_attack");
         registerParticle(CRIMSON_PARTICLE, "crimson_particle");
         registerParticle(DRAGONWOUND_FLAME, "dragonwound_flame");
+        registerParticle(WARNING_PARTICLE, "warning_particle");
     }
 
     public static void registerParticle(SimpleParticleType particle, String name) {

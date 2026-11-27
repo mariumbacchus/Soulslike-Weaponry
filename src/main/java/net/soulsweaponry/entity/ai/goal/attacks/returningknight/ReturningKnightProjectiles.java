@@ -1,12 +1,12 @@
 package net.soulsweaponry.entity.ai.goal.attacks.returningknight;
 
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.soulsweaponry.entity.mobs.boss.ReturningKnight;
 import net.soulsweaponry.entity.projectile.noclip.BlackflameExplosionEntity;
 import net.soulsweaponry.entity.projectile.noclip.DarknessOrb;
 import net.soulsweaponry.entity.projectile.noclip.EruptionEntity;
+import net.soulsweaponry.particles.ParticleHandler;
 
 public final class ReturningKnightProjectiles {
 
@@ -19,8 +19,7 @@ public final class ReturningKnightProjectiles {
         pillar.setPosition(pos);
         boss.getWorld().spawnEntity(pillar);
         if (boss.getWorld() instanceof ServerWorld serverWorld) {
-            // Warning particles //TODO different warning particle?
-            serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.x, pos.y, pos.z, 1, 0.01D, 0.01D, 0.01D, 0D);
+            ParticleHandler.warningParticle(serverWorld, pos);
         }
     }
 
@@ -43,11 +42,7 @@ public final class ReturningKnightProjectiles {
         entity.setParticleAmountMod(10);
         boss.getWorld().spawnEntity(entity);
         if (boss.getWorld() instanceof ServerWorld serverWorld) {
-            float spread = 0.01f;
-            serverWorld.spawnParticles(ParticleTypes.LARGE_SMOKE, pos.getX(), pos.getY(), pos.getZ(), 4,
-                    boss.getRandom().nextFloat() * spread - spread / 2f,
-                    boss.getRandom().nextFloat() * spread - spread / 2f,
-                    boss.getRandom().nextFloat() * spread - spread / 2f, 0);
+            ParticleHandler.warningParticle(serverWorld, pos);
         }
     }
 }

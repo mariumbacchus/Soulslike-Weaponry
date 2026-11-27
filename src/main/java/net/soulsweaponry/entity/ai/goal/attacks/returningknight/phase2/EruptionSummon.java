@@ -46,8 +46,7 @@ public class EruptionSummon extends ReturningKnightAttack {
             RandomSummonPos eruptions = new RandomSummonPos(this.getWorld(), this.getBoss().getRandom(), this.eruptionAmount, 5,
                     this.getBoss().getBlockPos(), this.eruptionSpawnRadius, 8, 5,
                     (pos) -> {
-                        pos.add(0, -1, 0);
-                        this.spawnEruption(pos, 0, this.eruptionDamage, 22);
+                        this.spawnEruption(pos.add(0, -0.5f, 0), 0, this.eruptionDamage, 22);
                     });
             remnants.applySummonSpawns();
             eruptions.applySummonSpawns();

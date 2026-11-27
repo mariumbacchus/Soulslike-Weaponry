@@ -20,6 +20,7 @@
     "PersistentProjectileEntityMixin",
     "PlayerEntityMixin",
     "RecipeManagerMixin",
+    "ReflectedProjectileMixin",
     "ServerPlayNetworkHandlerMixin",
     "SwordItemMixin",
     "WitherEntityMixin"

@@ -5,6 +5,7 @@ import net.minecraft.client.particle.FlameParticle;
 import net.soulsweaponry.client.particles.CyanSweepAttackParticle;
 import net.soulsweaponry.client.particles.factory.EchoSmokeFactory;
 import net.soulsweaponry.client.particles.factory.SoulSparkFactory;
+import net.soulsweaponry.client.particles.factory.WarningParticleFactory;
 import net.soulsweaponry.registry.ParticleRegistry;
 
 public class ParticleClientRegistry {
@@ -23,5 +24,6 @@ public class ParticleClientRegistry {
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.ECHO_SWEEP_ATTACK, CyanSweepAttackParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.CRIMSON_PARTICLE, FlameParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.DRAGONWOUND_FLAME, FlameParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.WARNING_PARTICLE, WarningParticleFactory::new);
     }
 }

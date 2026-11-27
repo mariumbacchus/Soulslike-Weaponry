@@ -193,7 +193,7 @@ public class MoonknightGoal extends Goal {
                 }
             }
             case UNBREAKABLE -> {
-                if (!this.boss.getAbsorbedProjectileTypes().isEmpty()) {
+                if (!this.boss.getAbsorbedProjectiles().isEmpty()) {
                     this.boss.setState(attack);
                 } else {
                     this.boss.setIdle();
@@ -290,7 +290,8 @@ public class MoonknightGoal extends Goal {
                 AbsorbedProjectilesOrb orb = new AbsorbedProjectilesOrb(this.boss.getWorld(), target);
                 orb.setPos(target.getX(), target.getEyeY() + 8f, target.getZ());
                 orb.setOwner(this.boss);
-                orb.setProjectiles(this.boss.getAbsorbedProjectileTypes(), this.boss.getAbsorbedProjectileDamage());
+                orb.setProjectiles(this.boss.getAbsorbedProjectiles());
+                orb.setMaxAge(400);
                 this.boss.getWorld().spawnEntity(orb);
                 this.boss.clearAbsorbedProjectiles();
                 this.boss.getWorld().playSound(null, orb.getBlockPos(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, SoundCategory.HOSTILE, 1f, 1f);

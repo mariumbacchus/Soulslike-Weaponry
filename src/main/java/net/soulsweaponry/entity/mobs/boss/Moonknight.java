@@ -15,6 +15,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -48,8 +49,7 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
 
     private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private int spawnTicks;
-    private final List<EntityType<?>> absorbedProjectileTypes = new ArrayList<>();
-    private final List<Float> absorbedProjectileDamage = new ArrayList<>();
+    private final List<NbtCompound> absorbedProjectiles = new ArrayList<>();
     public float prevBeamHeight;
     @Environment(EnvType.CLIENT)
     public float renderBeamHeight;
@@ -124,17 +124,12 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
         return this.dataTracker.get(IS_SWORD_CHARGING);
     }
 
-    public List<EntityType<?>> getAbsorbedProjectileTypes() {
-        return absorbedProjectileTypes;
-    }
-
-    public List<Float> getAbsorbedProjectileDamage() {
-        return absorbedProjectileDamage;
+    public List<NbtCompound> getAbsorbedProjectiles() {
+        return this.absorbedProjectiles;
     }
 
     public void clearAbsorbedProjectiles() {
-        this.absorbedProjectileTypes.clear();
-        this.absorbedProjectileDamage.clear();
+        this.absorbedProjectiles.clear();
     }
 
     @Override
@@ -162,10 +157,14 @@ public class Moonknight extends BossEntity<Moonknight.States> implements GeoEnti
                     projectile.discard();
                     return false;
                 }
-                // Add three of the same to spice the attack up
-                for (int i = 0; i < 3; i++) {
-                    this.absorbedProjectileTypes.add(projectile.getType());
-                    this.absorbedProjectileDamage.add(amount);
+                // Store projectiles' nbt to restore later
+                NbtCompound nbt = new NbtCompound();
+                if (projectile.saveSelfNbt(nbt)) {
+                    nbt.putFloat("SoulsweaponryAbsorbedDamage", amount);
+                    // Add three of the same to spice the attack up
+                    for (int i = 0; i < 3; i++) {
+                        this.absorbedProjectiles.add(nbt.copy());
+                    }
                 }
                 return false;
             }

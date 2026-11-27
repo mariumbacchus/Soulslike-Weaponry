@@ -78,6 +78,8 @@
     - Added a config line to change the animation speed of the boss
         - All attacks should match the new animation speed, such as hitbox/damage timings, and death & spawn timers
     - First time aggro will always trigger Children of the Grave attack
+    - Attacks that spawn eruptions or pillars will spawn a warning particle "!" to indicate that the attack is coming here
+      - Can be disabled in `entity_config.json` with the line `can_bosses_spawn_warning_particles` as it will be used when reworking future bosses too
     - The boss is more prone to picking ranged attacks if you are far enough away to make it not be able to do melee attacks
     - Implemented Oriented Bounding Boxes for Returning Knight attacks where applicable
     - Obliterate attack:
@@ -150,6 +152,9 @@
 - Fixed crash due to Withered Tall Flowers trying to turn into other tall flowers from other mods that didn't have a "second block part" which the withered tall flower assumed
 - Fixed issues where the withered ground would break tall grass and flowers instead of replacing them properly, making a loud breaking noise and possibly duplicating the flowers
 - Bosses with phase 2 transitions now properly resume them if interrupted due to deloading like player dies or quits the world
+- Fixed a bug where Fallen Icons reflected projectiles (from the Unbreakable attack in phase 2 which summons an "Absorbed projectiles orb" above the target that shoots reflected projectiles after Fallen Icon stores them) would not despawn
+  - Added a safeguard timer at 100 ticks
+  - Improved the copying of the projectile, now copies its actual NBT data
 ---------------
 
 

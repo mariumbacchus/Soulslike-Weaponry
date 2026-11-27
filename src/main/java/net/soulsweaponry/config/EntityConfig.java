@@ -2,6 +2,8 @@ package net.soulsweaponry.config;
 
 public class EntityConfig extends MidnightConfig {
 
+    @Entry public static boolean can_bosses_spawn_warning_particles = true;
+
     @Entry public static double dark_sorcerer_health = 10D;
     @Entry public static double dark_sorcerer_bonus_armor = 0D;
 
